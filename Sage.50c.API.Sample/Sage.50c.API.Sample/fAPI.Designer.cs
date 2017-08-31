@@ -107,29 +107,6 @@
             this.lblTransPropNameL1 = new System.Windows.Forms.Label();
             this.lblTransPropNameL2 = new System.Windows.Forms.Label();
             this.chkTransModuleProps = new System.Windows.Forms.CheckBox();
-            this.tabTransModuleLot = new System.Windows.Forms.TabPage();
-            this.pnlTransModuleLot = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.txtTransLotRetYearL1 = new System.Windows.Forms.TextBox();
-            this.txtTransLotRetYearL2 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtTransLotRetWeekL1 = new System.Windows.Forms.TextBox();
-            this.txtTransLotRetWeekL2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnTransClearLTL1 = new System.Windows.Forms.Button();
-            this.btnTransClearLTL2 = new System.Windows.Forms.Button();
-            this.txtTransLotEditionL1 = new System.Windows.Forms.TextBox();
-            this.txtTransLotExpDateL1 = new System.Windows.Forms.TextBox();
-            this.txtTransLotEditionL2 = new System.Windows.Forms.TextBox();
-            this.txtTransLotExpDateL2 = new System.Windows.Forms.TextBox();
-            this.txtTransLotIdL2 = new System.Windows.Forms.TextBox();
-            this.txtTransLotIdL1 = new System.Windows.Forms.TextBox();
-            this.Label55 = new System.Windows.Forms.Label();
-            this.Label56 = new System.Windows.Forms.Label();
-            this.Label57 = new System.Windows.Forms.Label();
-            this._Label15_9 = new System.Windows.Forms.Label();
-            this.Label59 = new System.Windows.Forms.Label();
-            this.chkTransModuleLot = new System.Windows.Forms.CheckBox();
             this.tabTransModuleSizeColor = new System.Windows.Forms.TabPage();
             this.pnlTransModuleSizeColor = new System.Windows.Forms.Panel();
             this.btnTransClearSize1 = new System.Windows.Forms.Button();
@@ -258,8 +235,6 @@
             this.tabTransModules.SuspendLayout();
             this.tabTransModuleProps.SuspendLayout();
             this.pnlTransModuleProp.SuspendLayout();
-            this.tabTransModuleLot.SuspendLayout();
-            this.pnlTransModuleLot.SuspendLayout();
             this.tabTransModuleSizeColor.SuspendLayout();
             this.pnlTransModuleSizeColor.SuspendLayout();
             this.tabAccount.SuspendLayout();
@@ -1237,9 +1212,8 @@
             // tabTransModules
             // 
             this.tabTransModules.Controls.Add(this.tabTransModuleProps);
-            this.tabTransModules.Controls.Add(this.tabTransModuleLot);
             this.tabTransModules.Controls.Add(this.tabTransModuleSizeColor);
-            this.tabTransModules.Location = new System.Drawing.Point(33, 240);
+            this.tabTransModules.Location = new System.Drawing.Point(32, 235);
             this.tabTransModules.Name = "tabTransModules";
             this.tabTransModules.SelectedIndex = 0;
             this.tabTransModules.Size = new System.Drawing.Size(563, 193);
@@ -1380,332 +1354,6 @@
             this.chkTransModuleProps.Text = "Propriedades: Numeros Série, Lotes, etc...";
             this.chkTransModuleProps.UseVisualStyleBackColor = true;
             this.chkTransModuleProps.CheckedChanged += new System.EventHandler(this.chkTransModuleProps_CheckedChanged);
-            // 
-            // tabTransModuleLot
-            // 
-            this.tabTransModuleLot.Controls.Add(this.pnlTransModuleLot);
-            this.tabTransModuleLot.Controls.Add(this.chkTransModuleLot);
-            this.tabTransModuleLot.Location = new System.Drawing.Point(4, 24);
-            this.tabTransModuleLot.Name = "tabTransModuleLot";
-            this.tabTransModuleLot.Size = new System.Drawing.Size(555, 165);
-            this.tabTransModuleLot.TabIndex = 1;
-            this.tabTransModuleLot.Text = "Lotes/Edição";
-            this.tabTransModuleLot.UseVisualStyleBackColor = true;
-            // 
-            // pnlTransModuleLot
-            // 
-            this.pnlTransModuleLot.Controls.Add(this.label10);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotRetYearL1);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotRetYearL2);
-            this.pnlTransModuleLot.Controls.Add(this.label5);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotRetWeekL1);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotRetWeekL2);
-            this.pnlTransModuleLot.Controls.Add(this.label3);
-            this.pnlTransModuleLot.Controls.Add(this.btnTransClearLTL1);
-            this.pnlTransModuleLot.Controls.Add(this.btnTransClearLTL2);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotEditionL1);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotExpDateL1);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotEditionL2);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotExpDateL2);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotIdL2);
-            this.pnlTransModuleLot.Controls.Add(this.txtTransLotIdL1);
-            this.pnlTransModuleLot.Controls.Add(this.Label55);
-            this.pnlTransModuleLot.Controls.Add(this.Label56);
-            this.pnlTransModuleLot.Controls.Add(this.Label57);
-            this.pnlTransModuleLot.Controls.Add(this._Label15_9);
-            this.pnlTransModuleLot.Controls.Add(this.Label59);
-            this.pnlTransModuleLot.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTransModuleLot.Enabled = false;
-            this.pnlTransModuleLot.Location = new System.Drawing.Point(0, 31);
-            this.pnlTransModuleLot.Name = "pnlTransModuleLot";
-            this.pnlTransModuleLot.Size = new System.Drawing.Size(555, 134);
-            this.pnlTransModuleLot.TabIndex = 411;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.Transparent;
-            this.label10.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label10.Location = new System.Drawing.Point(239, 8);
-            this.label10.Name = "label10";
-            this.label10.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label10.Size = new System.Drawing.Size(66, 15);
-            this.label10.TabIndex = 497;
-            this.label10.Text = "Devolução";
-            // 
-            // txtTransLotRetYearL1
-            // 
-            this.txtTransLotRetYearL1.AcceptsReturn = true;
-            this.txtTransLotRetYearL1.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotRetYearL1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotRetYearL1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotRetYearL1.Location = new System.Drawing.Point(275, 42);
-            this.txtTransLotRetYearL1.MaxLength = 0;
-            this.txtTransLotRetYearL1.Name = "txtTransLotRetYearL1";
-            this.txtTransLotRetYearL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotRetYearL1.Size = new System.Drawing.Size(44, 23);
-            this.txtTransLotRetYearL1.TabIndex = 495;
-            // 
-            // txtTransLotRetYearL2
-            // 
-            this.txtTransLotRetYearL2.AcceptsReturn = true;
-            this.txtTransLotRetYearL2.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotRetYearL2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotRetYearL2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotRetYearL2.Location = new System.Drawing.Point(275, 69);
-            this.txtTransLotRetYearL2.MaxLength = 0;
-            this.txtTransLotRetYearL2.Name = "txtTransLotRetYearL2";
-            this.txtTransLotRetYearL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotRetYearL2.Size = new System.Drawing.Size(44, 23);
-            this.txtTransLotRetYearL2.TabIndex = 496;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label5.Location = new System.Drawing.Point(276, 23);
-            this.label5.Name = "label5";
-            this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label5.Size = new System.Drawing.Size(29, 15);
-            this.label5.TabIndex = 494;
-            this.label5.Text = "Ano";
-            // 
-            // txtTransLotRetWeekL1
-            // 
-            this.txtTransLotRetWeekL1.AcceptsReturn = true;
-            this.txtTransLotRetWeekL1.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotRetWeekL1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotRetWeekL1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotRetWeekL1.Location = new System.Drawing.Point(226, 42);
-            this.txtTransLotRetWeekL1.MaxLength = 0;
-            this.txtTransLotRetWeekL1.Name = "txtTransLotRetWeekL1";
-            this.txtTransLotRetWeekL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotRetWeekL1.Size = new System.Drawing.Size(44, 23);
-            this.txtTransLotRetWeekL1.TabIndex = 492;
-            // 
-            // txtTransLotRetWeekL2
-            // 
-            this.txtTransLotRetWeekL2.AcceptsReturn = true;
-            this.txtTransLotRetWeekL2.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotRetWeekL2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotRetWeekL2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotRetWeekL2.Location = new System.Drawing.Point(226, 69);
-            this.txtTransLotRetWeekL2.MaxLength = 0;
-            this.txtTransLotRetWeekL2.Name = "txtTransLotRetWeekL2";
-            this.txtTransLotRetWeekL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotRetWeekL2.Size = new System.Drawing.Size(44, 23);
-            this.txtTransLotRetWeekL2.TabIndex = 493;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(227, 23);
-            this.label3.Name = "label3";
-            this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label3.Size = new System.Drawing.Size(32, 15);
-            this.label3.TabIndex = 491;
-            this.label3.Text = "Sem";
-            // 
-            // btnTransClearLTL1
-            // 
-            this.btnTransClearLTL1.BackColor = System.Drawing.SystemColors.Control;
-            this.btnTransClearLTL1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnTransClearLTL1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnTransClearLTL1.Location = new System.Drawing.Point(418, 42);
-            this.btnTransClearLTL1.Name = "btnTransClearLTL1";
-            this.btnTransClearLTL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnTransClearLTL1.Size = new System.Drawing.Size(57, 23);
-            this.btnTransClearLTL1.TabIndex = 450;
-            this.btnTransClearLTL1.Text = "Limpar";
-            this.btnTransClearLTL1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnTransClearLTL1.UseVisualStyleBackColor = false;
-            this.btnTransClearLTL1.Click += new System.EventHandler(this.btnTransClearLTL1_Click);
-            // 
-            // btnTransClearLTL2
-            // 
-            this.btnTransClearLTL2.BackColor = System.Drawing.SystemColors.Control;
-            this.btnTransClearLTL2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnTransClearLTL2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnTransClearLTL2.Location = new System.Drawing.Point(418, 69);
-            this.btnTransClearLTL2.Name = "btnTransClearLTL2";
-            this.btnTransClearLTL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnTransClearLTL2.Size = new System.Drawing.Size(57, 23);
-            this.btnTransClearLTL2.TabIndex = 490;
-            this.btnTransClearLTL2.Text = "Limpar";
-            this.btnTransClearLTL2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnTransClearLTL2.UseVisualStyleBackColor = false;
-            this.btnTransClearLTL2.Click += new System.EventHandler(this.btnTransClearLTL2_Click);
-            // 
-            // txtTransLotEditionL1
-            // 
-            this.txtTransLotEditionL1.AcceptsReturn = true;
-            this.txtTransLotEditionL1.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotEditionL1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotEditionL1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotEditionL1.Location = new System.Drawing.Point(164, 42);
-            this.txtTransLotEditionL1.MaxLength = 0;
-            this.txtTransLotEditionL1.Name = "txtTransLotEditionL1";
-            this.txtTransLotEditionL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotEditionL1.Size = new System.Drawing.Size(44, 23);
-            this.txtTransLotEditionL1.TabIndex = 430;
-            // 
-            // txtTransLotExpDateL1
-            // 
-            this.txtTransLotExpDateL1.AcceptsReturn = true;
-            this.txtTransLotExpDateL1.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotExpDateL1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotExpDateL1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotExpDateL1.Location = new System.Drawing.Point(331, 43);
-            this.txtTransLotExpDateL1.MaxLength = 0;
-            this.txtTransLotExpDateL1.Name = "txtTransLotExpDateL1";
-            this.txtTransLotExpDateL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotExpDateL1.Size = new System.Drawing.Size(77, 23);
-            this.txtTransLotExpDateL1.TabIndex = 440;
-            // 
-            // txtTransLotEditionL2
-            // 
-            this.txtTransLotEditionL2.AcceptsReturn = true;
-            this.txtTransLotEditionL2.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotEditionL2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotEditionL2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotEditionL2.Location = new System.Drawing.Point(164, 69);
-            this.txtTransLotEditionL2.MaxLength = 0;
-            this.txtTransLotEditionL2.Name = "txtTransLotEditionL2";
-            this.txtTransLotEditionL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotEditionL2.Size = new System.Drawing.Size(44, 23);
-            this.txtTransLotEditionL2.TabIndex = 470;
-            // 
-            // txtTransLotExpDateL2
-            // 
-            this.txtTransLotExpDateL2.AcceptsReturn = true;
-            this.txtTransLotExpDateL2.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotExpDateL2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotExpDateL2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotExpDateL2.Location = new System.Drawing.Point(331, 70);
-            this.txtTransLotExpDateL2.MaxLength = 0;
-            this.txtTransLotExpDateL2.Name = "txtTransLotExpDateL2";
-            this.txtTransLotExpDateL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotExpDateL2.Size = new System.Drawing.Size(77, 23);
-            this.txtTransLotExpDateL2.TabIndex = 480;
-            // 
-            // txtTransLotIdL2
-            // 
-            this.txtTransLotIdL2.AcceptsReturn = true;
-            this.txtTransLotIdL2.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotIdL2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotIdL2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotIdL2.Location = new System.Drawing.Point(82, 69);
-            this.txtTransLotIdL2.MaxLength = 0;
-            this.txtTransLotIdL2.Name = "txtTransLotIdL2";
-            this.txtTransLotIdL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotIdL2.Size = new System.Drawing.Size(77, 23);
-            this.txtTransLotIdL2.TabIndex = 460;
-            // 
-            // txtTransLotIdL1
-            // 
-            this.txtTransLotIdL1.AcceptsReturn = true;
-            this.txtTransLotIdL1.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransLotIdL1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransLotIdL1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransLotIdL1.Location = new System.Drawing.Point(82, 42);
-            this.txtTransLotIdL1.MaxLength = 0;
-            this.txtTransLotIdL1.Name = "txtTransLotIdL1";
-            this.txtTransLotIdL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransLotIdL1.Size = new System.Drawing.Size(77, 23);
-            this.txtTransLotIdL1.TabIndex = 420;
-            // 
-            // Label55
-            // 
-            this.Label55.AutoSize = true;
-            this.Label55.BackColor = System.Drawing.Color.Transparent;
-            this.Label55.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label55.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label55.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label55.Location = new System.Drawing.Point(26, 74);
-            this.Label55.Name = "Label55";
-            this.Label55.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label55.Size = new System.Drawing.Size(48, 15);
-            this.Label55.TabIndex = 177;
-            this.Label55.Text = "Lote L2";
-            // 
-            // Label56
-            // 
-            this.Label56.AutoSize = true;
-            this.Label56.BackColor = System.Drawing.Color.Transparent;
-            this.Label56.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label56.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label56.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label56.Location = new System.Drawing.Point(26, 46);
-            this.Label56.Name = "Label56";
-            this.Label56.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label56.Size = new System.Drawing.Size(48, 15);
-            this.Label56.TabIndex = 176;
-            this.Label56.Text = "Lote L1";
-            // 
-            // Label57
-            // 
-            this.Label57.AutoSize = true;
-            this.Label57.BackColor = System.Drawing.Color.Transparent;
-            this.Label57.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label57.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label57.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label57.Location = new System.Drawing.Point(344, 24);
-            this.Label57.Name = "Label57";
-            this.Label57.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label57.Size = new System.Drawing.Size(53, 15);
-            this.Label57.TabIndex = 175;
-            this.Label57.Text = "Validade";
-            // 
-            // _Label15_9
-            // 
-            this._Label15_9.AutoSize = true;
-            this._Label15_9.BackColor = System.Drawing.Color.Transparent;
-            this._Label15_9.Cursor = System.Windows.Forms.Cursors.Default;
-            this._Label15_9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._Label15_9.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._Label15_9.Location = new System.Drawing.Point(166, 23);
-            this._Label15_9.Name = "_Label15_9";
-            this._Label15_9.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._Label15_9.Size = new System.Drawing.Size(42, 15);
-            this._Label15_9.TabIndex = 174;
-            this._Label15_9.Text = "Edição";
-            // 
-            // Label59
-            // 
-            this.Label59.AutoSize = true;
-            this.Label59.BackColor = System.Drawing.Color.Transparent;
-            this.Label59.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label59.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label59.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label59.Location = new System.Drawing.Point(86, 23);
-            this.Label59.Name = "Label59";
-            this.Label59.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label59.Size = new System.Drawing.Size(51, 15);
-            this.Label59.TabIndex = 173;
-            this.Label59.Text = "Nr. Lote";
-            // 
-            // chkTransModuleLot
-            // 
-            this.chkTransModuleLot.AutoSize = true;
-            this.chkTransModuleLot.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkTransModuleLot.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkTransModuleLot.Location = new System.Drawing.Point(0, 0);
-            this.chkTransModuleLot.Name = "chkTransModuleLot";
-            this.chkTransModuleLot.Padding = new System.Windows.Forms.Padding(12, 12, 0, 0);
-            this.chkTransModuleLot.Size = new System.Drawing.Size(555, 31);
-            this.chkTransModuleLot.TabIndex = 412;
-            this.chkTransModuleLot.Text = "Lotes (edições de revistas)";
-            this.chkTransModuleLot.UseVisualStyleBackColor = true;
-            this.chkTransModuleLot.CheckedChanged += new System.EventHandler(this.chkTransModuleLot_CheckedChanged_1);
             // 
             // tabTransModuleSizeColor
             // 
@@ -3266,10 +2914,6 @@
             this.tabTransModuleProps.PerformLayout();
             this.pnlTransModuleProp.ResumeLayout(false);
             this.pnlTransModuleProp.PerformLayout();
-            this.tabTransModuleLot.ResumeLayout(false);
-            this.tabTransModuleLot.PerformLayout();
-            this.pnlTransModuleLot.ResumeLayout(false);
-            this.pnlTransModuleLot.PerformLayout();
             this.tabTransModuleSizeColor.ResumeLayout(false);
             this.tabTransModuleSizeColor.PerformLayout();
             this.pnlTransModuleSizeColor.ResumeLayout(false);
@@ -3434,7 +3078,6 @@
         private System.Windows.Forms.Label Label25;
         private System.Windows.Forms.TabControl tabTransModules;
         private System.Windows.Forms.TabPage tabTransModuleProps;
-        private System.Windows.Forms.TabPage tabTransModuleLot;
         private System.Windows.Forms.TabPage tabTransModuleSizeColor;
         private System.Windows.Forms.Panel pnlTransModuleProp;
         public System.Windows.Forms.TextBox txtTransPropValueL1;
@@ -3454,28 +3097,6 @@
         public System.Windows.Forms.Label Label96;
         public System.Windows.Forms.Label Label95;
         public System.Windows.Forms.Label Label94;
-        private System.Windows.Forms.Panel pnlTransModuleLot;
-        private System.Windows.Forms.Button btnTransClearLTL1;
-        private System.Windows.Forms.Button btnTransClearLTL2;
-        public System.Windows.Forms.TextBox txtTransLotEditionL1;
-        public System.Windows.Forms.TextBox txtTransLotExpDateL1;
-        public System.Windows.Forms.TextBox txtTransLotEditionL2;
-        public System.Windows.Forms.TextBox txtTransLotExpDateL2;
-        public System.Windows.Forms.TextBox txtTransLotIdL2;
-        public System.Windows.Forms.TextBox txtTransLotIdL1;
-        public System.Windows.Forms.Label Label55;
-        public System.Windows.Forms.Label Label56;
-        public System.Windows.Forms.Label Label57;
-        private System.Windows.Forms.Label _Label15_9;
-        public System.Windows.Forms.Label Label59;
-        private System.Windows.Forms.CheckBox chkTransModuleLot;
-        private System.Windows.Forms.Label label10;
-        public System.Windows.Forms.TextBox txtTransLotRetYearL1;
-        public System.Windows.Forms.TextBox txtTransLotRetYearL2;
-        private System.Windows.Forms.Label label5;
-        public System.Windows.Forms.TextBox txtTransLotRetWeekL1;
-        public System.Windows.Forms.TextBox txtTransLotRetWeekL2;
-        private System.Windows.Forms.Label label3;
         public System.Windows.Forms.Label label33;
         public System.Windows.Forms.Label label20;
         public System.Windows.Forms.Label label15;

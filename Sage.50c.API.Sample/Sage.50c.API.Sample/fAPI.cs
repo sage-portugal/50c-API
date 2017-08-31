@@ -1140,19 +1140,9 @@ namespace Sage.S50c.API.Sample {
                 short sizeId = 0;
                 short.TryParse(txtTransSize1.Text, out sizeId);
                 string serialNumber = txtTransPropValueL1.Text;
-                string lotId = txtTransLotIdL1.Text;
-                string lotDescription = txtTransLotEditionL1.Text;
-                DateTime lotExpDate = DateTime.Now.AddYears(1);
-                DateTime.TryParse(txtTransLotExpDateL1.Text, out lotExpDate);
                 var currentDate = DateTime.Today;
-                short lotRetWeek = GetWeekOfYear(currentDate);
-                short.TryParse(txtTransLotRetWeekL1.Text, out lotRetWeek);
-                var lotRetYear = (short)currentDate.Year;
-                short.TryParse(txtTransLotRetYearL1.Text, out lotRetYear);
-                short lotEditionId = 1;
-                short.TryParse(txtTransLotEditionL1.Text, out lotEditionId);
                 //
-                TransAddDetail(trans, item, qty, txtTransUnL1.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL1.Text, serialNumber, lotId, lotDescription, lotExpDate, lotRetWeek, lotRetYear, lotEditionId);
+                TransAddDetail(trans, item, qty, txtTransUnL1.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL1.Text, serialNumber );
                 //
                 //Adicionar a segunda linha ao documento
                 if (!string.IsNullOrEmpty(txtTransItemL2.Text)) {
@@ -1166,19 +1156,9 @@ namespace Sage.S50c.API.Sample {
                     sizeId = 0;
                     short.TryParse(txtTransSize1.Text, out sizeId);
                     serialNumber = txtTransPropValueL2.Text;
-                    lotId = txtTransLotIdL2.Text;
-                    lotDescription = txtTransLotEditionL2.Text;
-                    lotExpDate = DateTime.Now.AddYears(1);
-                    DateTime.TryParse(txtTransLotExpDateL2.Text, out lotExpDate);
                     currentDate = DateTime.Today;
-                    lotRetWeek = GetWeekOfYear(currentDate);
-                    short.TryParse(txtTransLotRetWeekL2.Text, out lotRetWeek);
-                    lotRetYear = (short)currentDate.Year;
-                    short.TryParse(txtTransLotRetYearL2.Text, out lotRetYear);
-                    lotEditionId = 1;
-                    short.TryParse(txtTransLotEditionL1.Text, out lotEditionId);
                     //
-                    TransAddDetail(trans, item, qty, txtTransUnL2.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL2.Text, serialNumber, lotId, lotDescription, lotExpDate, lotRetWeek, lotRetYear, lotEditionId);
+                    TransAddDetail(trans, item, qty, txtTransUnL2.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL2.Text, serialNumber );
                 }
                 //*** Descomentar a linha seguinte para definir automaticamente as origens (conversão de um documento)
                 //bsoItemTransaction.FillTransactionOrigins()
@@ -1406,8 +1386,7 @@ namespace Sage.S50c.API.Sample {
         /// <param name="whareHouseId"></param>
         private void TransAddDetail( ItemTransaction trans, Item item, double qty, string unitOfMeasureId, double unitPrice, double taxPercent, short whareHouseId,
                                      short colorId, short sizeId, 
-                                     string serialNumberPropId, string serialNumberPropValue, 
-                                     string lotId, string lotDescription, DateTime lotExpDate, short lotReturnWeek, short lotReturnYear, short lotEditionId ){
+                                     string serialNumberPropId, string serialNumberPropValue ){
 
             var doc = systemSettings.WorkstationInfo.Document[trans.TransDocument];
             
@@ -1499,53 +1478,6 @@ namespace Sage.S50c.API.Sample {
                     transDetail.Size.SizeID = size.SizeID;
                     transDetail.Size.SizeKey = size.SizeKey;
                 }
-            }
-            //
-            // Lotes - Edições
-            // Verificar se estão ativados no sistema e se foram marcados no documento
-            if (systemSettings.SystemInfo.UseKiosksItems && chkTransModuleLot.Checked
-                && (item.ItemType == ItemTypeEnum.itmLot || item.ItemType == ItemTypeEnum.itmEdition) ) {
-                ItemLot lot = null;
-                if (item.LotList.Count > 0) {
-                    // Validar se existe a Edição
-                    // NOTA: Numa venda vamos sempre assumir que o lote registado na BD é que contém toda a informação relevante como a Validade, Semana e ano de decolução, etc...
-                    //       Vamos procurar pelo lote + edição
-                    lot = null;
-                    foreach (ItemLot tempLot in item.LotList) {
-                        if( tempLot.LotID == lotId && tempLot.EditionID == lotEditionId ){
-                            lot = tempLot;
-                            break;
-                        }
-                    }
-                }
-                // Se for uma compra adicionamos o lote
-                if (lot == null && doc.TransDocType == DocumentTypeEnum.dcTypePurchase && doc.SignPurchaseReport == "+") {
-                    // Adicionar ume novo...
-                    lot = new ItemLot();
-                    lot.EditionID = lotEditionId;
-                    lot.ItemID = item.ItemID;
-                    lot.LotID = lotId;
-                    lot.ExpirationDate = lotExpDate;
-                    lot.ReturnWeek = lotReturnWeek;
-                    lot.ReturnYear = lotReturnYear;
-                    lot.ItemLotDescription = item.Description;
-                    lot.SupplierItemID = dsoCache.ItemProvider.GetItemSupplierID(item.ItemID, item.SupplierID);
-                }
-                if(lot==null){
-                    throw new Exception(string.Format("O lote [{0}], Edição [{1}] não existe.", lotId, lotEditionId));
-                }
-                transDetail.Lot.BarCode = lot.BarCode;
-                transDetail.Lot.EditionID = lot.EditionID;
-                transDetail.Lot.EffectiveDate = lot.EffectiveDate;
-                transDetail.Lot.ExpirationDate = lot.ExpirationDate;
-                transDetail.Lot.ItemID = lot.ItemID;
-                transDetail.Lot.ItemLotDescription = lot.ItemLotDescription;
-                transDetail.Lot.LotID = lot.LotID;
-                transDetail.Lot.ReturnWeek = lot.ReturnWeek;
-                transDetail.Lot.ReturnYear = lot.ReturnYear;
-                transDetail.Lot.SalePrice = lot.SalePrice;
-                transDetail.Lot.SaveSalePrice = lot.SaveSalePrice;
-                transDetail.Lot.SupplierItemID = lot.SupplierItemID;
             }
             //
             // Propriedades (números de série e lotes)
@@ -1664,8 +1596,10 @@ namespace Sage.S50c.API.Sample {
                 txtTransDate.Text = trans.CreateDate.ToShortDateString();
                 txtTransDoc.Text = trans.TransDocument;
                 txtTransDocNumber.Text = trans.TransDocNumber.ToString();
-                txtPaymentID.Text = trans.Payment.PaymentID.ToString();
-                txtTenderID.Text = trans.Tender.TenderID.ToString();
+                if (trans.TransDocType == (int)DocumentTypeEnum.dcTypeSale || trans.TransDocType == (int)DocumentTypeEnum.dcTypePurchase) {
+                    txtPaymentID.Text = trans.Payment.PaymentID.ToString();
+                    txtTenderID.Text = trans.Tender.TenderID.ToString();
+                }
                 //
                 //ItemTransaction i; i.PaymentDiscountPercent
                 if (doc.TransDocType == DocumentTypeEnum.dcTypeSale || doc.TransDocType == DocumentTypeEnum.dcTypePurchase) {
@@ -1693,15 +1627,6 @@ namespace Sage.S50c.API.Sample {
                         txtTransUnitPriceL1.Text = transDetail.UnitPrice.ToString();
                     txtTransUnL1.Text = transDetail.UnitOfSaleID;
                     txtTransWarehouseL1.Text = transDetail.WarehouseID.ToString();
-                    // Lote
-                    if (! string.IsNullOrEmpty(transDetail.Lot.LotID ) ) {
-                        txtTransLotExpDateL1.Text = transDetail.Lot.ExpirationDate.ToShortDateString();
-                        txtTransLotIdL1.Text = transDetail.Lot.LotID;
-                        txtTransLotEditionL1.Text = transDetail.Lot.EditionID.ToString();
-                        txtTransLotRetWeekL1.Text = transDetail.Lot.ReturnWeek.ToString();
-                        txtTransLotRetYearL1.Text = transDetail.Lot.ReturnYear.ToString();
-                        chkTransModuleLot.Checked = true;
-                    }
                     // Cores e Tamanhos - Só na linha 1 
                     if (transDetail.Color.ColorID > 0) {
                         txtTransColor1.Text = transDetail.Color.ColorID.ToString();
@@ -1738,16 +1663,6 @@ namespace Sage.S50c.API.Sample {
                             txtTransUnitPriceL2.Text = transDetail.UnitPrice.ToString();
                         txtTransUnL2.Text = transDetail.UnitOfSaleID;
                         txtTransWarehouseL2.Text = transDetail.WarehouseID.ToString();
-                        // Lote
-                        if ( ! string.IsNullOrEmpty(transDetail.Lot.LotID) ) {
-                            txtTransLotExpDateL2.Text = transDetail.Lot.ExpirationDate.ToShortDateString();
-                            txtTransLotIdL2.Text = transDetail.Lot.LotID;
-                            txtTransLotEditionL2.Text = transDetail.Lot.EditionID.ToString();
-                            txtTransLotRetWeekL2.Text = transDetail.Lot.ReturnWeek.ToString();
-                            txtTransLotRetYearL2.Text = transDetail.Lot.ReturnYear.ToString();
-
-                            chkTransModuleLot.Checked = true;
-                        }
                         // Propriedades: Números de série
                         if (transDetail.ItemProperties.HasPropertyValues) {
                             lblTransPropNameL2.Text = transDetail.ItemProperties.PropertyID1;
@@ -1773,7 +1688,6 @@ namespace Sage.S50c.API.Sample {
 
 
         private void TransactionClear() {
-            chkTransModuleLot.Checked = false;
             chkTransModuleProps.Checked = false;
             chkTransModuleSizeColor.Checked = false;
 
@@ -1843,9 +1757,6 @@ namespace Sage.S50c.API.Sample {
             //Propriedades: NS
             TransClearNS1();
 
-            // Lotes (edições)
-            TransClearLotL1();
-
             //Size and colors
             TransClearSize1();
             TransClearColor1();
@@ -1863,27 +1774,8 @@ namespace Sage.S50c.API.Sample {
 
             //Propriedades: NS
             TransClearNS2();
-
-            // Lotes (edições)
-            TransClearLotL2();
         }
 
-        private void TransClearLotL1() {
-            txtTransLotExpDateL1.Text = string.Empty;
-            txtTransLotIdL1.Text = string.Empty;
-            txtTransLotEditionL1.Text = string.Empty;
-            var currentDate = DateTime.Today;
-            txtTransLotRetWeekL1.Text = GetWeekOfYear( currentDate ).ToString();
-            txtTransLotRetYearL1.Text = currentDate.Year.ToString();
-        }
-        private void TransClearLotL2() {
-            txtTransLotExpDateL2.Text = string.Empty;
-            txtTransLotIdL2.Text = string.Empty;
-            txtTransLotEditionL2.Text = string.Empty;
-            var currentDate = DateTime.Today;
-            txtTransLotRetWeekL2.Text = GetWeekOfYear(currentDate).ToString();
-            txtTransLotRetYearL2.Text = currentDate.Year.ToString();
-        }
         private void TransClearNS1() {
             txtTransPropValueL1.Text = string.Empty;
         }
@@ -1899,14 +1791,6 @@ namespace Sage.S50c.API.Sample {
 
         private void btnTransClearL1_Click(object sender, EventArgs e) {
             TransClearL1();
-        }
-
-        private void btnTransClearLTL1_Click(object sender, EventArgs e) {
-            TransClearLotL1();
-        }
-
-        private void btnTransClearLTL2_Click(object sender, EventArgs e) {
-            TransClearLotL2();
         }
 
         private void btnTransClearNSL1_Click(object sender, EventArgs e) {
@@ -2408,21 +2292,12 @@ namespace Sage.S50c.API.Sample {
             pnlTransModuleProp.Enabled = chkTransModuleProps.Checked;
         }
 
-        private void chkTransModuleLot_CheckedChanged(object sender, EventArgs e) {
-            pnlTransModuleLot.Enabled = chkTransModuleLot.Checked;
-        }
-
         private void chkTransModuleSizeColor_CheckedChanged(object sender, EventArgs e) {
             pnlTransModuleSizeColor.Enabled = chkTransModuleSizeColor.Checked;
         }
 
         private void tabEntities_SelectedIndexChanged(object sender, EventArgs e) {
         }
-
-        private void chkTransModuleLot_CheckedChanged_1(object sender, EventArgs e) {
-            pnlTransModuleLot.Enabled = chkTransModuleLot.Checked;
-        }
-
 
         #region Account documents
 
@@ -3120,30 +2995,22 @@ namespace Sage.S50c.API.Sample {
             oPlaceHolders = new PlaceHolders();
     
             try{
-                oDocument = systemSettings.WorkstationInfo.Document[transDoc];    
+                oDocument = systemSettings.WorkstationInfo.Document[transDoc];
 
-                //// Preencher as opções default
-                //oDefaultPrintSettings = new PrintSettings();
-
-                //// Pergunta impressora com a opção "Imprimir"
-                //oDefaultPrintSettings.AskForPrinter = optPrintOptions0.Checked;
-                ////
-                //// Imprimir segundo as regras da 50c
-                //oDefaultPrintSettings.UseIssuingOutput = true;
-                ////
-                //if(optPrintOptions0.Checked){
-                //    // Imprimir apenas
-                //    oDefaultPrintSettings.PrintAction = PrintActionEnum.prnActPrint;
-                //}
-                //else if( optPrintOptions1.Checked){
-                //    // Exportar para PDF
-                //    oDefaultPrintSettings.PrintAction = PrintActionEnum.prnActExportToFile;
-                //    oDefaultPrintSettings.ExportFileType = ExportFileTypeEnum.filePDF;
-                //    oDefaultPrintSettings.ExportFileFolder = oPlaceHolders.GetPlaceHolderPath(systemSettings.WorkstationInfo.PDFDestinationFolder);
-                //}
-                //
+                // Preencher as opções default
+                var defaultPrintSettings = new PrintSettings() {
+                    AskForPrinter = false,
+                    UseIssuingOutput = false,
+                    PrintAction = chkPrintPreview.Checked ? PrintActionEnum.prnActPreview : PrintActionEnum.prnActPrint
+                };
+                if(optPrintOptions1.Checked) {
+                    // Exportar para PDF
+                    defaultPrintSettings.PrintAction = PrintActionEnum.prnActExportToFile;
+                    defaultPrintSettings.ExportFileType = ExportFileTypeEnum.filePDF;
+                    defaultPrintSettings.ExportFileFolder = oPlaceHolders.GetPlaceHolderPath(systemSettings.WorkstationInfo.PDFDestinationFolder);
+                }
                 //Obter configurações de impressão na configuração de postos
-                objListPrintSettings = printingManager.GetTransactionPrintSettings(oDocument, transSerial);
+                objListPrintSettings = printingManager.GetTransactionPrintSettings(oDocument, transSerial, ref defaultPrintSettings);
                 //
                 if ( objListPrintSettings.getCount() > 0 ){
                     // Neste exemplo, vamos escolher a primeira configuração
@@ -3151,9 +3018,6 @@ namespace Sage.S50c.API.Sample {
                     oPrintSettings = (PrintSettings)objListPrintSettings.item[0];
                     // Imprimir...
                     // Retorna falso em caso de erro
-
-                    //ANTERIOR var printResult = bsoItemTransaction.PrintTransactionEx(transSerial, transDoc, transDocNumber, oPrintSettings );
-
                     if (chkPrintPreview.Checked) {
                         bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, oPrintSettings.PrintCopies);
                     }
@@ -3195,7 +3059,8 @@ namespace Sage.S50c.API.Sample {
                            " ColorID = " + mainProvider.SQLFormatter.SQLNumber(color.ColorID) +
                            " ORDER BY SequenceNumber, WarehouseID";
 
-            var rs = mainProvider.Execute(query);
+            object recsAffected = new object();
+            ADODB.Recordset rs = mainProvider.Execute( query );
 
             DataTable dt = new DataTable();
 
