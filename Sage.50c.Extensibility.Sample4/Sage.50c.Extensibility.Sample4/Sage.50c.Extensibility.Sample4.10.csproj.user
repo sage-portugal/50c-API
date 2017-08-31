@@ -7,4 +7,7 @@
     <StartAction>Program</StartAction>
     <StartProgram>C:\Dev\POS\SystemPOS\Main\Source\SRC.EXE\Sage.50c.CGCO.exe</StartProgram>
   </PropertyGroup>
+  <PropertyGroup>
+    <ProjectView>ShowAllFiles</ProjectView>
+  </PropertyGroup>
 </Project>
