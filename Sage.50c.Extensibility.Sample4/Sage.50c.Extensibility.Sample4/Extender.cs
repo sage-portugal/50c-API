@@ -10,7 +10,8 @@ namespace Sage50c.ExtenderSample {
         private SystemHandler           systemHandler = null;       // System handler, startup, system menus
         private SystemInfoHandler       systemInfoHandler = null;   // Parâmetros do sistema
 
-        private TransactionHandler      transactionHandler = null;  // Transaction handler
+        private TransactionHandler      transactionHandler = null;      // Sales Transaction handler
+        private TransactionHandler      buyTransactionHandler = null;   // Purchases Transaction handler
         private StockHandler            stockHandler = null;        // StockTransaction handler
         private ItemHandler             itemHandler = null;         // Items
         private CustomerHandler         customerHandler = null;
@@ -41,11 +42,19 @@ namespace Sage50c.ExtenderSample {
                     }
                     break;
 
-                //case "buytransaction":  //Compras
-                //    break;
+                case "buytransaction":  //Compras
+                    if (buyTransactionHandler == null) {
+                        buyTransactionHandler = new TransactionHandler();
+                    }
+                    buyTransactionHandler.SetHeaderEventsHandler(EventHandler);
+                    break;
 
-                //case "buytransactiondetail":  //Compras (detalhes)
-                //    break;
+                case "buytransactiondetail":  //Compras (detalhes)
+                    if (buyTransactionHandler == null) {
+                        buyTransactionHandler = new TransactionHandler();
+                    }
+                    buyTransactionHandler.SetDetailEventsHandler(EventHandler);
+                    break;
 
                 case "saletransaction":
                     if (transactionHandler == null) {

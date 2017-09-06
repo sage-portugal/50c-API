@@ -171,7 +171,7 @@ namespace Sage50c.ExtenderSample {
                 });
             }
 
-            e.result.ResultMessage = "Alterei a descrição de um artigo novo";
+            e.result.ResultMessage = "New Event: Estou a criar um cliente novo";
             e.result.Success = true;
         }
 
@@ -200,7 +200,7 @@ namespace Sage50c.ExtenderSample {
             foreach ( ConfExtraFields extraField in extraFields) {
                 if (Customer.PartyInfo.ExtraFields.Find((int) extraField.ExtraFieldID) == null) {
                     e.result.Success = false;
-                    e.result.ResultMessage = string.Format( "Campo extra {0} não está preenchido", extraField.Description) ;
+                    e.result.ResultMessage = string.Format( "Validate Event: Campo extra {0} não está preenchido", extraField.Description) ;
                     break;
                 }
             }

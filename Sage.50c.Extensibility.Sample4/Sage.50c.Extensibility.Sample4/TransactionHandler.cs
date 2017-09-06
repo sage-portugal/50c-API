@@ -34,7 +34,7 @@ namespace Sage50c.ExtenderSample {
         }
 
         private void DetailEvents_OnDispose() {
-            System.Windows.Forms.MessageBox.Show("DetailEvents_OnDispose");
+            System.Windows.Forms.MessageBox.Show("DetailEvents_OnDispose", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void DetailEvents_OnInitialize(object Sender, ExtenderEventArgs e) {
@@ -67,11 +67,11 @@ namespace Sage50c.ExtenderSample {
         }
 
         private void HeaderEvents_OnDelete(object Sender, ExtenderEventArgs e) {
-            System.Windows.Forms.MessageBox.Show("Acabei de anular.");
+            System.Windows.Forms.MessageBox.Show("HeaderEvents_OnDelete: Acabei de anular.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void HeaderEvents_OnSave(object Sender, ExtenderEventArgs e) {
-            System.Windows.Forms.MessageBox.Show("Gravou");
+            System.Windows.Forms.MessageBox.Show("HeaderEvents_OnSave: Gravou.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void HeaderEvents_OnValidating(object Sender, ExtenderEventArgs e) {
@@ -82,7 +82,7 @@ namespace Sage50c.ExtenderSample {
             if (!forDeletion) {
                 foreach( ItemTransactionDetail detail in transaction.Details) {
                     if( detail.FamilyID == 1) {
-                        e.result.ResultMessage = string.Format("Não pode vender artigos da familia {0}", detail.FamilyName);
+                        e.result.ResultMessage = string.Format("HeaderEvents_OnValidating: Não pode vender artigos da familia {0}", detail.FamilyName);
                         e.result.Success = false;
                         break;
                     }
@@ -98,7 +98,7 @@ namespace Sage50c.ExtenderSample {
                 //}
             }
             else {
-                e.result.ResultMessage = "Não pode anular documentos!";
+                e.result.ResultMessage = "HeaderEvents_OnValidating: Não pode anular documentos! Mas vou devolver TRUE para deixar anular.";
                 e.result.Success = true;
             }
         }

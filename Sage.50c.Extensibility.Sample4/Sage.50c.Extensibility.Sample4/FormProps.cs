@@ -88,10 +88,10 @@ namespace Sage50c.ExtenderSample {
 
         public void Validate( ExtendedEventResult result ) {
             result.Success=true;
-            result.ResultMessage = "Not done yet, but you can continue.";
+            result.ResultMessage = "Validate Event: Not done yet, but I'm returning TRUE so you can continue.";
         }
         public void Save() {
-            MessageBox.Show("Save event!");
+            MessageBox.Show("Save event: save done", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information );
         }
     }
 }
