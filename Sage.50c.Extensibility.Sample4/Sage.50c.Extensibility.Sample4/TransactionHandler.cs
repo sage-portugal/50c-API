@@ -14,6 +14,7 @@ namespace Sage50c.ExtenderSample {
 
         private BSOItemTransaction bsoItemTrans = null;
         private PropertyChangeNotifier propChangeNotifier = null;
+        private ItemTransaction _transaction = null;
 
 
         /// <summary>
@@ -59,9 +60,22 @@ namespace Sage50c.ExtenderSample {
             headerEvents.OnSave += HeaderEvents_OnSave;
             headerEvents.OnDelete += HeaderEvents_OnDelete;
             headerEvents.OnNew += HeaderEvents_OnNew;
+            headerEvents.OnLoad += HeaderEvents_OnLoad;
+            headerEvents.OnDispose += HeaderEvents_OnDispose;
         }
 
-        private ItemTransaction _transaction = null;
+        private void HeaderEvents_OnDispose() {
+            // Dispose your objects
+        }
+
+        private void HeaderEvents_OnLoad(object Sender, ExtenderEventArgs e) {
+            var trans = (ItemTransaction)e.get_data();
+
+            ///... Code here
+
+            e.result.Success = true;
+        }
+
         private void HeaderEvents_OnNew(object Sender, ExtenderEventArgs e) {
             _transaction = (ItemTransaction)e.get_data();
         }
