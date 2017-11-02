@@ -54,6 +54,8 @@ namespace Sage.S50c.API.Sample {
         public fApi() {
             InitializeComponent();
 
+            txtCompanyId.Text = Properties.Settings.Default.CompanyId;
+
             S50cAPIEngine.APIStarted += S50cAPIEngine_APIStarted;
             S50cAPIEngine.APIStopped += S50cAPIEngine_APIStopped;
         }
@@ -256,7 +258,7 @@ namespace Sage.S50c.API.Sample {
                 S50cAPIEngine.WarningMessage += S50cAPIEngine_WarningMessage;
                 S50cAPIEngine.Message += S50cAPIEngine_Message;
 
-                S50cAPIEngine.Initialize( txtRTLCompany.Text, chkAPIDebugMode.Checked );
+                S50cAPIEngine.Initialize( txtCompanyId.Text, chkAPIDebugMode.Checked );
             }
             catch (Exception ex) {
                 this.Cursor = Cursors.Default;
@@ -265,6 +267,11 @@ namespace Sage.S50c.API.Sample {
         }
 
         private void fApi_FormClosed(object sender, FormClosedEventArgs e) {
+            // Guardar a empresa de testes
+            Properties.Settings.Default.CompanyId = txtCompanyId.Text;
+            Properties.Settings.Default.Save();
+            //
+            // Terminar a API e sair
             S50cAPIEngine.Terminate();
             Application.Exit();
         }
@@ -490,6 +497,18 @@ namespace Sage.S50c.API.Sample {
                 //    Units = 1
                 //};
                 //newItem.Sizes.Add(newItemSize);
+                ////
+                //// Adicionar um preço ao tamanho
+                //myPrice = newItem.SalePrice[1, newSizeID];
+                //// Para ser diferente, vamos colocar este preço com mais 10%
+                //myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value * 1.10;
+                //myPrice.UnitPrice = S50cAPIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
+                //                                    myPrice.TaxIncludedPrice,
+                //                                    newItem.TaxableGroupID,
+                //                                    systemSettings.SystemInfo.DefaultCountryID,
+                //                                    systemSettings.SystemInfo.TaxRegionID);
+                ////NOTA: A linha seguinte só é necessário se for um novo preço. Se já existe, não adicionar o preço à coleção. Neste exemplo criamos um tamanho novo por isso o preço também é novo
+                //newItem.SalePrice.Add(myPrice);
                 //
                 // Gravar
                 dsoCache.ItemProvider.Save(newItem, newItem.ItemID, true);

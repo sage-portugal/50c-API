@@ -22,5 +22,17 @@ namespace Sage.S50c.API.Sample.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("APIXDEMO")]
+        public string CompanyId {
+            get {
+                return ((string)(this["CompanyId"]));
+            }
+            set {
+                this["CompanyId"] = value;
+            }
+        }
     }
 }

@@ -204,7 +204,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.chkAPIDebugMode = new System.Windows.Forms.CheckBox();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.txtRTLCompany = new System.Windows.Forms.TextBox();
+            this.txtCompanyId = new System.Windows.Forms.TextBox();
             this.Label40 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this._Label1_0 = new System.Windows.Forms.Label();
@@ -2647,7 +2647,7 @@
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel1.Controls.Add(this.chkAPIDebugMode);
             this.panel1.Controls.Add(this.panel5);
-            this.panel1.Controls.Add(this.txtRTLCompany);
+            this.panel1.Controls.Add(this.txtCompanyId);
             this.panel1.Controls.Add(this.Label40);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -2678,20 +2678,20 @@
             this.panel5.TabIndex = 304;
             this.panel5.Paint += new System.Windows.Forms.PaintEventHandler(this.panel5_Paint);
             // 
-            // txtRTLCompany
+            // txtCompanyId
             // 
-            this.txtRTLCompany.AcceptsReturn = true;
-            this.txtRTLCompany.BackColor = System.Drawing.SystemColors.Window;
-            this.txtRTLCompany.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtRTLCompany.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRTLCompany.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtRTLCompany.Location = new System.Drawing.Point(465, 38);
-            this.txtRTLCompany.MaxLength = 0;
-            this.txtRTLCompany.Name = "txtRTLCompany";
-            this.txtRTLCompany.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtRTLCompany.Size = new System.Drawing.Size(310, 23);
-            this.txtRTLCompany.TabIndex = 30;
-            this.txtRTLCompany.Text = "APIXDEMO";
+            this.txtCompanyId.AcceptsReturn = true;
+            this.txtCompanyId.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCompanyId.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtCompanyId.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCompanyId.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtCompanyId.Location = new System.Drawing.Point(465, 38);
+            this.txtCompanyId.MaxLength = 0;
+            this.txtCompanyId.Name = "txtCompanyId";
+            this.txtCompanyId.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtCompanyId.Size = new System.Drawing.Size(310, 23);
+            this.txtCompanyId.TabIndex = 30;
+            this.txtCompanyId.Text = "APIXDEMO";
             // 
             // Label40
             // 
@@ -2974,7 +2974,7 @@
         public System.Windows.Forms.Label Label7;
         public System.Windows.Forms.Label Label6;
         public System.Windows.Forms.Label Label4;
-        public System.Windows.Forms.TextBox txtRTLCompany;
+        public System.Windows.Forms.TextBox txtCompanyId;
         public System.Windows.Forms.Label Label40;
         private System.Windows.Forms.Panel panel4;
         public System.Windows.Forms.TextBox txtSupplierId;
