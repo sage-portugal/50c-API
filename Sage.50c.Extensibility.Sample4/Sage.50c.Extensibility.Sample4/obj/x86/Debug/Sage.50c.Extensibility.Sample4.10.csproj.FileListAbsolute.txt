@@ -7,3 +7,12 @@ C:\git\50c-API.git\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4
 C:\git\50c-API.git\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage.50c.Extensibility.Sample4.10.csproj.GenerateResource.Cache
 C:\git\50c-API.git\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage.50c.Extensibility40.Sample.10.dll
 C:\git\50c-API.git\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage.50c.Extensibility40.Sample.10.pdb
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\bin\x86\Debug\Sage.50c.Extensibility40.Sample.10.dll
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\bin\x86\Debug\Sage.50c.Extensibility40.Sample.10.pdb
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\bin\x86\Debug\Sage.50c.Extensibility40.Sample.10.tlb
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage.50c.Extensibility.Sample4.10.csprojResolveAssemblyReference.cache
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage50c.ExtenderSample.FormItem.resources
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage50c.ExtenderSample.FormProps.resources
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage.50c.Extensibility.Sample4.10.csproj.GenerateResource.Cache
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage.50c.Extensibility40.Sample.10.dll
+C:\Users\mgc\Source\Repos\50c-API\Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4\obj\x86\Debug\Sage.50c.Extensibility40.Sample.10.pdb

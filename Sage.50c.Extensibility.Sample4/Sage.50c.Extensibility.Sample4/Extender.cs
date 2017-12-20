@@ -12,6 +12,7 @@ namespace Sage50c.ExtenderSample {
 
         private TransactionHandler      transactionHandler = null;      // Sales Transaction handler
         private TransactionHandler      buyTransactionHandler = null;   // Purchases Transaction handler
+        private TenderTransactionHandler tenderTransactionHandler = null;   // Tender Transaction handler
         private StockHandler            stockHandler = null;        // StockTransaction handler
         private ItemHandler             itemHandler = null;         // Items
         private CustomerHandler         customerHandler = null;
@@ -77,7 +78,14 @@ namespace Sage50c.ExtenderSample {
                     stockHandler.SetHeaderEventsHandler(EventHandler);
                     break;
 
-                    //case "confstores":  // delegações
+                case "tendertransaction":
+                    if (tenderTransactionHandler == null) {
+                        tenderTransactionHandler = new TenderTransactionHandler();
+                    }
+                    tenderTransactionHandler.SetHeaderEventsHandler(EventHandler);
+                    break;
+
+                //case "confstores":  // delegações
                 //    break;
 
                 //Parâmetros customizados
