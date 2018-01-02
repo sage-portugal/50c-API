@@ -202,7 +202,9 @@ namespace Sage50c.ExtenderSample {
                         // Adicionar à venda
                         bsoItemTrans.AddDetail(detail);
                     }
-
+                    break;
+                case "miXFunctionA":
+                    MessageBox.Show("Your function here...");
                     break;
             }
         }

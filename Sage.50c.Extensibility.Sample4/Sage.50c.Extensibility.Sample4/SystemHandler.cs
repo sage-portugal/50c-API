@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Sage50c.ExtenderSample {
     internal class SystemHandler : IDisposable {
+
+        
+        
         // System events handler
         private ExtenderSystemEvents myEvents = null;
         //
@@ -28,6 +31,22 @@ namespace Sage50c.ExtenderSample {
             myEvents.OnMenuItem += SystemEvents_OnMenuItem;
             myEvents.OnDispose += MyEvents_OnDispose;
         }
+
+        #region Private methods
+        
+        /// <summary>
+        /// Add name of your function
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="language"></param>
+        private void AddMyFunction(string functionName, string language = "PTG") {
+            var tmpFfunc = new S50cBO18.FuncPOS();
+            tmpFfunc.POSFunctionID = functionName;
+            tmpFfunc.LocalizedFunction = functionName;
+            tmpFfunc.LanguageID = language;
+            MyApp.DSOCache.FuncPOSProvider.AddToCache(tmpFfunc);
+        }
+        #endregion 
 
         private void MyEvents_OnStartup(object Sender, ExtenderEventArgs e) {
             ExtendedPropertyList properties = null; ;
@@ -57,6 +76,12 @@ namespace Sage50c.ExtenderSample {
             var childItems = menuItem.Add("miExtensibilidade", "&Extensibilidade").ChildItems;
             childItems.Add("miXItem1", "Item &1");
             childItems.Add("miXItem2", "Item &2");
+
+            // Custom Functions
+            // Remember, all functions declared here will not recorded on physical base
+            AddMyFunction("miXFunctionA", "PTG");
+            
+            
             //
             // COM mandatories
             object oMenuItem = menuItem;
@@ -77,6 +102,7 @@ namespace Sage50c.ExtenderSample {
         }
 
         private void SystemEvents_OnMenuItem(object Sender, ExtenderEventArgs e) {
+            
             string menuItemId = (string)e.get_data();
             switch ( menuItemId ) {
                 case "miXItem1":
