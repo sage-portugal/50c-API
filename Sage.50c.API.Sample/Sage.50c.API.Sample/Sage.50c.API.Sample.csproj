@@ -87,7 +87,7 @@
     <Reference Include="ADODB, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\DevProjects\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\ADODB.dll</HintPath>
+      <HintPath>..\..\..\..\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\ADODB.dll</HintPath>
     </Reference>
     <Reference Include="DAO">
       <HintPath>..\..\..\..\..\..\..\DevProjects\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\DAO.dll</HintPath>

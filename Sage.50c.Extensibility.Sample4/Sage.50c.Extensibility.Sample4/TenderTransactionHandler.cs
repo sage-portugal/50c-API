@@ -94,8 +94,16 @@ namespace Sage50c.ExtenderSample {
             var transaction = (TenderTransaction) propList.get_Value("Data");
 
             if (!forDeletion) {
-                e.result.ResultMessage = "HeaderEvents_OnValidating: Validação do documento NOK. Não é permitido alterar.";
-                e.result.Success = false;
+                string m = "HeaderEvents_OnValidating: Validação do documento" ;
+                if(transaction.TenderLineItem.Count>0) {
+                    m += Environment.NewLine;
+                }
+                //
+                foreach(TenderLineItem tli in transaction.TenderLineItem) {
+                    m +=  string.Format("Caixa {0}: {1}={2:C}", tli.TillId, tli.Tender.Description, tli.Amount) + Environment.NewLine;
+                }
+                e.result.ResultMessage = m;
+                e.result.Success = true;
             }
             else {
                 e.result.ResultMessage = "HeaderEvents_OnValidating: Não pode anular documentos! Mas vou devolver TRUE para deixar anular.";
