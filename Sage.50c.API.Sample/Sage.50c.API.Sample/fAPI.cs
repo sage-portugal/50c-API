@@ -930,10 +930,11 @@ namespace Sage.S50c.API.Sample {
             double.TryParse(txtTransDocNumber.Text, out transDocNumber);
 
             TransactionID result = null;
-            if( rbTransBuySell.Checked )
+            if (rbTransBuySell.Checked)
                 result = TransactionUpdate(transSerial, transDoc, transDocNumber, true, suspendTransaction);
-            else
-                result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, true );
+            else {
+                result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, true);
+            }
             
             return result;
         }
@@ -1232,6 +1233,11 @@ namespace Sage.S50c.API.Sample {
                     var originTransId = new TransactionID();
                     originTransId.Init("1","FAC",1);
                     trans.OriginatingON = originTransId.ToString();
+                }
+
+
+                if( series.SeriesType == SeriesTypeEnum.SeriesExternal) {
+                    SetExternalSignature(trans);
                 }
 
                 if (suspendTransaction) {
@@ -3438,6 +3444,43 @@ namespace Sage.S50c.API.Sample {
                                                         value.UnitOfSaleID);
                             dataGridItemLines.Rows[rowIndex].Tag = value;
                         }
+                    }
+                }
+            }
+        }
+
+        private void btnExternalSignature_Click(object sender, EventArgs e) {
+            MessageBox.Show("NOTA: Só é possivel definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void txtTransSerial_TextChanged(object sender, EventArgs e) {
+        }
+
+        private void txtTransSerial_Validating(object sender, CancelEventArgs e) {
+            //btnExternalSignature.Enabled = false;
+            //var transSerialId = txtTransSerial.Text.Trim();
+            //if (!string.IsNullOrEmpty(transSerialId)) {
+            //    if (S50cAPIEngine.SystemSettings.DocumentSeries.IsInCollection(transSerialId)) {
+            //        var series = S50cAPIEngine.SystemSettings.DocumentSeries[transSerialId];
+            //        if (series != null) {
+            //            btnExternalSignature.Enabled = (series.SeriesType == SeriesTypeEnum.SeriesExternal);
+            //        }
+            //    }
+            //}
+        }
+
+        private void SetExternalSignature( ItemTransaction trans ) {
+            using (var formSig = new FormExternalSignature()) {
+                if (trans != null) {
+                    // Inserir assinatura aqui
+                    formSig.Signature = "Exemplo de assinatura externa";
+                    // Versão (atualmente=1)
+                    formSig.SignatureVersion = 1;
+                    // Número de certificação do software
+                    formSig.SoftwareCertificateNumber = 9999;
+                    if (formSig.ShowDialog() == DialogResult.OK) {
+                        var sigTransaction = (ISignableTransaction)trans;
+                        S50cAPIEngine.SystemSettings.SignatureLoader.SetSignature(sigTransaction, formSig.Signature, formSig.SignatureVersion, formSig.SoftwareCertificateNumber);
                     }
                 }
             }
