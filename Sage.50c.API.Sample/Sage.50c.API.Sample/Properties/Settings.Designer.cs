@@ -34,5 +34,14 @@ namespace Sage.S50c.API.Sample.Properties {
                 this["CompanyId"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("CGCO")]
+        public string API {
+            get {
+                return ((string)(this["API"]));
+            }
+        }
     }
 }

@@ -115,7 +115,13 @@ public static class S50cAPIEngine {
         s50cPrintGlobals = new S50cPrint18.GlobalSettings();
         s50cBLGlobals = new S50cBL18.GlobalSettings();
         //
-        var systemStarter = new S50cAPI18.SystemStarter();
+        dynamic systemStarter = null;
+        if ( string.Compare(System.Configuration.ConfigurationManager.AppSettings["API"], "CGCO") ==0 ){
+            systemStarter = new S50cAPICGCO18.SystemStarter();
+        }
+        else {
+            systemStarter = new S50cAPI18.SystemStarter();
+        }
         systemStarter.DebugMode = debugMode;
         if (systemStarter.Initialize("CGCO", companyId) != 0) {
             string initError = systemStarter.InitializationError;

@@ -102,7 +102,6 @@ namespace Sage.S50c.API.Sample {
             bsoItemTransaction.UserPermissions = systemSettings.User;
             //Eventos
             bsoItemTransaction.WarningItemStock += BsoItemTransaction_WarningItemStock;
-
             //
             //Inicializar o motor dos documentos de stock
             bsoStockTransaction = new BSOStockTransaction();
@@ -1235,9 +1234,13 @@ namespace Sage.S50c.API.Sample {
                     trans.OriginatingON = originTransId.ToString();
                 }
 
-
-                if( series.SeriesType == SeriesTypeEnum.SeriesExternal) {
-                    SetExternalSignature(trans);
+                // Definir a assinatura de um sistema externo
+                // NOTA: Só em documentos novos é gravada a assinatura. Em documentos alterados nunca é gravado.
+                // Este é o comportamento standard da aplicação
+                if( series.SeriesType == SeriesTypeEnum.SeriesExternal && trans.TransBehavior == TransBehaviorEnum.BehAlwaysNewDocument ) {
+                    if( ! SetExternalSignature(trans)) {
+                        MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
 
                 if (suspendTransaction) {
@@ -3469,7 +3472,8 @@ namespace Sage.S50c.API.Sample {
             //}
         }
 
-        private void SetExternalSignature( ItemTransaction trans ) {
+        private bool SetExternalSignature( ItemTransaction trans ) {
+            var result = true;
             using (var formSig = new FormExternalSignature()) {
                 if (trans != null) {
                     // Inserir assinatura aqui
@@ -3482,8 +3486,12 @@ namespace Sage.S50c.API.Sample {
                         var sigTransaction = (ISignableTransaction)trans;
                         S50cAPIEngine.SystemSettings.SignatureLoader.SetSignature(sigTransaction, formSig.Signature, formSig.SignatureVersion, formSig.SoftwareCertificateNumber);
                     }
+                    else {
+                        result = false;
+                    }
                 }
             }
+            return result;
         }
     }
 }
