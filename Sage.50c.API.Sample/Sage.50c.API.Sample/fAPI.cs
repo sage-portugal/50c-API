@@ -272,6 +272,7 @@ namespace Sage50c.API.Sample {
         private void fApi_FormClosed(object sender, FormClosedEventArgs e) {
             // Guardar a empresa de testes
             Properties.Settings.Default.CompanyId = txtCompanyId.Text;
+            Properties.Settings.Default.API = cmbAPI.SelectedItem.ToString();
             Properties.Settings.Default.Save();
             //
             // Terminar a API e sair
