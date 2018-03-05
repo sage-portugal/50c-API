@@ -1,4 +1,4 @@
-﻿namespace Sage.S50c.API.Sample {
+﻿namespace Sage50c.API.Sample {
     partial class FormTenderCheck {
         /// <summary>
         /// Required designer variable.

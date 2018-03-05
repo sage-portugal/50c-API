@@ -1,4 +1,4 @@
-﻿namespace Sage.S50c.API.Sample {
+﻿namespace Sage50c.API.Sample {
     partial class FormExternalSignature {
         /// <summary>
         /// Required designer variable.

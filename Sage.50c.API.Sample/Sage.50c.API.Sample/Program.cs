@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     static class Program {
         /// <summary>
         /// The main entry point for the application.

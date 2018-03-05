@@ -14,7 +14,7 @@ using S50cBL18;
 using S50cDL18;
 using S50cPrint18;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     public partial class fApi : Form {
         /// <summary>
         /// Motor de dados para os artigos.
@@ -55,6 +55,7 @@ namespace Sage.S50c.API.Sample {
             InitializeComponent();
 
             txtCompanyId.Text = Properties.Settings.Default.CompanyId;
+            cmbAPI.SelectedItem = Properties.Settings.Default.API;
 
             S50cAPIEngine.APIStarted += S50cAPIEngine_APIStarted;
             S50cAPIEngine.APIStopped += S50cAPIEngine_APIStopped;
@@ -76,6 +77,8 @@ namespace Sage.S50c.API.Sample {
             btnRemove.Enabled = false;
             btnGet.Enabled = false;
             btnClear.Enabled = false;
+            //
+            cmbAPI.Enabled = true;
 
             this.Cursor = Cursors.Default;
         }
@@ -85,6 +88,7 @@ namespace Sage.S50c.API.Sample {
 
             btnStopAPI.Enabled = true;
             btnStartAPI.Enabled = false;
+            cmbAPI.Enabled = false;
 
             btnInsert.Enabled = true;
             btnUpdate.Enabled = true;
@@ -257,7 +261,7 @@ namespace Sage.S50c.API.Sample {
                 S50cAPIEngine.WarningMessage += S50cAPIEngine_WarningMessage;
                 S50cAPIEngine.Message += S50cAPIEngine_Message;
 
-                S50cAPIEngine.Initialize( txtCompanyId.Text, chkAPIDebugMode.Checked );
+                S50cAPIEngine.Initialize( cmbAPI.SelectedItem.ToString(), txtCompanyId.Text, chkAPIDebugMode.Checked );
             }
             catch (Exception ex) {
                 this.Cursor = Cursors.Default;

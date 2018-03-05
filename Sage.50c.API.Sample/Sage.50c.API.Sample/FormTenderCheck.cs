@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     public partial class FormTenderCheck : Form {
         private TenderCheck tenderCheck = null;
 

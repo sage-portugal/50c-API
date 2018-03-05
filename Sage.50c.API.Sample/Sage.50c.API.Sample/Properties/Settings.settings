@@ -5,8 +5,11 @@
     <Setting Name="CompanyId" Type="System.String" Scope="User">
       <Value Profile="(Default)">APIXDEMO</Value>
     </Setting>
-    <Setting Name="API" Type="System.String" Scope="Application">
+    <Setting Name="API" Type="System.String" Scope="User">
       <Value Profile="(Default)">CGCO</Value>
+    </Setting>
+    <Setting Name="S50cSGCOAPI" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

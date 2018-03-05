@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     public partial class FormExternalSignature : Form {
         public string Signature { get; set; }
         public short SignatureVersion { get; set; }

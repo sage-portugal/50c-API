@@ -1,4 +1,4 @@
-﻿namespace Sage.S50c.API.Sample {
+﻿namespace Sage50c.API.Sample {
     partial class fApi {
         /// <summary>
         /// Required designer variable.
@@ -224,6 +224,7 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnInsert = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.cmbAPI = new System.Windows.Forms.ComboBox();
             this._Bar1_1 = new System.Windows.Forms.Label();
             this.btnStopAPI = new System.Windows.Forms.Button();
             this.btnStartAPI = new System.Windows.Forms.Button();
@@ -310,7 +311,7 @@
             this.lblItemTam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblItemTam.Location = new System.Drawing.Point(458, 70);
             this.lblItemTam.Name = "lblItemTam";
-            this.lblItemTam.Size = new System.Drawing.Size(33, 15);
+            this.lblItemTam.Size = new System.Drawing.Size(34, 15);
             this.lblItemTam.TabIndex = 18;
             this.lblItemTam.Text = "Tam:";
             // 
@@ -390,7 +391,7 @@
             this.txtItemPriceTaxIncluded.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtItemPriceTaxIncluded.Location = new System.Drawing.Point(34, 129);
             this.txtItemPriceTaxIncluded.Name = "txtItemPriceTaxIncluded";
-            this.txtItemPriceTaxIncluded.Size = new System.Drawing.Size(75, 15);
+            this.txtItemPriceTaxIncluded.Size = new System.Drawing.Size(76, 15);
             this.txtItemPriceTaxIncluded.TabIndex = 12;
             this.txtItemPriceTaxIncluded.Text = "Preço c/ IVA";
             // 
@@ -400,7 +401,7 @@
             this.lblitemShortDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblitemShortDescription.Location = new System.Drawing.Point(35, 100);
             this.lblitemShortDescription.Name = "lblitemShortDescription";
-            this.lblitemShortDescription.Size = new System.Drawing.Size(79, 15);
+            this.lblitemShortDescription.Size = new System.Drawing.Size(80, 15);
             this.lblitemShortDescription.TabIndex = 11;
             this.lblitemShortDescription.Text = "Desc. Abrev.:";
             // 
@@ -693,7 +694,7 @@
             this.Label8.Location = new System.Drawing.Point(42, 165);
             this.Label8.Name = "Label8";
             this.Label8.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label8.Size = new System.Drawing.Size(64, 15);
+            this.Label8.Size = new System.Drawing.Size(65, 15);
             this.Label8.TabIndex = 53;
             this.Label8.Text = "Vendedor:";
             // 
@@ -1073,7 +1074,7 @@
             this.rbTransStockDecompose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransStockDecompose.Location = new System.Drawing.Point(390, 25);
             this.rbTransStockDecompose.Name = "rbTransStockDecompose";
-            this.rbTransStockDecompose.Size = new System.Drawing.Size(107, 19);
+            this.rbTransStockDecompose.Size = new System.Drawing.Size(108, 19);
             this.rbTransStockDecompose.TabIndex = 407;
             this.rbTransStockDecompose.TabStop = true;
             this.rbTransStockDecompose.Text = "Transformação";
@@ -1320,7 +1321,7 @@
             this.rbTransBuySell.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransBuySell.Location = new System.Drawing.Point(37, 25);
             this.rbTransBuySell.Name = "rbTransBuySell";
-            this.rbTransBuySell.Size = new System.Drawing.Size(113, 19);
+            this.rbTransBuySell.Size = new System.Drawing.Size(114, 19);
             this.rbTransBuySell.TabIndex = 334;
             this.rbTransBuySell.TabStop = true;
             this.rbTransBuySell.Text = "Compra / Venda";
@@ -1873,7 +1874,7 @@
             this.Label53.Location = new System.Drawing.Point(418, 119);
             this.Label53.Name = "Label53";
             this.Label53.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label53.Size = new System.Drawing.Size(40, 15);
+            this.Label53.Size = new System.Drawing.Size(41, 15);
             this.Label53.TabIndex = 321;
             this.Label53.Text = "Tx Iva";
             // 
@@ -2600,7 +2601,7 @@
             this.Label36.Location = new System.Drawing.Point(399, 149);
             this.Label36.Name = "Label36";
             this.Label36.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label36.Size = new System.Drawing.Size(35, 15);
+            this.Label36.Size = new System.Drawing.Size(36, 15);
             this.Label36.TabIndex = 322;
             this.Label36.Text = "Valor";
             // 
@@ -2789,7 +2790,7 @@
             // 
             // panel5
             // 
-            this.panel5.BackgroundImage = global::Sage.S50c.API.Sample.Properties.Resources.Sage50c;
+            this.panel5.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Sage50c;
             this.panel5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel5.Location = new System.Drawing.Point(0, 0);
@@ -2916,6 +2917,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.Controls.Add(this.cmbAPI);
             this.panel3.Controls.Add(this._Bar1_1);
             this.panel3.Controls.Add(this.btnStopAPI);
             this.panel3.Controls.Add(this.btnStartAPI);
@@ -2924,6 +2926,18 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1091, 46);
             this.panel3.TabIndex = 11;
+            // 
+            // cmbAPI
+            // 
+            this.cmbAPI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAPI.FormattingEnabled = true;
+            this.cmbAPI.Items.AddRange(new object[] {
+            "CGCO",
+            "CRTL"});
+            this.cmbAPI.Location = new System.Drawing.Point(6, 10);
+            this.cmbAPI.Name = "cmbAPI";
+            this.cmbAPI.Size = new System.Drawing.Size(92, 23);
+            this.cmbAPI.TabIndex = 181;
             // 
             // _Bar1_1
             // 
@@ -2950,9 +2964,9 @@
             // 
             // btnStartAPI
             // 
-            this.btnStartAPI.Location = new System.Drawing.Point(6, 6);
+            this.btnStartAPI.Location = new System.Drawing.Point(104, 6);
             this.btnStartAPI.Name = "btnStartAPI";
-            this.btnStartAPI.Size = new System.Drawing.Size(99, 29);
+            this.btnStartAPI.Size = new System.Drawing.Size(93, 29);
             this.btnStartAPI.TabIndex = 9;
             this.btnStartAPI.Text = "Iniciar API";
             this.btnStartAPI.UseVisualStyleBackColor = true;
@@ -2974,7 +2988,7 @@
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Default;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = global::Sage.S50c.API.Sample.Properties.Resources.Sage;
+            this.pictureBox2.Image = global::Sage50c.API.Sample.Properties.Resources.Sage;
             this.pictureBox2.Location = new System.Drawing.Point(0, 106);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(140, 509);
@@ -3265,6 +3279,7 @@
         private System.Windows.Forms.RadioButton rbTransStockDecompose;
         private System.Windows.Forms.RadioButton rbTransStockCompose;
         private System.Windows.Forms.Button btnExternalSignature;
+        private System.Windows.Forms.ComboBox cmbAPI;
     }
 }
 
