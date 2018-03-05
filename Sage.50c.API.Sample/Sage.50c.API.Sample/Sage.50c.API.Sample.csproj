@@ -147,11 +147,7 @@
     <Reference Include="S50cData18, Version=1.1.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-<<<<<<< HEAD
       <HintPath>..\..\..\..\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cData18.dll</HintPath>
-=======
-      <HintPath>..\..\..\..\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cData18.dll</HintPath>
->>>>>>> 30504b3f5f38697bf13472284722e9a208f7e5ce
     </Reference>
     <Reference Include="S50cDL18, Version=1.6.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -199,13 +195,8 @@
       <HintPath>..\..\..\..\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cUIBase18.dll</HintPath>
     </Reference>
     <Reference Include="S50cUpdate18">
-<<<<<<< HEAD
       <HintPath>..\..\..\..\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cUpdate18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-=======
-      <HintPath>..\..\..\..\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cUpdate18.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
->>>>>>> 30504b3f5f38697bf13472284722e9a208f7e5ce
     </Reference>
     <Reference Include="S50cUtil18, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
