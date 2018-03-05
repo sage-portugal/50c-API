@@ -738,6 +738,10 @@ namespace Sage50c.API.Sample {
             cmbCustomerCurrency.SelectedItem = currency;
             //
             UIUtils.FillEntityFiscalStatusCombo(cmbCustomerTax);
+            cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == S50cAPIEngine.SystemSettings.SystemInfo.SystemFiscalStatusID);
+            if (cmbCustomerTax.SelectedItem == null && cmbCustomerTax.Items.Count>0 ) {
+                cmbCustomerTax.SelectedIndex = 0;
+            }
         }
         
         #endregion
@@ -754,7 +758,8 @@ namespace Sage50c.API.Sample {
                 txtSupplierId.Text = supplier.SupplierID.ToString();
                 txtSupplierName.Text = supplier.OrganizationName;
                 txtSupplierTaxId.Text = supplier.FederalTaxId;
-                txtSupplierTax.Text = supplier.EntityFiscalStatusID.ToString();
+
+                cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == supplier.EntityFiscalStatusID);
                 txtSupplierZone.Text = supplier.ZoneID.ToString();
             }
             else {
@@ -786,7 +791,12 @@ namespace Sage50c.API.Sample {
             supplier.CurrencyID = txtSupplierCurrency.Text;
             supplier.OrganizationName = txtSupplierName.Text;
             supplier.FederalTaxId = txtSupplierTaxId.Text;
-            supplier.EntityFiscalStatusID = short.Parse(txtSupplierTax.Text);
+
+            if (cmbCustomerTax.SelectedItem != null) {
+                var entityFiscalStatus = (EntityFiscalStatus)cmbCustomerTax.SelectedItem;
+                supplier.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
+            }
+
             supplier.ZoneID = short.Parse(txtSupplierZone.Text);
             //
             //  A forma de pagamento é obrigatória. Vamos usar a primeira disponivel.
@@ -812,8 +822,13 @@ namespace Sage50c.API.Sample {
             txtSupplierId.Text = dsoCache.SupplierProvider.GetNewID().ToString();
             txtSupplierName.Text = string.Empty;
             txtSupplierTaxId.Text = "0";
-            txtSupplierTax.Text = systemSettings.SystemInfo.DefaultTaxableGroupID.ToString();
             txtSupplierZone.Text = dsoCache.ZoneProvider.GetFirstID().ToString();
+
+            UIUtils.FillEntityFiscalStatusCombo(cmbSupplierTax);
+            cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == S50cAPIEngine.SystemSettings.SystemInfo.SystemFiscalStatusID);
+            if (cmbSupplierTax.SelectedItem == null && cmbSupplierTax.Items.Count > 0) {
+                cmbSupplierTax.SelectedIndex = 0;
+            }
         }
 
         #endregion
@@ -1230,13 +1245,13 @@ namespace Sage50c.API.Sample {
                 //    trans.TenderLineItem.Add(tenderLine);
                 //}
                 //
-                //
-                // Exemplo para registar a origem nas Notas de crédito e Notas de débito:
-                if (doc.Nature.NatureID == TransactionNatureEnum.Sale_CreditNote || doc.Nature.NatureID == TransactionNatureEnum.Sale_DebitNote) {
-                    var originTransId = new TransactionID();
-                    originTransId.Init("1","FAC",1);
-                    trans.OriginatingON = originTransId.ToString();
-                }
+
+                //// Exemplo para registar a origem nas Notas de crédito e Notas de débito:
+                //if (doc.Nature.NatureID == TransactionNatureEnum.Sale_CreditNote || doc.Nature.NatureID == TransactionNatureEnum.Sale_DebitNote) {
+                //    var originTransId = new TransactionID();
+                //    originTransId.Init("1","FAC",1);
+                //    trans.OriginatingON = originTransId.ToString();
+                //}
 
                 // Definir a assinatura de um sistema externo
                 // NOTA: Só em documentos novos é gravada a assinatura. Em documentos alterados nunca é gravado.

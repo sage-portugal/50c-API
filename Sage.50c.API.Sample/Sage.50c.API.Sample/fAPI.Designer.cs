@@ -231,6 +231,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pbCSharp = new System.Windows.Forms.PictureBox();
+            this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
             this.tabEntities.SuspendLayout();
             this.tabItem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -742,6 +743,7 @@
             // 
             // tabSupplier
             // 
+            this.tabSupplier.Controls.Add(this.cmbSupplierTax);
             this.tabSupplier.Controls.Add(this.btnSupplierBrow);
             this.tabSupplier.Controls.Add(this.txtSupplierId);
             this.tabSupplier.Controls.Add(this.txtSupplierName);
@@ -808,7 +810,7 @@
             this.txtSupplierTax.BackColor = System.Drawing.SystemColors.Window;
             this.txtSupplierTax.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSupplierTax.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierTax.Location = new System.Drawing.Point(150, 103);
+            this.txtSupplierTax.Location = new System.Drawing.Point(530, 99);
             this.txtSupplierTax.MaxLength = 0;
             this.txtSupplierTax.Name = "txtSupplierTax";
             this.txtSupplierTax.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -3008,6 +3010,16 @@
             this.pbCSharp.TabIndex = 305;
             this.pbCSharp.TabStop = false;
             // 
+            // cmbSupplierTax
+            // 
+            this.cmbSupplierTax.DisplayMember = "EntityFiscalStatusID";
+            this.cmbSupplierTax.FormattingEnabled = true;
+            this.cmbSupplierTax.Location = new System.Drawing.Point(150, 104);
+            this.cmbSupplierTax.Name = "cmbSupplierTax";
+            this.cmbSupplierTax.Size = new System.Drawing.Size(346, 23);
+            this.cmbSupplierTax.TabIndex = 76;
+            this.cmbSupplierTax.ValueMember = "EntityFiscalStatusID";
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3279,6 +3291,7 @@
         private System.Windows.Forms.RadioButton rbTransStockDecompose;
         private System.Windows.Forms.RadioButton rbTransStockCompose;
         private System.Windows.Forms.Button btnExternalSignature;
+        private System.Windows.Forms.ComboBox cmbSupplierTax;
         private System.Windows.Forms.ComboBox cmbAPI;
     }
 }
