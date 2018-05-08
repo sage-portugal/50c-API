@@ -1,4 +1,4 @@
-﻿namespace Sage.S50c.API.Sample {
+﻿namespace Sage50c.API.Sample {
     partial class fApi {
         /// <summary>
         /// Required designer variable.
@@ -81,6 +81,16 @@
             this.Label16 = new System.Windows.Forms.Label();
             this.Label13 = new System.Windows.Forms.Label();
             this.tabBuySaleTransaction = new System.Windows.Forms.TabPage();
+            this.btnExternalSignature = new System.Windows.Forms.Button();
+            this.rbTransStockDecompose = new System.Windows.Forms.RadioButton();
+            this.rbTransStockCompose = new System.Windows.Forms.RadioButton();
+            this.btnRefreshGridLines = new System.Windows.Forms.Button();
+            this.dataGridItemLines = new System.Windows.Forms.DataGridView();
+            this.WarehouseId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Uni = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtPaymentID = new System.Windows.Forms.TextBox();
             this.lblPaymentID = new System.Windows.Forms.Label();
             this.txtTenderID = new System.Windows.Forms.TextBox();
@@ -214,21 +224,14 @@
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnInsert = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.cmbAPI = new System.Windows.Forms.ComboBox();
             this._Bar1_1 = new System.Windows.Forms.Label();
             this.btnStopAPI = new System.Windows.Forms.Button();
             this.btnStartAPI = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pbCSharp = new System.Windows.Forms.PictureBox();
-            this.btnRefreshGridLines = new System.Windows.Forms.Button();
-            this.dataGridItemLines = new System.Windows.Forms.DataGridView();
-            this.WarehouseId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ItemId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Uni = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rbTransStockDecompose = new System.Windows.Forms.RadioButton();
-            this.rbTransStockCompose = new System.Windows.Forms.RadioButton();
+            this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
             this.tabEntities.SuspendLayout();
             this.tabItem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -239,6 +242,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numCustomerId)).BeginInit();
             this.tabSupplier.SuspendLayout();
             this.tabBuySaleTransaction.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLines)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabTransModules.SuspendLayout();
@@ -256,7 +260,6 @@
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLines)).BeginInit();
             this.SuspendLayout();
             // 
             // tabEntities
@@ -309,7 +312,7 @@
             this.lblItemTam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblItemTam.Location = new System.Drawing.Point(458, 70);
             this.lblItemTam.Name = "lblItemTam";
-            this.lblItemTam.Size = new System.Drawing.Size(33, 15);
+            this.lblItemTam.Size = new System.Drawing.Size(34, 15);
             this.lblItemTam.TabIndex = 18;
             this.lblItemTam.Text = "Tam:";
             // 
@@ -389,7 +392,7 @@
             this.txtItemPriceTaxIncluded.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtItemPriceTaxIncluded.Location = new System.Drawing.Point(34, 129);
             this.txtItemPriceTaxIncluded.Name = "txtItemPriceTaxIncluded";
-            this.txtItemPriceTaxIncluded.Size = new System.Drawing.Size(75, 15);
+            this.txtItemPriceTaxIncluded.Size = new System.Drawing.Size(76, 15);
             this.txtItemPriceTaxIncluded.TabIndex = 12;
             this.txtItemPriceTaxIncluded.Text = "Preço c/ IVA";
             // 
@@ -399,7 +402,7 @@
             this.lblitemShortDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblitemShortDescription.Location = new System.Drawing.Point(35, 100);
             this.lblitemShortDescription.Name = "lblitemShortDescription";
-            this.lblitemShortDescription.Size = new System.Drawing.Size(79, 15);
+            this.lblitemShortDescription.Size = new System.Drawing.Size(80, 15);
             this.lblitemShortDescription.TabIndex = 11;
             this.lblitemShortDescription.Text = "Desc. Abrev.:";
             // 
@@ -692,7 +695,7 @@
             this.Label8.Location = new System.Drawing.Point(42, 165);
             this.Label8.Name = "Label8";
             this.Label8.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label8.Size = new System.Drawing.Size(64, 15);
+            this.Label8.Size = new System.Drawing.Size(65, 15);
             this.Label8.TabIndex = 53;
             this.Label8.Text = "Vendedor:";
             // 
@@ -740,6 +743,7 @@
             // 
             // tabSupplier
             // 
+            this.tabSupplier.Controls.Add(this.cmbSupplierTax);
             this.tabSupplier.Controls.Add(this.btnSupplierBrow);
             this.tabSupplier.Controls.Add(this.txtSupplierId);
             this.tabSupplier.Controls.Add(this.txtSupplierName);
@@ -806,7 +810,7 @@
             this.txtSupplierTax.BackColor = System.Drawing.SystemColors.Window;
             this.txtSupplierTax.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSupplierTax.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierTax.Location = new System.Drawing.Point(150, 103);
+            this.txtSupplierTax.Location = new System.Drawing.Point(530, 99);
             this.txtSupplierTax.MaxLength = 0;
             this.txtSupplierTax.Name = "txtSupplierTax";
             this.txtSupplierTax.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -993,6 +997,7 @@
             // tabBuySaleTransaction
             // 
             this.tabBuySaleTransaction.BackColor = System.Drawing.Color.White;
+            this.tabBuySaleTransaction.Controls.Add(this.btnExternalSignature);
             this.tabBuySaleTransaction.Controls.Add(this.rbTransStockDecompose);
             this.tabBuySaleTransaction.Controls.Add(this.rbTransStockCompose);
             this.tabBuySaleTransaction.Controls.Add(this.btnRefreshGridLines);
@@ -1054,6 +1059,108 @@
             this.tabBuySaleTransaction.Size = new System.Drawing.Size(943, 481);
             this.tabBuySaleTransaction.TabIndex = 3;
             this.tabBuySaleTransaction.Text = "Compra/Venda/Stock";
+            // 
+            // btnExternalSignature
+            // 
+            this.btnExternalSignature.Location = new System.Drawing.Point(32, 434);
+            this.btnExternalSignature.Name = "btnExternalSignature";
+            this.btnExternalSignature.Size = new System.Drawing.Size(80, 31);
+            this.btnExternalSignature.TabIndex = 408;
+            this.btnExternalSignature.Text = "Assinatura";
+            this.btnExternalSignature.UseVisualStyleBackColor = true;
+            this.btnExternalSignature.Click += new System.EventHandler(this.btnExternalSignature_Click);
+            // 
+            // rbTransStockDecompose
+            // 
+            this.rbTransStockDecompose.AutoSize = true;
+            this.rbTransStockDecompose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbTransStockDecompose.Location = new System.Drawing.Point(390, 25);
+            this.rbTransStockDecompose.Name = "rbTransStockDecompose";
+            this.rbTransStockDecompose.Size = new System.Drawing.Size(108, 19);
+            this.rbTransStockDecompose.TabIndex = 407;
+            this.rbTransStockDecompose.TabStop = true;
+            this.rbTransStockDecompose.Text = "Transformação";
+            this.rbTransStockDecompose.UseVisualStyleBackColor = true;
+            this.rbTransStockDecompose.CheckedChanged += new System.EventHandler(this.rbTransStockDecompose_CheckedChanged);
+            // 
+            // rbTransStockCompose
+            // 
+            this.rbTransStockCompose.AutoSize = true;
+            this.rbTransStockCompose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbTransStockCompose.Location = new System.Drawing.Point(288, 26);
+            this.rbTransStockCompose.Name = "rbTransStockCompose";
+            this.rbTransStockCompose.Size = new System.Drawing.Size(83, 19);
+            this.rbTransStockCompose.TabIndex = 406;
+            this.rbTransStockCompose.TabStop = true;
+            this.rbTransStockCompose.Text = "Fabricação";
+            this.rbTransStockCompose.UseVisualStyleBackColor = true;
+            this.rbTransStockCompose.CheckedChanged += new System.EventHandler(this.rbTransStockCompose_CheckedChanged);
+            // 
+            // btnRefreshGridLines
+            // 
+            this.btnRefreshGridLines.Location = new System.Drawing.Point(521, 434);
+            this.btnRefreshGridLines.Name = "btnRefreshGridLines";
+            this.btnRefreshGridLines.Size = new System.Drawing.Size(80, 31);
+            this.btnRefreshGridLines.TabIndex = 405;
+            this.btnRefreshGridLines.Text = "Atualizar";
+            this.btnRefreshGridLines.UseVisualStyleBackColor = true;
+            this.btnRefreshGridLines.Visible = false;
+            this.btnRefreshGridLines.Click += new System.EventHandler(this.btnRefreshGridLines_Click);
+            // 
+            // dataGridItemLines
+            // 
+            this.dataGridItemLines.AllowUserToAddRows = false;
+            this.dataGridItemLines.AllowUserToDeleteRows = false;
+            this.dataGridItemLines.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridItemLines.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.WarehouseId,
+            this.ItemId,
+            this.UnitPrice,
+            this.Qty,
+            this.Uni});
+            this.dataGridItemLines.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridItemLines.Location = new System.Drawing.Point(32, 216);
+            this.dataGridItemLines.Name = "dataGridItemLines";
+            this.dataGridItemLines.ReadOnly = true;
+            this.dataGridItemLines.Size = new System.Drawing.Size(569, 212);
+            this.dataGridItemLines.TabIndex = 404;
+            this.dataGridItemLines.Visible = false;
+            // 
+            // WarehouseId
+            // 
+            this.WarehouseId.DataPropertyName = "WarehouseID";
+            this.WarehouseId.HeaderText = "Armazem";
+            this.WarehouseId.Name = "WarehouseId";
+            this.WarehouseId.ReadOnly = true;
+            // 
+            // ItemId
+            // 
+            this.ItemId.DataPropertyName = "ItemID";
+            this.ItemId.HeaderText = "Artigo";
+            this.ItemId.Name = "ItemId";
+            this.ItemId.ReadOnly = true;
+            // 
+            // UnitPrice
+            // 
+            this.UnitPrice.DataPropertyName = "UnitPrice";
+            this.UnitPrice.HeaderText = "Preço";
+            this.UnitPrice.Name = "UnitPrice";
+            this.UnitPrice.ReadOnly = true;
+            // 
+            // Qty
+            // 
+            this.Qty.DataPropertyName = "Quantity";
+            this.Qty.HeaderText = "Quantidade";
+            this.Qty.Name = "Qty";
+            this.Qty.ReadOnly = true;
+            // 
+            // Uni
+            // 
+            this.Uni.DataPropertyName = "UnitOfSaleID";
+            this.Uni.HeaderText = "Uni";
+            this.Uni.Name = "Uni";
+            this.Uni.ReadOnly = true;
+            this.Uni.Width = 75;
             // 
             // txtPaymentID
             // 
@@ -1216,7 +1323,7 @@
             this.rbTransBuySell.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransBuySell.Location = new System.Drawing.Point(37, 25);
             this.rbTransBuySell.Name = "rbTransBuySell";
-            this.rbTransBuySell.Size = new System.Drawing.Size(113, 19);
+            this.rbTransBuySell.Size = new System.Drawing.Size(114, 19);
             this.rbTransBuySell.TabIndex = 334;
             this.rbTransBuySell.TabStop = true;
             this.rbTransBuySell.Text = "Compra / Venda";
@@ -1769,7 +1876,7 @@
             this.Label53.Location = new System.Drawing.Point(418, 119);
             this.Label53.Name = "Label53";
             this.Label53.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label53.Size = new System.Drawing.Size(40, 15);
+            this.Label53.Size = new System.Drawing.Size(41, 15);
             this.Label53.TabIndex = 321;
             this.Label53.Text = "Tx Iva";
             // 
@@ -1961,6 +2068,8 @@
             this.txtTransSerial.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtTransSerial.Size = new System.Drawing.Size(39, 23);
             this.txtTransSerial.TabIndex = 20;
+            this.txtTransSerial.TextChanged += new System.EventHandler(this.txtTransSerial_TextChanged);
+            this.txtTransSerial.Validating += new System.ComponentModel.CancelEventHandler(this.txtTransSerial_Validating);
             // 
             // txtTransDoc
             // 
@@ -2494,7 +2603,7 @@
             this.Label36.Location = new System.Drawing.Point(399, 149);
             this.Label36.Name = "Label36";
             this.Label36.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label36.Size = new System.Drawing.Size(35, 15);
+            this.Label36.Size = new System.Drawing.Size(36, 15);
             this.Label36.TabIndex = 322;
             this.Label36.Text = "Valor";
             // 
@@ -2683,7 +2792,7 @@
             // 
             // panel5
             // 
-            this.panel5.BackgroundImage = global::Sage.S50c.API.Sample.Properties.Resources.Sage50c;
+            this.panel5.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Sage50c;
             this.panel5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel5.Location = new System.Drawing.Point(0, 0);
@@ -2810,6 +2919,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.Controls.Add(this.cmbAPI);
             this.panel3.Controls.Add(this._Bar1_1);
             this.panel3.Controls.Add(this.btnStopAPI);
             this.panel3.Controls.Add(this.btnStartAPI);
@@ -2818,6 +2928,18 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1091, 46);
             this.panel3.TabIndex = 11;
+            // 
+            // cmbAPI
+            // 
+            this.cmbAPI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAPI.FormattingEnabled = true;
+            this.cmbAPI.Items.AddRange(new object[] {
+            "CGCO",
+            "CRTL"});
+            this.cmbAPI.Location = new System.Drawing.Point(6, 10);
+            this.cmbAPI.Name = "cmbAPI";
+            this.cmbAPI.Size = new System.Drawing.Size(92, 23);
+            this.cmbAPI.TabIndex = 181;
             // 
             // _Bar1_1
             // 
@@ -2844,9 +2966,9 @@
             // 
             // btnStartAPI
             // 
-            this.btnStartAPI.Location = new System.Drawing.Point(6, 6);
+            this.btnStartAPI.Location = new System.Drawing.Point(104, 6);
             this.btnStartAPI.Name = "btnStartAPI";
-            this.btnStartAPI.Size = new System.Drawing.Size(99, 29);
+            this.btnStartAPI.Size = new System.Drawing.Size(93, 29);
             this.btnStartAPI.TabIndex = 9;
             this.btnStartAPI.Text = "Iniciar API";
             this.btnStartAPI.UseVisualStyleBackColor = true;
@@ -2868,7 +2990,7 @@
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Default;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = global::Sage.S50c.API.Sample.Properties.Resources.Sage;
+            this.pictureBox2.Image = global::Sage50c.API.Sample.Properties.Resources.Sage;
             this.pictureBox2.Location = new System.Drawing.Point(0, 106);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(140, 509);
@@ -2888,97 +3010,15 @@
             this.pbCSharp.TabIndex = 305;
             this.pbCSharp.TabStop = false;
             // 
-            // btnRefreshGridLines
+            // cmbSupplierTax
             // 
-            this.btnRefreshGridLines.Location = new System.Drawing.Point(521, 434);
-            this.btnRefreshGridLines.Name = "btnRefreshGridLines";
-            this.btnRefreshGridLines.Size = new System.Drawing.Size(80, 31);
-            this.btnRefreshGridLines.TabIndex = 405;
-            this.btnRefreshGridLines.Text = "Atualizar";
-            this.btnRefreshGridLines.UseVisualStyleBackColor = true;
-            this.btnRefreshGridLines.Visible = false;
-            this.btnRefreshGridLines.Click += new System.EventHandler(this.btnRefreshGridLines_Click);
-            // 
-            // dataGridItemLines
-            // 
-            this.dataGridItemLines.AllowUserToAddRows = false;
-            this.dataGridItemLines.AllowUserToDeleteRows = false;
-            this.dataGridItemLines.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridItemLines.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.WarehouseId,
-            this.ItemId,
-            this.UnitPrice,
-            this.Qty,
-            this.Uni});
-            this.dataGridItemLines.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridItemLines.Location = new System.Drawing.Point(32, 216);
-            this.dataGridItemLines.Name = "dataGridItemLines";
-            this.dataGridItemLines.ReadOnly = true;
-            this.dataGridItemLines.Size = new System.Drawing.Size(569, 212);
-            this.dataGridItemLines.TabIndex = 404;
-            this.dataGridItemLines.Visible = false;
-            // 
-            // WarehouseId
-            // 
-            this.WarehouseId.DataPropertyName = "WarehouseID";
-            this.WarehouseId.HeaderText = "Armazem";
-            this.WarehouseId.Name = "WarehouseId";
-            this.WarehouseId.ReadOnly = true;
-            // 
-            // ItemId
-            // 
-            this.ItemId.DataPropertyName = "ItemID";
-            this.ItemId.HeaderText = "Artigo";
-            this.ItemId.Name = "ItemId";
-            this.ItemId.ReadOnly = true;
-            // 
-            // UnitPrice
-            // 
-            this.UnitPrice.DataPropertyName = "UnitPrice";
-            this.UnitPrice.HeaderText = "Preço";
-            this.UnitPrice.Name = "UnitPrice";
-            this.UnitPrice.ReadOnly = true;
-            // 
-            // Qty
-            // 
-            this.Qty.DataPropertyName = "Quantity";
-            this.Qty.HeaderText = "Quantidade";
-            this.Qty.Name = "Qty";
-            this.Qty.ReadOnly = true;
-            // 
-            // Uni
-            // 
-            this.Uni.DataPropertyName = "UnitOfSaleID";
-            this.Uni.HeaderText = "Uni";
-            this.Uni.Name = "Uni";
-            this.Uni.ReadOnly = true;
-            this.Uni.Width = 75;
-            // 
-            // rbTransStockDecompose
-            // 
-            this.rbTransStockDecompose.AutoSize = true;
-            this.rbTransStockDecompose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbTransStockDecompose.Location = new System.Drawing.Point(390, 25);
-            this.rbTransStockDecompose.Name = "rbTransStockDecompose";
-            this.rbTransStockDecompose.Size = new System.Drawing.Size(107, 19);
-            this.rbTransStockDecompose.TabIndex = 407;
-            this.rbTransStockDecompose.TabStop = true;
-            this.rbTransStockDecompose.Text = "Transformação";
-            this.rbTransStockDecompose.UseVisualStyleBackColor = true;
-            this.rbTransStockDecompose.CheckedChanged += new System.EventHandler(this.rbTransStockDecompose_CheckedChanged);
-            // 
-            // rbTransStockCompose
-            // 
-            this.rbTransStockCompose.AutoSize = true;
-            this.rbTransStockCompose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbTransStockCompose.Location = new System.Drawing.Point(288, 26);
-            this.rbTransStockCompose.Name = "rbTransStockCompose";
-            this.rbTransStockCompose.Size = new System.Drawing.Size(83, 19);
-            this.rbTransStockCompose.TabIndex = 406;
-            this.rbTransStockCompose.TabStop = true;
-            this.rbTransStockCompose.Text = "Fabricação";
-            this.rbTransStockCompose.UseVisualStyleBackColor = true;
-            this.rbTransStockCompose.CheckedChanged += new System.EventHandler(this.rbTransStockCompose_CheckedChanged);
+            this.cmbSupplierTax.DisplayMember = "EntityFiscalStatusID";
+            this.cmbSupplierTax.FormattingEnabled = true;
+            this.cmbSupplierTax.Location = new System.Drawing.Point(150, 104);
+            this.cmbSupplierTax.Name = "cmbSupplierTax";
+            this.cmbSupplierTax.Size = new System.Drawing.Size(346, 23);
+            this.cmbSupplierTax.TabIndex = 76;
+            this.cmbSupplierTax.ValueMember = "EntityFiscalStatusID";
             // 
             // fApi
             // 
@@ -3012,6 +3052,7 @@
             this.tabSupplier.PerformLayout();
             this.tabBuySaleTransaction.ResumeLayout(false);
             this.tabBuySaleTransaction.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLines)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -3038,7 +3079,6 @@
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridItemLines)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3250,6 +3290,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Uni;
         private System.Windows.Forms.RadioButton rbTransStockDecompose;
         private System.Windows.Forms.RadioButton rbTransStockCompose;
+        private System.Windows.Forms.Button btnExternalSignature;
+        private System.Windows.Forms.ComboBox cmbSupplierTax;
+        private System.Windows.Forms.ComboBox cmbAPI;
     }
 }
 

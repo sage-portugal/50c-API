@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     public static class Extensions {
         public static double ToDouble(this string value) {
             double result = 0;

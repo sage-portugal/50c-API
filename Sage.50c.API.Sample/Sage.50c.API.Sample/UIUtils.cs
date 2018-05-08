@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using S50cBO18;
 using S50cSys18;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     internal static class UIUtils {
         internal static void FillCountryCombo( ComboBox combo ){
             combo.Items.Clear();

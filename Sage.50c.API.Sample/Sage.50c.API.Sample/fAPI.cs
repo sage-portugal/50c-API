@@ -14,7 +14,7 @@ using S50cBL18;
 using S50cDL18;
 using S50cPrint18;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     public partial class fApi : Form {
         /// <summary>
         /// Motor de dados para os artigos.
@@ -55,6 +55,7 @@ namespace Sage.S50c.API.Sample {
             InitializeComponent();
 
             txtCompanyId.Text = Properties.Settings.Default.CompanyId;
+            cmbAPI.SelectedItem = Properties.Settings.Default.API;
 
             S50cAPIEngine.APIStarted += S50cAPIEngine_APIStarted;
             S50cAPIEngine.APIStopped += S50cAPIEngine_APIStopped;
@@ -76,6 +77,8 @@ namespace Sage.S50c.API.Sample {
             btnRemove.Enabled = false;
             btnGet.Enabled = false;
             btnClear.Enabled = false;
+            //
+            cmbAPI.Enabled = true;
 
             this.Cursor = Cursors.Default;
         }
@@ -85,6 +88,7 @@ namespace Sage.S50c.API.Sample {
 
             btnStopAPI.Enabled = true;
             btnStartAPI.Enabled = false;
+            cmbAPI.Enabled = false;
 
             btnInsert.Enabled = true;
             btnUpdate.Enabled = true;
@@ -102,7 +106,6 @@ namespace Sage.S50c.API.Sample {
             bsoItemTransaction.UserPermissions = systemSettings.User;
             //Eventos
             bsoItemTransaction.WarningItemStock += BsoItemTransaction_WarningItemStock;
-
             //
             //Inicializar o motor dos documentos de stock
             bsoStockTransaction = new BSOStockTransaction();
@@ -258,7 +261,7 @@ namespace Sage.S50c.API.Sample {
                 S50cAPIEngine.WarningMessage += S50cAPIEngine_WarningMessage;
                 S50cAPIEngine.Message += S50cAPIEngine_Message;
 
-                S50cAPIEngine.Initialize( txtCompanyId.Text, chkAPIDebugMode.Checked );
+                S50cAPIEngine.Initialize( cmbAPI.SelectedItem.ToString(), txtCompanyId.Text, chkAPIDebugMode.Checked );
             }
             catch (Exception ex) {
                 this.Cursor = Cursors.Default;
@@ -269,6 +272,7 @@ namespace Sage.S50c.API.Sample {
         private void fApi_FormClosed(object sender, FormClosedEventArgs e) {
             // Guardar a empresa de testes
             Properties.Settings.Default.CompanyId = txtCompanyId.Text;
+            Properties.Settings.Default.API = cmbAPI.SelectedItem.ToString();
             Properties.Settings.Default.Save();
             //
             // Terminar a API e sair
@@ -735,6 +739,10 @@ namespace Sage.S50c.API.Sample {
             cmbCustomerCurrency.SelectedItem = currency;
             //
             UIUtils.FillEntityFiscalStatusCombo(cmbCustomerTax);
+            cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == S50cAPIEngine.SystemSettings.SystemInfo.SystemFiscalStatusID);
+            if (cmbCustomerTax.SelectedItem == null && cmbCustomerTax.Items.Count>0 ) {
+                cmbCustomerTax.SelectedIndex = 0;
+            }
         }
         
         #endregion
@@ -751,7 +759,8 @@ namespace Sage.S50c.API.Sample {
                 txtSupplierId.Text = supplier.SupplierID.ToString();
                 txtSupplierName.Text = supplier.OrganizationName;
                 txtSupplierTaxId.Text = supplier.FederalTaxId;
-                txtSupplierTax.Text = supplier.EntityFiscalStatusID.ToString();
+
+                cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == supplier.EntityFiscalStatusID);
                 txtSupplierZone.Text = supplier.ZoneID.ToString();
             }
             else {
@@ -783,7 +792,12 @@ namespace Sage.S50c.API.Sample {
             supplier.CurrencyID = txtSupplierCurrency.Text;
             supplier.OrganizationName = txtSupplierName.Text;
             supplier.FederalTaxId = txtSupplierTaxId.Text;
-            supplier.EntityFiscalStatusID = short.Parse(txtSupplierTax.Text);
+
+            if (cmbCustomerTax.SelectedItem != null) {
+                var entityFiscalStatus = (EntityFiscalStatus)cmbCustomerTax.SelectedItem;
+                supplier.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
+            }
+
             supplier.ZoneID = short.Parse(txtSupplierZone.Text);
             //
             //  A forma de pagamento é obrigatória. Vamos usar a primeira disponivel.
@@ -809,8 +823,13 @@ namespace Sage.S50c.API.Sample {
             txtSupplierId.Text = dsoCache.SupplierProvider.GetNewID().ToString();
             txtSupplierName.Text = string.Empty;
             txtSupplierTaxId.Text = "0";
-            txtSupplierTax.Text = systemSettings.SystemInfo.DefaultTaxableGroupID.ToString();
             txtSupplierZone.Text = dsoCache.ZoneProvider.GetFirstID().ToString();
+
+            UIUtils.FillEntityFiscalStatusCombo(cmbSupplierTax);
+            cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == S50cAPIEngine.SystemSettings.SystemInfo.SystemFiscalStatusID);
+            if (cmbSupplierTax.SelectedItem == null && cmbSupplierTax.Items.Count > 0) {
+                cmbSupplierTax.SelectedIndex = 0;
+            }
         }
 
         #endregion
@@ -930,10 +949,11 @@ namespace Sage.S50c.API.Sample {
             double.TryParse(txtTransDocNumber.Text, out transDocNumber);
 
             TransactionID result = null;
-            if( rbTransBuySell.Checked )
+            if (rbTransBuySell.Checked)
                 result = TransactionUpdate(transSerial, transDoc, transDocNumber, true, suspendTransaction);
-            else
-                result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, true );
+            else {
+                result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, true);
+            }
             
             return result;
         }
@@ -1226,12 +1246,19 @@ namespace Sage.S50c.API.Sample {
                 //    trans.TenderLineItem.Add(tenderLine);
                 //}
                 //
-                //
-                // Exemplo para registar a origem nas Notas de crédito e Notas de débito:
-                if (doc.Nature.NatureID == TransactionNatureEnum.Sale_CreditNote || doc.Nature.NatureID == TransactionNatureEnum.Sale_DebitNote) {
-                    var originTransId = new TransactionID();
-                    originTransId.Init("1","FAC",1);
-                    trans.OriginatingON = originTransId.ToString();
+
+                //// Exemplo para registar a origem nas Notas de crédito e Notas de débito:
+                //if (doc.Nature.NatureID == TransactionNatureEnum.Sale_CreditNote || doc.Nature.NatureID == TransactionNatureEnum.Sale_DebitNote) {
+                //    var originTransId = new TransactionID();
+                //    originTransId.Init("1","FAC",1);
+                //    trans.OriginatingON = originTransId.ToString();
+                //}
+
+                // Definir a assinatura de um sistema externo
+                if( series.SeriesType == SeriesTypeEnum.SeriesExternal  ) {
+                    if( ! SetExternalSignature(trans)) {
+                        MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
 
                 if (suspendTransaction) {
@@ -3441,6 +3468,66 @@ namespace Sage.S50c.API.Sample {
                     }
                 }
             }
+        }
+
+        private void btnExternalSignature_Click(object sender, EventArgs e) {
+            MessageBox.Show("NOTA: Só é possivel definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            using (var frm = new FormExternalSignature()) {
+                frm.Signature = bsoItemTransaction.Transaction.Signature;
+                frm.SignatureVersion = bsoItemTransaction.Transaction.SignatureControl;
+                frm.SoftwareCertificateNumber = bsoItemTransaction.Transaction.SoftwareCertificateNumber;
+                frm.ShowDialog(this);
+            };
+        }
+
+        private void txtTransSerial_TextChanged(object sender, EventArgs e) {
+        }
+
+        private void txtTransSerial_Validating(object sender, CancelEventArgs e) {
+            //btnExternalSignature.Enabled = false;
+            //var transSerialId = txtTransSerial.Text.Trim();
+            //if (!string.IsNullOrEmpty(transSerialId)) {
+            //    if (S50cAPIEngine.SystemSettings.DocumentSeries.IsInCollection(transSerialId)) {
+            //        var series = S50cAPIEngine.SystemSettings.DocumentSeries[transSerialId];
+            //        if (series != null) {
+            //            btnExternalSignature.Enabled = (series.SeriesType == SeriesTypeEnum.SeriesExternal);
+            //        }
+            //    }
+            //}
+        }
+
+        private bool SetExternalSignature( ItemTransaction trans ) {
+            var result = true;
+            using (var formSig = new FormExternalSignature()) {
+                if (trans != null) {
+                    if (trans.TransBehavior == TransBehaviorEnum.BehAlwaysNewDocument) {
+                        // Inserir assinatura aqui
+                        formSig.Signature = "Exemplo de assinatura externa";
+                        // Versão (atualmente=1)
+                        formSig.SignatureVersion = 1;
+                        // Número de certificação do software
+                        formSig.SoftwareCertificateNumber = 999;
+                    }
+                    else {
+                        // Inserir assinatura aqui
+                        formSig.Signature = trans.Signature;
+                        // Versão (atualmente=1)
+                        formSig.SignatureVersion = trans.SignatureControl;
+                        // Número de certificação do software
+                        formSig.SoftwareCertificateNumber = trans.SoftwareCertificateNumber;
+                    }
+
+                    if (formSig.ShowDialog() == DialogResult.OK) {
+                        var sigTransaction = (ISignableTransaction)trans;
+                        S50cAPIEngine.SystemSettings.SignatureLoader.SetSignature(sigTransaction, formSig.Signature, formSig.SignatureVersion, formSig.SoftwareCertificateNumber);
+                    }
+                    else {
+                        result = false;
+                    }
+                }
+            }
+            return result;
         }
     }
 }

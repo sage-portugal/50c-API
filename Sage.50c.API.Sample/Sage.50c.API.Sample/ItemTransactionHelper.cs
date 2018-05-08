@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     internal static class ItemTransactionHelper {
         internal static DocumentTypeEnum TransGetType( string DocumentId ) {
             DocumentTypeEnum transType = DocumentTypeEnum.dcTypeNone;

@@ -97,7 +97,7 @@ public static class S50cAPIEngine {
     /// Lança uma exceção se falhar
     /// </summary>
     /// <param name="companyId">Identificador da empresa a Abrir</param>
-    public static void Initialize( string companyId, bool debugMode ) {
+    public static void Initialize( string ProductCode, string CompanyId, bool DebugMode ) {
         apiInitialized = false;
 
         //
@@ -115,12 +115,28 @@ public static class S50cAPIEngine {
         s50cPrintGlobals = new S50cPrint18.GlobalSettings();
         s50cBLGlobals = new S50cBL18.GlobalSettings();
         //
-        var systemStarter = new S50cAPICGCO18.SystemStarter();
-        systemStarter.DebugMode = debugMode;
-        if (systemStarter.Initialize(companyId) != 0) {
-            string initError = systemStarter.InitializationError;
-            systemStarter = null;
-            throw new Exception(initError);
+        dynamic systemStarter = null;
+        if ( Sage50c.API.Sample.Properties.Settings.Default.S50cSGCOAPI ){
+            // Legacy DEPRECATED Startup - CGCO ONLY
+            systemStarter = new S50cAPICGCO18.SystemStarter();
+            systemStarter.DebugMode = DebugMode;
+
+            if (systemStarter.Initialize(CompanyId) != 0) {
+                string initError = systemStarter.InitializationError;
+                systemStarter = null;
+                throw new Exception(initError);
+            }
+        }
+        else {
+            // NEW RECOMMENDED Startup - CGCO / CRTL
+            systemStarter = new S50cAPI18.SystemStarter();
+            systemStarter.DebugMode = DebugMode;
+
+            if (systemStarter.Initialize(ProductCode, CompanyId) != 0) {
+                string initError = systemStarter.InitializationError;
+                systemStarter = null;
+                throw new Exception(initError);
+            }
         }
         // Eventos de erros e avisos vindos da API
         dataManagerEvents = (S50cData18.DataManagerEventsClass)s50cDataGlobals.DataManager.Events;

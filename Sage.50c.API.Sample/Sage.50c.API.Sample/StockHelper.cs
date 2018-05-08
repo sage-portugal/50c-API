@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Sage.S50c.API.Sample {
+namespace Sage50c.API.Sample {
     internal static class StockHelper {
         #region Stock Transaction
 
