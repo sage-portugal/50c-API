@@ -3474,6 +3474,12 @@ namespace Sage50c.API.Sample {
 
         private void btnExternalSignature_Click(object sender, EventArgs e) {
             MessageBox.Show("NOTA: Só é possivel definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            using (var frm = new FormExternalSignature()) {
+                if (DialogResult.OK == frm.ShowDialog()) {
+
+                }
+            })
         }
 
         private void txtTransSerial_TextChanged(object sender, EventArgs e) {
