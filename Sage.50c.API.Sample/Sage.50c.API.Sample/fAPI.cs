@@ -1255,9 +1255,7 @@ namespace Sage50c.API.Sample {
                 //}
 
                 // Definir a assinatura de um sistema externo
-                // NOTA: Só em documentos novos é gravada a assinatura. Em documentos alterados nunca é gravado.
-                // Este é o comportamento standard da aplicação
-                if( series.SeriesType == SeriesTypeEnum.SeriesExternal && trans.TransBehavior == TransBehaviorEnum.BehAlwaysNewDocument ) {
+                if( series.SeriesType == SeriesTypeEnum.SeriesExternal  ) {
                     if( ! SetExternalSignature(trans)) {
                         MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -3476,10 +3474,11 @@ namespace Sage50c.API.Sample {
             MessageBox.Show("NOTA: Só é possivel definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             using (var frm = new FormExternalSignature()) {
-                if (DialogResult.OK == frm.ShowDialog()) {
-
-                }
-            })
+                frm.Signature = bsoItemTransaction.Transaction.Signature;
+                frm.SignatureVersion = bsoItemTransaction.Transaction.SignatureControl;
+                frm.SoftwareCertificateNumber = bsoItemTransaction.Transaction.SoftwareCertificateNumber;
+                frm.ShowDialog(this);
+            };
         }
 
         private void txtTransSerial_TextChanged(object sender, EventArgs e) {
@@ -3502,12 +3501,23 @@ namespace Sage50c.API.Sample {
             var result = true;
             using (var formSig = new FormExternalSignature()) {
                 if (trans != null) {
-                    // Inserir assinatura aqui
-                    formSig.Signature = "Exemplo de assinatura externa";
-                    // Versão (atualmente=1)
-                    formSig.SignatureVersion = 1;
-                    // Número de certificação do software
-                    formSig.SoftwareCertificateNumber = 9999;
+                    if (trans.TransBehavior == TransBehaviorEnum.BehAlwaysNewDocument) {
+                        // Inserir assinatura aqui
+                        formSig.Signature = "Exemplo de assinatura externa";
+                        // Versão (atualmente=1)
+                        formSig.SignatureVersion = 1;
+                        // Número de certificação do software
+                        formSig.SoftwareCertificateNumber = 999;
+                    }
+                    else {
+                        // Inserir assinatura aqui
+                        formSig.Signature = trans.Signature;
+                        // Versão (atualmente=1)
+                        formSig.SignatureVersion = trans.SignatureControl;
+                        // Número de certificação do software
+                        formSig.SoftwareCertificateNumber = trans.SoftwareCertificateNumber;
+                    }
+
                     if (formSig.ShowDialog() == DialogResult.OK) {
                         var sigTransaction = (ISignableTransaction)trans;
                         S50cAPIEngine.SystemSettings.SignatureLoader.SetSignature(sigTransaction, formSig.Signature, formSig.SignatureVersion, formSig.SoftwareCertificateNumber);
