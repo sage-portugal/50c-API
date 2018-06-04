@@ -3239,14 +3239,6 @@ namespace Sage50c.API.Sample {
             return dt;
         }
 
-        private void txtTenderID_TextChanged(object sender, EventArgs e) {
-
-        }
-
-        private void panel5_Paint(object sender, PaintEventArgs e) {
-
-        }
-
         private ItemTransactionDetailList GetItemComponentList(int LineID) {
             var itemDetails = new ItemTransactionDetailList();
             string itemID = string.Empty;
@@ -3528,6 +3520,10 @@ namespace Sage50c.API.Sample {
                 }
             }
             return result;
+        }
+
+        private void txtItemId_Click(object sender, EventArgs e) {
+            S50cAPIEngine.CoreGlobals.ShowKeyPadInContext(txtItemId, "Text", VBA.VbCallType.VbLet);
         }
     }
 }

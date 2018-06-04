@@ -63,6 +63,7 @@
             this.Label6 = new System.Windows.Forms.Label();
             this.Label4 = new System.Windows.Forms.Label();
             this.tabSupplier = new System.Windows.Forms.TabPage();
+            this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
             this.btnSupplierBrow = new System.Windows.Forms.Button();
             this.txtSupplierId = new System.Windows.Forms.TextBox();
             this.txtSupplierName = new System.Windows.Forms.TextBox();
@@ -231,7 +232,6 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pbCSharp = new System.Windows.Forms.PictureBox();
-            this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
             this.tabEntities.SuspendLayout();
             this.tabItem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -312,7 +312,7 @@
             this.lblItemTam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblItemTam.Location = new System.Drawing.Point(458, 70);
             this.lblItemTam.Name = "lblItemTam";
-            this.lblItemTam.Size = new System.Drawing.Size(34, 15);
+            this.lblItemTam.Size = new System.Drawing.Size(33, 15);
             this.lblItemTam.TabIndex = 18;
             this.lblItemTam.Text = "Tam:";
             // 
@@ -392,7 +392,7 @@
             this.txtItemPriceTaxIncluded.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtItemPriceTaxIncluded.Location = new System.Drawing.Point(34, 129);
             this.txtItemPriceTaxIncluded.Name = "txtItemPriceTaxIncluded";
-            this.txtItemPriceTaxIncluded.Size = new System.Drawing.Size(76, 15);
+            this.txtItemPriceTaxIncluded.Size = new System.Drawing.Size(75, 15);
             this.txtItemPriceTaxIncluded.TabIndex = 12;
             this.txtItemPriceTaxIncluded.Text = "Preço c/ IVA";
             // 
@@ -402,7 +402,7 @@
             this.lblitemShortDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblitemShortDescription.Location = new System.Drawing.Point(35, 100);
             this.lblitemShortDescription.Name = "lblitemShortDescription";
-            this.lblitemShortDescription.Size = new System.Drawing.Size(80, 15);
+            this.lblitemShortDescription.Size = new System.Drawing.Size(79, 15);
             this.lblitemShortDescription.TabIndex = 11;
             this.lblitemShortDescription.Text = "Desc. Abrev.:";
             // 
@@ -464,6 +464,7 @@
             this.txtItemId.Name = "txtItemId";
             this.txtItemId.Size = new System.Drawing.Size(255, 23);
             this.txtItemId.TabIndex = 4;
+            this.txtItemId.Click += new System.EventHandler(this.txtItemId_Click);
             // 
             // tabCustomer
             // 
@@ -695,7 +696,7 @@
             this.Label8.Location = new System.Drawing.Point(42, 165);
             this.Label8.Name = "Label8";
             this.Label8.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label8.Size = new System.Drawing.Size(65, 15);
+            this.Label8.Size = new System.Drawing.Size(64, 15);
             this.Label8.TabIndex = 53;
             this.Label8.Text = "Vendedor:";
             // 
@@ -767,6 +768,16 @@
             this.tabSupplier.TabIndex = 2;
             this.tabSupplier.Text = "Fornecedor";
             this.tabSupplier.UseVisualStyleBackColor = true;
+            // 
+            // cmbSupplierTax
+            // 
+            this.cmbSupplierTax.DisplayMember = "EntityFiscalStatusID";
+            this.cmbSupplierTax.FormattingEnabled = true;
+            this.cmbSupplierTax.Location = new System.Drawing.Point(150, 104);
+            this.cmbSupplierTax.Name = "cmbSupplierTax";
+            this.cmbSupplierTax.Size = new System.Drawing.Size(346, 23);
+            this.cmbSupplierTax.TabIndex = 76;
+            this.cmbSupplierTax.ValueMember = "EntityFiscalStatusID";
             // 
             // btnSupplierBrow
             // 
@@ -1076,7 +1087,7 @@
             this.rbTransStockDecompose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransStockDecompose.Location = new System.Drawing.Point(390, 25);
             this.rbTransStockDecompose.Name = "rbTransStockDecompose";
-            this.rbTransStockDecompose.Size = new System.Drawing.Size(108, 19);
+            this.rbTransStockDecompose.Size = new System.Drawing.Size(107, 19);
             this.rbTransStockDecompose.TabIndex = 407;
             this.rbTransStockDecompose.TabStop = true;
             this.rbTransStockDecompose.Text = "Transformação";
@@ -1188,7 +1199,6 @@
             this.txtTenderID.Name = "txtTenderID";
             this.txtTenderID.Size = new System.Drawing.Size(72, 23);
             this.txtTenderID.TabIndex = 344;
-            this.txtTenderID.TextChanged += new System.EventHandler(this.txtTenderID_TextChanged);
             // 
             // lblTenderID
             // 
@@ -1323,7 +1333,7 @@
             this.rbTransBuySell.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransBuySell.Location = new System.Drawing.Point(37, 25);
             this.rbTransBuySell.Name = "rbTransBuySell";
-            this.rbTransBuySell.Size = new System.Drawing.Size(114, 19);
+            this.rbTransBuySell.Size = new System.Drawing.Size(113, 19);
             this.rbTransBuySell.TabIndex = 334;
             this.rbTransBuySell.TabStop = true;
             this.rbTransBuySell.Text = "Compra / Venda";
@@ -1876,7 +1886,7 @@
             this.Label53.Location = new System.Drawing.Point(418, 119);
             this.Label53.Name = "Label53";
             this.Label53.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label53.Size = new System.Drawing.Size(41, 15);
+            this.Label53.Size = new System.Drawing.Size(40, 15);
             this.Label53.TabIndex = 321;
             this.Label53.Text = "Tx Iva";
             // 
@@ -2603,7 +2613,7 @@
             this.Label36.Location = new System.Drawing.Point(399, 149);
             this.Label36.Name = "Label36";
             this.Label36.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label36.Size = new System.Drawing.Size(36, 15);
+            this.Label36.Size = new System.Drawing.Size(35, 15);
             this.Label36.TabIndex = 322;
             this.Label36.Text = "Valor";
             // 
@@ -2799,7 +2809,6 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(283, 103);
             this.panel5.TabIndex = 304;
-            this.panel5.Paint += new System.Windows.Forms.PaintEventHandler(this.panel5_Paint);
             // 
             // txtCompanyId
             // 
@@ -3009,16 +3018,6 @@
             this.pbCSharp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbCSharp.TabIndex = 305;
             this.pbCSharp.TabStop = false;
-            // 
-            // cmbSupplierTax
-            // 
-            this.cmbSupplierTax.DisplayMember = "EntityFiscalStatusID";
-            this.cmbSupplierTax.FormattingEnabled = true;
-            this.cmbSupplierTax.Location = new System.Drawing.Point(150, 104);
-            this.cmbSupplierTax.Name = "cmbSupplierTax";
-            this.cmbSupplierTax.Size = new System.Drawing.Size(346, 23);
-            this.cmbSupplierTax.TabIndex = 76;
-            this.cmbSupplierTax.ValueMember = "EntityFiscalStatusID";
             // 
             // fApi
             // 

@@ -72,6 +72,8 @@ public static class S50cAPIEngine {
     /// </summary>
     public static S50cLocalize18._ILocalizer gLng { get { return s50cSystemGlobals.gLng ; } }
 
+    public static S50cCore18.GlobalSettings CoreGlobals { get { return s50cCoreGlobals; } }
+
     /// <summary>
     /// System manager
     /// </summary>
