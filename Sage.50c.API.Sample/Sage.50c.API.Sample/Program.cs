@@ -10,6 +10,7 @@ namespace Sage50c.API.Sample {
         /// </summary>
         [STAThread]
         static void Main() {
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new fApi());
