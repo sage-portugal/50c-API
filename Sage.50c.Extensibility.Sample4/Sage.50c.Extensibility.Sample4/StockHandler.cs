@@ -39,7 +39,7 @@ namespace Sage50c.ExtenderSample
 
         private void HeaderStockEvents_OnValidating(object Sender, ExtenderEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         void HeaderStockEvents_OnMenuItem(object Sender, ExtenderEventArgs e)
