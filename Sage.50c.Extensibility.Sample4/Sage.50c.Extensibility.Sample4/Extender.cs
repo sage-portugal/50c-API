@@ -76,6 +76,15 @@ namespace Sage50c.ExtenderSample {
                         stockHandler = new StockHandler();
                     }
                     stockHandler.SetHeaderEventsHandler(EventHandler);
+                    
+                    break;
+
+                case "stocktransactiondetail":
+                    if (stockHandler == null)
+                    {
+                        stockHandler = new StockHandler();
+                    }
+                    stockHandler.SetDetailEventsHandler(EventHandler);
                     break;
 
                 case "tendertransaction":
