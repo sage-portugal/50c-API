@@ -2055,6 +2055,8 @@ namespace Sage50c.API.Sample {
                     // A Impressão não é atualmente suportada em .NET
                     bool printDoc = false;
 
+                    //CalculateOutgoingQuantities (Documentos de Fabrico, Composição e Decomposição determinar o preço da materia prima entrada)
+                    bsoStockTransaction.Calculate(true, true, true);
                     bsoStockTransaction.SaveDocumentEx(true, ref printDoc);
 
                     resultTransId = new TransactionID();

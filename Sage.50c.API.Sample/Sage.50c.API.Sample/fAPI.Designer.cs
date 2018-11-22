@@ -67,7 +67,6 @@
             this.btnSupplierBrow = new System.Windows.Forms.Button();
             this.txtSupplierId = new System.Windows.Forms.TextBox();
             this.txtSupplierName = new System.Windows.Forms.TextBox();
-            this.txtSupplierTax = new System.Windows.Forms.TextBox();
             this.txtSupplierTaxId = new System.Windows.Forms.TextBox();
             this.txtSupplierCurrency = new System.Windows.Forms.TextBox();
             this.txtSupplierZone = new System.Windows.Forms.TextBox();
@@ -748,7 +747,6 @@
             this.tabSupplier.Controls.Add(this.btnSupplierBrow);
             this.tabSupplier.Controls.Add(this.txtSupplierId);
             this.tabSupplier.Controls.Add(this.txtSupplierName);
-            this.tabSupplier.Controls.Add(this.txtSupplierTax);
             this.tabSupplier.Controls.Add(this.txtSupplierTaxId);
             this.tabSupplier.Controls.Add(this.txtSupplierCurrency);
             this.tabSupplier.Controls.Add(this.txtSupplierZone);
@@ -814,19 +812,6 @@
             this.txtSupplierName.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtSupplierName.Size = new System.Drawing.Size(346, 23);
             this.txtSupplierName.TabIndex = 4;
-            // 
-            // txtSupplierTax
-            // 
-            this.txtSupplierTax.AcceptsReturn = true;
-            this.txtSupplierTax.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSupplierTax.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSupplierTax.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierTax.Location = new System.Drawing.Point(530, 99);
-            this.txtSupplierTax.MaxLength = 0;
-            this.txtSupplierTax.Name = "txtSupplierTax";
-            this.txtSupplierTax.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierTax.Size = new System.Drawing.Size(346, 23);
-            this.txtSupplierTax.TabIndex = 6;
             // 
             // txtSupplierTaxId
             // 
@@ -3125,7 +3110,6 @@
         private System.Windows.Forms.Panel panel4;
         public System.Windows.Forms.TextBox txtSupplierId;
         public System.Windows.Forms.TextBox txtSupplierName;
-        public System.Windows.Forms.TextBox txtSupplierTax;
         public System.Windows.Forms.TextBox txtSupplierTaxId;
         public System.Windows.Forms.TextBox txtSupplierCurrency;
         public System.Windows.Forms.TextBox txtSupplierZone;
