@@ -11,6 +11,8 @@ using S50cSys18;
 namespace Sage50c.API.Sample {
     internal static class UIUtils {
         internal static void FillCountryCombo( ComboBox combo ){
+            combo.SuspendLayout();
+
             combo.Items.Clear();
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
             combo.DisplayMember = "CountryName";
@@ -26,9 +28,13 @@ namespace Sage50c.API.Sample {
             }
             rsCountries.Close();
             rsCountries = null;
+
+            combo.ResumeLayout();
         }
 
         internal static void FillCurrencyCombo(ComboBox combo) {
+            combo.SuspendLayout();
+
             combo.Items.Clear();
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
             combo.DisplayMember = "Description";
@@ -45,10 +51,14 @@ namespace Sage50c.API.Sample {
             }
             rs.Close();
             rs = null;
+
+            combo.ResumeLayout();
         }
 
         
         internal static void FillEntityFiscalStatusCombo(ComboBox combo) {
+            combo.SuspendLayout();
+
             combo.Items.Clear();
             combo.DropDownStyle = ComboBoxStyle.DropDownList;
             combo.DisplayMember = "Description";
@@ -65,6 +75,8 @@ namespace Sage50c.API.Sample {
             }
             rs.Close();
             rs = null;
+
+            combo.ResumeLayout();
         }
     }
 }
