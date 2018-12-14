@@ -101,18 +101,18 @@ namespace Sage50c.ExtenderSample {
                 case "systeminfo":
                     if (systemInfoHandler == null) {
                         systemInfoHandler = new SystemInfoHandler();
-                        systemInfoHandler.SetEventHandler(EventHandler);
                     }
+                    systemInfoHandler.SetEventHandler(EventHandler);
                     break;
 
             }
         }
 
         public object SetExtenderSystemEventHandler(ExtenderSystemEvents EventHandler) {
-            if( systemHandler == null) {
+            if (systemHandler == null) {
                 systemHandler = new SystemHandler();
-                systemHandler.SetEventHandler(EventHandler);
             }
+            systemHandler.SetEventHandler(EventHandler);
             return null;
         }
 

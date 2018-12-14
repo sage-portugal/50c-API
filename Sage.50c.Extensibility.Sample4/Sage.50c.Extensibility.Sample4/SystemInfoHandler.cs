@@ -14,12 +14,13 @@ namespace Sage50c.ExtenderSample {
         public void SetEventHandler( ExtenderEvents e) {
             myEvents = e;
             //Events
-            myEvents.OnDispose += MyEvents_OnDispose;
+            
             myEvents.OnInitialize += MyEvents_OnInitialize;
             myEvents.OnSave += MyEvents_OnSave;
             myEvents.OnValidating += MyEvents_OnValidating;
+            myEvents.OnDispose += MyEvents_OnDispose;
         }
-
+        
         private void MyEvents_OnInitialize(object Sender, ExtenderEventArgs e) {
             ExtendedPropertyList propList = null;
             propList = (ExtendedPropertyList)e.get_data();

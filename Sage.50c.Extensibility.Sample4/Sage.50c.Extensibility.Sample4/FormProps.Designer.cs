@@ -53,6 +53,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormProps";
             this.Text = "FormProps";
+            this.Load += new System.EventHandler(this.FormProps_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -132,6 +132,10 @@ namespace Sage50c.ExtenderSample {
                     fItem.ShowWindow();
                     break;
 
+                case "miSimpleButton1":
+                    System.Windows.Forms.MessageBox.Show("Parabéns! Conseguiu implementar um botão simples", "Botão simples", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+
                 case "miComplexButtonItem1":
                     System.Windows.Forms.MessageBox.Show("Parabéns! Conseguiu implementar um botão com Grupo","Grupo", MessageBoxButtons.OK ,MessageBoxIcon.Information);
                     break;
