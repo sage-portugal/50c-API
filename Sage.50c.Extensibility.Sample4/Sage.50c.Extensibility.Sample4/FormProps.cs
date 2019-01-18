@@ -93,5 +93,9 @@ namespace Sage50c.ExtenderSample {
         public void Save() {
             MessageBox.Show("Save event: save done", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information );
         }
+
+        private void FormProps_Load(object sender, EventArgs e) {
+
+        }
     }
 }

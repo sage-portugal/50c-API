@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Sage50c.ExtenderSample {
     internal class SystemHandler : IDisposable {
@@ -50,7 +51,7 @@ namespace Sage50c.ExtenderSample {
 
         private void MyEvents_OnStartup(object Sender, ExtenderEventArgs e) {
             ExtendedPropertyList properties = null; ;
-            ExtenderMenuItems       menuItem;
+            ExtenderMenuItems menuItem;
 
             //MyApp.SystemSettings.WorkstationInfo.Touch.CompanyLogoPosition = 1;
 
@@ -68,19 +69,39 @@ namespace Sage50c.ExtenderSample {
             if (properties.PropertyExists("DialogWindow")) {
                 generalDialogWindow = (IDialogWindow)properties.get_Value("DialogWindow");
             }
-
             
             // CUSTOM MENUS
             // Definir os menus
+            // Botão simples
             menuItem = new ExtenderMenuItems();
-            var childItems = menuItem.Add("miExtensibilidade", "&Extensibilidade").ChildItems;
-            childItems.Add("miXItem1", "Item &1");
-            childItems.Add("miXItem2", "Item &2");
+            var simpleButton = menuItem.Add ("miSimpleButton", "Exemplo de janela");
+            
+            // Colocar o caminho para o icone. 
+            // Não usar os nomes de ficheiro da Sage em:
+            //      TARGETDIR\Icons50c
+            //      TARGETDIR\Images
+            var myTargetDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName);
+            myTargetDir = System.IO.Path.Combine(myTargetDir, "Icons");
+            simpleButton.PictureName =  System.IO.Path.Combine(myTargetDir, "icon-sample-01.png" );
+            var simpleButton2 = menuItem.Add("miSimpleButton1", "Exemplo 2 de janela");
+            simpleButton2.PictureName = System.IO.Path.Combine(myTargetDir, "icon-sample-02.png");
+
+            // Botão com submenu
+            var parentButton = menuItem.Add("miComplexButton", "Grupo");
+            var parentBtn1 =parentButton.ChildItems.Add("miComplexButtonItem1", "Clique aqui para ver uma mensagem do Grupo!");
+            parentBtn1.PictureName = System.IO.Path.Combine(myTargetDir, "icon-sample-03.png");
+            //menuItem.Add("miItemView", "Alterar Artigos");
+
+            var parentButton2 = menuItem.Add("miComplexButton2", "Grupo");
+            var child1 = parentButton2.ChildItems.Add("miComplexButtonItem2", "SubGrupo");
+            var childItem1 = child1.ChildItems.Add("miComplexButtonItem3", "Clique aqui para ver uma mensagem do SubGrupo!", "miComplexButtonItem3");
+            childItem1.PictureName = System.IO.Path.Combine(myTargetDir, "icon-sample-03.png");
+            var childItem2 = child1.ChildItems.Add("miComplexButtonItem4", "Clique aqui para ver outra mensagem do SubGrupo!", "miComplexButtonItem3");
+            childItem2.PictureName = System.IO.Path.Combine(myTargetDir, "icon-sample-03.png");
 
             // Custom Functions
             // Remember, all functions declared here will not recorded on physical base
             AddMyFunction("miXFunctionA", "PTG");
-            
             
             //
             // COM mandatories
@@ -105,16 +126,28 @@ namespace Sage50c.ExtenderSample {
             
             string menuItemId = (string)e.get_data();
             switch ( menuItemId ) {
-                case "miXItem1":
+                case "miSimpleButton":
                     //System.Windows.Forms.MessageBox.Show("miXitem1");
                     var fItem =  new FormItem();
                     fItem.ShowWindow();
                     break;
 
-                case "miXItem2":
-                    System.Windows.Forms.MessageBox.Show("miXitem2");
+                case "miSimpleButton1":
+                    System.Windows.Forms.MessageBox.Show("Parabéns! Conseguiu implementar um botão simples", "Botão simples", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
-           }
+
+                case "miComplexButtonItem1":
+                    System.Windows.Forms.MessageBox.Show("Parabéns! Conseguiu implementar um botão com Grupo","Grupo", MessageBoxButtons.OK ,MessageBoxIcon.Information);
+                    break;
+
+                case "miComplexButtonItem3":
+                    System.Windows.Forms.MessageBox.Show("Parabéns! Conseguiu implementar um botão com Grupo e SubGrupo", "Sub Grupo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation );
+                    break;
+
+                case "miComplexButtonItem4":
+                    System.Windows.Forms.MessageBox.Show("Parabéns! Conseguiu implementar um segundo botão com Grupo e SubGrupo", "Sub Grupo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation  );
+                    break;
+            }
         }
 
         private void SystemEvents_OnInitialize(object Sender, ExtenderEventArgs e) {
