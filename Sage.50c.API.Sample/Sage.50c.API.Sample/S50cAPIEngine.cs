@@ -217,7 +217,7 @@ public static class S50cAPIEngine {
         if (apiInitialized) {
             //1. QuickSearch
             if (s50cSystemGlobals != null) {
-                s50cSystemGlobals.DisposeQuickSearch();
+                //s50cSystemGlobals.DisposeQuickSearch();
             }
             //3. Business globals
             if (s50cBLGlobals != null) {

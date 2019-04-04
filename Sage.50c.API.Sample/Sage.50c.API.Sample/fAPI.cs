@@ -16,6 +16,7 @@ using S50cPrint18;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
+
         /// <summary>
         /// Motor de dados para os artigos.
         /// NOTA: Api tem de estar inicializada antes de usar!
@@ -52,6 +53,7 @@ namespace Sage50c.API.Sample {
         private PrintingManager printingManager { get { return S50cAPIEngine.PrintingManager; } }
 
         public fApi() {
+
             InitializeComponent();
 
             txtCompanyId.Text = Properties.Settings.Default.CompanyId;
@@ -77,6 +79,9 @@ namespace Sage50c.API.Sample {
             btnRemove.Enabled = false;
             btnGet.Enabled = false;
             btnClear.Enabled = false;
+
+            gbShareCost_1.Enabled = false;
+            gbShareCost_2.Enabled = false;
             //
             cmbAPI.Enabled = true;
 
@@ -84,6 +89,10 @@ namespace Sage50c.API.Sample {
         }
 
         void S50cAPIEngine_APIStarted(object sender, EventArgs e) {
+
+            gbShareCost_1.Enabled = false;
+            gbShareCost_2.Enabled = false;
+
             tabEntities.Enabled = true;
 
             btnStopAPI.Enabled = true;
@@ -96,6 +105,9 @@ namespace Sage50c.API.Sample {
             btnGet.Enabled = true;
             btnClear.Enabled = true;
             btnPrint.Enabled = true;
+
+          
+
             chkPrintPreview.Enabled = true;
             //
             btnAccoutTransPrint.Enabled = true;
@@ -300,7 +312,7 @@ namespace Sage50c.API.Sample {
         /// <param name="e"></param>
         private void btnInsert_Click(object sender, EventArgs e) {
             try {
-                transactionError = false;
+                            transactionError = false;
                 TransactionID transId = null;
 
                 switch (tabEntities.SelectedIndex) {
@@ -374,6 +386,7 @@ namespace Sage50c.API.Sample {
         /// <param name="e"></param>
         private void btnAlterar_Click(object sender, EventArgs e) {
             try{
+             
                 TransactionID transId = null;
                 transactionError = false;
 
@@ -883,6 +896,10 @@ namespace Sage50c.API.Sample {
         #region Buy/Sale TRANSACTION
 
         private TransactionID TransactionRemove() {
+            gbShareCost_1.Enabled = false;
+            gbShareCost_2.Enabled = false;
+
+
             TransactionID transId = null;
             string transDoc = txtTransDoc.Text;
             string transSerial = txtTransSerial.Text;
@@ -943,6 +960,11 @@ namespace Sage50c.API.Sample {
         /// </summary>
         /// <returns></returns>
         private TransactionID TransactionInsert( bool suspendTransaction ) {
+
+            gbShareCost_1.Enabled = false;
+            gbShareCost_2.Enabled = false;
+
+
             string transDoc = txtTransDoc.Text;
             string transSerial = txtTransSerial.Text;
             double transDocNumber = 0;
@@ -951,6 +973,7 @@ namespace Sage50c.API.Sample {
             TransactionID result = null;
             if (rbTransBuySell.Checked)
                 result = TransactionUpdate(transSerial, transDoc, transDocNumber, true, suspendTransaction);
+
             else {
                 result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, true);
             }
@@ -981,7 +1004,9 @@ namespace Sage50c.API.Sample {
         /// <param name="transDocNumber">Número do documento</param>
         /// <param name="newTransaction">true: Nova transação (inserir); false: transação existente (alterar)</param>
         /// <returns>TransactionId da transação inserida/alterada</returns>
+        /// 
         private TransactionID TransactionUpdate( string transSerial, string transDoc, double transDocNumber, bool newTransaction, bool suspendTransaction ) {
+
             TransactionID insertedTrans = null;
             transactionError = false;
 
@@ -1265,6 +1290,98 @@ namespace Sage50c.API.Sample {
                     insertedTrans = bsoItemTransaction.SuspendCurrentTransaction();
                 }
                 else {
+
+
+                    //Exemplo da Repartição de Custos
+                    //INICIO
+                    if (GetUpdateItemCostWithFreightAmount()  ) {
+
+                        SimpleDocument objDocument ;
+                        SimpleDocumentList objDocumentList = new SimpleDocumentList();
+                        SimpleItemDetail objDocumentDetailsList;
+
+                        double Convert_Double = 0;
+
+
+                        //Begin manual Share amount 
+                        if (txtShareTransDocNumber_R1.Text.Length > 0) {
+                            objDocument = new SimpleDocument();
+                            objDocument.TransSerial = txtShareTransSerial_R1.Text ;
+                            objDocument.TransDocument = txtShareTransDocument_R1.Text ;
+                            double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
+                            objDocument.TransDocNumber = Convert_Double;
+                            double.TryParse(txtShareAmount_R1.Text, out Convert_Double);
+                            objDocument.TotalTransactionAmount = Convert_Double;
+                            objDocument.CurrencyID = txtTransCurrency.Text;
+
+                            //
+                            //ADD Line 1
+                            if (txtAmout_R1_L1.Text.Length >0 ) {
+                                objDocumentDetailsList = new SimpleItemDetail();
+                                objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text ;
+                                objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text  ;
+                                double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
+                                objDocumentDetailsList.DestinationTransDocNumber = Convert_Double;
+                                objDocumentDetailsList.DestinationLineItemID = 1;
+                                objDocumentDetailsList.ItemID = txtArt_R1_L1.Text;
+                                double.TryParse(txtAmout_R1_L1.Text, out Convert_Double);
+                                objDocumentDetailsList.UnitPrice = Convert_Double;
+                                objDocumentDetailsList.Quantity = 1;
+                                //Line KEY
+                                objDocumentDetailsList.ItemSearchKey = objDocumentDetailsList.DestinationTransSerial + "|" + objDocumentDetailsList.DestinationTransDocument + "|" + objDocumentDetailsList.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(objDocumentDetailsList.DestinationLineItemID) + "|" + objDocumentDetailsList.ItemID + "|" + objDocumentDetailsList.Color.ColorID + "|" + objDocumentDetailsList.Size.SizeID;
+                                //Add Line 1 to document detail
+                                objDocument.Details.Add(objDocumentDetailsList);
+                            }
+
+                            //ADD Line 2
+                            if ( txtAmout_R1_L2.Text.Length > 0) {
+                                objDocumentDetailsList = new SimpleItemDetail();
+                                objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
+                                objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
+                                double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
+                                objDocumentDetailsList.DestinationTransDocNumber = Convert_Double;
+                                objDocumentDetailsList.DestinationLineItemID = 2;
+                                objDocumentDetailsList.ItemID = txtArt_R1_L2.Text;
+                                double.TryParse(txtAmout_R1_L2.Text, out Convert_Double);
+                                objDocumentDetailsList.UnitPrice = Convert_Double;
+                                objDocumentDetailsList.Quantity = 1;
+                                //Line KEY
+                                objDocumentDetailsList.ItemSearchKey = objDocumentDetailsList.DestinationTransSerial + "|" + objDocumentDetailsList.DestinationTransDocument + "|" + objDocumentDetailsList.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(objDocumentDetailsList.DestinationLineItemID) + "|" + objDocumentDetailsList.ItemID + "|" + objDocumentDetailsList.Color.ColorID + "|" + objDocumentDetailsList.Size.SizeID;
+                                //Add Line 2 to document detail
+                                objDocument.Details.Add(objDocumentDetailsList);
+
+                                //Add Document to list of Documento to Share amount 
+                                objDocumentList.Add(objDocument);
+                            }
+
+                        }
+                        //End manual Share amount 
+
+                        //Begin Automatic Share amount 
+                        //if it does not have details, divide the value in proportion to the value of the line
+                        if (txtShareTransDocNumber_R2.Text.Length > 0) {
+                            objDocument = new SimpleDocument();
+                            objDocument.TransSerial = txtShareTransSerial_R2.Text;
+                            objDocument.TransDocument = txtShareTransDocument_R2.Text;
+                            double.TryParse(txtShareTransDocNumber_R2.Text, out Convert_Double);
+                            objDocument.TransDocNumber = Convert_Double;
+                            double.TryParse(txtShareAmount_R2.Text, out Convert_Double);
+                            objDocument.TotalTransactionAmount = Convert_Double;
+                            objDocument.CurrencyID = txtTransCurrency.Text;
+
+                            //Add Document to list of Documento to Share amount 
+                            objDocumentList.Add(objDocument);
+
+                        }
+                        //End Automatic Share amount 
+
+                        // Add Shares amount cost to  Transaction , BuyShareOtherCostList 
+                        bsoItemTransaction.Transaction.BuyShareOtherCostList = objDocumentList;
+
+                    }
+                    //FIM
+
+                    
                     bsoItemTransaction.SaveDocument(false, false);
                     //
                     if (!transactionError)
@@ -1283,6 +1400,8 @@ namespace Sage50c.API.Sample {
 
             return insertedTrans;
         }
+
+
 
         void bsoItemTransaction_TenderIDChanged(ref short value) {
             MessageBox.Show("bsoItemTransaction_TenderIDChanged");
@@ -1434,6 +1553,7 @@ namespace Sage50c.API.Sample {
                                      short colorId, short sizeId, 
                                      string serialNumberPropId, string serialNumberPropValue ){
 
+
             var doc = systemSettings.WorkstationInfo.Document[trans.TransDocument];
             
             ItemTransactionDetail transDetail = new ItemTransactionDetail();
@@ -1563,6 +1683,9 @@ namespace Sage50c.API.Sample {
         /// Carrega um documento da base de dados e apresenta-o no ecran
         /// </summary>
         private void TransactionGet(bool suspendedTransaction) {
+            gbShareCost_1.Enabled = GetUpdateItemCostWithFreightAmount(); 
+            gbShareCost_2.Enabled = GetUpdateItemCostWithFreightAmount(); 
+
             Document doc = null;
             string transDoc = txtTransDoc.Text;
             string transSerial = txtTransSerial.Text;
@@ -3524,8 +3647,40 @@ namespace Sage50c.API.Sample {
             return result;
         }
 
+        private bool GetUpdateItemCostWithFreightAmount() {
+            var result = false;
+
+            if (ItemTransactionHelper.TransGetType(txtTransDoc.Text)  == DocumentTypeEnum.dcTypePurchase) {
+
+                var mainProvider = S50cAPIEngine.DataManager.MainProvider;
+                ItemColor color = (ItemColor)cmbItemColor.SelectedItem;
+                string query = "SELECT Active  FROM ConfSpecial where ConfSpecialID = 60";
+
+                if (mainProvider.ExecuteScalar(query) != 0) {
+                    result = true;
+                }
+
+            }
+
+            return result;
+
+        }
+
         private void txtItemId_Click(object sender, EventArgs e) {
             S50cAPIEngine.CoreGlobals.ShowKeyPadInContext(txtItemId, "Text", VBA.VbCallType.VbLet);
         }
+
+        private void btnShareOtherCosts_Click(object sender, EventArgs e) {
+
+        }
+
+        private void txtShareTransSerial_TextChanged(object sender, EventArgs e) {
+
+        }
+
+        private void txtShareAmount_R1_TextChanged(object sender, EventArgs e) {
+
+        }
+
     }
 }
