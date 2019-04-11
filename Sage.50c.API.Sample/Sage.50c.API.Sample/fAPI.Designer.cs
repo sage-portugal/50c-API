@@ -44,7 +44,6 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pbCSharp = new System.Windows.Forms.PictureBox();
-            this.tbBuyShareOtherCosts_old = new System.Windows.Forms.TabPage();
             this.tabUnitOfMeasure = new System.Windows.Forms.TabPage();
             this.txtUnitOfMeasureName = new System.Windows.Forms.TextBox();
             this.txtUnitOfMeasureId = new System.Windows.Forms.TextBox();
@@ -155,6 +154,7 @@
             this.Label94 = new System.Windows.Forms.Label();
             this.chkTransModuleSizeColor = new System.Windows.Forms.CheckBox();
             this.tbBuyShareOtherCosts = new System.Windows.Forms.TabPage();
+            this.btnClearRep1 = new System.Windows.Forms.Button();
             this.gbShareCost_2 = new System.Windows.Forms.GroupBox();
             this.txtShareTransDocument_R2 = new System.Windows.Forms.TextBox();
             this.txtShareTransSerial_R2 = new System.Windows.Forms.TextBox();
@@ -165,14 +165,11 @@
             this.label50 = new System.Windows.Forms.Label();
             this.label52 = new System.Windows.Forms.Label();
             this.gbShareCost_1 = new System.Windows.Forms.GroupBox();
-            this.lblStateR1 = new System.Windows.Forms.Label();
             this.txtShareTransDocument_R1 = new System.Windows.Forms.TextBox();
             this.txtShareTransSerial_R1 = new System.Windows.Forms.TextBox();
-            this.txtArt_R1_L1 = new System.Windows.Forms.TextBox();
             this.txtShareTransDocNumber_R1 = new System.Windows.Forms.TextBox();
             this.txtAmout_R1_L1 = new System.Windows.Forms.TextBox();
             this.txtShareAmount_R1 = new System.Windows.Forms.TextBox();
-            this.txtArt_R1_L2 = new System.Windows.Forms.TextBox();
             this.label46 = new System.Windows.Forms.Label();
             this.txtAmout_R1_L2 = new System.Windows.Forms.TextBox();
             this.label44 = new System.Windows.Forms.Label();
@@ -181,7 +178,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
             this.lblTransModules = new System.Windows.Forms.Label();
             this.btnTransClearL1 = new System.Windows.Forms.Button();
             this.btnTransClearL2 = new System.Windows.Forms.Button();
@@ -537,16 +533,6 @@
             this.pbCSharp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbCSharp.TabIndex = 305;
             this.pbCSharp.TabStop = false;
-            // 
-            // tbBuyShareOtherCosts_old
-            // 
-            this.tbBuyShareOtherCosts_old.Location = new System.Drawing.Point(4, 24);
-            this.tbBuyShareOtherCosts_old.Name = "tbBuyShareOtherCosts_old";
-            this.tbBuyShareOtherCosts_old.Padding = new System.Windows.Forms.Padding(3);
-            this.tbBuyShareOtherCosts_old.Size = new System.Drawing.Size(943, 481);
-            this.tbBuyShareOtherCosts_old.TabIndex = 6;
-            this.tbBuyShareOtherCosts_old.Text = "Repartição de Custos";
-            this.tbBuyShareOtherCosts_old.UseVisualStyleBackColor = true;
             // 
             // tabUnitOfMeasure
             // 
@@ -1249,10 +1235,10 @@
             this.Qty,
             this.Uni});
             this.dataGridItemLines.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridItemLines.Location = new System.Drawing.Point(32, 235);
+            this.dataGridItemLines.Location = new System.Drawing.Point(36, 235);
             this.dataGridItemLines.Name = "dataGridItemLines";
             this.dataGridItemLines.ReadOnly = true;
-            this.dataGridItemLines.Size = new System.Drawing.Size(569, 193);
+            this.dataGridItemLines.Size = new System.Drawing.Size(565, 201);
             this.dataGridItemLines.TabIndex = 404;
             this.dataGridItemLines.Visible = false;
             // 
@@ -1923,6 +1909,7 @@
             this.btnTransClearSize1.Text = "Limpar";
             this.btnTransClearSize1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnTransClearSize1.UseVisualStyleBackColor = false;
+            this.btnTransClearSize1.Click += new System.EventHandler(this.btnTransClearSize1_Click);
             // 
             // btnTransClearColor1
             // 
@@ -1937,6 +1924,7 @@
             this.btnTransClearColor1.Text = "Limpar";
             this.btnTransClearColor1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnTransClearColor1.UseVisualStyleBackColor = false;
+            this.btnTransClearColor1.Click += new System.EventHandler(this.btnTransClearColor1_Click_1);
             // 
             // txtTransColor1
             // 
@@ -2019,6 +2007,7 @@
             // 
             // tbBuyShareOtherCosts
             // 
+            this.tbBuyShareOtherCosts.Controls.Add(this.btnClearRep1);
             this.tbBuyShareOtherCosts.Controls.Add(this.gbShareCost_2);
             this.tbBuyShareOtherCosts.Controls.Add(this.gbShareCost_1);
             this.tbBuyShareOtherCosts.Location = new System.Drawing.Point(4, 24);
@@ -2028,6 +2017,21 @@
             this.tbBuyShareOtherCosts.TabIndex = 3;
             this.tbBuyShareOtherCosts.Text = "Repartição de Custos";
             this.tbBuyShareOtherCosts.UseVisualStyleBackColor = true;
+            // 
+            // btnClearRep1
+            // 
+            this.btnClearRep1.BackColor = System.Drawing.SystemColors.Control;
+            this.btnClearRep1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnClearRep1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnClearRep1.Location = new System.Drawing.Point(471, 144);
+            this.btnClearRep1.Name = "btnClearRep1";
+            this.btnClearRep1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnClearRep1.Size = new System.Drawing.Size(57, 23);
+            this.btnClearRep1.TabIndex = 335;
+            this.btnClearRep1.Text = "Limpar";
+            this.btnClearRep1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnClearRep1.UseVisualStyleBackColor = false;
+            this.btnClearRep1.Click += new System.EventHandler(this.btnClearRep1_Click);
             // 
             // gbShareCost_2
             // 
@@ -2039,37 +2043,37 @@
             this.gbShareCost_2.Controls.Add(this.label42);
             this.gbShareCost_2.Controls.Add(this.label50);
             this.gbShareCost_2.Controls.Add(this.label52);
-            this.gbShareCost_2.Location = new System.Drawing.Point(270, 4);
+            this.gbShareCost_2.Location = new System.Drawing.Point(270, 2);
             this.gbShareCost_2.Name = "gbShareCost_2";
-            this.gbShareCost_2.Size = new System.Drawing.Size(258, 164);
+            this.gbShareCost_2.Size = new System.Drawing.Size(258, 142);
             this.gbShareCost_2.TabIndex = 336;
             this.gbShareCost_2.TabStop = false;
             this.gbShareCost_2.Text = "Repartição de Custos Automatica";
             // 
             // txtShareTransDocument_R2
             // 
-            this.txtShareTransDocument_R2.Location = new System.Drawing.Point(15, 59);
+            this.txtShareTransDocument_R2.Location = new System.Drawing.Point(15, 42);
             this.txtShareTransDocument_R2.Name = "txtShareTransDocument_R2";
             this.txtShareTransDocument_R2.Size = new System.Drawing.Size(42, 23);
             this.txtShareTransDocument_R2.TabIndex = 3;
             // 
             // txtShareTransSerial_R2
             // 
-            this.txtShareTransSerial_R2.Location = new System.Drawing.Point(65, 59);
+            this.txtShareTransSerial_R2.Location = new System.Drawing.Point(65, 42);
             this.txtShareTransSerial_R2.Name = "txtShareTransSerial_R2";
             this.txtShareTransSerial_R2.Size = new System.Drawing.Size(44, 23);
             this.txtShareTransSerial_R2.TabIndex = 4;
             // 
             // txtShareTransDocNumber_R2
             // 
-            this.txtShareTransDocNumber_R2.Location = new System.Drawing.Point(119, 59);
+            this.txtShareTransDocNumber_R2.Location = new System.Drawing.Point(119, 42);
             this.txtShareTransDocNumber_R2.Name = "txtShareTransDocNumber_R2";
             this.txtShareTransDocNumber_R2.Size = new System.Drawing.Size(56, 23);
             this.txtShareTransDocNumber_R2.TabIndex = 5;
             // 
             // txtShareAmount_R2
             // 
-            this.txtShareAmount_R2.Location = new System.Drawing.Point(186, 59);
+            this.txtShareAmount_R2.Location = new System.Drawing.Point(186, 42);
             this.txtShareAmount_R2.Name = "txtShareAmount_R2";
             this.txtShareAmount_R2.Size = new System.Drawing.Size(63, 23);
             this.txtShareAmount_R2.TabIndex = 6;
@@ -2080,7 +2084,7 @@
             this.label41.Cursor = System.Windows.Forms.Cursors.Default;
             this.label41.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label41.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label41.Location = new System.Drawing.Point(120, 36);
+            this.label41.Location = new System.Drawing.Point(120, 19);
             this.label41.Name = "label41";
             this.label41.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label41.Size = new System.Drawing.Size(61, 14);
@@ -2093,7 +2097,7 @@
             this.label42.Cursor = System.Windows.Forms.Cursors.Default;
             this.label42.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label42.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label42.Location = new System.Drawing.Point(66, 36);
+            this.label42.Location = new System.Drawing.Point(66, 19);
             this.label42.Name = "label42";
             this.label42.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label42.Size = new System.Drawing.Size(43, 15);
@@ -2106,7 +2110,7 @@
             this.label50.Cursor = System.Windows.Forms.Cursors.Default;
             this.label50.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label50.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label50.Location = new System.Drawing.Point(12, 36);
+            this.label50.Location = new System.Drawing.Point(12, 19);
             this.label50.Name = "label50";
             this.label50.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label50.Size = new System.Drawing.Size(40, 15);
@@ -2120,7 +2124,7 @@
             this.label52.Cursor = System.Windows.Forms.Cursors.Default;
             this.label52.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label52.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label52.Location = new System.Drawing.Point(202, 36);
+            this.label52.Location = new System.Drawing.Point(202, 19);
             this.label52.Name = "label52";
             this.label52.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label52.Size = new System.Drawing.Size(35, 15);
@@ -2129,14 +2133,11 @@
             // 
             // gbShareCost_1
             // 
-            this.gbShareCost_1.Controls.Add(this.lblStateR1);
             this.gbShareCost_1.Controls.Add(this.txtShareTransDocument_R1);
             this.gbShareCost_1.Controls.Add(this.txtShareTransSerial_R1);
-            this.gbShareCost_1.Controls.Add(this.txtArt_R1_L1);
             this.gbShareCost_1.Controls.Add(this.txtShareTransDocNumber_R1);
             this.gbShareCost_1.Controls.Add(this.txtAmout_R1_L1);
             this.gbShareCost_1.Controls.Add(this.txtShareAmount_R1);
-            this.gbShareCost_1.Controls.Add(this.txtArt_R1_L2);
             this.gbShareCost_1.Controls.Add(this.label46);
             this.gbShareCost_1.Controls.Add(this.txtAmout_R1_L2);
             this.gbShareCost_1.Controls.Add(this.label44);
@@ -2145,59 +2146,31 @@
             this.gbShareCost_1.Controls.Add(this.label10);
             this.gbShareCost_1.Controls.Add(this.label3);
             this.gbShareCost_1.Controls.Add(this.label38);
-            this.gbShareCost_1.Controls.Add(this.label39);
-            this.gbShareCost_1.Location = new System.Drawing.Point(6, 4);
+            this.gbShareCost_1.Location = new System.Drawing.Point(6, 2);
             this.gbShareCost_1.Name = "gbShareCost_1";
-            this.gbShareCost_1.Size = new System.Drawing.Size(258, 164);
+            this.gbShareCost_1.Size = new System.Drawing.Size(258, 142);
             this.gbShareCost_1.TabIndex = 335;
             this.gbShareCost_1.TabStop = false;
             this.gbShareCost_1.Text = "Repartição de Custos Manual";
             // 
-            // lblStateR1
-            // 
-            this.lblStateR1.AutoSize = true;
-            this.lblStateR1.BackColor = System.Drawing.Color.Transparent;
-            this.lblStateR1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblStateR1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStateR1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblStateR1.Location = new System.Drawing.Point(12, 19);
-            this.lblStateR1.Name = "lblStateR1";
-            this.lblStateR1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblStateR1.Size = new System.Drawing.Size(35, 15);
-            this.lblStateR1.TabIndex = 334;
-            this.lblStateR1.Text = "Valor";
-            // 
             // txtShareTransDocument_R1
             // 
-            this.txtShareTransDocument_R1.Location = new System.Drawing.Point(15, 59);
+            this.txtShareTransDocument_R1.Location = new System.Drawing.Point(15, 42);
             this.txtShareTransDocument_R1.Name = "txtShareTransDocument_R1";
             this.txtShareTransDocument_R1.Size = new System.Drawing.Size(42, 23);
             this.txtShareTransDocument_R1.TabIndex = 3;
             // 
             // txtShareTransSerial_R1
             // 
-            this.txtShareTransSerial_R1.Location = new System.Drawing.Point(65, 59);
+            this.txtShareTransSerial_R1.Location = new System.Drawing.Point(65, 42);
             this.txtShareTransSerial_R1.Name = "txtShareTransSerial_R1";
             this.txtShareTransSerial_R1.Size = new System.Drawing.Size(44, 23);
             this.txtShareTransSerial_R1.TabIndex = 4;
             this.txtShareTransSerial_R1.TextChanged += new System.EventHandler(this.txtShareTransSerial_TextChanged);
             // 
-            // txtArt_R1_L1
-            // 
-            this.txtArt_R1_L1.AcceptsReturn = true;
-            this.txtArt_R1_L1.BackColor = System.Drawing.SystemColors.Window;
-            this.txtArt_R1_L1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtArt_R1_L1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtArt_R1_L1.Location = new System.Drawing.Point(65, 108);
-            this.txtArt_R1_L1.MaxLength = 0;
-            this.txtArt_R1_L1.Name = "txtArt_R1_L1";
-            this.txtArt_R1_L1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtArt_R1_L1.Size = new System.Drawing.Size(77, 23);
-            this.txtArt_R1_L1.TabIndex = 326;
-            // 
             // txtShareTransDocNumber_R1
             // 
-            this.txtShareTransDocNumber_R1.Location = new System.Drawing.Point(119, 59);
+            this.txtShareTransDocNumber_R1.Location = new System.Drawing.Point(119, 42);
             this.txtShareTransDocNumber_R1.Name = "txtShareTransDocNumber_R1";
             this.txtShareTransDocNumber_R1.Size = new System.Drawing.Size(56, 23);
             this.txtShareTransDocNumber_R1.TabIndex = 5;
@@ -2208,33 +2181,20 @@
             this.txtAmout_R1_L1.BackColor = System.Drawing.SystemColors.Window;
             this.txtAmout_R1_L1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtAmout_R1_L1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtAmout_R1_L1.Location = new System.Drawing.Point(147, 108);
+            this.txtAmout_R1_L1.Location = new System.Drawing.Point(69, 87);
             this.txtAmout_R1_L1.MaxLength = 0;
             this.txtAmout_R1_L1.Name = "txtAmout_R1_L1";
             this.txtAmout_R1_L1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAmout_R1_L1.Size = new System.Drawing.Size(77, 23);
+            this.txtAmout_R1_L1.Size = new System.Drawing.Size(84, 23);
             this.txtAmout_R1_L1.TabIndex = 327;
             // 
             // txtShareAmount_R1
             // 
-            this.txtShareAmount_R1.Location = new System.Drawing.Point(186, 59);
+            this.txtShareAmount_R1.Location = new System.Drawing.Point(186, 42);
             this.txtShareAmount_R1.Name = "txtShareAmount_R1";
             this.txtShareAmount_R1.Size = new System.Drawing.Size(63, 23);
             this.txtShareAmount_R1.TabIndex = 6;
             this.txtShareAmount_R1.TextChanged += new System.EventHandler(this.txtShareAmount_R1_TextChanged);
-            // 
-            // txtArt_R1_L2
-            // 
-            this.txtArt_R1_L2.AcceptsReturn = true;
-            this.txtArt_R1_L2.BackColor = System.Drawing.SystemColors.Window;
-            this.txtArt_R1_L2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtArt_R1_L2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtArt_R1_L2.Location = new System.Drawing.Point(65, 136);
-            this.txtArt_R1_L2.MaxLength = 0;
-            this.txtArt_R1_L2.Name = "txtArt_R1_L2";
-            this.txtArt_R1_L2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtArt_R1_L2.Size = new System.Drawing.Size(77, 23);
-            this.txtArt_R1_L2.TabIndex = 328;
             // 
             // label46
             // 
@@ -2242,7 +2202,7 @@
             this.label46.Cursor = System.Windows.Forms.Cursors.Default;
             this.label46.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label46.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label46.Location = new System.Drawing.Point(120, 36);
+            this.label46.Location = new System.Drawing.Point(120, 19);
             this.label46.Name = "label46";
             this.label46.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label46.Size = new System.Drawing.Size(61, 14);
@@ -2255,11 +2215,11 @@
             this.txtAmout_R1_L2.BackColor = System.Drawing.SystemColors.Window;
             this.txtAmout_R1_L2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtAmout_R1_L2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtAmout_R1_L2.Location = new System.Drawing.Point(147, 136);
+            this.txtAmout_R1_L2.Location = new System.Drawing.Point(69, 115);
             this.txtAmout_R1_L2.MaxLength = 0;
             this.txtAmout_R1_L2.Name = "txtAmout_R1_L2";
             this.txtAmout_R1_L2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAmout_R1_L2.Size = new System.Drawing.Size(77, 23);
+            this.txtAmout_R1_L2.Size = new System.Drawing.Size(84, 23);
             this.txtAmout_R1_L2.TabIndex = 329;
             // 
             // label44
@@ -2268,7 +2228,7 @@
             this.label44.Cursor = System.Windows.Forms.Cursors.Default;
             this.label44.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label44.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label44.Location = new System.Drawing.Point(66, 36);
+            this.label44.Location = new System.Drawing.Point(66, 19);
             this.label44.Name = "label44";
             this.label44.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label44.Size = new System.Drawing.Size(43, 15);
@@ -2281,7 +2241,7 @@
             this.label5.Cursor = System.Windows.Forms.Cursors.Default;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label5.Location = new System.Drawing.Point(9, 139);
+            this.label5.Location = new System.Drawing.Point(9, 118);
             this.label5.Name = "label5";
             this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label5.Size = new System.Drawing.Size(57, 15);
@@ -2294,7 +2254,7 @@
             this.label43.Cursor = System.Windows.Forms.Cursors.Default;
             this.label43.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label43.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label43.Location = new System.Drawing.Point(12, 36);
+            this.label43.Location = new System.Drawing.Point(12, 19);
             this.label43.Name = "label43";
             this.label43.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label43.Size = new System.Drawing.Size(40, 15);
@@ -2307,7 +2267,7 @@
             this.label10.Cursor = System.Windows.Forms.Cursors.Default;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label10.Location = new System.Drawing.Point(9, 111);
+            this.label10.Location = new System.Drawing.Point(9, 90);
             this.label10.Name = "label10";
             this.label10.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label10.Size = new System.Drawing.Size(57, 15);
@@ -2321,7 +2281,7 @@
             this.label3.Cursor = System.Windows.Forms.Cursors.Default;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(202, 36);
+            this.label3.Location = new System.Drawing.Point(202, 19);
             this.label3.Name = "label3";
             this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label3.Size = new System.Drawing.Size(35, 15);
@@ -2335,26 +2295,12 @@
             this.label38.Cursor = System.Windows.Forms.Cursors.Default;
             this.label38.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label38.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label38.Location = new System.Drawing.Point(159, 90);
+            this.label38.Location = new System.Drawing.Point(85, 70);
             this.label38.Name = "label38";
             this.label38.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label38.Size = new System.Drawing.Size(39, 15);
             this.label38.TabIndex = 331;
             this.label38.Text = "Preço";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.BackColor = System.Drawing.Color.Transparent;
-            this.label39.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label39.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label39.Location = new System.Drawing.Point(94, 90);
-            this.label39.Name = "label39";
-            this.label39.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label39.Size = new System.Drawing.Size(42, 15);
-            this.label39.TabIndex = 330;
-            this.label39.Text = "Artigo";
             // 
             // lblTransModules
             // 
@@ -3377,7 +3323,6 @@
             this.tabEntities.Controls.Add(this.tabBuySaleTransaction);
             this.tabEntities.Controls.Add(this.tabAccount);
             this.tabEntities.Controls.Add(this.tabUnitOfMeasure);
-            this.tabEntities.Controls.Add(this.tbBuyShareOtherCosts_old);
             this.tabEntities.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabEntities.Enabled = false;
             this.tabEntities.Location = new System.Drawing.Point(0, 106);
@@ -3476,7 +3421,6 @@
         private System.Windows.Forms.CheckBox chkAPIDebugMode;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ComboBox cmbAPI;
-        private System.Windows.Forms.TabPage tbBuyShareOtherCosts_old;
         private System.Windows.Forms.TabPage tabUnitOfMeasure;
         public System.Windows.Forms.TextBox txtUnitOfMeasureName;
         public System.Windows.Forms.TextBox txtUnitOfMeasureId;
@@ -3668,11 +3612,9 @@
         private System.Windows.Forms.GroupBox gbShareCost_1;
         private System.Windows.Forms.TextBox txtShareTransDocument_R1;
         private System.Windows.Forms.TextBox txtShareTransSerial_R1;
-        private System.Windows.Forms.TextBox txtArt_R1_L1;
         private System.Windows.Forms.TextBox txtShareTransDocNumber_R1;
         private System.Windows.Forms.TextBox txtAmout_R1_L1;
         private System.Windows.Forms.TextBox txtShareAmount_R1;
-        private System.Windows.Forms.TextBox txtArt_R1_L2;
         private System.Windows.Forms.Label label46;
         private System.Windows.Forms.TextBox txtAmout_R1_L2;
         private System.Windows.Forms.Label label44;
@@ -3681,7 +3623,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.Label label39;
         private System.Windows.Forms.GroupBox gbShareCost_2;
         private System.Windows.Forms.TextBox txtShareTransDocument_R2;
         private System.Windows.Forms.TextBox txtShareTransSerial_R2;
@@ -3691,7 +3632,7 @@
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.Label label52;
-        private System.Windows.Forms.Label lblStateR1;
+        private System.Windows.Forms.Button btnClearRep1;
     }
 }
 

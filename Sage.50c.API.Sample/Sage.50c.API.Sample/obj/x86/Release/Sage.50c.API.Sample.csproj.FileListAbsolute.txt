@@ -37,7 +37,7 @@ C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\bin\x86\Release\Xtrem
 C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\bin\x86\Release\XtremeSuiteControls.dll
 C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\bin\x86\Release\XtremeTaskPanel.dll
 C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\bin\x86\Release\stdole.dll
-C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\obj\x86\Release\Sage.50c.API.Sample.csprojAssemblyReference.cache
+C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\bin\x86\Release\S50cAPI18.pdb
 C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\obj\x86\Release\Sage50c.API.Sample.fApi.resources
 C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\obj\x86\Release\Sage50c.API.Sample.FormExternalSignature.resources
 C:\Dev\POS\50c-API\Sage.50c.API.Sample\Sage.50c.API.Sample\obj\x86\Release\Sage50c.API.Sample.FormTenderCheck.resources
