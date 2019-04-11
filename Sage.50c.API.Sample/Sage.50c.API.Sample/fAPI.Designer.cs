@@ -1553,8 +1553,6 @@
             this.txtTransSerial.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtTransSerial.Size = new System.Drawing.Size(39, 23);
             this.txtTransSerial.TabIndex = 20;
-            this.txtTransSerial.TextChanged += new System.EventHandler(this.txtTransSerial_TextChanged);
-            this.txtTransSerial.Validating += new System.ComponentModel.CancelEventHandler(this.txtTransSerial_Validating);
             // 
             // txtTransDoc
             // 
@@ -1909,7 +1907,6 @@
             this.btnTransClearSize1.Text = "Limpar";
             this.btnTransClearSize1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnTransClearSize1.UseVisualStyleBackColor = false;
-            this.btnTransClearSize1.Click += new System.EventHandler(this.btnTransClearSize1_Click);
             // 
             // btnTransClearColor1
             // 
@@ -1924,7 +1921,6 @@
             this.btnTransClearColor1.Text = "Limpar";
             this.btnTransClearColor1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnTransClearColor1.UseVisualStyleBackColor = false;
-            this.btnTransClearColor1.Click += new System.EventHandler(this.btnTransClearColor1_Click_1);
             // 
             // txtTransColor1
             // 
@@ -2166,7 +2162,6 @@
             this.txtShareTransSerial_R1.Name = "txtShareTransSerial_R1";
             this.txtShareTransSerial_R1.Size = new System.Drawing.Size(44, 23);
             this.txtShareTransSerial_R1.TabIndex = 4;
-            this.txtShareTransSerial_R1.TextChanged += new System.EventHandler(this.txtShareTransSerial_TextChanged);
             // 
             // txtShareTransDocNumber_R1
             // 
@@ -2194,7 +2189,6 @@
             this.txtShareAmount_R1.Name = "txtShareAmount_R1";
             this.txtShareAmount_R1.Size = new System.Drawing.Size(63, 23);
             this.txtShareAmount_R1.TabIndex = 6;
-            this.txtShareAmount_R1.TextChanged += new System.EventHandler(this.txtShareAmount_R1_TextChanged);
             // 
             // label46
             // 
