@@ -165,6 +165,8 @@
             this.label50 = new System.Windows.Forms.Label();
             this.label52 = new System.Windows.Forms.Label();
             this.gbShareCost_1 = new System.Windows.Forms.GroupBox();
+            this.LblL2 = new System.Windows.Forms.Label();
+            this.LblL1 = new System.Windows.Forms.Label();
             this.txtShareTransDocument_R1 = new System.Windows.Forms.TextBox();
             this.txtShareTransSerial_R1 = new System.Windows.Forms.TextBox();
             this.txtShareTransDocNumber_R1 = new System.Windows.Forms.TextBox();
@@ -1235,10 +1237,10 @@
             this.Qty,
             this.Uni});
             this.dataGridItemLines.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridItemLines.Location = new System.Drawing.Point(36, 235);
+            this.dataGridItemLines.Location = new System.Drawing.Point(32, 235);
             this.dataGridItemLines.Name = "dataGridItemLines";
             this.dataGridItemLines.ReadOnly = true;
-            this.dataGridItemLines.Size = new System.Drawing.Size(565, 201);
+            this.dataGridItemLines.Size = new System.Drawing.Size(569, 201);
             this.dataGridItemLines.TabIndex = 404;
             this.dataGridItemLines.Visible = false;
             // 
@@ -2019,7 +2021,7 @@
             this.btnClearRep1.BackColor = System.Drawing.SystemColors.Control;
             this.btnClearRep1.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnClearRep1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnClearRep1.Location = new System.Drawing.Point(471, 144);
+            this.btnClearRep1.Location = new System.Drawing.Point(486, 146);
             this.btnClearRep1.Name = "btnClearRep1";
             this.btnClearRep1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnClearRep1.Size = new System.Drawing.Size(57, 23);
@@ -2039,37 +2041,37 @@
             this.gbShareCost_2.Controls.Add(this.label42);
             this.gbShareCost_2.Controls.Add(this.label50);
             this.gbShareCost_2.Controls.Add(this.label52);
-            this.gbShareCost_2.Location = new System.Drawing.Point(270, 2);
+            this.gbShareCost_2.Location = new System.Drawing.Point(279, 2);
             this.gbShareCost_2.Name = "gbShareCost_2";
-            this.gbShareCost_2.Size = new System.Drawing.Size(258, 142);
+            this.gbShareCost_2.Size = new System.Drawing.Size(264, 142);
             this.gbShareCost_2.TabIndex = 336;
             this.gbShareCost_2.TabStop = false;
             this.gbShareCost_2.Text = "Repartição de Custos Automatica";
             // 
             // txtShareTransDocument_R2
             // 
-            this.txtShareTransDocument_R2.Location = new System.Drawing.Point(15, 42);
+            this.txtShareTransDocument_R2.Location = new System.Drawing.Point(7, 42);
             this.txtShareTransDocument_R2.Name = "txtShareTransDocument_R2";
             this.txtShareTransDocument_R2.Size = new System.Drawing.Size(42, 23);
             this.txtShareTransDocument_R2.TabIndex = 3;
             // 
             // txtShareTransSerial_R2
             // 
-            this.txtShareTransSerial_R2.Location = new System.Drawing.Point(65, 42);
+            this.txtShareTransSerial_R2.Location = new System.Drawing.Point(59, 42);
             this.txtShareTransSerial_R2.Name = "txtShareTransSerial_R2";
             this.txtShareTransSerial_R2.Size = new System.Drawing.Size(44, 23);
             this.txtShareTransSerial_R2.TabIndex = 4;
             // 
             // txtShareTransDocNumber_R2
             // 
-            this.txtShareTransDocNumber_R2.Location = new System.Drawing.Point(119, 42);
+            this.txtShareTransDocNumber_R2.Location = new System.Drawing.Point(114, 42);
             this.txtShareTransDocNumber_R2.Name = "txtShareTransDocNumber_R2";
             this.txtShareTransDocNumber_R2.Size = new System.Drawing.Size(56, 23);
             this.txtShareTransDocNumber_R2.TabIndex = 5;
             // 
             // txtShareAmount_R2
             // 
-            this.txtShareAmount_R2.Location = new System.Drawing.Point(186, 42);
+            this.txtShareAmount_R2.Location = new System.Drawing.Point(180, 42);
             this.txtShareAmount_R2.Name = "txtShareAmount_R2";
             this.txtShareAmount_R2.Size = new System.Drawing.Size(63, 23);
             this.txtShareAmount_R2.TabIndex = 6;
@@ -2080,7 +2082,7 @@
             this.label41.Cursor = System.Windows.Forms.Cursors.Default;
             this.label41.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label41.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label41.Location = new System.Drawing.Point(120, 19);
+            this.label41.Location = new System.Drawing.Point(115, 19);
             this.label41.Name = "label41";
             this.label41.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label41.Size = new System.Drawing.Size(61, 14);
@@ -2093,7 +2095,7 @@
             this.label42.Cursor = System.Windows.Forms.Cursors.Default;
             this.label42.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label42.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label42.Location = new System.Drawing.Point(66, 19);
+            this.label42.Location = new System.Drawing.Point(60, 19);
             this.label42.Name = "label42";
             this.label42.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label42.Size = new System.Drawing.Size(43, 15);
@@ -2106,7 +2108,7 @@
             this.label50.Cursor = System.Windows.Forms.Cursors.Default;
             this.label50.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label50.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label50.Location = new System.Drawing.Point(12, 19);
+            this.label50.Location = new System.Drawing.Point(4, 19);
             this.label50.Name = "label50";
             this.label50.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label50.Size = new System.Drawing.Size(40, 15);
@@ -2120,7 +2122,7 @@
             this.label52.Cursor = System.Windows.Forms.Cursors.Default;
             this.label52.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label52.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label52.Location = new System.Drawing.Point(202, 19);
+            this.label52.Location = new System.Drawing.Point(196, 19);
             this.label52.Name = "label52";
             this.label52.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label52.Size = new System.Drawing.Size(35, 15);
@@ -2129,6 +2131,8 @@
             // 
             // gbShareCost_1
             // 
+            this.gbShareCost_1.Controls.Add(this.LblL2);
+            this.gbShareCost_1.Controls.Add(this.LblL1);
             this.gbShareCost_1.Controls.Add(this.txtShareTransDocument_R1);
             this.gbShareCost_1.Controls.Add(this.txtShareTransSerial_R1);
             this.gbShareCost_1.Controls.Add(this.txtShareTransDocNumber_R1);
@@ -2142,33 +2146,60 @@
             this.gbShareCost_1.Controls.Add(this.label10);
             this.gbShareCost_1.Controls.Add(this.label3);
             this.gbShareCost_1.Controls.Add(this.label38);
-            this.gbShareCost_1.Location = new System.Drawing.Point(6, 2);
+            this.gbShareCost_1.Location = new System.Drawing.Point(7, 2);
             this.gbShareCost_1.Name = "gbShareCost_1";
-            this.gbShareCost_1.Size = new System.Drawing.Size(258, 142);
+            this.gbShareCost_1.Size = new System.Drawing.Size(264, 142);
             this.gbShareCost_1.TabIndex = 335;
             this.gbShareCost_1.TabStop = false;
             this.gbShareCost_1.Text = "Repartição de Custos Manual";
             // 
+            // LblL2
+            // 
+            this.LblL2.BackColor = System.Drawing.Color.Transparent;
+            this.LblL2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.LblL2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblL2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.LblL2.Location = new System.Drawing.Point(56, 118);
+            this.LblL2.Name = "LblL2";
+            this.LblL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.LblL2.Size = new System.Drawing.Size(116, 15);
+            this.LblL2.TabIndex = 338;
+            // 
+            // LblL1
+            // 
+            this.LblL1.BackColor = System.Drawing.Color.Transparent;
+            this.LblL1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.LblL1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblL1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.LblL1.Location = new System.Drawing.Point(56, 90);
+            this.LblL1.Name = "LblL1";
+            this.LblL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.LblL1.Size = new System.Drawing.Size(116, 20);
+            this.LblL1.TabIndex = 337;
+            // 
             // txtShareTransDocument_R1
             // 
-            this.txtShareTransDocument_R1.Location = new System.Drawing.Point(15, 42);
+            this.txtShareTransDocument_R1.Location = new System.Drawing.Point(9, 42);
             this.txtShareTransDocument_R1.Name = "txtShareTransDocument_R1";
             this.txtShareTransDocument_R1.Size = new System.Drawing.Size(42, 23);
             this.txtShareTransDocument_R1.TabIndex = 3;
+            this.txtShareTransDocument_R1.LostFocus += new System.EventHandler(this.txtShareTransDocument_R1_LostFocus);
             // 
             // txtShareTransSerial_R1
             // 
-            this.txtShareTransSerial_R1.Location = new System.Drawing.Point(65, 42);
+            this.txtShareTransSerial_R1.Location = new System.Drawing.Point(62, 42);
             this.txtShareTransSerial_R1.Name = "txtShareTransSerial_R1";
             this.txtShareTransSerial_R1.Size = new System.Drawing.Size(44, 23);
             this.txtShareTransSerial_R1.TabIndex = 4;
+            this.txtShareTransSerial_R1.LostFocus += new System.EventHandler(this.txtShareTransSerial_R1_LostFocus);
             // 
             // txtShareTransDocNumber_R1
             // 
-            this.txtShareTransDocNumber_R1.Location = new System.Drawing.Point(119, 42);
+            this.txtShareTransDocNumber_R1.Location = new System.Drawing.Point(116, 42);
             this.txtShareTransDocNumber_R1.Name = "txtShareTransDocNumber_R1";
             this.txtShareTransDocNumber_R1.Size = new System.Drawing.Size(56, 23);
             this.txtShareTransDocNumber_R1.TabIndex = 5;
+            this.txtShareTransDocNumber_R1.LostFocus += new System.EventHandler(this.txtShareTransDocNumber_R1_LostFocus);
             // 
             // txtAmout_R1_L1
             // 
@@ -2176,16 +2207,16 @@
             this.txtAmout_R1_L1.BackColor = System.Drawing.SystemColors.Window;
             this.txtAmout_R1_L1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtAmout_R1_L1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtAmout_R1_L1.Location = new System.Drawing.Point(69, 87);
+            this.txtAmout_R1_L1.Location = new System.Drawing.Point(183, 87);
             this.txtAmout_R1_L1.MaxLength = 0;
             this.txtAmout_R1_L1.Name = "txtAmout_R1_L1";
             this.txtAmout_R1_L1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAmout_R1_L1.Size = new System.Drawing.Size(84, 23);
+            this.txtAmout_R1_L1.Size = new System.Drawing.Size(63, 23);
             this.txtAmout_R1_L1.TabIndex = 327;
             // 
             // txtShareAmount_R1
             // 
-            this.txtShareAmount_R1.Location = new System.Drawing.Point(186, 42);
+            this.txtShareAmount_R1.Location = new System.Drawing.Point(183, 42);
             this.txtShareAmount_R1.Name = "txtShareAmount_R1";
             this.txtShareAmount_R1.Size = new System.Drawing.Size(63, 23);
             this.txtShareAmount_R1.TabIndex = 6;
@@ -2196,7 +2227,7 @@
             this.label46.Cursor = System.Windows.Forms.Cursors.Default;
             this.label46.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label46.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label46.Location = new System.Drawing.Point(120, 19);
+            this.label46.Location = new System.Drawing.Point(117, 19);
             this.label46.Name = "label46";
             this.label46.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label46.Size = new System.Drawing.Size(61, 14);
@@ -2209,11 +2240,11 @@
             this.txtAmout_R1_L2.BackColor = System.Drawing.SystemColors.Window;
             this.txtAmout_R1_L2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtAmout_R1_L2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtAmout_R1_L2.Location = new System.Drawing.Point(69, 115);
+            this.txtAmout_R1_L2.Location = new System.Drawing.Point(183, 115);
             this.txtAmout_R1_L2.MaxLength = 0;
             this.txtAmout_R1_L2.Name = "txtAmout_R1_L2";
             this.txtAmout_R1_L2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAmout_R1_L2.Size = new System.Drawing.Size(84, 23);
+            this.txtAmout_R1_L2.Size = new System.Drawing.Size(63, 23);
             this.txtAmout_R1_L2.TabIndex = 329;
             // 
             // label44
@@ -2222,7 +2253,7 @@
             this.label44.Cursor = System.Windows.Forms.Cursors.Default;
             this.label44.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label44.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label44.Location = new System.Drawing.Point(66, 19);
+            this.label44.Location = new System.Drawing.Point(63, 19);
             this.label44.Name = "label44";
             this.label44.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label44.Size = new System.Drawing.Size(43, 15);
@@ -2248,7 +2279,7 @@
             this.label43.Cursor = System.Windows.Forms.Cursors.Default;
             this.label43.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label43.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label43.Location = new System.Drawing.Point(12, 19);
+            this.label43.Location = new System.Drawing.Point(6, 19);
             this.label43.Name = "label43";
             this.label43.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label43.Size = new System.Drawing.Size(40, 15);
@@ -2275,7 +2306,7 @@
             this.label3.Cursor = System.Windows.Forms.Cursors.Default;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label3.Location = new System.Drawing.Point(202, 19);
+            this.label3.Location = new System.Drawing.Point(199, 19);
             this.label3.Name = "label3";
             this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label3.Size = new System.Drawing.Size(35, 15);
@@ -2289,7 +2320,7 @@
             this.label38.Cursor = System.Windows.Forms.Cursors.Default;
             this.label38.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label38.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label38.Location = new System.Drawing.Point(85, 70);
+            this.label38.Location = new System.Drawing.Point(194, 70);
             this.label38.Name = "label38";
             this.label38.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label38.Size = new System.Drawing.Size(39, 15);
@@ -3627,6 +3658,8 @@
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.Button btnClearRep1;
+        private System.Windows.Forms.Label LblL2;
+        private System.Windows.Forms.Label LblL1;
     }
 }
 

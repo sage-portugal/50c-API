@@ -90,8 +90,8 @@ namespace Sage50c.API.Sample {
 
         void S50cAPIEngine_APIStarted(object sender, EventArgs e) {
 
-            gbShareCost_1.Enabled = false;
-            gbShareCost_2.Enabled = false;
+            gbShareCost_1.Enabled = S50cAPIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount;
+            gbShareCost_2.Enabled = S50cAPIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount;
 
             tabEntities.Enabled = true;
 
@@ -896,10 +896,6 @@ namespace Sage50c.API.Sample {
         #region Buy/Sale TRANSACTION
 
         private TransactionID TransactionRemove() {
-            gbShareCost_1.Enabled = false;
-            gbShareCost_2.Enabled = false;
-
-
             TransactionID transId = null;
             string transDoc = txtTransDoc.Text;
             string transSerial = txtTransSerial.Text;
@@ -960,11 +956,6 @@ namespace Sage50c.API.Sample {
         /// </summary>
         /// <returns></returns>
         private TransactionID TransactionInsert( bool suspendTransaction ) {
-
-            gbShareCost_1.Enabled = false;
-            gbShareCost_2.Enabled = false;
-
-
             string transDoc = txtTransDoc.Text;
             string transSerial = txtTransSerial.Text;
             double transDocNumber = 0;
@@ -1326,7 +1317,7 @@ namespace Sage50c.API.Sample {
                                 double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
                                 objDocumentDetailsList.DestinationTransDocNumber = Convert_Double;
                                 objDocumentDetailsList.DestinationLineItemID = 1;
-                                objDocumentDetailsList.ItemID = GeItemIDLineByLine(objDocumentDetailsList.DestinationTransSerial, objDocumentDetailsList.DestinationTransDocument, objDocumentDetailsList.DestinationTransDocNumber, objDocumentDetailsList.DestinationLineItemID);
+                                objDocumentDetailsList.ItemID = LblL1.Text;
                                 double.TryParse(txtAmout_R1_L1.Text, out Convert_Double);
                                 objDocumentDetailsList.UnitPrice = Convert_Double;
                                 objDocumentDetailsList.Quantity = 1;
@@ -1344,7 +1335,7 @@ namespace Sage50c.API.Sample {
                                 double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
                                 objDocumentDetailsList.DestinationTransDocNumber = Convert_Double;
                                 objDocumentDetailsList.DestinationLineItemID = 2;
-                                objDocumentDetailsList.ItemID = GeItemIDLineByLine(objDocumentDetailsList.DestinationTransSerial, objDocumentDetailsList.DestinationTransDocument, objDocumentDetailsList.DestinationTransDocNumber, objDocumentDetailsList.DestinationLineItemID);
+                                objDocumentDetailsList.ItemID = LblL2.Text;
                                 double.TryParse(txtAmout_R1_L2.Text, out Convert_Double);
                                 objDocumentDetailsList.UnitPrice = Convert_Double;
                                 objDocumentDetailsList.Quantity = 1;
@@ -1354,8 +1345,9 @@ namespace Sage50c.API.Sample {
                                 objDocument.Details.Add(objDocumentDetailsList);
 
                                 //Add Document to list of Documento to Share amount 
-                                objDocumentList.Add(objDocument);
                             }
+
+                            objDocumentList.Add(objDocument);
 
                         }
                         //End manual Share amount 
@@ -1686,9 +1678,6 @@ namespace Sage50c.API.Sample {
         /// Carrega um documento da base de dados e apresenta-o no ecran
         /// </summary>
         private void TransactionGet(bool suspendedTransaction) {
-            gbShareCost_1.Enabled = S50cAPIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount; 
-            gbShareCost_2.Enabled = S50cAPIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount; 
-
             Document doc = null;
             string transDoc = txtTransDoc.Text;
             string transSerial = txtTransSerial.Text;
@@ -1756,6 +1745,9 @@ namespace Sage50c.API.Sample {
                 txtTransCurrency.Text = trans.BaseCurrency.CurrencyID;
                 txtTransDate.Text = trans.CreateDate.ToShortDateString();
                 txtTransDoc.Text = trans.TransDocument;
+
+                chkTransTaxIncluded.Checked = trans.TransactionTaxIncluded;
+                
                 txtTransDocNumber.Text = trans.TransDocNumber.ToString();
                 if (doc.TransDocType != DocumentTypeEnum.dcTypeStock) {
                     txtPaymentID.Text = trans.Payment.PaymentID.ToString();
@@ -1850,21 +1842,18 @@ namespace Sage50c.API.Sample {
 
                     if (bsoItemTransaction.Transaction.BuyShareOtherCostList.Count > 0){
 
-
                         SimpleDocumentList objDocumentList = new SimpleDocumentList();
                         objDocumentList = bsoItemTransaction.Transaction.BuyShareOtherCostList;
 
-                      ItemTransaction objTempItemTransaction = new ItemTransaction();
-                       DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
+                        ItemTransaction objTempItemTransaction = new ItemTransaction();
+                        DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
 
-                    
+                        string sDetailKey;
                         foreach (SimpleDocument objDocument in objDocumentList) {
 
                             if (objDocument.Details.Count > 0) {
-
+                                
                                 objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber );
-                                int lineID = 1;
-                             
                                 
                                 txtShareTransSerial_R1.Text = objDocument.TransID.TransSerial;
                                 txtShareTransDocument_R1.Text = objDocument.TransID.TransDocument;
@@ -1872,16 +1861,20 @@ namespace Sage50c.API.Sample {
                                 txtShareAmount_R1.Text = objDocument.TotalTransactionAmount.ToString();
 
                                 foreach (ItemTransactionDetail objTempItemTransactionDetail in objTempItemTransaction.Details) {
+         
+                                    sDetailKey = objDocument.TransID.TransSerial + "|" + objDocument.TransID.TransDocument + "|" + objDocument.TransID.TransDocNumber.ToString() + "|" + objTempItemTransactionDetail.LineItemID.ToString() + "|" + objTempItemTransactionDetail.ItemID + "|" + objTempItemTransactionDetail.Color.ColorID + "|" + objTempItemTransactionDetail.Size.SizeID;
+
                                     switch ((int)objTempItemTransactionDetail.LineItemID) {
                                         case 1:
-                                            txtAmout_R1_L1.Text = GetBuyShareLineAmount( transSerial, transDoc, transDocNumber, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber, lineID).ToString() ; 
+                                            LblL1.Text = objDocument.Details.ItemByIndex[1].ItemID;
+                                            txtAmout_R1_L1.Text = objDocument.Details.ItemByIndex[1].UnitPrice.ToString() ; 
                                             break;
 
                                         case 2:
-                                            txtAmout_R1_L2.Text = GetBuyShareLineAmount( transSerial, transDoc, transDocNumber, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber, lineID).ToString();
+                                            LblL2.Text = objDocument.Details.ItemByIndex[2].ItemID;
+                                            txtAmout_R1_L2.Text = objDocument.Details.ItemByIndex[2].UnitPrice.ToString();
                                             break;
                                     }
-                                    lineID = lineID + 1;
                                 }
                             }
                             else {
@@ -3682,60 +3675,6 @@ namespace Sage50c.API.Sample {
             return result;
         }
 
-
-        private Double GetBuyShareLineAmount(string TransSerial, string TransDocument, double TransDocNumber, string ShareTransSerial, string ShareTransDocument, double ShareTransDocNumber , int lineNr) {
-            double result = 0;
-
-            if (ItemTransactionHelper.TransGetType(txtTransDoc.Text) == DocumentTypeEnum.dcTypePurchase) {
-
-                var mainProvider = S50cAPIEngine.DataManager.MainProvider;
-                ItemColor color = (ItemColor)cmbItemColor.SelectedItem;
-                string query = "SELECT ShareAmount  FROM [BuyShareOtherCostsDetails] " +
-                                " where TransSerial ='"+ TransSerial + "' and  TransDocument='"+ TransDocument + "' and TransDocNumber = "+ TransDocNumber  + " " +
-                                " and ShareTransSerial ='" + ShareTransSerial + "' and  ShareTransDocument='" + ShareTransDocument + "' and shareTransDocNumber = " + ShareTransDocNumber + "" +
-                                " and ShareLineItemID= " + lineNr ;
-
-                try {
-                    result = mainProvider.ExecuteScalar(query);
-                }
-                catch {
-                    result = 0;
-                }
-            }
-
-            return result;
-        }
-
-        private string GeItemIDLineByLine(string TransSerial, string TransDocument, double TransDocNumber, double lineNr) {
-            string result = "";
-
-            if (ItemTransactionHelper.TransGetType(txtTransDoc.Text) == DocumentTypeEnum.dcTypePurchase) {
-
-                var mainProvider = S50cAPIEngine.DataManager.MainProvider;
-                string query = " SELECT ItemID  FROM [BuyTransactionDetails] " +
-                                " where TransSerial ='" +  mainProvider.SQLFormatter.SQLString(TransSerial) + "'" +
-                                " and  TransDocument='" + mainProvider.SQLFormatter.SQLString(TransDocument) + "'" +
-                                " and TransDocNumber = " + mainProvider.SQLFormatter.SQLNumber(TransDocNumber) +
-                                " and LineItemID= " + mainProvider.SQLFormatter.SQLNumber(lineNr);
-
-                try {
-                    ADODB.Recordset rs = mainProvider.Execute(query);
-                    while (!rs.EOF) {
-                        result =(string)rs.Fields["ItemID"].Value;
-                        rs.MoveNext();
-                    }
-                    rs.Close();
-                    rs = null;
-                }
-                catch {
-                    result = "";
-                }
-            }
-
-            return result;
-        }
-
-
         private void txtItemId_Click(object sender, EventArgs e) {
             S50cAPIEngine.CoreGlobals.ShowKeyPadInContext(txtItemId, "Text", VBA.VbCallType.VbLet);
         }
@@ -3756,6 +3695,57 @@ namespace Sage50c.API.Sample {
             txtShareAmount_R2.Text = string.Empty;
             txtAmout_R1_L1.Text = string.Empty;
             txtAmout_R1_L2.Text = string.Empty;
+            LblL1.Text = string.Empty;
+            LblL2.Text = string.Empty;
         }
+
+        private void Fill_ShareDetails( string ShareTransSerial   ,  string ShareTransDocument , string ShareTransDocumentNumber) {
+
+            double TransDocNumber= 0;
+            double.TryParse(txtShareTransDocNumber_R1.Text, out TransDocNumber);
+            ItemTransaction objTempItemTransaction = new ItemTransaction();
+            DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
+
+            objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, ShareTransSerial, ShareTransDocument, TransDocNumber);
+            LblL1.Text = string.Empty;
+            LblL2.Text = string.Empty;
+
+            if (objTempItemTransaction != null) {
+                foreach (ItemTransactionDetail objTempItemTransactionDetail in objTempItemTransaction.Details) {
+
+                    switch ((int)objTempItemTransactionDetail.LineItemID) {
+                        case 1:
+                            LblL1.Text = objTempItemTransactionDetail.ItemID;
+                            break;
+
+                        case 2:
+                            LblL2.Text = objTempItemTransactionDetail.ItemID;
+                            break;
+                    }
+                }
+            }
+            else 
+            {
+                txtShareAmount_R1.Text = string.Empty;
+                txtAmout_R1_L1.Text = string.Empty;
+                txtAmout_R1_L2.Text = string.Empty;
+                LblL1.Text = string.Empty;
+                LblL2.Text = string.Empty;
+            }
+
+        }
+
+        private void txtShareTransDocument_R1_LostFocus(object sender, EventArgs e) {
+            Fill_ShareDetails(txtShareTransSerial_R1.Text, txtShareTransDocument_R1.Text, txtShareTransDocNumber_R1.Text);
+        }
+
+        private void txtShareTransSerial_R1_LostFocus(object sender, EventArgs e) {
+            Fill_ShareDetails(txtShareTransSerial_R1.Text, txtShareTransDocument_R1.Text, txtShareTransDocNumber_R1.Text);
+        }
+
+        private void txtShareTransDocNumber_R1_LostFocus(object sender, EventArgs e) {
+            Fill_ShareDetails(txtShareTransSerial_R1.Text, txtShareTransDocument_R1.Text, txtShareTransDocNumber_R1.Text);
+        }
+
     }
 }
