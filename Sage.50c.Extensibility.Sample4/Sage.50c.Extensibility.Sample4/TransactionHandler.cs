@@ -255,10 +255,9 @@ namespace Sage50c.ExtenderSample {
             //    e.result.ResultMessage = string.Empty;
             //}
 
-            // When forcing a taxable group,
-            // it is necessary to recalculate all the detail
-            itemTransactionDetail.TaxableGroupID = 3;
-            bsoItemTrans.BSOItemTransactionDetail.Calculate(itemTransactionDetail);
+            //// Uncomment to force a taxable group. In this case, it is necessary to recalculate all the detail
+            //itemTransactionDetail.TaxableGroupID = 3;
+            //bsoItemTrans.BSOItemTransactionDetail.Calculate(itemTransactionDetail);
 
             properties = null;
             itemTransactionDetail = null;
