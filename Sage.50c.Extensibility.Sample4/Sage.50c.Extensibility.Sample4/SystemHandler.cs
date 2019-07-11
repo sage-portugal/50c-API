@@ -101,8 +101,9 @@ namespace Sage50c.ExtenderSample {
 
             // Custom Functions
             // Remember, all functions declared here will not recorded on physical base
-            AddMyFunction("miXFunctionA", "PTG");
-            
+            AddMyFunction("XFunctionA", "PTG");
+            AddMyFunction("XPosDisplay", "PTG");
+
             //
             // COM mandatories
             object oMenuItem = menuItem;

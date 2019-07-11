@@ -65,6 +65,17 @@ namespace Sage50c.ExtenderSample {
         public static QuickSearch CreateQuickSearch(QuickSearchViews QuickSearchId, bool CacheIt) {
             return _rtlSysGlobalSettings.CreateQuickSearch(QuickSearchId, CacheIt);
         }
+
+        private static S50cUtil18.StringFunctions _stringFunctions = null;
+        public static S50cUtil18.StringFunctions StringFunctions {
+            get {
+                if(_stringFunctions == null) {
+                    _stringFunctions = new S50cUtil18.StringFunctions();
+                }
+                return _stringFunctions;
+            }
+        }
+
         #endregion
     }
 }
