@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCustomerDisplay));
             this.btnOK = new System.Windows.Forms.Button();
             this.txtDisplayLine1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -116,6 +117,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormCustomerDisplay";
             this.Text = "Mensagem para o cliente";
             this.Load += new System.EventHandler(this.FormCustomerDisplay_Load);
