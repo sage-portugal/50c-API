@@ -520,14 +520,14 @@ namespace Sage50c.ExtenderSample {
         }
         private void SendMessageToCustomerDisplay() {
             try {
-                bool bUseCustomerDisplay = bsoItemTrans.HaveCustomerLineDisplay;
-                bool bUseAdsViewer = bsoItemTrans.AdsviewerIsConnected;
+                bool bUseCustomerDisplay = bsoItemTrans.HaveLineDisplay;
+                bool bUseAdsViewer = bsoItemTrans.AdsViewerIsConnected;
                 string value = "Total: ";
                             
                 var newCustomerDisplay = new POSCustomerDisplays();
 
                 if (bUseCustomerDisplay) {
-                    newCustomerDisplay = bsoItemTrans.GetCustomerLineDisplay();
+                    newCustomerDisplay = bsoItemTrans.GetLineDisplay();
                     if (newCustomerDisplay == null) {
                         bUseCustomerDisplay = false;
                     }
@@ -564,7 +564,7 @@ namespace Sage50c.ExtenderSample {
                                         displayLine2 = displayLine2.Insert(value.Length, new string(' ', (displayColumns - displayLine2.Length) * 2));
                                     }
 
-                                    bsoItemTrans.CustomerDisplayMessage(displayLine1, displayLine2);
+                                    bsoItemTrans.LineDisplayMessage(displayLine1, displayLine2);
                                 }
 
                                 if (fCustomerDisplay.UseAdsViewer) {
@@ -576,7 +576,7 @@ namespace Sage50c.ExtenderSample {
                                     displayLine2 = value + bsoItemTrans.Transaction.BaseCurrency.Symbol + " " + fCustomerDisplay.DisplayValue.ToString();
                                     displayLine2 = displayLine2.Insert(value.Length, new string(' ', (displayColumns - displayLine2.Length) * 2));
 
-                                    bsoItemTrans.AdsviewerDisplayMessage(displayLine1, displayLine2);
+                                    bsoItemTrans.AdsViewerDisplayMessage(displayLine1, displayLine2);
                                 }
                             }
 
