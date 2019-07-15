@@ -523,7 +523,7 @@ namespace Sage50c.ExtenderSample {
                 bool bUseCustomerDisplay = bsoItemTrans.HaveLineDisplay;
                 bool bUseAdsViewer = bsoItemTrans.AdsViewerIsConnected;
                 string value = "Total: ";
-                            
+
                 var newCustomerDisplay = new POSCustomerDisplays();
 
                 if (bUseCustomerDisplay) {
@@ -531,58 +531,57 @@ namespace Sage50c.ExtenderSample {
                     if (newCustomerDisplay == null) {
                         bUseCustomerDisplay = false;
                     }
+                }
 
-                    if (bUseCustomerDisplay || bUseAdsViewer) {
-                        using (var fCustomerDisplay = new FormCustomerDisplay()) {
-                            fCustomerDisplay.UseCustomerDisplay = bUseCustomerDisplay;
-                            fCustomerDisplay.UseAdsViewer = bUseAdsViewer;
+                if (bUseCustomerDisplay || bUseAdsViewer) {
+                    using (var fCustomerDisplay = new FormCustomerDisplay()) {
+                        fCustomerDisplay.UseCustomerDisplay = bUseCustomerDisplay;
+                        fCustomerDisplay.UseAdsViewer = bUseAdsViewer;
 
-                            fCustomerDisplay.DisplayLine1 = "Publicidade linha 1";
-                            fCustomerDisplay.DisplayValue = 123.45;
+                        fCustomerDisplay.DisplayLine1 = "Publicidade linha 1";
+                        fCustomerDisplay.DisplayValue = 123.45;
 
-                            string displayLine1 = null;
-                            string displayLine2 = null;
-                            short displayColumns = 0;
-                            if (fCustomerDisplay.ShowDisplayMessage() == System.Windows.Forms.DialogResult.OK) {
-                                short displayLines = 2;
-                                short displayCharset = 0;
-                                if (fCustomerDisplay.UseCustomerDisplay) {
-                                    var deviceDescription = newCustomerDisplay.Description;
-                                    short.TryParse(newCustomerDisplay.DisplayLines, out displayLines);
-                                    short.TryParse(newCustomerDisplay.DisplayColumns, out displayColumns);
-                                    displayCharset = newCustomerDisplay.SupportedCharSet;
+                        string displayLine1 = null;
+                        string displayLine2 = null;
+                        short displayColumns = 0;
+                        if (fCustomerDisplay.ShowDisplayMessage() == System.Windows.Forms.DialogResult.OK) {
+                            short displayLines = 2;
+                            short displayCharset = 0;
+                            if (fCustomerDisplay.UseCustomerDisplay) {
+                                var deviceDescription = newCustomerDisplay.Description;
+                                short.TryParse(newCustomerDisplay.DisplayLines, out displayLines);
+                                short.TryParse(newCustomerDisplay.DisplayColumns, out displayColumns);
+                                displayCharset = newCustomerDisplay.SupportedCharSet;
 
-                                    displayLine1 = fCustomerDisplay.DisplayLine1;
+                                displayLine1 = fCustomerDisplay.DisplayLine1;
 
-                                    if (displayLine1.Length > displayColumns) {
-                                        displayLine1 = displayLine1.Substring(0, displayColumns);
-                                    }
-                                    displayLine1 = MyApp.StringFunctions.GetOEMString(displayCharset, displayLine1);
-                                    //
-                                    if (displayLines > 1) {
-                                        displayLine2 = value + bsoItemTrans.Transaction.BaseCurrency.Symbol + " " + fCustomerDisplay.DisplayValue.ToString();
-                                        displayLine2 = displayLine2.Insert(value.Length, new string(' ', (displayColumns - displayLine2.Length) * 2));
-                                    }
-
-                                    bsoItemTrans.LineDisplayMessage(displayLine1, displayLine2);
+                                if (displayLine1.Length > displayColumns) {
+                                    displayLine1 = displayLine1.Substring(0, displayColumns);
                                 }
-
-                                if (fCustomerDisplay.UseAdsViewer) {
-                                    displayColumns = 28;
-                                    displayLine1 = fCustomerDisplay.DisplayLine1;
-                                    if (displayLine1.Length > displayColumns) {
-                                        displayLine1 = displayLine1.Substring(0, displayColumns);
-                                    }
+                                displayLine1 = MyApp.StringFunctions.GetOEMString(displayCharset, displayLine1);
+                                //
+                                if (displayLines > 1) {
                                     displayLine2 = value + bsoItemTrans.Transaction.BaseCurrency.Symbol + " " + fCustomerDisplay.DisplayValue.ToString();
                                     displayLine2 = displayLine2.Insert(value.Length, new string(' ', (displayColumns - displayLine2.Length) * 2));
-
-                                    bsoItemTrans.AdsViewerDisplayMessage(displayLine1, displayLine2);
                                 }
+
+                                bsoItemTrans.LineDisplayMessage(displayLine1, displayLine2);
                             }
 
-                        }
-                    }
+                            if (fCustomerDisplay.UseAdsViewer) {
+                                displayColumns = 28;
+                                displayLine1 = fCustomerDisplay.DisplayLine1;
+                                if (displayLine1.Length > displayColumns) {
+                                    displayLine1 = displayLine1.Substring(0, displayColumns);
+                                }
+                                displayLine2 = value + bsoItemTrans.Transaction.BaseCurrency.Symbol + " " + fCustomerDisplay.DisplayValue.ToString();
+                                displayLine2 = displayLine2.Insert(value.Length, new string(' ', (displayColumns - displayLine2.Length) * 2));
 
+                                bsoItemTrans.AdsViewerDisplayMessage(displayLine1, displayLine2);
+                            }
+                        }
+
+                    }
                 };
                 //
             }
