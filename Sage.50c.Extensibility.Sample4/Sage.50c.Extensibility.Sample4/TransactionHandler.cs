@@ -51,7 +51,7 @@ namespace Sage50c.ExtenderSample {
             //e.result.Success = true;
         }
 
-        public void SetHeaderEventsHandler(ExtenderEvents e) { 
+        public void SetHeaderEventsHandler(ExtenderEvents e) {
             headerEvents = e;
 
             headerEvents.OnInitialize += HeaderEvents_OnInitialize;
@@ -94,8 +94,8 @@ namespace Sage50c.ExtenderSample {
             var transaction = (ItemTransaction) propList.get_Value("Data");
 
             if (!forDeletion) {
-                foreach( ItemTransactionDetail detail in transaction.Details) {
-                    if( detail.FamilyID == 1) {
+                foreach (ItemTransactionDetail detail in transaction.Details) {
+                    if (detail.FamilyID == 1) {
                         e.result.ResultMessage = string.Format("HeaderEvents_OnValidating: Não pode vender artigos da familia {0}", detail.FamilyName);
                         e.result.Success = false;
                         break;
@@ -176,7 +176,7 @@ namespace Sage50c.ExtenderSample {
             switch (menuId) {
                 case "mniXTrans1":
                     //System.Windows.Forms.MessageBox.Show("YAY");
-                    double qty = rnd.Next(1, 10) + (double)rnd.Next(0, 99)/100;
+                    double qty = rnd.Next(1, 10) + (double)rnd.Next(0, 99) / 100;
                     double unitPrice = rnd.Next(1, 100) + (double)rnd.Next(0, 99) / 100;
 
                     var item = MyApp.DSOCache.ItemProvider.GetItem("aaa", MyApp.SystemSettings.BaseCurrency);
@@ -203,36 +203,41 @@ namespace Sage50c.ExtenderSample {
                         bsoItemTrans.AddDetail(detail);
                     }
                     break;
-                case "miXFunctionA":
+                case "XFunctionA":
                     MessageBox.Show("Your function here...");
                     break;
+
+                case "XPosDisplay":
+                    SendMessageToCustomerDisplay();
+                    break;
+
             }
         }
 
-            //switch (e.get_data().ToString().ToLower()) {
-            //    case "lepeso":
-            //        if (bsoItemTrans.BSOItemTransactionDetail != null) {
-            //            bsoItemTrans.BSOItemTransactionDetail.HandleItemDetail("9.99", TransDocFieldIDEnum.fldQuantity);
+        //switch (e.get_data().ToString().ToLower()) {
+        //    case "lepeso":
+        //        if (bsoItemTrans.BSOItemTransactionDetail != null) {
+        //            bsoItemTrans.BSOItemTransactionDetail.HandleItemDetail("9.99", TransDocFieldIDEnum.fldQuantity);
 
-            //            e.result.Success = true;
-            //            e.result.ResultMessage = string.Empty;
-            //        }
-            //        else {
-            //            e.result.Success = false;
-            //            e.result.ResultMessage = "Não foi posivel obter o controlador da linha (BSOItemTransactionDetail)";
-            //        }
-            //        break;
-            //}
-            //}
+        //            e.result.Success = true;
+        //            e.result.ResultMessage = string.Empty;
+        //        }
+        //        else {
+        //            e.result.Success = false;
+        //            e.result.ResultMessage = "Não foi posivel obter o controlador da linha (BSOItemTransactionDetail)";
+        //        }
+        //        break;
+        //}
+        //}
 
-            #endregion
+        #endregion
 
 
-            /// <summary>
-            /// EXEMPLO DE VALIDAÇÃO NA LINHA   
-            /// </summary>
-            /// <param name="Sender"></param>
-            /// <param name="e"></param>
+        /// <summary>
+        /// EXEMPLO DE VALIDAÇÃO NA LINHA   
+        /// </summary>
+        /// <param name="Sender"></param>
+        /// <param name="e"></param>
         void DetailEvents_OnValidating(object Sender, ExtenderEventArgs e) {
             ExtendedPropertyList properties = (ExtendedPropertyList)e.get_data();
             ItemTransactionDetail itemTransactionDetail = (ItemTransactionDetail)properties.get_Value("Data");
@@ -504,7 +509,6 @@ namespace Sage50c.ExtenderSample {
 
         }
 
-
         public void Dispose() {
             headerEvents = null;
             detailEvents = null;
@@ -513,6 +517,78 @@ namespace Sage50c.ExtenderSample {
                 bsoItemTrans = null;
             }
             propChangeNotifier = null;
+        }
+        private void SendMessageToCustomerDisplay() {
+            try {
+                bool bUseCustomerDisplay = bsoItemTrans.HaveLineDisplay;
+                bool bUseAdsViewer = bsoItemTrans.AdsViewerIsConnected;
+                string value = "Total: ";
+
+                var newCustomerDisplay = new POSCustomerDisplays();
+
+                if (bUseCustomerDisplay) {
+                    newCustomerDisplay = bsoItemTrans.GetLineDisplay();
+                    if (newCustomerDisplay == null) {
+                        bUseCustomerDisplay = false;
+                    }
+                }
+
+                if (bUseCustomerDisplay || bUseAdsViewer) {
+                    using (var fCustomerDisplay = new FormCustomerDisplay()) {
+                        fCustomerDisplay.UseCustomerDisplay = bUseCustomerDisplay;
+                        fCustomerDisplay.UseAdsViewer = bUseAdsViewer;
+
+                        fCustomerDisplay.DisplayLine1 = "Publicidade linha 1";
+                        fCustomerDisplay.DisplayValue = 123.45;
+
+                        string displayLine1 = null;
+                        string displayLine2 = null;
+                        short displayColumns = 0;
+                        if (fCustomerDisplay.ShowDisplayMessage() == System.Windows.Forms.DialogResult.OK) {
+                            short displayLines = 2;
+                            short displayCharset = 0;
+                            if (fCustomerDisplay.UseCustomerDisplay) {
+                                var deviceDescription = newCustomerDisplay.Description;
+                                short.TryParse(newCustomerDisplay.DisplayLines, out displayLines);
+                                short.TryParse(newCustomerDisplay.DisplayColumns, out displayColumns);
+                                displayCharset = newCustomerDisplay.SupportedCharSet;
+
+                                displayLine1 = fCustomerDisplay.DisplayLine1;
+
+                                if (displayLine1.Length > displayColumns) {
+                                    displayLine1 = displayLine1.Substring(0, displayColumns);
+                                }
+                                displayLine1 = MyApp.StringFunctions.GetOEMString(displayCharset, displayLine1);
+                                //
+                                if (displayLines > 1) {
+                                    displayLine2 = value + bsoItemTrans.Transaction.BaseCurrency.Symbol + " " + fCustomerDisplay.DisplayValue.ToString();
+                                    displayLine2 = displayLine2.Insert(value.Length, new string(' ', (displayColumns - displayLine2.Length) * 2));
+                                }
+
+                                bsoItemTrans.LineDisplayMessage(displayLine1, displayLine2);
+                            }
+
+                            if (fCustomerDisplay.UseAdsViewer) {
+                                displayColumns = 28;
+                                displayLine1 = fCustomerDisplay.DisplayLine1;
+                                if (displayLine1.Length > displayColumns) {
+                                    displayLine1 = displayLine1.Substring(0, displayColumns);
+                                }
+                                displayLine2 = value + bsoItemTrans.Transaction.BaseCurrency.Symbol + " " + fCustomerDisplay.DisplayValue.ToString();
+                                displayLine2 = displayLine2.Insert(value.Length, new string(' ', (displayColumns - displayLine2.Length) * 2));
+
+                                bsoItemTrans.AdsViewerDisplayMessage(displayLine1, displayLine2);
+                            }
+                        }
+
+                    }
+                };
+                //
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
         }
     }
 }
