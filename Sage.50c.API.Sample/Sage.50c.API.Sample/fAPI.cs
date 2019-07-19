@@ -1190,6 +1190,10 @@ namespace Sage50c.API.Sample {
                 double taxPercent = 0; double.TryParse(txtTransTaxRateL1.Text, out taxPercent);
                 short wareHouseId = 0; short.TryParse(txtTransWarehouseL1.Text, out wareHouseId);
                 Item item = TransGetCreateItem(txtTransItemL1.Text, string.Empty, string.Empty, txtTransUnL1.Text, string.Empty, 1, false, false, 0, 0, taxPercent);
+                //Alterar Eco taxa aqui
+                //item.ItemTax = 1.3;
+                //item.ItemTax2 = 0;
+                //item.ItemTax3 = 0;
                 short colorId = 0;
                 short.TryParse(txtTransColor1.Text, out colorId);
                 short sizeId = 0;
@@ -1206,6 +1210,10 @@ namespace Sage50c.API.Sample {
                     taxPercent = 0; double.TryParse(txtTransTaxRateL2.Text, out taxPercent);
                     wareHouseId = 0; short.TryParse(txtTransWarehouseL2.Text, out wareHouseId);
                     item = TransGetCreateItem(txtTransItemL2.Text, string.Empty, string.Empty, txtTransUnL2.Text, string.Empty, 1, false, false, 0, 0, taxPercent);
+                    //Alterar Eco taxa aqui
+                    //item.ItemTax = 1.3;
+                    //item.ItemTax2 = 0;
+                    //item.ItemTax3 = 0;
                     colorId = 0;
                     short.TryParse(txtTransColor1.Text, out colorId);
                     sizeId = 0;
@@ -1588,7 +1596,14 @@ namespace Sage50c.API.Sample {
             // Definir a unidade de venda/compra
             transDetail.SetUnitOfSaleID(unitOfMeasureId);
             //Definir os impostos
-            short TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, systemSettings.SystemInfo.DefaultCountryID, systemSettings.SystemInfo.TaxRegionID);
+            short TaxGroupId = 0;
+            if (taxPercent == 0 && item.TaxableGroupID != 0){
+                //se não preencher a taxa, carrega o imposto do artigo
+                TaxGroupId = item.TaxableGroupID;
+            }
+            else {
+                TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, systemSettings.SystemInfo.DefaultCountryID, systemSettings.SystemInfo.TaxRegionID);
+            }
             transDetail.TaxableGroupID = TaxGroupId;
             //*** Uncomment for discout
             //transDetail.DiscountPercent = 10
@@ -1669,6 +1684,14 @@ namespace Sage50c.API.Sample {
                     }
                 }
             }
+
+            transDetail .Graduation = item.Graduation;
+            transDetail.ItemTax = item.ItemTax;
+            transDetail.ItemTax2 = item.ItemTax2;
+            transDetail.ItemTax3 = item.ItemTax3;
+            //.WeightUnitOfMeasure = item.WeightUnitOfMeasure;
+            //.WeightMeasure = item.WeightMeasure;
+
             item = null;
             //
             trans.Details.Add(transDetail);
