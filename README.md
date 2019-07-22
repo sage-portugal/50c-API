@@ -8,7 +8,7 @@ Utilizar o exemplo da API com Visual Studio 2019
 
 2. Abrir e utilizar o exemplo
 2.1. Clonar o o código exemplo:
-![alt text](https://github.com/sage-portugal/50c-API/doc/images/clone.png)
+![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/clone.png)
 
 2.2. Abrir a solução com o visual studio 2019
 2.3. Na primeira vez que se abre o projeto, é possivel que todas as referências à API não estejam a apontar para o lugar correto.
