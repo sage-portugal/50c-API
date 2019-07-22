@@ -2725,6 +2725,22 @@ namespace Sage50c.API.Sample {
             //
             accountTrans.TenderLineItems = AccountTransGetTenderLineItems( accountTransManager );
             //
+            // Abrir automaticamente o caixa, se estiver fechar
+            var tillId = S50cAPIEngine.SystemSettings.WorkstationInfo.DefaultTillID;
+            var tillManager = new TillManager();
+            var tillSetResult = accountTransManager.SetTillID(tillId);
+            var sessions = S50cAPIEngine.DSOCache.TillSessionProvider.GetOpenedTillSessions(tillId, accountTransManager.Transaction.CreateDate);
+            TillSession tillSession = null;
+            if (sessions.Length == 1) {
+                if (!tillManager.CheckTransactionTillSession(accountTransManager.Transaction, 0, ref tillSession))
+                    throw new Exception("Não foi possível abrir o Caixa");
+            }
+            //
+            foreach (TenderLineItem tenderLine in accountTrans.TenderLineItems) {
+                tenderLine.TillId = accountTrans.Till.TillID;
+                tenderLine.CreateDate = accountTransManager.Transaction.CreateDate;
+            }
+            //
             // Gravar
             if (!accountTransManager.SaveDocumentEx(false)) {
                 throw new Exception("A gravação do recibo falhou!");
