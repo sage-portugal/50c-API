@@ -1384,7 +1384,9 @@ namespace Sage50c.API.Sample {
                     }
                     //FIM
 
-                    
+                    // Abrir automaticamente o caixa, se estiver fechar
+                    bsoItemTransaction.EnsureOpenTill(bsoItemTransaction.Transaction.Till.TillID);
+                    //
                     bsoItemTransaction.SaveDocument(false, false);
                     //
                     if (!transactionError)
@@ -2726,20 +2728,7 @@ namespace Sage50c.API.Sample {
             accountTrans.TenderLineItems = AccountTransGetTenderLineItems( accountTransManager );
             //
             // Abrir automaticamente o caixa, se estiver fechar
-            var tillId = S50cAPIEngine.SystemSettings.WorkstationInfo.DefaultTillID;
-            var tillManager = new TillManager();
-            var tillSetResult = accountTransManager.SetTillID(tillId);
-            var sessions = S50cAPIEngine.DSOCache.TillSessionProvider.GetOpenedTillSessions(tillId, accountTransManager.Transaction.CreateDate);
-            TillSession tillSession = null;
-            if (sessions.Length == 1) {
-                if (!tillManager.CheckTransactionTillSession(accountTransManager.Transaction, 0, ref tillSession))
-                    throw new Exception("Não foi possível abrir o Caixa");
-            }
-            //
-            foreach (TenderLineItem tenderLine in accountTrans.TenderLineItems) {
-                tenderLine.TillId = accountTrans.Till.TillID;
-                tenderLine.CreateDate = accountTransManager.Transaction.CreateDate;
-            }
+            accountTransManager.EnsureOpenTill( accountTrans.Till.TillID );
             //
             // Gravar
             if (!accountTransManager.SaveDocumentEx(false)) {
