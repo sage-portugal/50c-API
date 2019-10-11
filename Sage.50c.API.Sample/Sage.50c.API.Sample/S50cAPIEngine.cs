@@ -117,28 +117,14 @@ public static class S50cAPIEngine {
         s50cPrintGlobals = new S50cPrint18.GlobalSettings();
         s50cBLGlobals = new S50cBL18.GlobalSettings();
         //
-        dynamic systemStarter = null;
-        if ( Sage50c.API.Sample.Properties.Settings.Default.S50cSGCOAPI ){
-            // Legacy DEPRECATED Startup - CGCO ONLY
-            systemStarter = new S50cAPICGCO18.SystemStarter();
-            systemStarter.DebugMode = DebugMode;
+        // NEW RECOMMENDED Startup - CGCO / CRTL
+        var systemStarter = new S50cAPI18.SystemStarter();
+        systemStarter.DebugMode = DebugMode;
 
-            if (systemStarter.Initialize(CompanyId) != 0) {
-                string initError = systemStarter.InitializationError;
-                systemStarter = null;
-                throw new Exception(initError);
-            }
-        }
-        else {
-            // NEW RECOMMENDED Startup - CGCO / CRTL
-            systemStarter = new S50cAPI18.SystemStarter();
-            systemStarter.DebugMode = DebugMode;
-
-            if (systemStarter.Initialize(ProductCode, CompanyId) != 0) {
-                string initError = systemStarter.InitializationError;
-                systemStarter = null;
-                throw new Exception(initError);
-            }
+        if (systemStarter.Initialize(ProductCode, CompanyId) != 0) {
+            string initError = systemStarter.InitializationError;
+            systemStarter = null;
+            throw new Exception(initError);
         }
         // Eventos de erros e avisos vindos da API
         dataManagerEvents = (S50cData18.DataManagerEventsClass)s50cDataGlobals.DataManager.Events;
