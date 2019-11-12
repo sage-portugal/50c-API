@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.50c.Extensibility.Sample4.10", "Sage.50c.Extensibility.Sample4\Sage.50c.Extensibility.Sample4.10.csproj", "{258F652E-3590-405E-90C3-20B91267C993}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage50c.Extensibility.Sample", "Sage50c.Extensibility.Sample\Sage50c.Extensibility.Sample.csproj", "{258F652E-3590-405E-90C3-20B91267C993}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
