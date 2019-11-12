@@ -6,6 +6,7 @@ using S50cBL18;
 using S50cSys18;
 using S50cBO18;
 using System.Windows.Forms;
+using Sage50c.API;
 
 namespace Sage50c.ExtenderSample {
     class TransactionHandler : IDisposable {
@@ -179,7 +180,7 @@ namespace Sage50c.ExtenderSample {
                     double qty = rnd.Next(1, 10) + (double)rnd.Next(0, 99) / 100;
                     double unitPrice = rnd.Next(1, 100) + (double)rnd.Next(0, 99) / 100;
 
-                    var item = MyApp.DSOCache.ItemProvider.GetItem("aaa", MyApp.SystemSettings.BaseCurrency);
+                    var item = APIEngine.DSOCache.ItemProvider.GetItem("aaa", APIEngine.SystemSettings.BaseCurrency);
                     if (item != null) {
                         var detail = new ItemTransactionDetail() {
                             LineItemID = bsoItemTrans.Transaction.Details.Count + 1,
@@ -284,10 +285,10 @@ namespace Sage50c.ExtenderSample {
                                      string serialNumberPropId, string serialNumberPropValue,
                                      string lotId, string lotDescription, DateTime lotExpDate, short lotReturnWeek, short lotReturnYear, short lotEditionId) {
 
-            var doc = MyApp.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
+            var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
             ItemTransactionDetail transDetail = new ItemTransactionDetail();
-            transDetail.BaseCurrency = MyApp.SystemSettings.BaseCurrency;
+            transDetail.BaseCurrency = APIEngine.SystemSettings.BaseCurrency;
             transDetail.ItemID = item.ItemID;
             transDetail.CreateDate = trans.CreateDate;
             transDetail.CreateTime = trans.CreateTime;
@@ -306,13 +307,13 @@ namespace Sage50c.ExtenderSample {
             // Definir a unidade de venda/compra
             transDetail.SetUnitOfSaleID(unitOfMeasureId);
             //Definir os impostos
-            short TaxGroupId = MyApp.DSOCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, MyApp.SystemSettings.SystemInfo.DefaultCountryID, MyApp.SystemSettings.SystemInfo.TaxRegionID);
+            short TaxGroupId = APIEngine.DSOCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, APIEngine.SystemSettings.SystemInfo.DefaultCountryID, APIEngine.SystemSettings.SystemInfo.TaxRegionID);
             transDetail.TaxableGroupID = TaxGroupId;
             //*** Uncomment for discout
             //transDetail.DiscountPercent = 10
             //
             // Se o Armazém não existir, utilizar o default que se encontra no documento.
-            if (MyApp.DSOCache.WarehouseProvider.WarehouseExists(whareHouseId))
+            if (APIEngine.DSOCache.WarehouseProvider.WarehouseExists(whareHouseId))
                 transDetail.WarehouseID = whareHouseId;
             else
                 transDetail.WarehouseID = doc.Defaults.Warehouse;
@@ -330,7 +331,7 @@ namespace Sage50c.ExtenderSample {
             }
 
             //// Cores e tamanhos
-            //if (MyApp.SystemSettings.SystemInfo.UseColorSizeItems ) {
+            //if (APIEngine.SystemSettings.SystemInfo.UseColorSizeItems ) {
             //    // Cores
             //    if (item.Colors.Count > 0) {
             //        ItemColor color = null;
@@ -362,7 +363,7 @@ namespace Sage50c.ExtenderSample {
             //
             //// Lotes - Edições
             //// Verificar se estão ativados no sistema e se foram marcados no documento
-            //if (MyApp.SystemSettings.SystemInfo.UseKiosksItems 
+            //if (APIEngine.SystemSettings.SystemInfo.UseKiosksItems 
             //    && (item.ItemType == ItemTypeEnum.itmLot || item.ItemType == ItemTypeEnum.itmEdition)) {
             //    ItemLot lot = null;
             //    if (item.LotList.Count > 0) {
@@ -388,7 +389,7 @@ namespace Sage50c.ExtenderSample {
             //        lot.ReturnWeek = lotReturnWeek;
             //        lot.ReturnYear = lotReturnYear;
             //        lot.ItemLotDescription = item.Description;
-            //        lot.SupplierItemID = MyApp.DSOCache.ItemProvider.GetItemSupplierID(item.ItemID, item.SupplierID);
+            //        lot.SupplierItemID = APIEngine.DSOCache.ItemProvider.GetItemSupplierID(item.ItemID, item.SupplierID);
             //    }
             //    if (lot == null) {
             //        throw new Exception(string.Format("O lote [{0}], Edição [{1}] não existe.", lotId, lotEditionId));
@@ -411,7 +412,7 @@ namespace Sage50c.ExtenderSample {
             //// ATENÇÃO: As regras de verificação das propriedades não estão implementadas na API. Deve ser a aplicação a fazer todas as validações necessárias
             ////          Como por exemplo a movimentação duplicada de números de série
             //// Verificar se estão ativadas no sistema e se foram marcadas no documento
-            //if (MyApp.SystemSettings.SystemInfo.UsePropertyItems ) {
+            //if (APIEngine.SystemSettings.SystemInfo.UsePropertyItems ) {
             //    // O Artigo tem propriedades ?
             //    if (item.PropertyEnabled) {
             //        // NOTA: Para o exemplo atual apenas queremos uma propriedade definida no artigo com o ID1 = "NS".
@@ -454,7 +455,7 @@ namespace Sage50c.ExtenderSample {
                     else {
                         dblStockQuantity = objItemTransactionDetail.QntyPhysicalBalanceCount / objItemTransactionDetail.PackQuantity;
                     }
-                    strMessage = MyApp.gLng.GS((int)MsgID, new object[]{
+                    strMessage = APIEngine.gLng.GS((int)MsgID, new object[]{
                                                              objItemTransactionDetail.WarehouseID.ToString().Trim(),
                                                              dblStockQuantity,
                                                              objItemTransactionDetail.UnitOfSaleID,
@@ -475,7 +476,7 @@ namespace Sage50c.ExtenderSample {
                         dblStockQuantity = objItemTransactionDetail.QntyWrPhysicalBalanceCount / objItemTransactionDetail.PackQuantity;
                         dblReorderPointQuantity = objItemTransactionDetail.QntyReorderPoint / objItemTransactionDetail.PackQuantity;
                     }
-                    strMessage = MyApp.gLng.GS((int)MsgID, new object[]{
+                    strMessage = APIEngine.gLng.GS((int)MsgID, new object[]{
                                                              objItemTransactionDetail.WarehouseID.ToString(),
                                                              dblStockQuantity.ToString(),
                                                              objItemTransactionDetail.UnitOfSaleID,
@@ -493,7 +494,7 @@ namespace Sage50c.ExtenderSample {
                     else {
                         dblStockQuantity = objItemTransactionDetail.QntyAvailableBalanceCount / objItemTransactionDetail.PackQuantity;
                     }
-                    strMessage = MyApp.gLng.GS((int)MsgID, new object[]{
+                    strMessage = APIEngine.gLng.GS((int)MsgID, new object[]{
                                                              objItemTransactionDetail.WarehouseID.ToString(),
                                                              dblStockQuantity.ToString(),
                                                              objItemTransactionDetail.UnitOfSaleID,
@@ -558,7 +559,7 @@ namespace Sage50c.ExtenderSample {
                                 if (displayLine1.Length > displayColumns) {
                                     displayLine1 = displayLine1.Substring(0, displayColumns);
                                 }
-                                displayLine1 = MyApp.StringFunctions.GetOEMString(displayCharset, displayLine1);
+                                displayLine1 = APIEngine.StringFunctions.GetOEMString(displayCharset, displayLine1);
                                 //
                                 if (displayLines > 1) {
                                     displayLine2 = value + bsoItemTrans.Transaction.BaseCurrency.Symbol + " " + fCustomerDisplay.DisplayValue.ToString();

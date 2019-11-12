@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Sage50c.API;
 
 namespace Sage50c.ExtenderSample {
     class CustomerHandler : IDisposable {
@@ -163,7 +164,7 @@ namespace Sage50c.ExtenderSample {
         void myEvents_OnNew(object Sender, ExtenderEventArgs e) {
             var customer = (Customer)e.get_data();
 
-            var extraFields = MyApp.DSOCache.ConfExtraFieldsProvider.GetConfExtraFieldList("Customer");
+            var extraFields = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraFieldList("Customer");
             foreach (ConfExtraFields extraField in extraFields) {
                 customer.PartyInfo.ExtraFields.Add(new ExtraField() {
                     PartyID = customer.PartyID,
@@ -196,7 +197,7 @@ namespace Sage50c.ExtenderSample {
 
             e.result.Success = true;
 
-            var extraFields = MyApp.DSOCache.ConfExtraFieldsProvider.GetConfExtraFieldList("Customer");
+            var extraFields = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraFieldList("Customer");
             foreach ( ConfExtraFields extraField in extraFields) {
                 if (Customer.PartyInfo.ExtraFields.Find((int) extraField.ExtraFieldID) == null) {
                     e.result.Success = false;
@@ -210,7 +211,7 @@ namespace Sage50c.ExtenderSample {
             //if (extraField == null) {
             //    extraField = new ExtraField();
             //    extraField.PartyID = Customer.PartyID;
-            //    var confExtraField = MyApp.DSOCache.ConfExtraFieldsProvider.GetConfExtraField(2);
+            //    var confExtraField = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraField(2);
             //    extraField.ExtraFieldID = (int)confExtraField.ExtraFieldID;
 
             //    Customer.PartyInfo.ExtraFields.Add(extraField);

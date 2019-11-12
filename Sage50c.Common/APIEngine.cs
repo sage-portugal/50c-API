@@ -39,13 +39,15 @@ namespace Sage50c.API {
         //
         private static SystemManager s50cSystemManager = null;
         //
+#if API
         private static DataManagerEventsClass dataManagerEvents = null;
-
-        public static event EventHandler APIStarted;
-        public static event EventHandler APIStopped;
         public static event WarningErrorEventHandler WarningError;
         public static event WarningMessageEventHandler WarningMessage;
         public static event MessageEventHandler Message;
+#endif
+
+        public static event EventHandler APIStarted;
+        public static event EventHandler APIStopped;
 
 
         /// <summary>
@@ -128,17 +130,11 @@ namespace Sage50c.API {
                 throw new Exception(initError);
             }
             // Eventos de erros e avisos vindos da API
+#if API
             dataManagerEvents = (S50cData18.DataManagerEventsClass)s50cDataGlobals.DataManager.Events;
             dataManagerEvents.__DataManagerEvents_Event_WarningMessage += dataManagerEvents___DataManagerEvents_Event_WarningMessage;
             dataManagerEvents.__DataManagerEvents_Event_WarningError += dataManagerEvents___DataManagerEvents_Event_WarningError;
             dataManagerEvents.__DataManagerEvents_Event_Message += DataManagerEvents___DataManagerEvents_Event_Message;
-
-            //
-            apiInitialized = true;
-            //
-            if (APIStarted != null)
-                APIStarted(null, null);
-        }
 
         private static void DataManagerEvents___DataManagerEvents_Event_Message(string Prompt, int Flags, string Title, ref int result) {
             if (Message != null) {
@@ -184,6 +180,14 @@ namespace Sage50c.API {
                 }
             }
         }
+#endif
+            //
+            apiInitialized = true;
+            //
+            if (APIStarted != null)
+                APIStarted(null, null);
+        }
+
 
 
         public static QuickSearch CreateQuickSearch(QuickSearchViews QuickSearchId, bool CacheIt) {
@@ -195,7 +199,15 @@ namespace Sage50c.API {
             return SystemManager.Companies;
         }
 
-
+        private static S50cUtil18.StringFunctions _stringFunctions = null;
+        public static S50cUtil18.StringFunctions StringFunctions {
+            get {
+                if (_stringFunctions == null) {
+                    _stringFunctions = new S50cUtil18.StringFunctions();
+                }
+                return _stringFunctions;
+            }
+        }
 
         /// <summary>
         /// Termina a ligação à API e liberta todos os recursos

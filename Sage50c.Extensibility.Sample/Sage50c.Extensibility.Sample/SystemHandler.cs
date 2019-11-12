@@ -1,5 +1,6 @@
 ﻿using S50cBL18;
 using S50cSys18;
+using Sage50c.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace Sage50c.ExtenderSample {
             tmpFfunc.POSFunctionID = functionName;
             tmpFfunc.LocalizedFunction = functionName;
             tmpFfunc.LanguageID = language;
-            MyApp.DSOCache.FuncPOSProvider.AddToCache(tmpFfunc);
+            APIEngine.DSOCache.FuncPOSProvider.AddToCache(tmpFfunc);
         }
         #endregion 
 
@@ -53,7 +54,7 @@ namespace Sage50c.ExtenderSample {
             ExtendedPropertyList properties = null; ;
             ExtenderMenuItems menuItem;
 
-            //MyApp.SystemSettings.WorkstationInfo.Touch.CompanyLogoPosition = 1;
+            //APIEngine.SystemSettings.WorkstationInfo.Touch.CompanyLogoPosition = 1;
 
             properties = (ExtendedPropertyList)e.get_data();
 

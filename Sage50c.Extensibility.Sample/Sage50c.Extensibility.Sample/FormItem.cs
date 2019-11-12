@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using stdole;
 using S50cSys18;
 using S50cUtil18;
+using Sage50c.API;
 
 namespace Sage50c.ExtenderSample {
     public partial class FormItem : Form, IChildPanel {
@@ -99,8 +100,8 @@ namespace Sage50c.ExtenderSample {
 
         public bool CheckIDValue(string value) {
             if (!string.IsNullOrEmpty(value)) {
-                if (MyApp.DSOCache.ItemProvider.ItemExist(value)) {
-                    var item = MyApp.DSOCache.ItemProvider.GetItem(value, MyApp.SystemSettings.BaseCurrency);
+                if (APIEngine.DSOCache.ItemProvider.ItemExist(value)) {
+                    var item = APIEngine.DSOCache.ItemProvider.GetItem(value, APIEngine.SystemSettings.BaseCurrency);
                     MessageBox.Show(string.Format("ItemId={0}\r\nItem Name={1}", item.ItemID, item.Description));
                 }
             }
@@ -143,24 +144,24 @@ namespace Sage50c.ExtenderSample {
             try {
                 if (!itemIsFindind) {
                     itemIsFindind = true;
-                    quickSearch = MyApp.CreateQuickSearch(QuickSearchViews.QSV_Item, MyApp.SystemSettings.StartUpInfo.CacheQuickSearchItem);
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Item, APIEngine.SystemSettings.StartUpInfo.CacheQuickSearchItem);
                     clsCollection qsParams = new clsCollection();
-                    qsParams.add(MyApp.SystemSettings.QuickSearchDefaults.WarehouseID, "@WarehouseID");
-                    qsParams.add(MyApp.SystemSettings.QuickSearchDefaults.PriceLineID, "@PriceLineID");
-                    qsParams.add(MyApp.SystemSettings.QuickSearchDefaults.LanguageID, "@LanguageID");
-                    qsParams.add(MyApp.SystemSettings.QuickSearchDefaults.DisplayDiscontinued, "@Discontinued");
-                    if (MyApp.SystemSettings.StartUpInfo.UseItemSearchAlterCurrency) {
-                        qsParams.add(MyApp.SystemSettings.AlternativeCurrency.SaleExchange, "@ctxBaseCurrency");
+                    qsParams.add(APIEngine.SystemSettings.QuickSearchDefaults.WarehouseID, "@WarehouseID");
+                    qsParams.add(APIEngine.SystemSettings.QuickSearchDefaults.PriceLineID, "@PriceLineID");
+                    qsParams.add(APIEngine.SystemSettings.QuickSearchDefaults.LanguageID, "@LanguageID");
+                    qsParams.add(APIEngine.SystemSettings.QuickSearchDefaults.DisplayDiscontinued, "@Discontinued");
+                    if (APIEngine.SystemSettings.StartUpInfo.UseItemSearchAlterCurrency) {
+                        qsParams.add(APIEngine.SystemSettings.AlternativeCurrency.SaleExchange, "@ctxBaseCurrency");
                     }
                     else {
-                        qsParams.add(MyApp.SystemSettings.QuickSearchDefaults.EuroConversionRate, "@ctxBaseCurrency");
+                        qsParams.add(APIEngine.SystemSettings.QuickSearchDefaults.EuroConversionRate, "@ctxBaseCurrency");
                     }
                     quickSearch.Parameters = qsParams;
 
                     if (quickSearch.SelectValue()) {
                         result = true;
                         var itemId = quickSearch.ValueSelectedString();
-                        //MyApp.ItemGet(itemId);
+                        //APIEngine.ItemGet(itemId);
                     }
                     itemIsFindind = false;
                 }
