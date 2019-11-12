@@ -251,16 +251,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Sage50c.Common\APIEngine.cs">
-      <Link>APIEngine.cs</Link>
+      <Link>50cAPI\APIEngine.cs</Link>
     </Compile>
     <Compile Include="..\..\Sage50c.Common\APIEngineInitializer.cs">
-      <Link>APIEngineInitializer.cs</Link>
+      <Link>50cAPI\APIEngineInitializer.cs</Link>
     </Compile>
     <Compile Include="..\..\Sage50c.Common\APIExtensions.cs">
-      <Link>APIExtensions.cs</Link>
+      <Link>50cAPI\APIExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\Sage50c.Common\APIQuickSearch.cs">
-      <Link>APIQuickSearch.cs</Link>
+      <Link>50cAPI\APIQuickSearch.cs</Link>
     </Compile>
     <Compile Include="fAPI.cs">
       <SubType>Form</SubType>
