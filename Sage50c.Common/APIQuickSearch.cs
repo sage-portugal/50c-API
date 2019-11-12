@@ -2,8 +2,8 @@ using S50cSys18;
 using S50cUtil18;
 using S50cBO18;
 
-namespace Sage.S50c.API.Sample {
-    public class S50cQuickSearch {
+namespace Sage50c.API {
+    public class APIQuickSearch {
         #region QuickSearch
 
         public enum EntityTypeEnum {
@@ -19,7 +19,7 @@ namespace Sage.S50c.API.Sample {
 
         // NOTA: QuickSearch NÃO É SUPORTADO EM .NET 
         public static QuickSearch CreateQuickSearch(EntityTypeEnum entityType) {
-            var systemSettings = S50cAPIEngine.SystemGlobals.SystemSettings;
+            var systemSettings = APIEngine.SystemSettings;
             QuickSearchViews qsvQuickSearchID = QuickSearchViews.QSV_None;
             clsCollection paramValues = null;
             QuickSearch quickSearch = null;
@@ -71,7 +71,7 @@ namespace Sage.S50c.API.Sample {
                         paramValues.add(systemSettings.QuickSearchDefaults.EuroConversionRate, "@ctxBaseCurrency");
                     break;
             }
-            quickSearch = S50cAPIEngine.SystemGlobals.CreateQuickSearch(qsvQuickSearchID, false);
+            quickSearch = APIEngine.CreateQuickSearch(qsvQuickSearchID, false);
 
             if (paramValues != null)
                 quickSearch.Parameters = paramValues;

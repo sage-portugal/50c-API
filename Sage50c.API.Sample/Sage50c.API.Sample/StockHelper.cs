@@ -32,7 +32,7 @@ namespace Sage50c.API.Sample {
                     result = result / TransactionDetail.QuantityFactor;
             }
 
-            oUnit = S50cAPIEngine.DSOCache.UnitOfMeasureProvider.GetUnitOfMeasure(TransactionDetail.UnitOfSaleID);
+            oUnit = APIEngine.DSOCache.UnitOfMeasureProvider.GetUnitOfMeasure(TransactionDetail.UnitOfSaleID);
             if (oUnit != null) {
                 result = mathUtil.MyRoundEx(result, oUnit.MaximumDecimals);
             }

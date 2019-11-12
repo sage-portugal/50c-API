@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sage50c.API.Sample {
-    public static class Extensions {
+namespace Sage50c.API {
+    public static class APIExtensions {
         #region Value Types Extensions
         public static double ToDouble(this string value) {
             double result = 0;
@@ -44,10 +44,10 @@ namespace Sage50c.API.Sample {
 
         #region Till Extensions
         public static TillSession EnsureOpenTill(this AccountTransactionManager AccountTransManager, string TillId) {
-            var tillId = S50cAPIEngine.SystemSettings.WorkstationInfo.DefaultTillID;
+            var tillId = APIEngine.SystemSettings.WorkstationInfo.DefaultTillID;
             var tillManager = new TillManager();
             var tillSetResult = AccountTransManager.SetTillID(tillId);
-            var sessions = S50cAPIEngine.DSOCache.TillSessionProvider.GetOpenedTillSessions(tillId, AccountTransManager.Transaction.CreateDate);
+            var sessions = APIEngine.DSOCache.TillSessionProvider.GetOpenedTillSessions(tillId, AccountTransManager.Transaction.CreateDate);
             TillSession tillSession = null;
             if (sessions.Length == 1) {
                 if (!tillManager.CheckTransactionTillSession(AccountTransManager.Transaction, 0, ref tillSession))
@@ -67,7 +67,7 @@ namespace Sage50c.API.Sample {
         public static TillSession EnsureOpenTill(this BSOItemTransaction BSOTrans, string TillId ) {
             var tillManager = new TillManager();
             var tillSetResult = BSOTrans.SetTillID(TillId);
-            var sessions = S50cAPIEngine.DSOCache.TillSessionProvider.GetOpenedTillSessions(TillId, BSOTrans.Transaction.CreateDate);
+            var sessions = APIEngine.DSOCache.TillSessionProvider.GetOpenedTillSessions(TillId, BSOTrans.Transaction.CreateDate);
             TillSession tillSession = null;
             if (sessions.Length == 1) {
                 if (!tillManager.CheckTransactionTillSession(BSOTrans.Transaction, 0, ref tillSession))

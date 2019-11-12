@@ -18,7 +18,7 @@ namespace Sage50c.API.Sample {
             combo.DisplayMember = "CountryName";
             combo.ValueMember = "CountryId";
 
-            var rsCountries = S50cAPIEngine.DSOCache.CountryProvider.GetCountriesRS();
+            var rsCountries = APIEngine.DSOCache.CountryProvider.GetCountriesRS();
             while (!rsCountries.EOF) {
                 var country = new CountryCode();
                 country.CountryID = (string)rsCountries.Fields["CountryId"].Value;
@@ -40,7 +40,7 @@ namespace Sage50c.API.Sample {
             combo.DisplayMember = "Description";
             combo.ValueMember = "CurrencyId";
 
-            var rs = S50cAPIEngine.DSOCache.CurrencyProvider.GetCurrencyActiveRS();
+            var rs = APIEngine.DSOCache.CurrencyProvider.GetCurrencyActiveRS();
             while (!rs.EOF) {
                 CurrencyDefinition currency = new CurrencyDefinition(){
                     CurrencyID = (string)rs.Fields["CurrencyId"].Value,
@@ -64,7 +64,7 @@ namespace Sage50c.API.Sample {
             combo.DisplayMember = "Description";
             combo.ValueMember = "EntityFSId";
 
-            var rs = S50cAPIEngine.DSOCache.TaxesProvider.GetEntityFiscalStatusRS(ZoneTypeEnum.ztNational);
+            var rs = APIEngine.DSOCache.TaxesProvider.GetEntityFiscalStatusRS(ZoneTypeEnum.ztNational);
             while (!rs.EOF) {
                 var entityfs = new EntityFiscalStatus();
                 entityfs.EntityFiscalStatusID = (short)((int)rs.Fields["EntityFiscalStatusId"].Value);

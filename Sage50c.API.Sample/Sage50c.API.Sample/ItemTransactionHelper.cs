@@ -10,8 +10,8 @@ namespace Sage50c.API.Sample {
             DocumentTypeEnum transType = DocumentTypeEnum.dcTypeNone;
             string transDoc = DocumentId;
 
-            if (S50cAPIEngine.SystemSettings.WorkstationInfo.Document.IsInCollection(transDoc)) {
-                var doc = S50cAPIEngine.SystemSettings.WorkstationInfo.Document[transDoc];
+            if (APIEngine.SystemSettings.WorkstationInfo.Document.IsInCollection(transDoc)) {
+                var doc = APIEngine.SystemSettings.WorkstationInfo.Document[transDoc];
                 transType = doc.TransDocType;
             }
             return transType;
