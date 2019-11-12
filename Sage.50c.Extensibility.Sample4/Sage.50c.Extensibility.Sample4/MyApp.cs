@@ -63,7 +63,7 @@ namespace Sage50c.ExtenderSample {
         public static S50cLocalize18._ILocalizer gLng { get { return rtlGlobalSettings.gLng; } }
 
         public static QuickSearch CreateQuickSearch(QuickSearchViews QuickSearchId, bool CacheIt) {
-            return _rtlSysGlobalSettings.CreateQuickSearch(QuickSearchId, CacheIt);
+            return rtlGlobalSettings.CreateQuickSearch(QuickSearchId, CacheIt);
         }
 
         private static S50cUtil18.StringFunctions _stringFunctions = null;
