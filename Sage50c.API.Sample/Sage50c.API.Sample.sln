@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.50c.API.Sample", "Sage.50c.API.Sample\Sage.50c.API.Sample.csproj", "{525FFBEB-1D09-44A0-A8F8-3A481B7FE818}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage50c.API.Sample", "Sage50c.API.Sample\Sage50c.API.Sample.csproj", "{525FFBEB-1D09-44A0-A8F8-3A481B7FE818}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
