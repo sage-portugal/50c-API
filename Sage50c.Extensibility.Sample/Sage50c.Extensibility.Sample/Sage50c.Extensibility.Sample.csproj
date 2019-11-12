@@ -216,6 +216,7 @@
     <Compile Include="..\..\Sage50c.Common\APIQuickSearch.cs">
       <Link>APIQuickSearch.cs</Link>
     </Compile>
+    <Compile Include="Extender.cs" />
     <Compile Include="FormCustomerDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
