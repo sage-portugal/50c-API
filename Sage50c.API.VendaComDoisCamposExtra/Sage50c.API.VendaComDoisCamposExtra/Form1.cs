@@ -12,12 +12,13 @@ using S50cUtil18;
 using S50cBO18;
 using S50cBL18;
 using S50cDL18;
+using Sage50c.API;
 
 namespace APIDocumentos {
     public partial class frmDocumentos : Form {
-        private S50cDL18.DSOItem itemProvider { get { return S50cAPIEngine.DSOCache.ItemProvider; } }
-        private S50cSys18.SystemSettings systemSettings { get { return S50cAPIEngine.SystemSettings; } }
-        private S50cDL18.DSOFactory dsoCache { get { return S50cAPIEngine.DSOCache; } }
+        private S50cDL18.DSOItem itemProvider { get { return APIEngine.DSOCache.ItemProvider; } }
+        private S50cSys18.SystemSettings systemSettings { get { return APIEngine.SystemSettings; } }
+        private S50cDL18.DSOFactory dsoCache { get { return APIEngine.DSOCache; } }
         private bool transactionError = false;
 
 
@@ -245,20 +246,20 @@ namespace APIDocumentos {
         }
 
         private void frmDocumentos_FormClosed(object sender, FormClosedEventArgs e) {
-            S50cAPIEngine.Terminate();
+            APIEngine.Terminate();
             Application.Exit();
         }
 
         private void btnAbrirEmpresa_Click(object sender, EventArgs e) {
             try {
                 //this.Cursor = Cursors.WaitCursor;
-                S50cAPIEngine.WarningError += S50cAPIEngine_WarningError;
-                S50cAPIEngine.WarningMessage += S50cAPIEngine_WarningMessage;
+                APIEngine.WarningError += S50cAPIEngine_WarningError;
+                APIEngine.WarningMessage += S50cAPIEngine_WarningMessage;
 
                 var productCode = cmbApplicationCode.Text;
                 var companyId = txtEmpresaNome.Text.Trim();
                 //Inicia a API na empresa com o nome "Empresa", tal como existe na Área de Sistema
-                S50cAPIEngine.Initialize(productCode, companyId, false);
+                APIEngine.Initialize(productCode, companyId, false);
                 txtTransDate.Text = DateTime.Today.ToShortDateString();
                 btnCriar.Enabled = true;
             }
