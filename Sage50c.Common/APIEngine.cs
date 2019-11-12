@@ -1,7 +1,6 @@
 ﻿using S50cData18;
 using S50cDL18;
 using S50cPrint18;
-using S50cSys18;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,16 +28,84 @@ namespace Sage50c.API {
         public delegate void MessageEventHandler(MessageEventArgs Args);
         public delegate void WarningErrorEventHandler(int Number, string Source, string Description);
         public delegate void WarningMessageEventHandler(string Message);
+        //
+        // Local API globals
+        private static S50cData18.GlobalSettings _s50cDataGlobals = null;
+        private static S50cCore18.GlobalSettings _s50cCoreGlobals = null;
+        private static S50cSys18.GlobalSettings _s50cSystemGlobals = null;
+        private static S50cDL18.GlobalSettings _s50cDLGlobals = null;
+        private static S50cPrint18.GlobalSettings _s50cPrintGlobals = null;
+        private static S50cBL18.GlobalSettings _s50cBLGlobals = null;
+        private static S50cSys18.SystemManager _s50cSystemManager = null;
+        //
+        //
+        private static S50cData18.GlobalSettings s50cDataGlobals {
+            get {
+                if (_s50cDataGlobals == null) {
+                    _s50cDataGlobals = new S50cData18.GlobalSettings();
+                }
+                return _s50cDataGlobals;
+            }
+        }
+        //
+        private static S50cCore18.GlobalSettings s50cCoreGlobals {
+            get {
+                if (_s50cCoreGlobals == null) {
+                    _s50cCoreGlobals = new S50cCore18.GlobalSettings();
+                }
+                return _s50cCoreGlobals;
+            }
+        }
+        //
+        private static S50cSys18.GlobalSettings s50cSystemGlobals {
+            get {
+                if (_s50cSystemGlobals == null) {
+                    _s50cSystemGlobals = new S50cSys18.GlobalSettings();
+                }
+                return _s50cSystemGlobals;
+            }
+        }
 
-        private static S50cData18.GlobalSettings s50cDataGlobals = null;
-        private static S50cCore18.GlobalSettings s50cCoreGlobals = null;
-        private static S50cSys18.GlobalSettings s50cSystemGlobals = null;
-        private static S50cDL18.GlobalSettings s50cDLGlobals = null;
-        private static S50cPrint18.GlobalSettings s50cPrintGlobals = null;
-        private static S50cBL18.GlobalSettings s50cBLGlobals = null;
+        private static S50cDL18.GlobalSettings s50cDLGlobals {
+            get {
+                if (_s50cDLGlobals == null) {
+                    _s50cDLGlobals = new S50cDL18.GlobalSettings();
+                }
+                return _s50cDLGlobals;
+            }
+        }
         //
-        private static SystemManager s50cSystemManager = null;
+        private static S50cPrint18.GlobalSettings s50cPrintGlobals {
+            get { 
+                if(_s50cPrintGlobals == null) {
+                    _s50cPrintGlobals = new S50cPrint18.GlobalSettings();
+                }
+                return _s50cPrintGlobals;
+            }
+        }
         //
+        private static S50cBL18.GlobalSettings s50cBLGlobals {
+            get { 
+                if(_s50cBLGlobals == null) {
+                    _s50cBLGlobals = new S50cBL18.GlobalSettings();
+                }
+                return _s50cBLGlobals;
+            }
+        }
+        //
+        /// <summary>
+        /// System manager
+        /// </summary>
+        private static S50cSys18.SystemManager SystemManager {
+            get {
+                if (_s50cSystemManager == null) {
+                    _s50cSystemManager = new S50cSys18.SystemManager();
+                    _s50cSystemManager.Initialize();
+                }
+                return _s50cSystemManager;
+            }
+        }
+
 #if API
         private static DataManagerEventsClass dataManagerEvents = null;
         public static event WarningErrorEventHandler WarningError;
@@ -53,7 +120,7 @@ namespace Sage50c.API {
         /// <summary>
         /// Retail System Settings
         /// </summary>
-        public static SystemSettings SystemSettings { get { return s50cSystemGlobals.SystemSettings; } }
+        public static S50cSys18.SystemSettings SystemSettings { get { return s50cSystemGlobals.SystemSettings; } }
         /// <summary>
         /// Retail data providers cache
         /// </summary>
@@ -77,23 +144,32 @@ namespace Sage50c.API {
 
         public static S50cCore18.GlobalSettings CoreGlobals { get { return s50cCoreGlobals; } }
 
-        /// <summary>
-        /// System manager
-        /// </summary>
-        private static SystemManager SystemManager {
+        public static S50cSys18.QuickSearch CreateQuickSearch(S50cSys18.QuickSearchViews QuickSearchId, bool CacheIt) {
+            return s50cSystemGlobals.CreateQuickSearch(QuickSearchId, CacheIt);
+        }
+
+        public static S50cSys18.CompanyList GetCompanyList() {
+            return SystemManager.Companies;
+        }
+
+        private static S50cUtil18.StringFunctions _stringFunctions = null;
+        public static S50cUtil18.StringFunctions StringFunctions {
             get {
-                if (s50cSystemManager == null) {
-                    s50cSystemManager = new SystemManager();
-                    s50cSystemManager.Initialize();
+                if (_stringFunctions == null) {
+                    _stringFunctions = new S50cUtil18.StringFunctions();
                 }
-                return s50cSystemManager;
+                return _stringFunctions;
             }
         }
 
 
+#if API
         private static bool apiInitialized = false;
-        public static bool APIInitialized { get { return apiInitialized; } }
-
+        public static bool APIInitialized { 
+            get {
+                return apiInitialized; 
+            } 
+        }
         //// Colocar SEMPRE ao nivel do módulo/class para não ser descarregado indevidamente
         //private static S50cAPICGCO18.SystemStarter systemStarter = null;
 
@@ -108,18 +184,6 @@ namespace Sage50c.API {
             //
             Terminate();
             //
-            // Init
-            // 1. DataProvider (S50cData18)
-            // 2. System (S50cSys18)
-            // 3. DataLayer (s50cData13)
-            // 4. Core (S50cCore18)
-            s50cDataGlobals = new S50cData18.GlobalSettings();
-            s50cSystemGlobals = new S50cSys18.GlobalSettings();
-            s50cDLGlobals = new S50cDL18.GlobalSettings();
-            s50cCoreGlobals = new S50cCore18.GlobalSettings();
-            s50cPrintGlobals = new S50cPrint18.GlobalSettings();
-            s50cBLGlobals = new S50cBL18.GlobalSettings();
-            //
             // NEW RECOMMENDED Startup - CGCO / CRTL
             var systemStarter = new S50cAPI18.SystemStarter();
             systemStarter.DebugMode = DebugMode;
@@ -130,11 +194,16 @@ namespace Sage50c.API {
                 throw new Exception(initError);
             }
             // Eventos de erros e avisos vindos da API
-#if API
             dataManagerEvents = (S50cData18.DataManagerEventsClass)s50cDataGlobals.DataManager.Events;
             dataManagerEvents.__DataManagerEvents_Event_WarningMessage += dataManagerEvents___DataManagerEvents_Event_WarningMessage;
             dataManagerEvents.__DataManagerEvents_Event_WarningError += dataManagerEvents___DataManagerEvents_Event_WarningError;
             dataManagerEvents.__DataManagerEvents_Event_Message += DataManagerEvents___DataManagerEvents_Event_Message;
+
+            apiInitialized = true;
+            //
+            if (APIStarted != null)
+                APIStarted(null, null);
+        }
 
         private static void DataManagerEvents___DataManagerEvents_Event_Message(string Prompt, int Flags, string Title, ref int result) {
             if (Message != null) {
@@ -180,34 +249,6 @@ namespace Sage50c.API {
                 }
             }
         }
-#endif
-            //
-            apiInitialized = true;
-            //
-            if (APIStarted != null)
-                APIStarted(null, null);
-        }
-
-
-
-        public static QuickSearch CreateQuickSearch(QuickSearchViews QuickSearchId, bool CacheIt) {
-            return s50cSystemGlobals.CreateQuickSearch(QuickSearchId, CacheIt);
-        }
-
-
-        public static CompanyList GetCompanyList() {
-            return SystemManager.Companies;
-        }
-
-        private static S50cUtil18.StringFunctions _stringFunctions = null;
-        public static S50cUtil18.StringFunctions StringFunctions {
-            get {
-                if (_stringFunctions == null) {
-                    _stringFunctions = new S50cUtil18.StringFunctions();
-                }
-                return _stringFunctions;
-            }
-        }
 
         /// <summary>
         /// Termina a ligação à API e liberta todos os recursos
@@ -215,47 +256,47 @@ namespace Sage50c.API {
         public static void Terminate() {
             if (apiInitialized) {
                 //1. QuickSearch
-                if (s50cSystemGlobals != null) {
-                    s50cSystemGlobals.DisposeQuickSearch();
+                if (_s50cSystemGlobals != null) {
+                    _s50cSystemGlobals.DisposeQuickSearch();
                 }
                 //3. Business globals
-                if (s50cBLGlobals != null) {
-                    s50cBLGlobals.Dispose();
-                    s50cBLGlobals = null;
+                if (_s50cBLGlobals != null) {
+                    _s50cBLGlobals.Dispose();
+                    _s50cBLGlobals = null;
                 }
                 //4. Dispose CORE Global Settings
-                if (s50cCoreGlobals != null) {
-                    s50cCoreGlobals.Dispose();
+                if (_s50cCoreGlobals != null) {
+                    _s50cCoreGlobals.Dispose();
                     //System.Runtime.InteropServices.Marshal.ReleaseComObject(s50cCoreGlobals);
-                    s50cCoreGlobals = null;
+                    _s50cCoreGlobals = null;
                 }
                 //2. Dispose Printing Manager
-                if (s50cPrintGlobals != null) {
-                    s50cPrintGlobals.Dispose();
-                    s50cPrintGlobals = null;
+                if (_s50cPrintGlobals != null) {
+                    _s50cPrintGlobals.Dispose();
+                    _s50cPrintGlobals = null;
                 }
                 //5. DISPOSE DataLayer Global Settings
-                if (s50cDLGlobals != null) {
-                    s50cDLGlobals.Dispose();
+                if (_s50cDLGlobals != null) {
+                    _s50cDLGlobals.Dispose();
                     //System.Runtime.InteropServices.Marshal.ReleaseComObject(s50cDLGlobals);
-                    s50cDLGlobals = null;
+                    _s50cDLGlobals = null;
                 }
                 //6. Dispose DataProvider
-                if (s50cDataGlobals != null) {
-                    s50cDataGlobals.DataManager.CloseConnections();
-                    s50cDataGlobals.Dispose();
+                if (_s50cDataGlobals != null) {
+                    _s50cDataGlobals.DataManager.CloseConnections();
+                    _s50cDataGlobals.Dispose();
                     //System.Runtime.InteropServices.Marshal.ReleaseComObject(s50cDataGlobals);
-                    s50cDataGlobals = null;
+                    _s50cDataGlobals = null;
                 }
                 //7. Dispose System
-                if (s50cSystemGlobals != null) {
-                    s50cSystemGlobals.Dispose();
+                if (_s50cSystemGlobals != null) {
+                    _s50cSystemGlobals.Dispose();
                     //System.Runtime.InteropServices.Marshal.ReleaseComObject(s50cSystemGlobals);
-                    s50cSystemGlobals = null;
+                    _s50cSystemGlobals = null;
                 }
                 // Dispose System manager
-                if (s50cSystemManager != null) {
-                    s50cSystemManager = null;
+                if (_s50cSystemManager != null) {
+                    _s50cSystemManager = null;
                 }
                 //
                 apiInitialized = false;
@@ -265,5 +306,6 @@ namespace Sage50c.API {
                     APIStopped(null, null);
             }
         }
+#endif
     }
 }
