@@ -1,4 +1,4 @@
-﻿namespace APIDocumentos
+﻿namespace Sage50c.API.VendaComDoisCamposExtra
 {
     partial class frmDocumentos
     {

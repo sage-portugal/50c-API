@@ -253,6 +253,9 @@
     <Compile Include="..\..\Sage50c.Common\APIEngine.cs">
       <Link>APIEngine.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sage50c.Common\APIEngineInitializer.cs">
+      <Link>APIEngineInitializer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Sage50c.Common\APIExtensions.cs">
       <Link>APIExtensions.cs</Link>
     </Compile>

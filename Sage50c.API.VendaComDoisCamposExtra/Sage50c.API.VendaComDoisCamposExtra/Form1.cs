@@ -14,7 +14,7 @@ using S50cBL18;
 using S50cDL18;
 using Sage50c.API;
 
-namespace APIDocumentos {
+namespace Sage50c.API.VendaComDoisCamposExtra {
     public partial class frmDocumentos : Form {
         private S50cDL18.DSOItem itemProvider { get { return APIEngine.DSOCache.ItemProvider; } }
         private S50cSys18.SystemSettings systemSettings { get { return APIEngine.SystemSettings; } }
@@ -63,7 +63,7 @@ namespace APIDocumentos {
             transId = TransactionUpdate(txtTransSerial.Text, txtTransDoc.Text, transDocNumber);
 
             if (transId != null) {
-                MessageBox.Show(string.Format("Registo inserido: {0}", transId.ToString()), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format("Registo inserido: {0}", transId.ToString()), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
         }
