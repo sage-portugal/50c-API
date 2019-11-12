@@ -87,111 +87,131 @@
     <Reference Include="ADODB, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\ADODB.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\ADODB.dll</HintPath>
+    </Reference>
+    <Reference Include="ADODB27">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\ADODB27.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="DAO">
-      <HintPath>..\..\..\..\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\DAO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\DAO.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="DartMail">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\DartMail.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\DartMail.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MSScriptControl">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\MSScriptControl.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\MSScriptControl.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="MSXML2">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\MSXML2.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\MSXML2.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="POPLib">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\POPLib.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\POPLib.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cAPI18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cAPI18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cAPI18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cBase18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBase18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cBL18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cBL18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBL18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cBO18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cBO18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBO18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cCore18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cCore18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cCore18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cData18">
-      <HintPath>..\..\..\..\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cData18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cData18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cDL16">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cDL16.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cDL18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cDL18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cDL18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cDP18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cDP18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cDP18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cLocalize18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cLocalize18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cLocalize18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cPrint18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cPrint18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cPrint18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cQS18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cQS18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cQS18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cRV18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cRV18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cRV18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cSAFTX18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cSAFTX18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cSAFTX18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cSys18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cSys18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cSys18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cUIBase18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cUIBase18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUIBase18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cUpdate16">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUpdate16.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cUpdate18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cUpdate18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUpdate18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cUtil18">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cUtil18.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUtil18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="SageCEMV15">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\SageCEMV15.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCEMV15.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="SageCoreComm10">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\SageCoreComm10.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCoreComm10.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SageCoreLicenses20">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCoreLicenses20.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="SageCoreSaft40">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\SageCoreSaft40.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCoreSaft40.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="SageCoreUtil10">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\SageCoreUtil10.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCoreUtil10.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Scripting">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\Scripting.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\Scripting.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -205,27 +225,27 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="VBA">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\VBA.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\VBA.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="VBRUN">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\VBRUN.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\VBRUN.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="XceedZipLib">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\XceedZipLib.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\XceedZipLib.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="XtremeDockingPane">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\XtremeDockingPane.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\XtremeDockingPane.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="XtremeSuiteControls">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\XtremeSuiteControls.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\XtremeSuiteControls.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="XtremeTaskPanel">
-      <HintPath>C:\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\XtremeTaskPanel.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\XtremeTaskPanel.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
