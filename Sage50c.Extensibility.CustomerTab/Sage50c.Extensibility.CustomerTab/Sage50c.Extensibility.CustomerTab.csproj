@@ -169,8 +169,13 @@
       <HintPath>..\..\..\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\Scripting.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -211,10 +216,55 @@
     <Compile Include="..\..\Sage50c.Common\APIQuickSearch.cs">
       <Link>50cAPI\APIQuickSearch.cs</Link>
     </Compile>
+    <Compile Include="..\..\Sage50c.Common\ImageConverter.cs">
+      <Link>Handlers\ImageConverter.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Extender.cs" />
+    <Compile Include="Handlers\OtherContactHandler.cs" />
+    <Compile Include="Handlers\FormOtherContactTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Handlers\FormOtherContactTab.Designer.cs">
+      <DependentUpon>FormOtherContactTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\SalesmanHandler.cs" />
+    <Compile Include="Handlers\FormSalesmanTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Handlers\FormSalesmanTab.Designer.cs">
+      <DependentUpon>FormSalesmanTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\FormSupplierTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Handlers\FormSupplierTab.Designer.cs">
+      <DependentUpon>FormSupplierTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\FormCustomerTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Handlers\FormCustomerTab.Designer.cs">
+      <DependentUpon>FormCustomerTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\SupplierHandler.cs" />
+    <Compile Include="Handlers\SystemHandler.cs" />
     <Compile Include="Handlers\CustomerHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Handlers\FormOtherContactTab.resx">
+      <DependentUpon>FormOtherContactTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\FormSalesmanTab.resx">
+      <DependentUpon>FormSalesmanTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\FormCustomerTab.resx">
+      <DependentUpon>FormCustomerTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\formSupplierTab.resx">
+      <DependentUpon>FormSupplierTab.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

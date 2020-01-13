@@ -10,6 +10,7 @@ using Sage50c.API;
 namespace Sage50c.ExtenderSample {
     class CustomerHandler : IDisposable {
         private ExtenderEvents myEvents = null;
+        private IManagementConsole managementConsole = null;   //Consola de gestão dos parâmetros
 
         public void SetEventHandler(ExtenderEvents e) {
             myEvents = e;
@@ -112,6 +113,14 @@ namespace Sage50c.ExtenderSample {
         ///</param>
         void myEvents_OnInitialize(object Sender, ExtenderEventArgs e) {
             var propertyList = (ExtendedPropertyList)e.get_data();
+
+            if (propertyList.PropertyExists("IManagementConsole")) {
+                managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
+
+                // Form a colocar no TAB dos clientes
+                //formProps = new FormProps();
+                //managementConsole.AddChildPanel(formProps);
+            }
 
             // Acrescentar Items ao menu
             var newMenu = new ExtenderMenuItems();
