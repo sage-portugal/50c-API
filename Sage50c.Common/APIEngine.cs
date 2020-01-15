@@ -2,9 +2,6 @@
 using S50cDL18;
 using S50cPrint18;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Sage50c.API {

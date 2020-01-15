@@ -7,22 +7,23 @@ using System.Linq;
 using System.Text;
 using Sage50c.API;
 
-namespace Sage50c.ExtenderSample {
-    class CustomerHandler : IDisposable {
-        private ExtenderEvents myEvents = null;
-        private IManagementConsole managementConsole = null;   //Consola de gestão dos parâmetros
+namespace Sage50c.Extensibility.CustomerTab.Handlers.SupplierHandler {
+    class SupplierHandler : IDisposable {
+        private IManagementConsole _managementConsole = null;   //Consola de gestão dos parâmetros
+        private ExtenderEvents _myEvents = null;
+        private FormSupplierTab _formTab = null;                     //Form das propriedades
 
         public void SetEventHandler(ExtenderEvents e) {
-            myEvents = e;
+            _myEvents = e;
 
-            myEvents.OnDelete += myEvents_OnDelete;         // Delete  Customer
-            myEvents.OnDispose += myEvents_OnDispose;       // Limpar recursos
-            myEvents.OnInitialize += myEvents_OnInitialize; // Inicializar, adicionar menus de utilizador
-            myEvents.OnLoad += myEvents_OnLoad;             // Ao carregar um artigo e preencher o form. Pode ser cancelado
-            myEvents.OnMenuItem += myEvents_OnMenuItem;     // Menu do utilizador foi pressionado
-            myEvents.OnNew += myEvents_OnNew;               // Novo  Customer
-            myEvents.OnSave += myEvents_OnSave;             // Gravar Items
-            myEvents.OnValidating += myEvents_OnValidating; // Validar. Pode ser cancelado.
+            _myEvents.OnDelete += myEvents_OnDelete;         // Delete  Supplier
+            _myEvents.OnDispose += myEvents_OnDispose;       // Limpar recursos
+            _myEvents.OnInitialize += myEvents_OnInitialize; // Inicializar, adicionar menus de utilizador
+            _myEvents.OnLoad += myEvents_OnLoad;             // Ao carregar um artigo e preencher o form. Pode ser cancelado
+            _myEvents.OnMenuItem += myEvents_OnMenuItem;     // Menu do utilizador foi pressionado
+            _myEvents.OnNew += myEvents_OnNew;               // Novo  Supplier
+            _myEvents.OnSave += myEvents_OnSave;             // Gravar Items
+            _myEvents.OnValidating += myEvents_OnValidating; // Validar. Pode ser cancelado.
 
         }
 
@@ -33,7 +34,7 @@ namespace Sage50c.ExtenderSample {
         /// <param name="e">
         /// IN:
         ///     e.get_Data(): ExtendedPropertyList
-        ///         "Data":  Customer
+        ///         "Data":  Supplier
         ///         "PreviousID": Identificador anterior (ItemId). Pode não estar presente
         ///         "IsNew": O Artigo é novo
         ///    
@@ -43,7 +44,7 @@ namespace Sage50c.ExtenderSample {
         /// </param>
         void myEvents_OnSave(object Sender, ExtenderEventArgs e) {
             var proplist = (ExtendedPropertyList)e.get_data();
-            var  Customer = ( Customer)proplist.get_Value("Data");    // The  Customer
+            var Supplier = (Supplier)proplist.get_Value("Data");    // The  Supplier
             var isNew = (bool)proplist.get_Value("IsNew");  // Is new?
         }
 
@@ -61,13 +62,13 @@ namespace Sage50c.ExtenderSample {
         void myEvents_OnMenuItem(object Sender, ExtenderEventArgs e) {
             var menuId = (string)e.get_data();
 
-            switch( menuId) {
-                case "mniXCustomer1":
-                    System.Windows.Forms.MessageBox.Show("Pressionei  Customer 1");
+            switch (menuId) {
+                case "mniXSupplier1":
+                    System.Windows.Forms.MessageBox.Show("Pressionei  Supplier 1");
                     break;
 
-                case "mniXCustomer2":
-                    System.Windows.Forms.MessageBox.Show("Pressionei  Customer 2");
+                case "mniXSupplier2":
+                    System.Windows.Forms.MessageBox.Show("Pressionei  Supplier 2");
                     break;
             }
         }
@@ -78,24 +79,23 @@ namespace Sage50c.ExtenderSample {
         /// <param name="Sender">GenericExtensibilityController</param>
         /// <param name="e">
         /// IN:
-        ///     e.get_Data():  Customer
+        ///     e.get_Data():  Supplier
         ///     
         /// OUT:
         ///     Sucess: true or false
         ///     ResultMessage: caso preenchida, apresenta a mensagem
         /// </param>
         void myEvents_OnLoad(object Sender, ExtenderEventArgs e) {
-            var  Customer = ( Customer)e.get_data();
+            var Supplier = (Supplier)e.get_data();
 
-            // Customer.Description = "My description";
-
-            //e.result.Success = false;
-            //e.result.ResultMessage = "A descrição foi alterada.";
+            if (Supplier != null) {
+                _formTab.OnLoad(Supplier);
+            }
         }
 
 
         /// <summary>
-        /// Inicializa a extensão nos Artigos ( Customer)
+        /// Inicializa a extensão nos Artigos ( Supplier)
         /// Não mostra mensagens
         /// </summary>
         /// <param name="Sender"></param>
@@ -115,11 +115,12 @@ namespace Sage50c.ExtenderSample {
             var propertyList = (ExtendedPropertyList)e.get_data();
 
             if (propertyList.PropertyExists("IManagementConsole")) {
-                managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
+                _managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
 
                 // Form a colocar no TAB dos clientes
-                //formProps = new FormProps();
-                //managementConsole.AddChildPanel(formProps);
+                //var formTab = new FormSupplierTab();
+                _formTab = new FormSupplierTab();
+                _managementConsole.AddChildPanel(_formTab);
             }
 
             // Acrescentar Items ao menu
@@ -129,10 +130,10 @@ namespace Sage50c.ExtenderSample {
             menuGroup.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;   //Opções de menu
             menuGroup.BeginGroup = true;                                             //Novo grupo
             //
-            var menuItem = menuGroup.ChildItems.Add("mniXCustomer1", "Meu menu 1");
+            var menuItem = menuGroup.ChildItems.Add("mniXSupplier1", "Meu menu 1");
             menuItem.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;   //Opções de menu
 
-            menuItem = menuGroup.ChildItems.Add("mniXCustomer2", "Meu menu 2");
+            menuItem = menuGroup.ChildItems.Add("mniXSupplier2", "Meu menu 2");
             menuItem.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;   //Opções de menu
 
             object oMenu = newMenu;
@@ -149,20 +150,25 @@ namespace Sage50c.ExtenderSample {
         /// Não mostra mensagens
         /// </summary>
         void myEvents_OnDispose() {
+            if (_formTab != null) {
+                _formTab.Dispose();
+                _formTab = null;
+            }
+
         }
 
         /// <summary>
         /// Chamado quando o artigo vai ser eliminado
         /// </summary>
         /// <param name="Sender">GenericExtensibilityController</param>
-        /// <param name="e">e.get_Data():  Customer</param>
+        /// <param name="e">e.get_Data():  Supplier</param>
         void myEvents_OnDelete(object Sender, ExtenderEventArgs e) {
         }
 
         /// <summary>
         /// Ocorre ao criar um artigo novo
         /// IN:
-        ///     e.get_data():  Customer a ser criado. Pode ser alterado
+        ///     e.get_data():  Supplier a ser criado. Pode ser alterado
         /// 
         /// OUT:
         ///     e.result.ResultMessage: Mensagem a apresentar ao utilizador. Se vazia, não mostra nada
@@ -171,17 +177,11 @@ namespace Sage50c.ExtenderSample {
         /// <param name="Sender">ExtensibilityController</param>
         /// <param name="e">Event parameters</param>
         void myEvents_OnNew(object Sender, ExtenderEventArgs e) {
-            var customer = (Customer)e.get_data();
+            var Supplier = (Supplier)e.get_data();
 
-            var extraFields = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraFieldList("Customer");
-            foreach (ConfExtraFields extraField in extraFields) {
-                customer.PartyInfo.ExtraFields.Add(new ExtraField() {
-                    PartyID = customer.PartyID,
-                    ExtraFieldID = (int)extraField.ExtraFieldID
-                });
-            }
+            _formTab.ResetInterface();
 
-            e.result.ResultMessage = "New Event: Estou a criar um cliente novo";
+            //e.result.ResultMessage = "New Event: Estou a criar um cliente novo";
             e.result.Success = true;
         }
 
@@ -192,8 +192,8 @@ namespace Sage50c.ExtenderSample {
         /// <param name="e">
         /// IN:
         ///  e.get_Data(): ExtendedPropertyList
-        ///     "Data":  Customer,
-        ///     "ForDeletion": bool que indica se o  Customer vai ser apagado
+        ///     "Data":  Supplier,
+        ///     "ForDeletion": bool que indica se o  Supplier vai ser apagado
         ///
         /// OUT:
         ///     result.Success: true para continuar; false para falhar a validação
@@ -201,44 +201,21 @@ namespace Sage50c.ExtenderSample {
         /// </param>
         void myEvents_OnValidating(object Sender, ExtenderEventArgs e) {
             var proplist = (ExtendedPropertyList)e.get_data();
-            var Customer = ( Customer)proplist.get_Value("Data");
+            var Supplier = (Supplier)proplist.get_Value("Data");
             var forDeletion = (bool)proplist.get_Value("ForDeletion");
 
             e.result.Success = true;
 
-            var extraFields = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraFieldList("Customer");
-            foreach ( ConfExtraFields extraField in extraFields) {
-                if (Customer.PartyInfo.ExtraFields.Find((int) extraField.ExtraFieldID) == null) {
-                    e.result.Success = false;
-                    e.result.ResultMessage = string.Format( "Validate Event: Campo extra {0} não está preenchido", extraField.Description) ;
-                    break;
-                }
-            }
-
-
-            //var extraField = Customer.PartyInfo.ExtraFields.Find(2);
-            //if (extraField == null) {
-            //    extraField = new ExtraField();
-            //    extraField.PartyID = Customer.PartyID;
-            //    var confExtraField = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraField(2);
-            //    extraField.ExtraFieldID = (int)confExtraField.ExtraFieldID;
-
-            //    Customer.PartyInfo.ExtraFields.Add(extraField);
-            //}
-            //extraField.TextAnswer = "Informático";
-
-            //if (string.IsNullOrEmpty( Customer.AddressLine1 )) {
-            //    e.result.ResultMessage = "P.f. preencha a linha da morada";
-            //    e.result.Success = false;
-            //}
-            //else {
-            //    e.result.Success = true;
-            //}
         }
 
         public void Dispose() {
-            myEvents = null;
             // House cleanup
+            _myEvents = null;
+            if (_formTab != null) {
+                _formTab.Dispose();
+                _formTab = null;
+            }
         }
     }
+
 }

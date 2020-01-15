@@ -7,22 +7,23 @@ using System.Linq;
 using System.Text;
 using Sage50c.API;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
     class CustomerHandler : IDisposable {
-        private ExtenderEvents myEvents = null;
-        private IManagementConsole managementConsole = null;   //Consola de gestão dos parâmetros
+        private IManagementConsole _managementConsole = null;   //Consola de gestão dos parâmetros
+        private ExtenderEvents _myEvents = null;
+        private FormCustomerTab _formTab = null;                     //Form das propriedades
 
         public void SetEventHandler(ExtenderEvents e) {
-            myEvents = e;
+            _myEvents = e;
 
-            myEvents.OnDelete += myEvents_OnDelete;         // Delete  Customer
-            myEvents.OnDispose += myEvents_OnDispose;       // Limpar recursos
-            myEvents.OnInitialize += myEvents_OnInitialize; // Inicializar, adicionar menus de utilizador
-            myEvents.OnLoad += myEvents_OnLoad;             // Ao carregar um artigo e preencher o form. Pode ser cancelado
-            myEvents.OnMenuItem += myEvents_OnMenuItem;     // Menu do utilizador foi pressionado
-            myEvents.OnNew += myEvents_OnNew;               // Novo  Customer
-            myEvents.OnSave += myEvents_OnSave;             // Gravar Items
-            myEvents.OnValidating += myEvents_OnValidating; // Validar. Pode ser cancelado.
+            _myEvents.OnDelete += myEvents_OnDelete;         // Delete  Customer
+            _myEvents.OnDispose += myEvents_OnDispose;       // Limpar recursos
+            _myEvents.OnInitialize += myEvents_OnInitialize; // Inicializar, adicionar menus de utilizador
+            _myEvents.OnLoad += myEvents_OnLoad;             // Ao carregar um artigo e preencher o form. Pode ser cancelado
+            _myEvents.OnMenuItem += myEvents_OnMenuItem;     // Menu do utilizador foi pressionado
+            _myEvents.OnNew += myEvents_OnNew;               // Novo  Customer
+            _myEvents.OnSave += myEvents_OnSave;             // Gravar Items
+            _myEvents.OnValidating += myEvents_OnValidating; // Validar. Pode ser cancelado.
 
         }
 
@@ -85,12 +86,12 @@ namespace Sage50c.ExtenderSample {
         ///     ResultMessage: caso preenchida, apresenta a mensagem
         /// </param>
         void myEvents_OnLoad(object Sender, ExtenderEventArgs e) {
-            var  Customer = ( Customer)e.get_data();
+            var Customer = ( Customer)e.get_data();
 
-            // Customer.Description = "My description";
+            if (Customer != null) {
+                _formTab.OnLoad (Customer);
+            }
 
-            //e.result.Success = false;
-            //e.result.ResultMessage = "A descrição foi alterada.";
         }
 
 
@@ -115,11 +116,11 @@ namespace Sage50c.ExtenderSample {
             var propertyList = (ExtendedPropertyList)e.get_data();
 
             if (propertyList.PropertyExists("IManagementConsole")) {
-                managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
+                _managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
 
                 // Form a colocar no TAB dos clientes
-                //formProps = new FormProps();
-                //managementConsole.AddChildPanel(formProps);
+                _formTab = new FormCustomerTab();
+                _managementConsole.AddChildPanel(_formTab);
             }
 
             // Acrescentar Items ao menu
@@ -149,6 +150,11 @@ namespace Sage50c.ExtenderSample {
         /// Não mostra mensagens
         /// </summary>
         void myEvents_OnDispose() {
+            if (_formTab != null) {
+                _formTab.Dispose();
+                _formTab = null;
+            }
+
         }
 
         /// <summary>
@@ -173,15 +179,14 @@ namespace Sage50c.ExtenderSample {
         void myEvents_OnNew(object Sender, ExtenderEventArgs e) {
             var customer = (Customer)e.get_data();
 
-            var extraFields = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraFieldList("Customer");
-            foreach (ConfExtraFields extraField in extraFields) {
-                customer.PartyInfo.ExtraFields.Add(new ExtraField() {
-                    PartyID = customer.PartyID,
-                    ExtraFieldID = (int)extraField.ExtraFieldID
-                });
-            }
+            _formTab.ResetInterface();
 
-            e.result.ResultMessage = "New Event: Estou a criar um cliente novo";
+            //customer.OrganizationName = "My name";
+
+            //e.result.ResultMessage = "O nome foi alterado.";
+            //e.result.Success = true;
+
+            //e.result.ResultMessage = "New Event: Estou a criar um cliente novo";
             e.result.Success = true;
         }
 
@@ -206,39 +211,15 @@ namespace Sage50c.ExtenderSample {
 
             e.result.Success = true;
 
-            var extraFields = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraFieldList("Customer");
-            foreach ( ConfExtraFields extraField in extraFields) {
-                if (Customer.PartyInfo.ExtraFields.Find((int) extraField.ExtraFieldID) == null) {
-                    e.result.Success = false;
-                    e.result.ResultMessage = string.Format( "Validate Event: Campo extra {0} não está preenchido", extraField.Description) ;
-                    break;
-                }
-            }
-
-
-            //var extraField = Customer.PartyInfo.ExtraFields.Find(2);
-            //if (extraField == null) {
-            //    extraField = new ExtraField();
-            //    extraField.PartyID = Customer.PartyID;
-            //    var confExtraField = APIEngine.DSOCache.ConfExtraFieldsProvider.GetConfExtraField(2);
-            //    extraField.ExtraFieldID = (int)confExtraField.ExtraFieldID;
-
-            //    Customer.PartyInfo.ExtraFields.Add(extraField);
-            //}
-            //extraField.TextAnswer = "Informático";
-
-            //if (string.IsNullOrEmpty( Customer.AddressLine1 )) {
-            //    e.result.ResultMessage = "P.f. preencha a linha da morada";
-            //    e.result.Success = false;
-            //}
-            //else {
-            //    e.result.Success = true;
-            //}
         }
 
         public void Dispose() {
-            myEvents = null;
             // House cleanup
+            _myEvents = null;
+            if (_formTab != null) {
+                _formTab.Dispose();
+                _formTab = null;
+            }
         }
     }
 }
