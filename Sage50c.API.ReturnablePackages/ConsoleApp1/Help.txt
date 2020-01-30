@@ -1,0 +1,9 @@
+1. Criar empresa em Access com o nome EmbalagensRetornaveis
+2. Substituir a base de dados da empresa criada pela base de dados distribuída com o exemplo.
+
+O exemplo tem 4 funções 
+
+1. Entrada se stock		| StockTransactionSave()
+2. Compra                   	| ItemTransactionSavePurchase()
+3. Venda                       	| ItemTransactionSaveSale();
+Venda com devolução de tara 	| ItemTransactionSaveSaleWithReturnOfReturnable();
