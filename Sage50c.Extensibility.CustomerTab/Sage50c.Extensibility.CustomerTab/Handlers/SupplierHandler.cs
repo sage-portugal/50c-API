@@ -86,10 +86,10 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.SupplierHandler {
         ///     ResultMessage: caso preenchida, apresenta a mensagem
         /// </param>
         void myEvents_OnLoad(object Sender, ExtenderEventArgs e) {
-            var Supplier = (Supplier)e.get_data();
+            var supplier = (Supplier)e.get_data();
 
-            if (Supplier != null) {
-                _formTab.OnLoad(Supplier);
+            if (supplier != null) {
+                _formTab.OnLoad(supplier);
             }
         }
 
@@ -117,8 +117,7 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.SupplierHandler {
             if (propertyList.PropertyExists("IManagementConsole")) {
                 _managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
 
-                // Form a colocar no TAB dos clientes
-                //var formTab = new FormSupplierTab();
+                // Form a colocar no TAB dos fornecedores
                 _formTab = new FormSupplierTab();
                 _managementConsole.AddChildPanel(_formTab);
             }
@@ -154,7 +153,6 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.SupplierHandler {
                 _formTab.Dispose();
                 _formTab = null;
             }
-
         }
 
         /// <summary>
@@ -177,11 +175,15 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.SupplierHandler {
         /// <param name="Sender">ExtensibilityController</param>
         /// <param name="e">Event parameters</param>
         void myEvents_OnNew(object Sender, ExtenderEventArgs e) {
-            var Supplier = (Supplier)e.get_data();
+            var supplier = (Supplier)e.get_data();
 
             _formTab.ResetInterface();
 
-            //e.result.ResultMessage = "New Event: Estou a criar um cliente novo";
+            //supplier.OrganizationName = "My name";
+            //e.result.ResultMessage = "O nome foi alterado.";
+            //e.result.Success = true;
+
+            //e.result.ResultMessage = "New Event: Estou a criar um fornecedor novo";
             e.result.Success = true;
         }
 

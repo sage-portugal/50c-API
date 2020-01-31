@@ -182,7 +182,6 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
             _formTab.ResetInterface();
 
             //customer.OrganizationName = "My name";
-
             //e.result.ResultMessage = "O nome foi alterado.";
             //e.result.Success = true;
 

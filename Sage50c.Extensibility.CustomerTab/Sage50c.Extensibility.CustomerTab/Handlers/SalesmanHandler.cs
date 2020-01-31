@@ -116,7 +116,7 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.SalesmanHandler {
             if (propertyList.PropertyExists("IManagementConsole")) {
                 _managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
 
-                // Form a colocar no TAB dos clientes
+                // Form a colocar no TAB dos vendedores
                 _formTab = new FormSalesmanTab();
                 _managementConsole.AddChildPanel(_formTab);
             }
@@ -179,7 +179,11 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.SalesmanHandler {
 
             _formTab.ResetInterface();
 
-            //e.result.ResultMessage = "New Event: Estou a criar um cliente novo";
+            //salesman.Name = "My name";
+            //e.result.ResultMessage = "O nome foi alterado.";
+            //e.result.Success = true;
+
+            //e.result.ResultMessage = "New Event: Estou a criar um vendedor novo";
             e.result.Success = true;
         }
 
