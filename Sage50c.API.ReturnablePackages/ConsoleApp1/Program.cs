@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ReturnablePackaging {
+namespace Sage50c.API.ReturnablePackages.Sample {
     class Program {
         private S50cDL18.DSOItem itemProvider { get { return APIEngine.DSOCache.ItemProvider; } }
 
         static void Main(string[] args) {
             //Config. Connect to Database
             string ProductCode = "CRTL";
-            string CompanyID = "EmbalagensRetornaveis";
+            string CompanyID = "EMPRESA";
             bool Isdebug = true;
 
             try {
@@ -28,11 +28,11 @@ namespace ReturnablePackaging {
 
                 //1º  stock entry
                 //ES : 10 7UPs | 10 TARAS
-                StockTransactionSave();
+                //StockTransactionSave();
 
                 //2º Purchase
                 //FS: 20 7UPs | 20 TARAS
-                ItemTransactionSavePurchase();
+                //ItemTransactionSavePurchase();
 
                 //3º Sale
                 //FS: 5 7UPs | 5 TARAS
@@ -40,7 +40,7 @@ namespace ReturnablePackaging {
 
                 //4º Sale sale with returnable return
                 //FS: 5 7UPs | 5 TARAS
-                ItemTransactionSaveSaleWithReturnOfReturnable();
+                //ItemTransactionSaveSaleWithReturnOfReturnable();
 
 
             }
@@ -254,12 +254,12 @@ namespace ReturnablePackaging {
             }
 
             //Add Line_1: art1 type normal
-            var StockTransactionDetail = AddItemDetail(ItemTransaction, 1, "7upLitro", 5, 2.71);
-            ItemTransaction.AddDetail(StockTransactionDetail, true);
+            var transDetail = AddItemDetail(ItemTransaction, 1, "1", 5, 2.71);
+            ItemTransaction.AddDetail(transDetail, true);
 
             ////Add Line_2: EmbRetorn Type "Embalagens retornáveis" 
-            StockTransactionDetail = AddItemDetail(ItemTransaction, 1, "TARAS", 5, 0.30);
-            ItemTransaction.AddDetail(StockTransactionDetail, true);
+            transDetail = AddItemDetail(ItemTransaction, 1, "TARAS", 5, 0.30);
+            ItemTransaction.AddDetail(transDetail, true);
 //-------------------------------------------------------------
 // *** DETAILS
 //-------------------------------------------------------------
