@@ -121,7 +121,6 @@ namespace Sage50c.ExtenderSample {
                 //formProps = new FormProps();
                 //managementConsole.AddChildPanel(formProps);
             }
-
             // Acrescentar Items ao menu
             var newMenu = new ExtenderMenuItems();
 
