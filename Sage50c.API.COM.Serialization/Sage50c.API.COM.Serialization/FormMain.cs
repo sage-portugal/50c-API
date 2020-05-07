@@ -76,7 +76,7 @@ namespace Sage50c.API.COM.Serialization
             try {
                 var serializer = ShopConnection.JsonCOMSerialization.JsonCOMSerializer.GetDefaultSerializer();
                 var jsonToken = JToken.Parse(txtJSONBox.Text);
-                var trans = jsonToken.ToObject<S50cBase18.ItemTransaction>(serializer);
+                var trans = jsonToken.ToObject<S50cBO18.ItemTransaction>(serializer);
                 txtJSONBox.Text = $"Transacion {trans.TransactionID.ToString()} deserialized";
             }
             catch (Exception ex) {

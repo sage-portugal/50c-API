@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage50c.API.COM.Serialization", "Sage50c.API.COM.Serialization\Sage50c.API.COM.Serialization.csproj", "{29448370-06CB-4336-A885-C649F386D312}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage50c.ShopConnection.JsonCOMSerialization", "..\..\POS\SystemPOS\50c\Source\SRC.DLL\LojaConnection\Sage50c.ShopConnection.JsonCOMSerialization\Sage50c.ShopConnection.JsonCOMSerialization.csproj", "{7586CD83-41F5-42BD-AEEA-4154C7226A8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,19 @@ Global
 		{29448370-06CB-4336-A885-C649F386D312}.Release|Any CPU.Build.0 = Release|Any CPU
 		{29448370-06CB-4336-A885-C649F386D312}.Release|x86.ActiveCfg = Release|x86
 		{29448370-06CB-4336-A885-C649F386D312}.Release|x86.Build.0 = Release|x86
+		{7586CD83-41F5-42BD-AEEA-4154C7226A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7586CD83-41F5-42BD-AEEA-4154C7226A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7586CD83-41F5-42BD-AEEA-4154C7226A8A}.Debug|x86.ActiveCfg = Debug|x86
+		{7586CD83-41F5-42BD-AEEA-4154C7226A8A}.Debug|x86.Build.0 = Debug|x86
+		{7586CD83-41F5-42BD-AEEA-4154C7226A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7586CD83-41F5-42BD-AEEA-4154C7226A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7586CD83-41F5-42BD-AEEA-4154C7226A8A}.Release|x86.ActiveCfg = Release|x86
+		{7586CD83-41F5-42BD-AEEA-4154C7226A8A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4A20A63-EC56-49DD-98C4-0BD4A6BD0D4A}
 	EndGlobalSection
 EndGlobal
