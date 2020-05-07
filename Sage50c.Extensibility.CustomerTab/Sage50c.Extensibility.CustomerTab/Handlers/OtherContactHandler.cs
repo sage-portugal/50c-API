@@ -180,7 +180,11 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.OtherContactHandler {
 
             _formTab.ResetInterface();
 
-            //e.result.ResultMessage = "New Event: Estou a criar um cliente novo";
+            //otherContact.Name  = "My name";
+            //e.result.ResultMessage = "O nome foi alterado.";
+            //e.result.Success = true;
+
+            //e.result.ResultMessage = "New Event: Estou a criar um outro devedor/credor novo";
             e.result.Success = true;
         }
 

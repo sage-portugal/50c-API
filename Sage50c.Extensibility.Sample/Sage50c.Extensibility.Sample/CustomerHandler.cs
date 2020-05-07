@@ -118,10 +118,9 @@ namespace Sage50c.ExtenderSample {
                 managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
 
                 // Form a colocar no TAB dos clientes
-                //formProps = new FormProps();
-                //managementConsole.AddChildPanel(formProps);
+                var formProps = new FormProps();
+                managementConsole.AddChildPanel(formProps);
             }
-
             // Acrescentar Items ao menu
             var newMenu = new ExtenderMenuItems();
 

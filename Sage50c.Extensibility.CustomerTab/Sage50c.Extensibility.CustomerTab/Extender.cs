@@ -43,22 +43,22 @@ namespace Sage50c.Extensibility.CustomerTab {
                 case "supplier":    //Fornecedores
                     if (supplierHandler == null) {
                         supplierHandler = new SupplierHandler();
-                        supplierHandler.SetEventHandler(EventHandler);
                     }
+                    supplierHandler.SetEventHandler(EventHandler);
                     break;
 
                 case "salesman":    //Vendedores
                     if (salesmanHandler == null) {
                         salesmanHandler = new SalesmanHandler();
-                        salesmanHandler.SetEventHandler(EventHandler);
                     }
+                    salesmanHandler.SetEventHandler(EventHandler);
                     break;
                     
                 case "othercontact":    //Vendedores
                     if (otherContactHandler == null) {
                         otherContactHandler = new OtherContactHandler();
-                        otherContactHandler.SetEventHandler(EventHandler);
                     }
+                    otherContactHandler.SetEventHandler(EventHandler);
                     break;
             }
         }
@@ -76,6 +76,27 @@ namespace Sage50c.Extensibility.CustomerTab {
                 systemHandler.Dispose();
                 systemHandler = null;
             }
+
+            if (customerHandler != null) {
+                customerHandler.Dispose();
+                customerHandler = null;
+            }
+
+            if (supplierHandler != null) {
+                supplierHandler.Dispose();
+                supplierHandler = null;
+            }
+
+            if (salesmanHandler != null) {
+                salesmanHandler.Dispose();
+                salesmanHandler = null;
+            }
+
+            if (otherContactHandler != null) {
+                otherContactHandler.Dispose();
+                otherContactHandler = null;
+            }
+
         }
     }
 }

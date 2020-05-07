@@ -64,6 +64,13 @@ namespace Sage50c.ExtenderSample
 
             e.result.ResultMessage = "HeaderEvents_OnInitialize";
 
+            // Colocar o caminho para o icone. 
+            // Não usar os nomes de ficheiro da Sage em:
+            //      TARGETDIR\Icons50c
+            //      TARGETDIR\Images
+            var myTargetDir = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName);
+            myTargetDir = System.IO.Path.Combine(myTargetDir, "Icons");
+
             var newMenus1 = new ExtenderMenuItems();
             //
             //Criar o grupo: Tab
@@ -71,11 +78,12 @@ namespace Sage50c.ExtenderSample
             //criar item1
             var mnuItem1 = mnuGroup1.ChildItems.Add("mniXTrans11", "Custom Item 1");
             mnuItem1.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;
-            //mnuItem1.Picture = ImageConverter.GetIPictureDispFromImage(  )
+            mnuItem1.PictureName = System.IO.Path.Combine(myTargetDir, "icon-sample-01.png");
 
             //criar item2
             mnuItem1 = mnuGroup1.ChildItems.Add("mniXTrans21", "Custom Item 2");
             mnuItem1.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;
+            mnuItem1.PictureName = System.IO.Path.Combine(myTargetDir, "icon-sample-02.png");
 
             object returnMenu = newMenus1;
             e.result.set_data(returnMenu);

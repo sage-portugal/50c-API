@@ -110,6 +110,10 @@ namespace Sage50c.ExtenderSample {
             object oMenuItem = menuItem;
             properties.set_Value("ExtenderMenuItems", ref oMenuItem);
 
+            //Change RibbonTab Title
+            object oRibbonCaption = "New Tab Title";
+            properties.set_Value("RibbonCaption", ref oRibbonCaption);
+
             //Use this property if you want Sage Retail to rebuild the permissions tree...
             //object rebuildPermissionsTree = true;
             //properties.set_Value("RebuildPermissionsTree", rebuildPermissionsTree);

@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Sage50c.Extensibility.CustomerTab")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Sage 50c Extensibility CustomerTab")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Sage50c.Extensibility.CustomerTab")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("Sage Portugal")]
+[assembly: AssemblyProduct("Sage 50c")]
+[assembly: AssemblyCopyright("Copyright © Sage Portugal 2017")]
+[assembly: AssemblyTrademark("Sage Portugal")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
