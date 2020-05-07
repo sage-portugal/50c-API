@@ -55,6 +55,9 @@
   <PropertyGroup>
     <StartupObject>Sage50c.API.COM.Serialization.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ADODB, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
@@ -101,10 +104,6 @@
     </Reference>
     <Reference Include="S50cAPICGCO18">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cAPICGCO18.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="S50cBase18">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBase18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cBL18, Version=1.93.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
