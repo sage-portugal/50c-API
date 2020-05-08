@@ -141,5 +141,31 @@ namespace Sage50c.API.COM.Serialization
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
+
+
+        /// <summary>
+        /// Sample transaction Deserialization
+        /// </summary>
+        private void DeserializeTransaction() {
+            var serializer = ShopConnection.JsonCOMSerialization.JsonCOMSerializer.GetDefaultSerializer();
+            var jsonToken = JToken.Parse(txtJSONBox.Text);
+            var item = jsonToken.ToObject<S50cBO18.ItemTransaction>(serializer);
+            txtJSONBox.Text = $"Transaction '{item.TransactionID}' deserialized";
+        }
+
+    
+        /// <summary>
+        /// Sample transaction serialization
+        /// </summary>
+        private void SerializeTransaction() {
+            var item = APIEngine.DSOCache.ItemTransactionProvider.GetItemTransaction(S50cSys18.DocumentTypeEnum.dcTypeSale, "1", "FAC", 1);
+            if (item != null) {
+                var serializer = ShopConnection.JsonCOMSerialization.JsonCOMSerializer.GetDefaultSerializer();
+                var jsonToken = JToken.FromObject(item, serializer);
+                if (jsonToken != null) {
+                    txtJSONBox.Text = jsonToken.ToString(); ;
+                }
+            }
+        }
     }
 }
