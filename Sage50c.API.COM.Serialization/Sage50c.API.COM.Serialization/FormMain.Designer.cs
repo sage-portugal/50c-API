@@ -26,6 +26,12 @@
         /// </summary>
         private void InitializeComponent() {
             this.panelTop = new System.Windows.Forms.Panel();
+            this.btnItemTransDeSerialize = new System.Windows.Forms.Button();
+            this.btnItemTransSerialize = new System.Windows.Forms.Button();
+            this.btnCustomerDeserialize = new System.Windows.Forms.Button();
+            this.btnCustomerSerialize = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtCustomerID = new System.Windows.Forms.TextBox();
             this.btnItemDeserialize = new System.Windows.Forms.Button();
             this.btnItemSerialize = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -38,16 +44,14 @@
             this.panelMiddle = new System.Windows.Forms.Panel();
             this.txtJSONBox = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnCustomerDeserialize = new System.Windows.Forms.Button();
-            this.btnCustomerSerialize = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtCustomerID = new System.Windows.Forms.TextBox();
             this.panelTop.SuspendLayout();
             this.panelMiddle.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
             // 
+            this.panelTop.Controls.Add(this.btnItemTransDeSerialize);
+            this.panelTop.Controls.Add(this.btnItemTransSerialize);
             this.panelTop.Controls.Add(this.btnCustomerDeserialize);
             this.panelTop.Controls.Add(this.btnCustomerSerialize);
             this.panelTop.Controls.Add(this.label3);
@@ -66,6 +70,70 @@
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(761, 155);
             this.panelTop.TabIndex = 0;
+            // 
+            // btnItemTransDeSerialize
+            // 
+            this.btnItemTransDeSerialize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnItemTransDeSerialize.Enabled = false;
+            this.btnItemTransDeSerialize.Location = new System.Drawing.Point(617, 110);
+            this.btnItemTransDeSerialize.Name = "btnItemTransDeSerialize";
+            this.btnItemTransDeSerialize.Size = new System.Drawing.Size(89, 30);
+            this.btnItemTransDeSerialize.TabIndex = 15;
+            this.btnItemTransDeSerialize.Text = "Deser Trans";
+            this.btnItemTransDeSerialize.UseVisualStyleBackColor = true;
+            this.btnItemTransDeSerialize.Click += new System.EventHandler(this.btnItemTransDeSerialize_Click);
+            // 
+            // btnItemTransSerialize
+            // 
+            this.btnItemTransSerialize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnItemTransSerialize.Enabled = false;
+            this.btnItemTransSerialize.Location = new System.Drawing.Point(522, 110);
+            this.btnItemTransSerialize.Name = "btnItemTransSerialize";
+            this.btnItemTransSerialize.Size = new System.Drawing.Size(89, 30);
+            this.btnItemTransSerialize.TabIndex = 14;
+            this.btnItemTransSerialize.Text = "Ser Trans";
+            this.btnItemTransSerialize.UseVisualStyleBackColor = true;
+            this.btnItemTransSerialize.Click += new System.EventHandler(this.btnItemTransSerialize_Click);
+            // 
+            // btnCustomerDeserialize
+            // 
+            this.btnCustomerDeserialize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCustomerDeserialize.Enabled = false;
+            this.btnCustomerDeserialize.Location = new System.Drawing.Point(617, 74);
+            this.btnCustomerDeserialize.Name = "btnCustomerDeserialize";
+            this.btnCustomerDeserialize.Size = new System.Drawing.Size(89, 30);
+            this.btnCustomerDeserialize.TabIndex = 13;
+            this.btnCustomerDeserialize.Text = "Deserialize";
+            this.btnCustomerDeserialize.UseVisualStyleBackColor = true;
+            this.btnCustomerDeserialize.Click += new System.EventHandler(this.btnCustomerDeserialize_Click);
+            // 
+            // btnCustomerSerialize
+            // 
+            this.btnCustomerSerialize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCustomerSerialize.Enabled = false;
+            this.btnCustomerSerialize.Location = new System.Drawing.Point(522, 74);
+            this.btnCustomerSerialize.Name = "btnCustomerSerialize";
+            this.btnCustomerSerialize.Size = new System.Drawing.Size(89, 30);
+            this.btnCustomerSerialize.TabIndex = 12;
+            this.btnCustomerSerialize.Text = "Serialize";
+            this.btnCustomerSerialize.UseVisualStyleBackColor = true;
+            this.btnCustomerSerialize.Click += new System.EventHandler(this.btnCustomerSerialize_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 82);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(73, 15);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Customer ID";
+            // 
+            // txtCustomerID
+            // 
+            this.txtCustomerID.Location = new System.Drawing.Point(134, 79);
+            this.txtCustomerID.Name = "txtCustomerID";
+            this.txtCustomerID.Size = new System.Drawing.Size(230, 23);
+            this.txtCustomerID.TabIndex = 10;
             // 
             // btnItemDeserialize
             // 
@@ -185,46 +253,6 @@
             this.panel1.Size = new System.Drawing.Size(761, 16);
             this.panel1.TabIndex = 11;
             // 
-            // btnCustomerDeserialize
-            // 
-            this.btnCustomerDeserialize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCustomerDeserialize.Enabled = false;
-            this.btnCustomerDeserialize.Location = new System.Drawing.Point(617, 74);
-            this.btnCustomerDeserialize.Name = "btnCustomerDeserialize";
-            this.btnCustomerDeserialize.Size = new System.Drawing.Size(89, 30);
-            this.btnCustomerDeserialize.TabIndex = 13;
-            this.btnCustomerDeserialize.Text = "Deserialize";
-            this.btnCustomerDeserialize.UseVisualStyleBackColor = true;
-            this.btnCustomerDeserialize.Click += new System.EventHandler(this.btnCustomerDeserialize_Click);
-            // 
-            // btnCustomerSerialize
-            // 
-            this.btnCustomerSerialize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCustomerSerialize.Enabled = false;
-            this.btnCustomerSerialize.Location = new System.Drawing.Point(522, 74);
-            this.btnCustomerSerialize.Name = "btnCustomerSerialize";
-            this.btnCustomerSerialize.Size = new System.Drawing.Size(89, 30);
-            this.btnCustomerSerialize.TabIndex = 12;
-            this.btnCustomerSerialize.Text = "Serialize";
-            this.btnCustomerSerialize.UseVisualStyleBackColor = true;
-            this.btnCustomerSerialize.Click += new System.EventHandler(this.btnCustomerSerialize_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 82);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 15);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "Customer ID";
-            // 
-            // txtCustomerID
-            // 
-            this.txtCustomerID.Location = new System.Drawing.Point(134, 79);
-            this.txtCustomerID.Name = "txtCustomerID";
-            this.txtCustomerID.Size = new System.Drawing.Size(230, 23);
-            this.txtCustomerID.TabIndex = 10;
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -263,5 +291,7 @@
         private System.Windows.Forms.Button btnCustomerSerialize;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtCustomerID;
+        private System.Windows.Forms.Button btnItemTransSerialize;
+        private System.Windows.Forms.Button btnItemTransDeSerialize;
     }
 }

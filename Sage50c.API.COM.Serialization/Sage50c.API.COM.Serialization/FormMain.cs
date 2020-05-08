@@ -23,6 +23,8 @@ namespace Sage50c.API.COM.Serialization
                 btnItemDeserialize.Enabled = true;
                 btnCustomerSerialize.Enabled = true;
                 btnCustomerDeserialize.Enabled = true;
+                btnItemTransSerialize.Enabled = true;
+                btnItemTransDeSerialize.Enabled = true;
             };
 
             APIEngine.APIStopped += (sender, e) => {
@@ -32,6 +34,8 @@ namespace Sage50c.API.COM.Serialization
                 btnItemDeserialize.Enabled = false;
                 btnCustomerSerialize.Enabled = false;
                 btnCustomerDeserialize.Enabled = false;
+                btnItemTransSerialize.Enabled = false;
+                btnItemTransDeSerialize.Enabled = false;
             };
 
             cmbAppCode.SelectedIndex = 0;
@@ -166,6 +170,15 @@ namespace Sage50c.API.COM.Serialization
                     txtJSONBox.Text = jsonToken.ToString(); ;
                 }
             }
+        }
+
+        private void btnItemTransSerialize_Click(object sender, EventArgs e) {
+            SerializeTransaction();
+        }
+
+        private void btnItemTransDeSerialize_Click(object sender, EventArgs e) {
+            DeserializeTransaction();
+
         }
     }
 }
