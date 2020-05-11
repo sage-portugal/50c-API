@@ -71,8 +71,6 @@ namespace Sage50c.ExtenderSample {
 
             childWindow.Init(this);
 
-            //childWindow.WindowState = VBRUN.FormWindowStateConstants.vbMaximized;
-
             //Translate to twips
             childWindow.SetClientArea(this.Width * 15, this.Height * 15);
             childWindow.CenterOnScreen();
@@ -80,6 +78,9 @@ namespace Sage50c.ExtenderSample {
 
             this.Visible = true;
             childWindow.Show();
+
+            //childWindow.WindowState = VBRUN.FormWindowStateConstants.vbMaximized;
+
 
             //Enable panel
             if (childWindow.EditState == EditStateType.esNull) {
@@ -192,6 +193,21 @@ namespace Sage50c.ExtenderSample {
 
 
         private void btnMenu_Click(object sender, EventArgs e) {
+            //See Name/Id in:
+            //%ProgramFiles(x86)%\Sage 50c\UI\CRTL.PTG.UI.xml
+
+            //<MenuItem Id="1010011" Name="miSaleTransaction" Title="Faturas"
+            //UIMenuManager.ToolClick("miSaleTransaction", "1010011");
+
+            //<MenuItem Id="20061" Name="miRelVTotDocEmitidos" Title="Lista de documentos de venda" 
+            //UIMenuManager.ToolClick("miRelVTotDocEmitidos", null);
+
+            //<MenuItem Id="40022" Name="miItemPriceChange" Title="Atualização automática assistida"
+            //UIMenuManager.ToolClick("miItemPriceChange", null);
+
+            //<MenuItem Id="10011" Name="miItem" Description="Artigos" Title="Artigos" 
+            //UIMenuManager.ToolClick("miItem", null);
+
             UIMenuManager.ToolClick(txtMenu.Text, null);
         }
     }

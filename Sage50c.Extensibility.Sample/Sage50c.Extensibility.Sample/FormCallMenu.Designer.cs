@@ -68,7 +68,6 @@
             this.btnShowTransaction.Name = "btnShowTransaction";
             this.btnShowTransaction.Size = new System.Drawing.Size(24, 21);
             this.btnShowTransaction.TabIndex = 3;
-            this.btnShowTransaction.Text = "...";
             this.btnShowTransaction.UseVisualStyleBackColor = true;
             this.btnShowTransaction.Click += new System.EventHandler(this.btnShowTransaction_Click_1);
             // 
@@ -85,7 +84,6 @@
             this.btnShowItem.Name = "btnShowItem";
             this.btnShowItem.Size = new System.Drawing.Size(24, 21);
             this.btnShowItem.TabIndex = 5;
-            this.btnShowItem.Text = "...";
             this.btnShowItem.UseVisualStyleBackColor = true;
             this.btnShowItem.Click += new System.EventHandler(this.btnShowItem_Click);
             // 
@@ -121,7 +119,6 @@
             this.btnMenu.Name = "btnMenu";
             this.btnMenu.Size = new System.Drawing.Size(24, 21);
             this.btnMenu.TabIndex = 9;
-            this.btnMenu.Text = "...";
             this.btnMenu.UseVisualStyleBackColor = true;
             this.btnMenu.Click += new System.EventHandler(this.btnMenu_Click);
             // 
