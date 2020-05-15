@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{29448370-06CB-4336-A885-C649F386D312}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sage50c.API.COM.Serialization</RootNamespace>
+    <AssemblyName>Sage50c.API.COM.Serialization</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Sage50c.API.COM.Serialization.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ADODB, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\ADODB.dll</HintPath>
+    </Reference>
+    <Reference Include="ADODB27">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\ADODB27.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="DAO">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\DAO.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="DartMail">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\DartMail.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MSScriptControl">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\MSScriptControl.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="MSXML2">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\MSXML2.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="POPLib">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\POPLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cAPI18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cAPI18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cAPICGCO18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cAPICGCO18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cBase18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBase18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cBL18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBL18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cBO18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBO18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cCore18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cCore18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cData18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cData18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cDL18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cDL18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cDP18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cDP18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cLocalize18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cLocalize18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cPrint18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cPrint18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cQS18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cQS18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cRV18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cRV18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cSAFTX18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cSAFTX18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cSys18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cSys18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cUIBase18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUIBase18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cUpdate16">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUpdate16.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cUpdate18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUpdate18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="S50cUtil18">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUtil18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Sage50c.ShopConnection.JsonCOMSerialization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Extra Online\Sage50c.ShopConnection.JsonCOMSerialization.dll</HintPath>
+    </Reference>
+    <Reference Include="SageCEMV15">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCEMV15.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SageCoreComm10">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCoreComm10.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SageCoreLicenses20">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCoreLicenses20.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SageCoreSaft40">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCoreSaft40.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SageCoreUtil10">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\SageCoreUtil10.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Scripting">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\Scripting.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="VBA">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\VBA.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="VBRUN">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\VBRUN.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="XceedZipLib">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\XceedZipLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="XtremeDockingPane">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\XtremeDockingPane.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="XtremeSuiteControls">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\XtremeSuiteControls.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="XtremeTaskPanel">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\XtremeTaskPanel.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Sage50c.Common\APIEngine.cs">
+      <Link>50cAPI\APIEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sage50c.Common\APIEngineInitializer.cs">
+      <Link>50cAPI\APIEngineInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sage50c.Common\APIExtensions.cs">
+      <Link>50cAPI\APIExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Sage50c.Common\APIQuickSearch.cs">
+      <Link>50cAPI\APIQuickSearch.cs</Link>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Refs\Sage50c.ShopConnection.JsonCOMSerialization.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
