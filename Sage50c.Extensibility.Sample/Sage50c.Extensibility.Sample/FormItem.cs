@@ -11,11 +11,12 @@ using stdole;
 using S50cSys18;
 using S50cUtil18;
 using Sage50c.API;
+using System.Security.Policy;
 
 namespace Sage50c.ExtenderSample {
     public partial class FormItem : Form, IChildPanel {
 
-        private IChildWindow childWindow = null;
+        private IChildWindow2 childWindow = null;
 
         public FormItem() {
             InitializeComponent();
@@ -25,8 +26,13 @@ namespace Sage50c.ExtenderSample {
             if (childWindow == null) {
                 childWindow = SystemHandler.GeneralChildWindow.GetNewInstance();
             }
+
+            //childWindow.BorderStyle = VBRUN.FormBorderStyleConstants.vbFixedSingle;
             childWindow.Caption = "Custom Item";
-            //childWindow.Init("Artigo:", true, true, null, this);
+            childWindow.IDFieldCaption = "Artigo:";
+            childWindow.SearchButtonVisible = false;
+            childWindow.NavigationButtonsVisible = false;
+            childWindow.IDFieldVisible = true;
 
             //
             // Construir menus da janela
@@ -46,8 +52,9 @@ namespace Sage50c.ExtenderSample {
             m.ChildItems.Add("xOpcoes1", "Opção 1");
             m.ChildItems.Add("xOpcoes2", "Opção 2");
 
-
-            childWindow.Init("Artigo:", false, false, xternderMenuItems, this);
+            childWindow.MenuItems = xternderMenuItems;
+            childWindow.Init(this);
+            //childWindow.Init("Artigo:", false, false, xternderMenuItems, this);
 
             //Translate to twips
             childWindow.SetClientArea(this.Width * 15, this.Height * 15);
