@@ -286,6 +286,7 @@
     <Content Include="Icons\icon-sample-01.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Icons\icon-save.ico" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\x86\Debug\Icons\" />
