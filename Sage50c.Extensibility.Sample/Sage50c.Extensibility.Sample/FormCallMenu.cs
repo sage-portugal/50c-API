@@ -18,7 +18,7 @@ namespace Sage50c.ExtenderSample {
         private IChildWindow2 childWindow = null;
         private IUITransaction uiTransactionManager = null;
         private IUIMasterTable uiMasterTableManager = null;
-        private IUIMenu UIMenuManager = null;
+        private IUIMenu uiMenuManager = null;
 
         public FormCallMenu() {
             InitializeComponent();
@@ -36,7 +36,6 @@ namespace Sage50c.ExtenderSample {
             childWindow.NavigationButtonsVisible = false;
             childWindow.IDFieldVisible = false;
 
-
             if (uiTransactionManager == null) {
                 uiTransactionManager = SystemHandler.GeneralUITransaction;
             }
@@ -45,29 +44,27 @@ namespace Sage50c.ExtenderSample {
                 uiMasterTableManager = SystemHandler.GeneralUIMasterTable;
             }
                         
-            if (UIMenuManager == null) {
-                UIMenuManager = SystemHandler.GeneralUIMenu;
+            if (uiMenuManager == null) {
+                uiMenuManager = SystemHandler.GeneralUIMenu;
             }
+            //
+            // Construir menus da janela
+            // 1. Botões
+            var xternderMenuItems = new ExtenderMenuItems();
+            var m = xternderMenuItems.Add("xAction1", "Acção 1");
+            m.ActionType = ExtenderActionType.ExtenderActionPrimary;
 
+            m = xternderMenuItems.Add("xAction2", "Acção 2");
+            m.ActionType = ExtenderActionType.ExtenderActionSecondary;
 
-            ////
-            //// Construir menus da janela
-            //// 1. Botões
-            //var xternderMenuItems = new ExtenderMenuItems();
-            //var m = xternderMenuItems.Add("xAction1", "Acção 1");
-            //m.ActionType = ExtenderActionType.ExtenderActionPrimary;
-
-            //m = xternderMenuItems.Add("xAction2", "Acção 2");
-            //m.ActionType = ExtenderActionType.ExtenderActionSecondary;
-
-            ////
-            ////2. Opções
-            //m = xternderMenuItems.Add("xOpcoes", "Opções");
-            //m.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;
-            //m.BeginGroup = true;
-            //m.ChildItems.Add("xOpcoes1", "Opção 1");
-            //m.ChildItems.Add("xOpcoes2", "Opção 2");
-            //childWindow.MenuItems = xternderMenuItems;
+            //
+            //2. Opções
+            m = xternderMenuItems.Add("xOpcoes", "Opções");
+            m.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;
+            m.BeginGroup = true;
+            m.ChildItems.Add("xOpcoes1", "Opção 1");
+            m.ChildItems.Add("xOpcoes2", "Opção 2");
+            childWindow.MenuItems = xternderMenuItems;
 
             childWindow.Init(this);
 
@@ -177,8 +174,8 @@ namespace Sage50c.ExtenderSample {
                 uiMasterTableManager = null;
             }
             
-            if (UIMenuManager != null) {
-                UIMenuManager = null;
+            if (uiMenuManager != null) {
+                uiMenuManager = null;
             }
 
         }
@@ -208,7 +205,31 @@ namespace Sage50c.ExtenderSample {
             //<MenuItem Id="10011" Name="miItem" Description="Artigos" Title="Artigos" 
             //UIMenuManager.ToolClick("miItem", null);
 
-            UIMenuManager.ToolClick(txtMenu.Text, null);
+            uiMenuManager.ToolClick(txtMenu.Text, null);
+        }
+
+
+        /// <summary>
+        /// Sample addons (modules)
+        /// A: Gestão comercial
+        /// LC: Loja Conenction
+        /// PX: Pescados/Congelados
+        /// H: Poweron
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCheckLicModule_Click(object sender, EventArgs e) {
+            var modules = APIEngine.SystemSettings.License.License.ModulesList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                                                              .Select(x=>x.Trim());
+
+            if( modules.Any(m=>string.Equals(txtLicModule.Text, m, StringComparison.CurrentCultureIgnoreCase)) ) {
+                MessageBox.Show($"O módulo {txtLicModule.Text} existe na licença", 
+                                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else {
+                MessageBox.Show($"O módulo {txtLicModule.Text} Não existe na licença",
+                                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

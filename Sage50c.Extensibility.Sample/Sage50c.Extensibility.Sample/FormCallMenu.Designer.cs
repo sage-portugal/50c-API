@@ -35,6 +35,9 @@
             this.btnMenu = new System.Windows.Forms.Button();
             this.lblMenu = new System.Windows.Forms.Label();
             this.grpGroup = new System.Windows.Forms.GroupBox();
+            this.btnCheckLicModule = new System.Windows.Forms.Button();
+            this.txtLicModule = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numTransdocnunber)).BeginInit();
             this.grpGroup.SuspendLayout();
             this.SuspendLayout();
@@ -146,15 +149,46 @@
             this.grpGroup.Controls.Add(this.btnShowItem);
             this.grpGroup.Location = new System.Drawing.Point(170, 62);
             this.grpGroup.Name = "grpGroup";
-            this.grpGroup.Size = new System.Drawing.Size(346, 163);
+            this.grpGroup.Size = new System.Drawing.Size(346, 165);
             this.grpGroup.TabIndex = 11;
             this.grpGroup.TabStop = false;
+            // 
+            // btnCheckLicModule
+            // 
+            this.btnCheckLicModule.Location = new System.Drawing.Point(470, 271);
+            this.btnCheckLicModule.Name = "btnCheckLicModule";
+            this.btnCheckLicModule.Size = new System.Drawing.Size(46, 21);
+            this.btnCheckLicModule.TabIndex = 11;
+            this.btnCheckLicModule.Text = "Check";
+            this.btnCheckLicModule.UseVisualStyleBackColor = true;
+            this.btnCheckLicModule.Click += new System.EventHandler(this.btnCheckLicModule_Click);
+            // 
+            // txtLicModule
+            // 
+            this.txtLicModule.Location = new System.Drawing.Point(296, 272);
+            this.txtLicModule.MaxLength = 2;
+            this.txtLicModule.Name = "txtLicModule";
+            this.txtLicModule.Size = new System.Drawing.Size(168, 20);
+            this.txtLicModule.TabIndex = 12;
+            this.txtLicModule.Text = "I1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(204, 275);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(85, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "License Module:";
             // 
             // FormCallMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtLicModule);
+            this.Controls.Add(this.btnCheckLicModule);
             this.Controls.Add(this.grpGroup);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormCallMenu";
@@ -162,6 +196,7 @@
             this.grpGroup.ResumeLayout(false);
             this.grpGroup.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -179,5 +214,8 @@
         private System.Windows.Forms.Button btnMenu;
         private System.Windows.Forms.Label lblMenu;
         private System.Windows.Forms.GroupBox grpGroup;
+        private System.Windows.Forms.Button btnCheckLicModule;
+        private System.Windows.Forms.TextBox txtLicModule;
+        private System.Windows.Forms.Label label1;
     }
 }
