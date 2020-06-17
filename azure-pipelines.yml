@@ -35,10 +35,11 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(agent.builddirectory)'
-    Contents: '**'
+    Contents: '**\bin\$(buildPlatform)\$(buildConfiguration)\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
     CleanTargetFolder: true
     OverWrite: true
+    flattenFolders: true
 
 - task: PublishBuildArtifacts@1
   inputs:
