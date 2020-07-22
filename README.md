@@ -29,4 +29,4 @@ Embed Interop Types = FALSE<br/>
 #### 2.6. Por último, indicar que pretendemos uma compilação x86:<br/>
 ![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/x86.png)
 
-E é tudo. É só compiplar e disfrutar<br/>
+E é tudo. É só compilar e disfrutar<br/>
