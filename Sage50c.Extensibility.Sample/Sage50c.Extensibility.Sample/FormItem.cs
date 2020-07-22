@@ -17,6 +17,7 @@ namespace Sage50c.ExtenderSample {
     public partial class FormItem : Form, IChildPanel {
 
         private IChildWindow2 childWindow = null;
+        private Timer _progressTimer = null;
 
         public FormItem() {
             InitializeComponent();
@@ -193,6 +194,97 @@ namespace Sage50c.ExtenderSample {
 
         private void btnItemQuickSearch_Click(object sender, EventArgs e) {
             ItemFind();
+        }
+
+        private void btnProgressStart_Click(object sender, EventArgs e) {
+            if(_progressTimer == null) {
+                _progressTimer = new Timer();
+            }
+            _progressTimer.Interval = 1000;
+            _progressTimer.Tick += _progressTimer_Tick;
+            _progressTimer.Tag = 0;
+            _progressTimer.Start();
+
+            //OwnerID = replace by your own identifier. Make sure it's unique per progress
+            //MessageID = 0 or get the message Id from "C:\Program Files (x86)\sage\Sage 50c\Sage.Localize.PTG.XML"
+            APIEngine.DataManager.Events.DBStatusStart("use-your-own-unique-identifier", 2030006);
+        }
+
+        private void _progressTimer_Tick(object sender, EventArgs e) {
+            var progress = (int)_progressTimer.Tag;
+            APIEngine.DataManager.Events.DBStatusProgress(0, $"{++progress}/100");
+            if(progress > 100) {
+                progress = 0;
+            }
+            _progressTimer.Tag = progress;
+            //Application.DoEvents();
+        }
+
+        private void btnProgressEnd_Click(object sender, EventArgs e) {
+            _progressTimer.Stop();
+            _progressTimer = null;
+            APIEngine.DataManager.Events.DBStatusFinish("use-your-own-unique-identifier");
+
+//            APIEngine.DataManager.Events.SingleStatusProgressValues(1, 10);
+
+        }
+
+
+        Timer _timer2 = null;
+        private void btnProgressStart2_Click(object sender, EventArgs e) {
+            _timer2 = new Timer();
+            _timer2.Interval = 1000;
+            _timer2.Tick += (s, ee) => {
+                var progress = (int)_timer2.Tag;
+                APIEngine.DataManager.Events.SingleStatusProgressValues( ++progress, 100);
+                if (progress > 100) {
+                    progress = 0;
+                }
+                _timer2.Tag = progress;
+            };
+            _timer2.Tag = 0;
+            _timer2.Start();
+
+            //OwnerID = replace by your own identifier. Make sure it's unique per progress
+            //MessageID = 0 or get the message Id from "C:\Program Files (x86)\sage\Sage 50c\Sage.Localize.PTG.XML"
+            APIEngine.DataManager.Events.SingleStatusStart("use-your-own-unique-identifier-2", 2030006, 100);
+        }
+
+        private void btnProgressEnd2_Click(object sender, EventArgs e) {
+            _timer2.Stop();
+            _timer2 = null;
+            APIEngine.DataManager.Events.SingleStatusEnd("use-your-own-unique-identifier-2");
+        }
+
+
+        Timer _timerDoubleProgress = null;
+        int _detailProgress = 0; int _globalProgress = 0;
+        private void btnProgressStart3_Click(object sender, EventArgs e) {
+            _timerDoubleProgress = new Timer();
+            _timerDoubleProgress.Interval = 100;
+            _timerDoubleProgress.Tick += (s, ee) => {
+                ++_detailProgress;
+                APIEngine.DataManager.Events.DoubleStatusDetailProgress(_detailProgress, 100);
+                if ( _detailProgress > 100) {
+                    ++_globalProgress;
+                    _detailProgress = 0;
+                    APIEngine.DataManager.Events.DoubleStatusGlobalTaskUpdate(0, APIEngine.StringFunctions.ParamArrayToString($"My Title {_globalProgress}"));
+                }
+            };
+            _timerDoubleProgress.Tag = 0;
+            _timerDoubleProgress.Start();
+            //
+            APIEngine.DataManager.Events.DoubleStatusGlobalTaskSet(0, APIEngine.StringFunctions.ParamArrayToString("My Title"), 100);
+            //OwnerID = replace by your own identifier. Make sure it's unique per progress
+            //MessageID = 0 or get the message Id from "C:\Program Files (x86)\sage\Sage 50c\Sage.Localize.PTG.XML"
+            APIEngine.DataManager.Events.DoubleStatusStart("use-your-own-unique-identifier-double", 2030006);
+        }
+
+        private void btnProgressEnd3_Click(object sender, EventArgs e) {
+            _timerDoubleProgress.Stop();
+            _timerDoubleProgress = null;
+            APIEngine.DataManager.Events.DoubleStatusFinish("use-your-own-unique-identifier-double");
+
         }
     }
 }
