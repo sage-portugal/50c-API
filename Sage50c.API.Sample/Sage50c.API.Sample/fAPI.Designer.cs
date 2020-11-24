@@ -258,6 +258,7 @@
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -503,6 +504,7 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.Transparent;
+            this.panel4.Controls.Add(this.button1);
             this.panel4.Controls.Add(this.pictureBox2);
             this.panel4.Controls.Add(this.pbCSharp);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
@@ -1655,7 +1657,7 @@
             this.optPrintOptions1.AutoSize = true;
             this.optPrintOptions1.Location = new System.Drawing.Point(20, 51);
             this.optPrintOptions1.Name = "optPrintOptions1";
-            this.optPrintOptions1.Size = new System.Drawing.Size(118, 19);
+            this.optPrintOptions1.Size = new System.Drawing.Size(119, 19);
             this.optPrintOptions1.TabIndex = 344;
             this.optPrintOptions1.Text = "Exportar para PDF";
             this.optPrintOptions1.UseVisualStyleBackColor = true;
@@ -3357,6 +3359,16 @@
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
             // 
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(6, 247);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(92, 27);
+            this.button1.TabIndex = 182;
+            this.button1.Text = "Limpar";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3660,6 +3672,7 @@
         private System.Windows.Forms.Button btnClearRep1;
         private System.Windows.Forms.Label LblL2;
         private System.Windows.Forms.Label LblL1;
+        private System.Windows.Forms.Button button1;
     }
 }
 
