@@ -106,7 +106,7 @@ namespace Sage50c.API.Sample {
             btnClear.Enabled = true;
             btnPrint.Enabled = true;
 
-          
+
 
             chkPrintPreview.Enabled = true;
             //
@@ -128,7 +128,7 @@ namespace Sage50c.API.Sample {
             //
             // Load combos
             // Customer -- Load combos data and clear
-            ItemClear( true );
+            ItemClear(true);
             CustomerClear();
             SupplierClear();
             TransactionClear();
@@ -152,7 +152,7 @@ namespace Sage50c.API.Sample {
             double dblReorderPointQuantity = 0;
             string strMessage = string.Empty;
 
-            switch ( MsgID) {
+            switch (MsgID) {
                 case TransactionWarningsEnum.tweItemColorSizeStockNotHavePhysical:
                 case TransactionWarningsEnum.tweItemStockNotHavePhysical:
                     if (objItemTransactionDetail.PackQuantity == 0) {
@@ -161,7 +161,7 @@ namespace Sage50c.API.Sample {
                     else {
                         dblStockQuantity = objItemTransactionDetail.QntyPhysicalBalanceCount / objItemTransactionDetail.PackQuantity;
                     }
-                    strMessage = APIEngine.gLng.GS( (int)MsgID, new object[]{
+                    strMessage = APIEngine.gLng.GS((int)MsgID, new object[]{
                                                              objItemTransactionDetail.WarehouseID.ToString().Trim(),
                                                              dblStockQuantity,
                                                              objItemTransactionDetail.UnitOfSaleID,
@@ -182,7 +182,7 @@ namespace Sage50c.API.Sample {
                         dblStockQuantity = objItemTransactionDetail.QntyWrPhysicalBalanceCount / objItemTransactionDetail.PackQuantity;
                         dblReorderPointQuantity = objItemTransactionDetail.QntyReorderPoint / objItemTransactionDetail.PackQuantity;
                     }
-                    strMessage = APIEngine.gLng.GS((int)MsgID, new object[]{ 
+                    strMessage = APIEngine.gLng.GS((int)MsgID, new object[]{
                                                              objItemTransactionDetail.WarehouseID.ToString(),
                                                              dblStockQuantity.ToString(),
                                                              objItemTransactionDetail.UnitOfSaleID,
@@ -210,7 +210,7 @@ namespace Sage50c.API.Sample {
                                                       );
                     break;
             }
-            if(!string.IsNullOrEmpty( strMessage)) {
+            if (!string.IsNullOrEmpty(strMessage)) {
                 MessageBox.Show(strMessage, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -273,7 +273,7 @@ namespace Sage50c.API.Sample {
                 APIEngine.WarningMessage += S50cAPIEngine_WarningMessage;
                 APIEngine.Message += S50cAPIEngine_Message;
 
-                APIEngine.Initialize( cmbAPI.SelectedItem.ToString(), txtCompanyId.Text, chkAPIDebugMode.Checked );
+                APIEngine.Initialize(cmbAPI.SelectedItem.ToString(), txtCompanyId.Text, chkAPIDebugMode.Checked);
             }
             catch (Exception ex) {
                 this.Cursor = Cursors.Default;
@@ -312,7 +312,7 @@ namespace Sage50c.API.Sample {
         /// <param name="e"></param>
         private void btnInsert_Click(object sender, EventArgs e) {
             try {
-                            transactionError = false;
+                transactionError = false;
                 TransactionID transId = null;
 
                 switch (tabEntities.SelectedIndex) {
@@ -346,7 +346,7 @@ namespace Sage50c.API.Sample {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnRemove_Click(object sender, EventArgs e) {
-            try{
+            try {
                 if (DialogResult.Yes == MessageBox.Show("Anular este registo da base de dados?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
                     TransactionID transId = null;
                     transactionError = false;
@@ -354,7 +354,7 @@ namespace Sage50c.API.Sample {
                     switch (tabEntities.SelectedIndex) {
                         case 0: ItemRemove(); break;                                        //Artigos
                         case 1: CustomerRemove((double)numCustomerId.Value); break;         //Clientes
-                        case 2: SupplierRemove( double.Parse(txtSupplierId.Text) ); break;  //Fornecedores
+                        case 2: SupplierRemove(double.Parse(txtSupplierId.Text)); break;  //Fornecedores
                         case 3: transId = TransactionRemove(); break;                                 //Compras e Vendas
                         case 4: transId = AccountTransactionRemove(); break;                          //Pagamentos e recebimentos
 
@@ -373,7 +373,7 @@ namespace Sage50c.API.Sample {
                     }
                 }
             }
-            catch( Exception ex ){
+            catch (Exception ex) {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -385,14 +385,14 @@ namespace Sage50c.API.Sample {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnAlterar_Click(object sender, EventArgs e) {
-            try{
-             
+            try {
+
                 TransactionID transId = null;
                 transactionError = false;
 
                 switch (tabEntities.SelectedIndex) {
-                    case 0: ItemUpdate( txtItemId.Text ); break;
-                    case 1: CustomerUpdate( (double)numCustomerId.Value, false ); break;
+                    case 0: ItemUpdate(txtItemId.Text); break;
+                    case 1: CustomerUpdate((double)numCustomerId.Value, false); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), false); break;
                     case 3: transId = TransactionEdit(false); break;
                     case 4: transId = AccountTransactionUpdate(false); break;
@@ -411,7 +411,7 @@ namespace Sage50c.API.Sample {
                     MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch( Exception ex ){
+            catch (Exception ex) {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
@@ -420,13 +420,13 @@ namespace Sage50c.API.Sample {
         private void btnItemLoad_Click(object sender, EventArgs e) {
             try {
                 switch (tabEntities.SelectedIndex) {
-                    case 0: ItemGet( txtItemId.Text.Trim() ); break;
-                    case 1: CustomerGet( (double)numCustomerId.Value ); break;
+                    case 0: ItemGet(txtItemId.Text.Trim()); break;
+                    case 1: CustomerGet((double)numCustomerId.Value); break;
                     case 2: SupplierGet(double.Parse(txtSupplierId.Text)); break;
                     case 3: TransactionGet(false); break;
                     case 4: AccountTransactionGet(); break;
 
-                    case 5: UnitOfMeasureGet( txtUnitOfMeasureId.Text ); break;
+                    case 5: UnitOfMeasureGet(txtUnitOfMeasureId.Text); break;
                 }
             }
             catch (Exception ex) {
@@ -444,8 +444,8 @@ namespace Sage50c.API.Sample {
                 MessageBox.Show("O código do artigo está vazio!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else {
-                if( dsoCache.ItemProvider.ItemExist( itemId ) ){
-                    throw new Exception(string.Format("O artigo [{0}] já existe.", itemId) );
+                if (dsoCache.ItemProvider.ItemExist(itemId)) {
+                    throw new Exception(string.Format("O artigo [{0}] já existe.", itemId));
                 }
 
                 var newItem = new Item();
@@ -463,7 +463,7 @@ namespace Sage50c.API.Sample {
                 //Inicializar as linhas de preço do artigo
                 newItem.InitPriceList(dsoPriceLine.GetPriceLineRS());
                 // Preço do artigo (linha de preço=1)
-                Price myPrice = newItem.SalePrice[1, 0];
+                Price myPrice = newItem.SalePrice[1, 0, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit];
                 //
                 // Definir o preços (neste caso, com imposto (IVA) incluido)
                 myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value;
@@ -516,7 +516,7 @@ namespace Sage50c.API.Sample {
                 //newItem.Sizes.Add(newItemSize);
                 ////
                 //// Adicionar um preço ao tamanho
-                //myPrice = newItem.SalePrice[1, newSizeID];
+                //myPrice = newItem.SalePrice[1, newSizeID, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit];
                 //// Para ser diferente, vamos colocar este preço com mais 10%
                 //myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value * 1.10;
                 //myPrice.UnitPrice = S50cAPIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
@@ -547,7 +547,7 @@ namespace Sage50c.API.Sample {
         /// Altera um Artigo
         /// </summary>
         /// <param name="itemId"></param>
-        private void ItemUpdate( string itemId ) {
+        private void ItemUpdate(string itemId) {
             var myItem = APIEngine.DSOCache.ItemProvider.GetItem(itemId, systemSettings.BaseCurrency);
             if (myItem != null) {
                 myItem.Description = txtItemDescription.Text;
@@ -555,11 +555,11 @@ namespace Sage50c.API.Sample {
                 myItem.Comments = txtItemComments.Text;
                 //
                 // Preços - PVP1
-                Price myPrice = myItem.SalePrice[1, 0];
+                Price myPrice = myItem.SalePrice[1, 0, string.Empty, 0, myItem.UnitOfSaleID];
                 // Definir o preço (neste caso, com imposto (IVA) incluido)
                 myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value;
                 // Obter preço unitário sem impostos
-                myPrice.UnitPrice =APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
+                myPrice.UnitPrice = APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
                                                     myPrice.TaxIncludedPrice,
                                                     myItem.TaxableGroupID,
                                                     systemSettings.SystemInfo.DefaultCountryID,
@@ -568,8 +568,8 @@ namespace Sage50c.API.Sample {
                 // Guardar as alterações
                 APIEngine.DSOCache.ItemProvider.Save(myItem, myItem.ItemID, false);
             }
-            else{
-                throw new Exception( string.Format("Artigo [{0}] não encontrado.", itemId) );
+            else {
+                throw new Exception(string.Format("Artigo [{0}] não encontrado.", itemId));
             }
         }
 
@@ -590,7 +590,7 @@ namespace Sage50c.API.Sample {
                     txtItemId.Text = item.ItemID;
                     txtItemDescription.Text = item.Description;
                     txtItemShortDescription.Text = item.ShortDescription;
-                    numItemPriceTaxIncluded.Value = (decimal)item.SalePrice[1, 0].TaxIncludedPrice;
+                    numItemPriceTaxIncluded.Value = (decimal)item.SalePrice[1, 0, string.Empty, 0, item.UnitOfSaleID].TaxIncludedPrice;
                     txtItemComments.Text = item.Comments;
 
                     cmbItemColor.DisplayMember = "ColorName";
@@ -614,9 +614,9 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Limpar o form
         /// </summary>
-        private void ItemClear( bool clearItemId ) {
+        private void ItemClear(bool clearItemId) {
             //Limpar
-            if( clearItemId )
+            if (clearItemId)
                 txtItemId.Text = string.Empty;
             txtItemDescription.Text = string.Empty;
             txtItemShortDescription.Text = string.Empty;
@@ -631,11 +631,11 @@ namespace Sage50c.API.Sample {
         /// Gravar (inserir ou alterar) um cliente
         /// </summary>
         /// <param name="customerId"></param>
-        private void CustomerUpdate( double customerId, bool isNew) {
+        private void CustomerUpdate(double customerId, bool isNew) {
             Customer myCustomer = null;
 
             //Ler da BD se não for novo
-            myCustomer = dsoCache.CustomerProvider.GetCustomer( customerId);
+            myCustomer = dsoCache.CustomerProvider.GetCustomer(customerId);
             if (myCustomer == null && !isNew) {
                 throw new Exception(string.Format("O cliente [{0}] não existe.", customerId));
             }
@@ -643,7 +643,7 @@ namespace Sage50c.API.Sample {
                 throw new Exception(string.Format("O cliente [{0}] já existe.", customerId));
             }
 
-            if( myCustomer == null ){
+            if (myCustomer == null) {
                 // Cliente NOVO
                 // Obter um novo Id
                 myCustomer = new Customer();
@@ -651,32 +651,32 @@ namespace Sage50c.API.Sample {
                 // Colocar credito por limite de valor para não bloquear o cliente
                 myCustomer.LimitType = CustomerLimitType.ltValue;
             }
-            
+
             myCustomer.OrganizationName = txtCustomerName.Text;
             myCustomer.FederalTaxId = txtCustomerTaxId.Text;
             myCustomer.Comments = txtCustomerComments.Text;
             //
-            if (cmbCustomerTax.SelectedItem != null){
+            if (cmbCustomerTax.SelectedItem != null) {
                 var entityFiscalStatus = (EntityFiscalStatus)cmbCustomerTax.SelectedItem;
-                myCustomer.EntityFiscalStatusID =  entityFiscalStatus.EntityFiscalStatusID;
+                myCustomer.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
             }
             myCustomer.SalesmanId = (int)numCustomerSalesmanId.Value;
-            if( cmbCustomerCurrency.SelectedValue != null )
+            if (cmbCustomerCurrency.SelectedValue != null)
                 myCustomer.CurrencyID = (string)cmbCustomerCurrency.SelectedValue;
             myCustomer.ZoneID = (short)numCustomerZoneId.Value;
-            if( cmbCustomerCountry.SelectedItem != null )
+            if (cmbCustomerCountry.SelectedItem != null)
                 myCustomer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
             //
             // Outros campos obrigatórios
             myCustomer.CarrierID = dsoCache.CarrierProvider.GetFirstCarrierID();
             myCustomer.TenderID = dsoCache.TenderProvider.GetFirstTenderCash();
             myCustomer.CurrencyID = cmbCustomerCurrency.Text;
-       
+
             // Se a zone estiver vazia, considerar a primeira zona nacional
-            if( myCustomer.ZoneID == 0 )
+            if (myCustomer.ZoneID == 0)
                 myCustomer.ZoneID = dsoCache.ZoneProvider.FindZone(ZoneTypeEnum.ztNational);
             // Se o modo de pagamento estiver vazio, obter o primeiro disponivel
-            if( myCustomer.PaymentID == 0  ){
+            if (myCustomer.PaymentID == 0) {
                 myCustomer.PaymentID = dsoCache.PaymentProvider.GetFirstID();
             }
             // Se o vendedor não existir, utilizar o primeiro disponivel
@@ -689,7 +689,7 @@ namespace Sage50c.API.Sample {
             // Se a moeda não existir, guar a moeda base
             if (!dsoCache.CurrencyProvider.CurrencyExists(myCustomer.CurrencyID))
                 myCustomer.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
-            
+
             // Gravar. Se for novo NewRec = true;
             dsoCache.CustomerProvider.Save(myCustomer, myCustomer.CustomerID, isNew);
             //
@@ -708,10 +708,10 @@ namespace Sage50c.API.Sample {
                 numCustomerSalesmanId.Value = customer.SalesmanId;
                 numCustomerZoneId.Value = customer.ZoneID;
 
-                cmbCustomerCountry.SelectedItem = cmbCustomerCountry.Items.Cast<CountryCode>().FirstOrDefault(x=>x.CountryID == customer.CountryID);
+                cmbCustomerCountry.SelectedItem = cmbCustomerCountry.Items.Cast<CountryCode>().FirstOrDefault(x => x.CountryID == customer.CountryID);
                 cmbCustomerCurrency.SelectedItem = cmbCustomerCurrency.Items.Cast<CurrencyDefinition>().FirstOrDefault(x => x.CurrencyID == customer.CurrencyID);
                 cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == customer.EntityFiscalStatusID);
-                
+
                 txtCustomerComments.Text = customer.Comments;
                 txtCustomerName.Text = customer.OrganizationName;
                 txtCustomerTaxId.Text = customer.FederalTaxId;
@@ -726,7 +726,7 @@ namespace Sage50c.API.Sample {
         /// Apagar um cliente
         /// </summary>
         /// <param name="customerId"></param>
-        private void CustomerRemove( double customerId ) {
+        private void CustomerRemove(double customerId) {
             dsoCache.CustomerProvider.Delete(customerId);
             CustomerClear();
         }
@@ -753,11 +753,11 @@ namespace Sage50c.API.Sample {
             //
             UIUtils.FillEntityFiscalStatusCombo(cmbCustomerTax);
             cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.SystemFiscalStatusID);
-            if (cmbCustomerTax.SelectedItem == null && cmbCustomerTax.Items.Count>0 ) {
+            if (cmbCustomerTax.SelectedItem == null && cmbCustomerTax.Items.Count > 0) {
                 cmbCustomerTax.SelectedIndex = 0;
             }
         }
-        
+
         #endregion
 
 
@@ -785,7 +785,7 @@ namespace Sage50c.API.Sample {
         private void SupplierUpdate(double supplierId, bool isNew) {
             Supplier supplier = null;
 
-            if( isNew && dsoCache.SupplierProvider.SupplierExists( supplierId ) ){
+            if (isNew && dsoCache.SupplierProvider.SupplierExists(supplierId)) {
                 throw new Exception(string.Format("O fornecedor [{0}] já existe.", supplierId));
             }
             if (!isNew) {
@@ -817,7 +817,7 @@ namespace Sage50c.API.Sample {
             supplier.PaymentID = dsoCache.PaymentProvider.GetFirstID();
             //  O meio de pagamento é obrigatório. VAmos usar o primeiro disponivel em numerário.
             supplier.TenderID = dsoCache.TenderProvider.GetFirstTenderCash();
-            
+
             dsoCache.SupplierProvider.Save(supplier, supplier.SupplierID, isNew);
 
             SupplierClear();
@@ -868,7 +868,7 @@ namespace Sage50c.API.Sample {
             if (myUnit == null && !isNew) {
                 throw new Exception(string.Format("A unidade de medida [{0}] não existe.", unitOfMeasureId));
             }
-            if( myUnit == null ){
+            if (myUnit == null) {
                 myUnit = new UnitOfMeasure();
                 myUnit.UnitOfMeasureID = unitOfMeasureId;
             }
@@ -906,7 +906,7 @@ namespace Sage50c.API.Sample {
             var transType = ItemTransactionHelper.TransGetType(transDoc);
 
             if (rbTransBuySell.Checked) {
-                if( transType != DocumentTypeEnum.dcTypeSale && transType != DocumentTypeEnum.dcTypePurchase ){
+                if (transType != DocumentTypeEnum.dcTypeSale && transType != DocumentTypeEnum.dcTypePurchase) {
                     throw new Exception("O documento indicado não é um documento de compra ou venda.");
                 }
                 if (bsoItemTransaction.LoadItemTransaction(transType, transSerial, transDoc, transDocNumber)) {
@@ -915,7 +915,7 @@ namespace Sage50c.API.Sample {
                     bsoItemTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
                     //
                     result = bsoItemTransaction.DeleteItemTransaction(false);
-                    if (result) 
+                    if (result)
                         transId = bsoItemTransaction.Transaction.TransactionID;
                     else
                         throw new Exception(string.Format("Não foi possivel anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
@@ -924,7 +924,7 @@ namespace Sage50c.API.Sample {
                     throw new Exception(string.Format("Não foi possivel carregar o documento {0} {1}/{2}.", transDoc, transSerial, transDocNumber));
             }
             else {
-                if (transType != DocumentTypeEnum.dcTypeStock ) {
+                if (transType != DocumentTypeEnum.dcTypeStock) {
                     throw new Exception("O documento indicado não é um documento de stock.");
                 }
                 var loaded = bsoStockTransaction.LoadStockTransaction(transType, transSerial, transDoc, transDocNumber);
@@ -955,7 +955,7 @@ namespace Sage50c.API.Sample {
         /// Inserir ou Actualizar uma transação na base dados
         /// </summary>
         /// <returns></returns>
-        private TransactionID TransactionInsert( bool suspendTransaction ) {
+        private TransactionID TransactionInsert(bool suspendTransaction) {
             string transDoc = txtTransDoc.Text;
             string transSerial = txtTransSerial.Text;
             double transDocNumber = 0;
@@ -968,7 +968,7 @@ namespace Sage50c.API.Sample {
             else {
                 result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, true);
             }
-            
+
             return result;
         }
 
@@ -979,14 +979,14 @@ namespace Sage50c.API.Sample {
             double.TryParse(txtTransDocNumber.Text, out transDocNumber);
 
             TransactionID result = null;
-            if( rbTransBuySell.Checked )
+            if (rbTransBuySell.Checked)
                 result = TransactionUpdate(transSerial, transDoc, transDocNumber, false, suspendedTransaction);
             else
                 result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, false);
             return result;
         }
 
-        
+
         /// <summary>
         /// Insere ou altera uma transação (compra/venda)
         /// </summary>
@@ -996,14 +996,14 @@ namespace Sage50c.API.Sample {
         /// <param name="newTransaction">true: Nova transação (inserir); false: transação existente (alterar)</param>
         /// <returns>TransactionId da transação inserida/alterada</returns>
         /// 
-        private TransactionID TransactionUpdate( string transSerial, string transDoc, double transDocNumber, bool newTransaction, bool suspendTransaction ) {
+        private TransactionID TransactionUpdate(string transSerial, string transDoc, double transDocNumber, bool newTransaction, bool suspendTransaction) {
 
             TransactionID insertedTrans = null;
             transactionError = false;
 
             try {
                 BSOItemTransactionDetail BSOItemTransDetail = null;
-                 
+
                 //'-------------------------------------------------------------------------
                 //' DOCUMENT HEADER and initialization
                 //'-------------------------------------------------------------------------
@@ -1032,7 +1032,7 @@ namespace Sage50c.API.Sample {
                 if (!newTransaction && !suspendTransaction) {
                     //Exemplo: Verificar se uma transação existe:
                     if (!dsoCache.ItemTransactionProvider.ItemTransactionExists(transSerial, transDoc, transDocNumber)) {
-                        throw new Exception( string.Format("O documento {0} {1}/{2} não existe para ser alterado. Deve criar um novo.", transDoc, transSerial, transDocNumber));
+                        throw new Exception(string.Format("O documento {0} {1}/{2} não existe para ser alterado. Deve criar um novo.", transDoc, transSerial, transDocNumber));
                     }
                 }
                 //
@@ -1065,7 +1065,7 @@ namespace Sage50c.API.Sample {
                     if (suspendTransaction) {
                         //NOTA:
                         // transDocNumber=número da transação suspensa. Não número final
-                        if ( ! bsoItemTransaction.LoadSuspendedTransaction(transSerial, transDoc, transDocNumber) ) {
+                        if (!bsoItemTransaction.LoadSuspendedTransaction(transSerial, transDoc, transDocNumber)) {
                             throw new Exception(string.Format("O documento {0} {1}/{2} não existe para ser alterado. Deve criar um novo.", transDoc, transSerial, transDocNumber));
                         }
                     }
@@ -1154,11 +1154,11 @@ namespace Sage50c.API.Sample {
                     }
                     trans.Tender.TenderID = tenderID;
                 }
-                
+
                 //
                 //ID da  Session
                 short sessionID = APIEngine.SystemSettings.TillSession.SessionID;
-               
+
                 trans.WorkstationStamp.SessionID = sessionID;
                 //
 
@@ -1201,7 +1201,7 @@ namespace Sage50c.API.Sample {
                 string serialNumber = txtTransPropValueL1.Text;
                 var currentDate = DateTime.Today;
                 //
-                TransAddDetail(trans, item, qty, txtTransUnL1.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL1.Text, serialNumber );
+                TransAddDetail(trans, item, qty, txtTransUnL1.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL1.Text, serialNumber);
                 //
                 //Adicionar a segunda linha ao documento
                 if (!string.IsNullOrEmpty(txtTransItemL2.Text)) {
@@ -1221,7 +1221,7 @@ namespace Sage50c.API.Sample {
                     serialNumber = txtTransPropValueL2.Text;
                     currentDate = DateTime.Today;
                     //
-                    TransAddDetail(trans, item, qty, txtTransUnL2.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL2.Text, serialNumber );
+                    TransAddDetail(trans, item, qty, txtTransUnL2.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL2.Text, serialNumber);
                 }
                 //*** Descomentar a linha seguinte para definir automaticamente as origens (conversão de um documento)
                 //bsoItemTransaction.FillTransactionOrigins()
@@ -1279,8 +1279,8 @@ namespace Sage50c.API.Sample {
                 //}
 
                 // Definir a assinatura de um sistema externo
-                if( series.SeriesType == SeriesTypeEnum.SeriesExternal  ) {
-                    if( ! SetExternalSignature(trans)) {
+                if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
+                    if (!SetExternalSignature(trans)) {
                         MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
@@ -1296,29 +1296,29 @@ namespace Sage50c.API.Sample {
                     if (APIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
 
                         bsoItemTransaction.Transaction.BuyShareOtherCostList = null;
-                        SimpleDocument objDocument ;
+                        SimpleDocument objDocument;
                         SimpleDocumentList objDocumentList = new SimpleDocumentList();
                         SimpleItemDetail objDocumentDetailsList;
 
                         double Convert_Double = 0;
-                        
+
 
                         //Begin manual Share amount 
                         if (txtShareTransDocNumber_R1.Text.Length > 0) {
                             objDocument = new SimpleDocument();
-                            objDocument.TransSerial = txtShareTransSerial_R1.Text ;
-                            objDocument.TransDocument = txtShareTransDocument_R1.Text ;
+                            objDocument.TransSerial = txtShareTransSerial_R1.Text;
+                            objDocument.TransDocument = txtShareTransDocument_R1.Text;
                             double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
                             objDocument.TransDocNumber = Convert_Double;
                             double.TryParse(txtShareAmount_R1.Text, out Convert_Double);
                             objDocument.TotalTransactionAmount = Convert_Double;
                             objDocument.CurrencyID = txtTransCurrency.Text;
                             objDocument.CurrencyExchange = 1;
-                            objDocument.CurrencyFactor  = 1;
+                            objDocument.CurrencyFactor = 1;
 
 
                             //ADD Line 1
-                            if (txtAmout_R1_L1.Text.Length >0 ) {
+                            if (txtAmout_R1_L1.Text.Length > 0) {
                                 objDocumentDetailsList = new SimpleItemDetail();
                                 objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
                                 objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
@@ -1336,7 +1336,7 @@ namespace Sage50c.API.Sample {
                             }
 
                             //ADD Line 2
-                            if ( txtAmout_R1_L2.Text.Length > 0) {
+                            if (txtAmout_R1_L2.Text.Length > 0) {
                                 objDocumentDetailsList = new SimpleItemDetail();
                                 objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
                                 objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
@@ -1429,9 +1429,9 @@ namespace Sage50c.API.Sample {
         /// <param name="unitCostPrice">Custo por unidade do artigo</param>
         /// <param name="itemTaxPercent">Taxa de imposto do artigo</param>
         /// <returns></returns>
-        private Item TransGetCreateItem(string itemId, string EANBarcode, string itemDescription, 
-                                   string unitId, string packUnitId, int unitsPerPack, 
-                                   bool isKg, bool isPack, 
+        private Item TransGetCreateItem(string itemId, string EANBarcode, string itemDescription,
+                                   string unitId, string packUnitId, int unitsPerPack,
+                                   bool isKg, bool isPack,
                                    double supplierId, double unitCostPrice,
                                    double itemTaxPercent) {
             //Descomentar para fazer a pesquisa por código de barras, código do artigo e código do fornecedor
@@ -1554,15 +1554,15 @@ namespace Sage50c.API.Sample {
         /// <param name="unitPrice"></param>
         /// <param name="taxPercent"></param>
         /// <param name="whareHouseId"></param>
-        private void TransAddDetail( ItemTransaction trans, Item item, double qty, string unitOfMeasureId, double unitPrice, double taxPercent, short whareHouseId,
-                                     short colorId, short sizeId, 
-                                     string serialNumberPropId, string serialNumberPropValue ){
+        private void TransAddDetail(ItemTransaction trans, Item item, double qty, string unitOfMeasureId, double unitPrice, double taxPercent, short whareHouseId,
+                                     short colorId, short sizeId,
+                                     string serialNumberPropId, string serialNumberPropValue) {
 
 
             var doc = systemSettings.WorkstationInfo.Document[trans.TransDocument];
-            
+
             ItemTransactionDetail transDetail = new ItemTransactionDetail();
-            
+
             //Moeda dos detalhes de  documento
             if (string.IsNullOrEmpty(txtTransCurrency.Text)) {
                 transDetail.BaseCurrency = systemSettings.BaseCurrency;
@@ -1570,16 +1570,15 @@ namespace Sage50c.API.Sample {
             else {
                 CurrencyDefinition currency = new CurrencyDefinition();
                 currency = dsoCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
-                if (currency == null)
-                {
+                if (currency == null) {
                     throw new Exception(string.Format("A moeda[{0}] não existe.", txtTransCurrency.Text));
                 }
-                else { 
-                    transDetail.BaseCurrency=dsoCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
+                else {
+                    transDetail.BaseCurrency = dsoCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
                 }
             }
             //
-            
+
             transDetail.ItemID = item.ItemID;
             transDetail.CreateDate = trans.CreateDate;
             transDetail.CreateTime = trans.CreateTime;
@@ -1589,8 +1588,8 @@ namespace Sage50c.API.Sample {
             // definir a quantidade
             transDetail.Quantity = qty;
             // Preço unitário. NOTA: Ver a diferença se o documento for com impostos incluidos!
-            if( trans.TransactionTaxIncluded)
-                transDetail.TaxIncludedPrice =unitPrice;
+            if (trans.TransactionTaxIncluded)
+                transDetail.TaxIncludedPrice = unitPrice;
             else
                 transDetail.UnitPrice = unitPrice;
             // Definir a lista de unidades
@@ -1599,7 +1598,7 @@ namespace Sage50c.API.Sample {
             transDetail.SetUnitOfSaleID(unitOfMeasureId);
             //Definir os impostos
             short TaxGroupId = 0;
-            if (taxPercent == 0 && item.TaxableGroupID != 0){
+            if (taxPercent == 0 && item.TaxableGroupID != 0) {
                 //se não preencher a taxa, carrega o imposto do artigo
                 TaxGroupId = item.TaxableGroupID;
             }
@@ -1611,7 +1610,7 @@ namespace Sage50c.API.Sample {
             //transDetail.DiscountPercent = 10
             //
             // Se o Armazém não existir, utilizar o default que se encontra no documento.
-            if( dsoCache.WarehouseProvider.WarehouseExists(whareHouseId) )
+            if (dsoCache.WarehouseProvider.WarehouseExists(whareHouseId))
                 transDetail.WarehouseID = whareHouseId;
             else
                 transDetail.WarehouseID = doc.Defaults.Warehouse;
@@ -1623,20 +1622,20 @@ namespace Sage50c.API.Sample {
             //.TotalNetAmount =          'Net Gross amount
             //
             //Definir o último preço de compra
-            if( doc.TransDocType == DocumentTypeEnum.dcTypePurchase ){
-                transDetail.ItemExtraInfo.ItemLastCostTaxIncludedPrice = item.SalePrice[0].TaxIncludedPrice;
-                transDetail.ItemExtraInfo.ItemLastCostUnitPrice = item.SalePrice[0].UnitPrice;
+            if (doc.TransDocType == DocumentTypeEnum.dcTypePurchase) {
+                transDetail.ItemExtraInfo.ItemLastCostTaxIncludedPrice = item.SalePrice[0, transDetail.Size.SizeID, string.Empty, 0, item.UnitOfSaleID].TaxIncludedPrice;
+                transDetail.ItemExtraInfo.ItemLastCostUnitPrice = item.SalePrice[0, transDetail.Size.SizeID, string.Empty, 0, item.UnitOfSaleID].UnitPrice;
             }
             // Cores e tamanhos
-            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked ) {
+            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
                 // Cores
                 if (item.Colors.Count > 0) {
                     ItemColor color = null;
                     if (colorId > 0 && item.Colors.IsInCollection(colorId)) {
                         color = item.Colors[ref colorId];
                     }
-                    if(color == null ) {
-                        throw new Exception( string.Format("A cor indicada [{0}] não existe.", colorId));
+                    if (color == null) {
+                        throw new Exception(string.Format("A cor indicada [{0}] não existe.", colorId));
                     }
                     transDetail.Color.ColorID = colorId;
                     transDetail.Color.Description = color.ColorName;
@@ -1649,8 +1648,8 @@ namespace Sage50c.API.Sample {
                     if (sizeId > 0 && item.Sizes.IsInCollection(sizeId)) {
                         size = item.Sizes[sizeId];
                     }
-                    if( size == null ){
-                        throw new Exception( string.Format("O tamanho indicado [{0}] não existe.", sizeId));
+                    if (size == null) {
+                        throw new Exception(string.Format("O tamanho indicado [{0}] não existe.", sizeId));
                     }
                     transDetail.Size.Description = size.SizeName;
                     transDetail.Size.SizeID = size.SizeID;
@@ -1664,10 +1663,10 @@ namespace Sage50c.API.Sample {
             // Verificar se estão ativadas no sistema e se foram marcadas no documento
             if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
                 // O Artigo tem propriedades ?
-                if (item.PropertyEnabled ) {
+                if (item.PropertyEnabled) {
                     // NOTA: Para o exemplo atual apenas queremos uma propriedade definida no artigo com o ID1 = "NS".
                     //       Para outras propriedades e combinações, o código deve ser alterado em conformidade.
-                    if ( item.PropertyID1.Equals("NS", StringComparison.CurrentCultureIgnoreCase)) {
+                    if (item.PropertyID1.Equals("NS", StringComparison.CurrentCultureIgnoreCase)) {
                         transDetail.ItemProperties.ResetValues();
                         transDetail.ItemProperties.PropertyID1 = item.PropertyID1;
                         transDetail.ItemProperties.PropertyID2 = item.PropertyID2;
@@ -1687,7 +1686,7 @@ namespace Sage50c.API.Sample {
                 }
             }
 
-            transDetail .Graduation = item.Graduation;
+            transDetail.Graduation = item.Graduation;
             transDetail.ItemTax = item.ItemTax;
             transDetail.ItemTax2 = item.ItemTax2;
             transDetail.ItemTax3 = item.ItemTax3;
@@ -1708,24 +1707,24 @@ namespace Sage50c.API.Sample {
             string transSerial = txtTransSerial.Text;
             double transDocNumber = 0;
             double.TryParse(txtTransDocNumber.Text, out transDocNumber);
-    
+
             // trans pode ser SaleTransaction ou BuyTransaction
             // dynamic permite utilizar as propriedades como num 'object' do VB6, sem que o compilador valide propriedades e métodos no momento da compilação
             dynamic trans = null;
 
-            if( systemSettings.WorkstationInfo.Document.IsInCollection(transDoc) ){
-                doc = systemSettings.WorkstationInfo.Document[ transDoc];
+            if (systemSettings.WorkstationInfo.Document.IsInCollection(transDoc)) {
+                doc = systemSettings.WorkstationInfo.Document[transDoc];
             }
             if (doc == null) {
                 throw new Exception(string.Format(" O documento [{0}] não existe.", transDoc));
             }
 
             if (suspendedTransaction) {
-                if ( bsoItemTransaction.LoadSuspendedTransaction( transSerial, transDoc, transDocNumber ) ){
+                if (bsoItemTransaction.LoadSuspendedTransaction(transSerial, transDoc, transDocNumber)) {
                     trans = bsoItemTransaction.Transaction;
                 }
                 else {
-                    MessageBox.Show(string.Format("Não foi encontrada a transação em preparação: {0} {1}/{2}", transDoc, transSerial, transDocNumber), 
+                    MessageBox.Show(string.Format("Não foi encontrada a transação em preparação: {0} {1}/{2}", transDoc, transSerial, transDocNumber),
                                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -1772,7 +1771,7 @@ namespace Sage50c.API.Sample {
                 txtTransDoc.Text = trans.TransDocument;
 
                 chkTransTaxIncluded.Checked = trans.TransactionTaxIncluded;
-                
+
                 txtTransDocNumber.Text = trans.TransDocNumber.ToString();
                 if (doc.TransDocType != DocumentTypeEnum.dcTypeStock) {
                     txtPaymentID.Text = trans.Payment.PaymentID.ToString();
@@ -1798,7 +1797,7 @@ namespace Sage50c.API.Sample {
                 double LineNumber = 0;
                 //
                 //Linha 1
-                if( trans.Details.Count>0){
+                if (trans.Details.Count > 0) {
                     LineNumber = getLineNumberTotxtTransItemL(1, doc.TransDocType, doc.StockBehavior, trans.Details);
 
                     if (LineNumber != 0) {
@@ -1865,7 +1864,7 @@ namespace Sage50c.API.Sample {
                         }
                     }
 
-                    if (bsoItemTransaction.Transaction.BuyShareOtherCostList.Count > 0){
+                    if (bsoItemTransaction.Transaction.BuyShareOtherCostList.Count > 0) {
 
                         SimpleDocumentList objDocumentList = new SimpleDocumentList();
                         objDocumentList = bsoItemTransaction.Transaction.BuyShareOtherCostList;
@@ -1877,22 +1876,22 @@ namespace Sage50c.API.Sample {
                         foreach (SimpleDocument objDocument in objDocumentList) {
 
                             if (objDocument.Details.Count > 0) {
-                                
-                                objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber );
-                                
+
+                                objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber);
+
                                 txtShareTransSerial_R1.Text = objDocument.TransID.TransSerial;
                                 txtShareTransDocument_R1.Text = objDocument.TransID.TransDocument;
                                 txtShareTransDocNumber_R1.Text = objDocument.TransID.TransDocNumber.ToString();
                                 txtShareAmount_R1.Text = objDocument.TotalTransactionAmount.ToString();
 
                                 foreach (ItemTransactionDetail objTempItemTransactionDetail in objTempItemTransaction.Details) {
-         
+
                                     sDetailKey = objDocument.TransID.TransSerial + "|" + objDocument.TransID.TransDocument + "|" + objDocument.TransID.TransDocNumber.ToString() + "|" + objTempItemTransactionDetail.LineItemID.ToString() + "|" + objTempItemTransactionDetail.ItemID + "|" + objTempItemTransactionDetail.Color.ColorID + "|" + objTempItemTransactionDetail.Size.SizeID;
 
                                     switch ((int)objTempItemTransactionDetail.LineItemID) {
                                         case 1:
                                             LblL1.Text = objDocument.Details.ItemByIndex[1].ItemID;
-                                            txtAmout_R1_L1.Text = objDocument.Details.ItemByIndex[1].UnitPrice.ToString() ; 
+                                            txtAmout_R1_L1.Text = objDocument.Details.ItemByIndex[1].UnitPrice.ToString();
                                             break;
 
                                         case 2:
@@ -1917,7 +1916,7 @@ namespace Sage50c.API.Sample {
                     fillComponentListGrid(doc.StockBehavior, trans.Details);
 
                 }
-                
+
                 //
                 // O Documento está anulado ?
                 if ((int)trans.TransStatus == (int)TransStatusEnum.stVoid) {
@@ -1938,7 +1937,7 @@ namespace Sage50c.API.Sample {
             chkTransModuleProps.Checked = false;
             chkTransModuleSizeColor.Checked = false;
 
-            PartyTypeEnum  partyType = cmbTransPartyType.SelectedIndex == 0 ? PartyTypeEnum.ptSupplier : PartyTypeEnum.ptCustomer;
+            PartyTypeEnum partyType = cmbTransPartyType.SelectedIndex == 0 ? PartyTypeEnum.ptSupplier : PartyTypeEnum.ptCustomer;
             txtTransColor1.Text = string.Empty;
             txtTransCurrency.Text = systemSettings.BaseCurrency.CurrencyID;
             txtTransDate.Text = DateTime.Today.ToShortDateString();
@@ -2081,7 +2080,7 @@ namespace Sage50c.API.Sample {
             if (lotRetWeek < 52) lotRetWeek++;
             return lotRetWeek;
         }
-        
+
         #endregion
 
 
@@ -2150,7 +2149,7 @@ namespace Sage50c.API.Sample {
             //Party RELATED INFO (can be ignored)
             PartyTypeEnum partyType = ItemTransactionHelper.TransGetPartyType(cmbTransPartyType.SelectedIndex);
             bsoStockTransaction.PartyType = (short)partyType;
-            double partyId = txtTransPartyId.Text.ToDouble(); 
+            double partyId = txtTransPartyId.Text.ToDouble();
             if (bsoStockTransaction.CheckPartyID(partyId)) {
                 bsoStockTransaction.PartyID = partyId;
             }
@@ -2286,9 +2285,9 @@ namespace Sage50c.API.Sample {
             //
             bsoStockTransaction.BSOStockTransactionDetail = BSOItemTransDetail;
             BSOItemTransDetail = null;
-            
-            double lngLineItemID = stockTrans.Details.Count+1;
-    
+
+            double lngLineItemID = stockTrans.Details.Count + 1;
+
             bool blnCanAddDetail = true;
             var transDetail = new ItemTransactionDetail();
             transDetail.BaseCurrency = stockTrans.BaseCurrency;
@@ -2298,7 +2297,7 @@ namespace Sage50c.API.Sample {
             transDetail.PartyID = stockTrans.PartyID;
             //
             //*** WAREHOUSE
-            if(warehouseId > 0 )
+            if (warehouseId > 0)
                 if (APIEngine.DSOCache.WarehouseProvider.WarehouseExists(warehouseId))
                     transDetail.WarehouseID = warehouseId;
                 else
@@ -2309,32 +2308,32 @@ namespace Sage50c.API.Sample {
             transDetail.WarehouseOutgoing = transDetail.WarehouseID;
             transDetail.WarehouseReceipt = transDetail.WarehouseID;
             transDetail.PhysicalQtyRule = StockQtyRule;
-    
+
             ////***STOCK TRANSFER ONLY -- uncomment to set
             //if (systemSettings.WorkstationInfo.Document[stockTrans.TransDocument].StockBehavior == StockBehaviorEnum.sbStockTransfer)
             //    transDetail.WarehouseReceipt = bsoStockTrans.WarehouseReceipt;
-            
+
             ////    *** DESTINATION WAREHOUSE -- uncomment to set
             //short warehouseReceiptId=2;
             //if( dsoCache.WarehouseProvider.WarehouseExists(warehouseReceiptId) ){
             //    transDetail.WarehouseReceipt = warehouseReceiptId;
-        
+
             //    if( transDetail.ComponentList !=null ){
             //        foreach( ItemTransactionDetail transDetailSave in transDetail.ComponentList )
             //            transDetailSave.WarehouseID = warehouseReceiptId;
             //    }
             //}
-    
+
             ////*** SOURCE WAREHOUSE -- uncomment to set
             //short warehouseOutgoingId = 1;
             //if( dsoCache.WarehouseProvider.WarehouseExists(warehouseOutgoingId) ){
             //    transDetail.WarehouseOutgoing = warehouseOutgoingId;
-        
+
             //    if( systemSettings.WorkstationInfo.Document[stockTrans.TransDocument].StockBehavior == StockBehaviorEnum.sbStockTransfer ){
             //        if( warehouseOutgoingId != transDetail.WarehouseID )
             //            transDetail.WarehouseID = warehouseReceiptId;
             //    }
-        
+
             //    if( transDetail.ComponentList!=null){
             //        foreach( ItemTransactionDetail transDetailSave in transDetail.ComponentList )
             //            transDetailSave.WarehouseID = warehouseOutgoingId;
@@ -2347,14 +2346,14 @@ namespace Sage50c.API.Sample {
             //-----> INFORMAÇÕES DO PRODUTO
             var item = APIEngine.DSOCache.ItemProvider.GetItemForTransactionDetail(itemId, transDetail.BaseCurrency);
 
-            if( item != null ){
+            if (item != null) {
                 transDetail.ItemID = item.ItemID;
                 transDetail.Description = item.Description;
                 transDetail.TaxableGroupID = item.TaxableGroupID;
                 transDetail.ItemType = item.ItemType;
                 transDetail.FamilyID = item.Family.FamilyID;
                 transDetail.UnitList = item.UnitList.Clone();
-        
+
                 transDetail.WeightUnitOfMeasure = item.WeightUnitOfMeasure;
                 transDetail.WeightMeasure = item.WeightMeasure;
                 transDetail.Graduation = item.Graduation;
@@ -2362,13 +2361,13 @@ namespace Sage50c.API.Sample {
                 transDetail.ItemTax2 = item.ItemTax2;
                 transDetail.ItemTax3 = item.ItemTax3;
                 transDetail.ItemExtraInfo.ItemQuantityCalcFormula = item.ItemQuantityCalcFormula;
-        
-                if( item.UnitList.IsInCollection(unitOfSaleId) )
+
+                if (item.UnitList.IsInCollection(unitOfSaleId))
                     transDetail.UnitOfSaleID = unitOfSaleId;
                 else
                     transDetail.UnitOfSaleID = item.GetDefaultUnitForTransaction(DocumentTypeEnum.dcTypeStock);
 
-               //*** PROPERTIES -- Uncomment to use
+                //*** PROPERTIES -- Uncomment to use
                 //if(item.PropertyEnabled){
                 //    transDetail.ItemProperties.PropertyID1 = item.PropertyID1;
                 //    transDetail.ItemProperties.PropertyID2 = item.PropertyID2;
@@ -2383,7 +2382,7 @@ namespace Sage50c.API.Sample {
                 //    transDetail.ItemProperties.ExpirationDateControl = item.PropertyExpirationDateControl;
                 //    transDetail.ItemProperties.MaximumQuantity = item.PropertyMaximumQuantity;
                 //    transDetail.ItemProperties.ResetValues();
-        
+
                 //    transDetail.ItemProperties.PropertyValue1 = ... value 1
                 //    transDetail.ItemProperties.PropertyValue1_Key2 = ... key 2
                 //    transDetail.ItemProperties.PropertyValue1_Key3 = ... key 3
@@ -2417,8 +2416,8 @@ namespace Sage50c.API.Sample {
             }
 
             //-----> Taxa de IVA
-            transDetail.TaxableGroupID = APIEngine.DSOCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(itemTaxRate, 
-                                                                                                           APIEngine.SystemSettings.SystemInfo.DefaultCountryID, 
+            transDetail.TaxableGroupID = APIEngine.DSOCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(itemTaxRate,
+                                                                                                           APIEngine.SystemSettings.SystemInfo.DefaultCountryID,
                                                                                                            APIEngine.SystemSettings.SystemInfo.TaxRegionID);
 
             //-----> Cores e Tamanhos. Uncomment to SET
@@ -2429,11 +2428,11 @@ namespace Sage50c.API.Sample {
             //        var color = dsoCache.ColorProvider.GetColor(ColorId);
             //        if( color !=null )
             //            transDetail.Color = color;
-        
+
             //        var size = dsoCache.SizeProvider.GetSize(SizeId);
             //        if( size != null )
             //            transDetail.Size = size;
-        
+
             //        if( transDetail.Color.ColorID == 0 ){
             //            foreach( ItemColor itemColor in item.Colors ){
             //                color = dsoCache.ColorProvider.GetColor(itemColor.ColorID);
@@ -2442,7 +2441,7 @@ namespace Sage50c.API.Sample {
             //                break;
             //            }
             //        }
-        
+
             //        if( transDetail.Size.SizeID == 0){
             //            foreach( ItemSize itemSize in item.Sizes ){
             //                size = dsoCache.SizeProvider.GetSize(itemSize.SizeId);
@@ -2455,18 +2454,18 @@ namespace Sage50c.API.Sample {
             //}
             //
             transDetail.SetUnitOfSaleID(transDetail.UnitOfSaleID);
-            
+
             //Formulas
-            double Quantity1=0;
-            double Quantity2=0;
-            double Quantity3=0;
-            double Quantity4=0;
+            double Quantity1 = 0;
+            double Quantity2 = 0;
+            double Quantity3 = 0;
+            double Quantity4 = 0;
 
             ////*** Packs -- Uncomment to set
             //double packQuantity=10;
             //if( transDetail.UnitConversion != 0 && packQuantity != 0)
             //    transDetail.PackQuantity = packQuantity;
-   
+
             bool blnHaveSetUnits = false;
             ////*** Units -- uncomment to set
             //double units = 10;
@@ -2474,25 +2473,25 @@ namespace Sage50c.API.Sample {
             //    transDetail.SetUnits(units);
             //    blnHaveSetUnits = true;
             //}
-    
+
             transDetail.Quantity1 = Quantity1;
             transDetail.Quantity2 = Quantity2;
             transDetail.Quantity3 = Quantity3;
-            transDetail.Quantity4 = Quantity4;    
-            if( !blnHaveSetUnits ){
+            transDetail.Quantity4 = Quantity4;
+            if (!blnHaveSetUnits) {
                 if (!string.IsNullOrEmpty(transDetail.ItemExtraInfo.ItemQuantityCalcFormula) && APIEngine.SystemSettings.SystemInfo.UseUnitWithFormulaItems)
                     transDetail.SetQuantity(StockHelper.CalculateQuantity(transDetail.ItemExtraInfo.ItemQuantityCalcFormula, transDetail, true));
                 else
                     transDetail.SetQuantity(StockHelper.CalculateQuantity(null, transDetail, true));
             }
             //    
-            if( ! blnHaveSetUnits )
+            if (!blnHaveSetUnits)
                 transDetail.SetQuantity(Quantity);
             transDetail.Description = item.Description;     // OR "Custom description"
-            transDetail.Comments = "Observações de linha: Gerada por" + Application.ProductName; 
-    
+            transDetail.Comments = "Observações de linha: Gerada por" + Application.ProductName;
+
             //*** UnitPrice
-            if( bsoStockTransaction.TransactionTaxIncluded )
+            if (bsoStockTransaction.TransactionTaxIncluded)
                 transDetail.TaxIncludedPrice = unitPrice;
             else
                 transDetail.UnitPrice = unitPrice;
@@ -2507,10 +2506,10 @@ namespace Sage50c.API.Sample {
 
             S50cUtil18.MathFunctions mathUtil = new MathFunctions();
 
-            if(transDetail.DiscountPercent == 0 && (transDetail.CumulativeDiscountPercent1 != 0 || transDetail.CumulativeDiscountPercent2 != 0 || transDetail.CumulativeDiscountPercent3 != 0))
+            if (transDetail.DiscountPercent == 0 && (transDetail.CumulativeDiscountPercent1 != 0 || transDetail.CumulativeDiscountPercent2 != 0 || transDetail.CumulativeDiscountPercent3 != 0))
                 transDetail.DiscountPercent = mathUtil.GetCumulativeDiscount(transDetail.CumulativeDiscountPercent1, transDetail.CumulativeDiscountPercent2, transDetail.CumulativeDiscountPercent3);
-    
-            if( transDetail.DiscountPercent != 0 && (transDetail.CumulativeDiscountPercent1 == 0 && transDetail.CumulativeDiscountPercent2 == 0 && transDetail.CumulativeDiscountPercent3 == 0) )
+
+            if (transDetail.DiscountPercent != 0 && (transDetail.CumulativeDiscountPercent1 == 0 && transDetail.CumulativeDiscountPercent2 == 0 && transDetail.CumulativeDiscountPercent3 == 0))
                 transDetail.CumulativeDiscountPercent1 = transDetail.DiscountPercent;
 
             ////*** Kit ITEMS -- Uncomment to use
@@ -2522,17 +2521,17 @@ namespace Sage50c.API.Sample {
             //transDetail.ItemExtraInfo.DoNotGroup = true;
 
             //*** PROPERTIES
-            if( transDetail.ItemProperties.HasPropertyValues )
+            if (transDetail.ItemProperties.HasPropertyValues)
                 APIEngine.DSOCache.ItemPropertyProvider.GetItemPropertyStock(transDetail.ItemID, transDetail.WarehouseID, transDetail.ItemProperties);
-    
+
             //*** Delivery time -- Uncomment to set
             //transDetail.RequiredDeliveryDateTime = DateTime.Now.AddDays(10);  // Hoje + 10 dias
 
-            if( blnCanAddDetail ){
+            if (blnCanAddDetail) {
                 bool calculate = true;
-                bsoStockTransaction.AddDetail( transDetail, ref calculate );
+                bsoStockTransaction.AddDetail(transDetail, ref calculate);
             }
-            item= null;
+            item = null;
         }
 
 
@@ -2541,12 +2540,12 @@ namespace Sage50c.API.Sample {
 
         private void btnClear_Click(object sender, EventArgs e) {
             switch (tabEntities.SelectedIndex) {
-                case 0: ItemClear( false ); break;
+                case 0: ItemClear(false); break;
                 case 1: CustomerClear(); break;
                 case 2: SupplierClear(); break;
                 case 3: TransactionClear(); break;
                 case 4: AccountTransactionClear(); break;
-                
+
                 case 5: UnitOfMeasureClear(); break;
             }
         }
@@ -2573,8 +2572,8 @@ namespace Sage50c.API.Sample {
             //
             // Obter a transação (recibo ou pagamento)
             var result = accountTransManager.LoadTransaction(transSerial, transDoc, transDocNumber);
-            if( !result )
-                throw new Exception( string.Format(" O documento {0} {1}/{2} não existe ou não é possivel carregá-lo.", transDoc, transSerial, transDocNumber ) );
+            if (!result)
+                throw new Exception(string.Format(" O documento {0} {1}/{2} não existe ou não é possivel carregá-lo.", transDoc, transSerial, transDocNumber));
             //
             //Colocar o motivo de isenção: obrigatóriedade depende da definição do documento
             accountTransManager.Transaction.VoidMotive = "Anulado por " + Application.ProductName;
@@ -2589,8 +2588,8 @@ namespace Sage50c.API.Sample {
 
 
 
-        private void AccountTransAddDetail( AccountTransactionManager accountTransMan, AccountUsedEnum accountUsed, string accountTypeId,
-                                            string docId, string docSeries, double docNumber, short transInstallment,  double paymentValue) {
+        private void AccountTransAddDetail(AccountTransactionManager accountTransMan, AccountUsedEnum accountUsed, string accountTypeId,
+                                            string docId, string docSeries, double docNumber, short transInstallment, double paymentValue) {
             // Linhas
             if (paymentValue > 0) {
                 AccountTransaction accountTrans = accountTransMan.Transaction;
@@ -2599,11 +2598,11 @@ namespace Sage50c.API.Sample {
                     // Obter o pendente. PAra efeito de exemplo consideramos que não há prestações (installmentId=0)
                     var ledger = accountTransMan.LedgerAccounts.OfType<LedgerAccount>().FirstOrDefault(x => x.TransDocument == docId && x.TransSerial == docSeries && x.TransDocNumber == docNumber && x.TransInstallmentID == transInstallment);
                     if (ledger != null) {
-                        if (paymentValue > ledger.TotalPendingAmount ) {
+                        if (paymentValue > ledger.TotalPendingAmount) {
                             throw new Exception(string.Format("O valor a pagar é superior ao valor em divida no documento: {0} {1}/{2}", docId, docSeries, docNumber));
                         }
                         AccountTransactionDetail detail = accountTrans.Details.Find(docSeries, docId, docNumber, transInstallment);
-                        if( detail == null )
+                        if (detail == null)
                             detail = new AccountTransactionDetail();
                         // Lançar o pagamento correcto, acertando também a retenção.
                         accountTransMan.SetPaymentValue(ledger.Guid, paymentValue);
@@ -2651,12 +2650,12 @@ namespace Sage50c.API.Sample {
         /// 
         /// </summary>
         /// <param name="newDoc"></param>
-        private TransactionID AccountTransactionUpdate( bool newDoc ) {
+        private TransactionID AccountTransactionUpdate(bool newDoc) {
             const string ACCOUNT_TYPE = "CC";                   //Como exemplo, sóvamos utilizar a carteira de contas correntes
             string transSerial = txtAccountTransSerial.Text.ToUpper();
             string transDoc = txtAccountTransDoc.Text.ToUpper();
             double transDocNumber = 0;
-            double.TryParse( txtAccountTransDocNumber.Text, out transDocNumber);
+            double.TryParse(txtAccountTransDocNumber.Text, out transDocNumber);
             double partyId = 0;
             double.TryParse(txtAccountTransPartyId.Text, out partyId);
             TransactionID result = null;
@@ -2668,7 +2667,7 @@ namespace Sage50c.API.Sample {
             }
             else {
                 accountUsed = AccountUsedEnum.auSupplierLedgerAccount;
-                accountTransManager.InitManager( accountUsed );
+                accountTransManager.InitManager(accountUsed);
             }
             if (newDoc) {
                 accountTransManager.InitNewTransaction(transSerial, transDoc, transDocNumber);
@@ -2695,7 +2694,7 @@ namespace Sage50c.API.Sample {
             accountTransManager.SetAccountID(ACCOUNT_TYPE); // Conta corrente
             accountTransManager.SetBaseCurrencyID(txtAccountTransDocCurrency.Text);
             DateTime createDate = DateTime.Today;
-            DateTime.TryParse( txtAccountTransDocDate.Text, out createDate );
+            DateTime.TryParse(txtAccountTransDocDate.Text, out createDate);
             accountTransManager.SetCreateDate(createDate);
             //
             // Linhas
@@ -2725,10 +2724,10 @@ namespace Sage50c.API.Sample {
                 throw new Exception("O documento não tem linhas.");
             }
             //
-            accountTrans.TenderLineItems = AccountTransGetTenderLineItems( accountTransManager );
+            accountTrans.TenderLineItems = AccountTransGetTenderLineItems(accountTransManager);
             //
             // Abrir automaticamente o caixa, se estiver fechar
-            accountTransManager.EnsureOpenTill( accountTrans.Till.TillID );
+            accountTransManager.EnsureOpenTill(accountTrans.Till.TillID);
             //
             // Gravar
             if (!accountTransManager.SaveDocumentEx(false)) {
@@ -2768,14 +2767,14 @@ namespace Sage50c.API.Sample {
             // Por uma questão de simplificação, neste exemplo apenas se vai considerar um pagamento de um só cheque.
             if (tender.TenderType == TenderTypeEnum.tndCheck) {
                 TenderCheck tenderCheck = null;
-                if( tenderLine.TenderCheck == null ){
+                if (tenderLine.TenderCheck == null) {
                     tenderLine.TenderCheck = new TenderCheck();
                 }
                 tenderCheck = tenderLine.TenderCheck;
                 tenderCheck.CheckAmount = tenderLine.Amount;
                 tenderCheck.CheckDeferredDate = tenderLine.CreateDate;
                 tenderCheck.TillId = tenderLine.TillId;
-                    
+
                 tenderLine.TenderCheck = tenderCheck;
                 var formCheck = new FormTenderCheck();
                 if (formCheck.FillTenderCheck(tenderCheck) == System.Windows.Forms.DialogResult.Cancel) {
@@ -2787,11 +2786,11 @@ namespace Sage50c.API.Sample {
             return TenderLines;
         }
 
-        
+
         /// <summary>
         /// Lê e mostra no ecran um recibo ou pagamento
         /// </summary>
-        private void AccountTransactionGet(){
+        private void AccountTransactionGet() {
             string accountTransSerial = txtAccountTransSerial.Text;
             string accountTransDoc = txtAccountTransDoc.Text;
             double accountTransDocNumber = 0;
@@ -2799,7 +2798,7 @@ namespace Sage50c.API.Sample {
 
             AccountTransactionClear();
             var transLoaded = accountTransManager.LoadTransaction(accountTransSerial, accountTransDoc, accountTransDocNumber);
-            if (! transLoaded ) {
+            if (!transLoaded) {
                 throw new Exception(string.Format("Não foi possivel carregar o documento {0} {1}/{2}.", accountTransDoc, accountTransSerial, accountTransDocNumber));
             }
             var accountTrans = accountTransManager.Transaction;
@@ -2818,9 +2817,9 @@ namespace Sage50c.API.Sample {
             }
 
             // Line 1
-            if( accountTrans.Details.Count>0){
+            if (accountTrans.Details.Count > 0) {
                 int i = 1;
-                var detail = accountTrans.Details[ ref i];
+                var detail = accountTrans.Details[ref i];
                 txtAccountTransDocL1.Text = detail.DocID;
                 txtAccountTransDocNumberL1.Text = detail.DocNumber.ToString();
                 txtAccountTransDocValueL1.Text = detail.TotalPayedAmount.ToString();
@@ -2915,19 +2914,19 @@ namespace Sage50c.API.Sample {
         private void btnAccountClearL1_Click(object sender, EventArgs e) {
             AccountTransClearL1();
         }
-        
+
         private void btnAccountClearL2_Click(object sender, EventArgs e) {
             AccountTransClearL2();
         }
 
         private void cmbRecPeg_SelectedIndexChanged(object sender, EventArgs e) {
             switch (cmbRecPeg.SelectedIndex) {
-                case 0: 
+                case 0:
                     lblAccountPartyId.Text = "Cliente";
                     tabAccount.Text = "Recibo";
                     break;
 
-                case 1: 
+                case 1:
                     lblAccountPartyId.Text = "Fornecedor";
                     tabAccount.Text = "Pagamento";
                     break;
@@ -2965,8 +2964,8 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnPrint_Click(object sender, EventArgs e) {
-            double transDocNumber =0;
-            double.TryParse( txtTransDocNumber.Text, out transDocNumber);
+            double transDocNumber = 0;
+            double.TryParse(txtTransDocNumber.Text, out transDocNumber);
 
             try {
                 // Mostrar no ecran
@@ -2976,9 +2975,9 @@ namespace Sage50c.API.Sample {
                     //Imprimir com as regras default da 50c e caixa de diálogo
                     TransactionPrint(txtTransSerial.Text, txtTransDoc.Text, transDocNumber, chkPrintPreview.Checked);
                 }
-                else{
+                else {
                     // Impressão customizada, exportação para PDF, ...
-                    TransactionPrint2( txtTransSerial.Text, txtTransDoc.Text, transDocNumber);
+                    TransactionPrint2(txtTransSerial.Text, txtTransDoc.Text, transDocNumber);
                 }
             }
             catch (Exception ex) {
@@ -2995,7 +2994,7 @@ namespace Sage50c.API.Sample {
         /// <param name="transDoc"></param>
         /// <param name="transDocNumber"></param>
         /// <param name="printPreview"></param>
-        private void TransactionPrint( string transSerial, string transDoc, double transDocNumber, bool printPreview ) {
+        private void TransactionPrint(string transSerial, string transDoc, double transDocNumber, bool printPreview) {
             if (printPreview) {
                 bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, 1);
             }
@@ -3057,8 +3056,8 @@ namespace Sage50c.API.Sample {
 
             return result;
         }
-        
-        
+
+
         private void btnCustomerBrow_Click(object sender, EventArgs e) {
             CustomerFind();
         }
@@ -3150,11 +3149,11 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnSavePrep_Click(object sender, EventArgs e) {
-            TransactionID result  = null;
+            TransactionID result = null;
             try {
                 if (bsoItemTransaction.Transaction.TempTransIndex != 0) {
                     // Atualizar
-                    result = TransactionEdit( true );
+                    result = TransactionEdit(true);
                 }
                 else {
                     result = TransactionInsert(true);
@@ -3164,8 +3163,8 @@ namespace Sage50c.API.Sample {
                     MessageBox.Show(string.Format("Colocado em preparação: {0}", result.ToString()), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else {
-                    MessageBox.Show(string.Format("Não foi possivel colocar em preparação: {0} {1}/{2}", 
-                                                   txtTransSerial.Text, txtTransDoc.Text, txtTransDocNumber.Text), 
+                    MessageBox.Show(string.Format("Não foi possivel colocar em preparação: {0} {1}/{2}",
+                                                   txtTransSerial.Text, txtTransDoc.Text, txtTransDocNumber.Text),
                                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
@@ -3226,7 +3225,7 @@ namespace Sage50c.API.Sample {
                     }
                 }
                 else {
-                    MessageBox.Show( string.Format("O número do documento ({0}) não é válido.", txtTransDocNumber.Text),
+                    MessageBox.Show(string.Format("O número do documento ({0}) não é válido.", txtTransDocNumber.Text),
                                      Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
@@ -3255,17 +3254,17 @@ namespace Sage50c.API.Sample {
 
 
 
-        private void TransactionPrint2(string transSerial, string transDoc, double transDocNumber ){
+        private void TransactionPrint2(string transSerial, string transDoc, double transDocNumber) {
             clsLArrayObject objListPrintSettings;
             PrintSettings oPrintSettings = null;
             Document oDocument = null;
             PlaceHolders oPlaceHolders = new PlaceHolders();
-    
+
             btnPrint.Enabled = false;
-    
+
             oPlaceHolders = new PlaceHolders();
-    
-            try{
+
+            try {
                 oDocument = systemSettings.WorkstationInfo.Document[transDoc];
 
                 // Preencher as opções default
@@ -3274,7 +3273,7 @@ namespace Sage50c.API.Sample {
                     UseIssuingOutput = false,
                     PrintAction = chkPrintPreview.Checked ? PrintActionEnum.prnActPreview : PrintActionEnum.prnActPrint
                 };
-                if(optPrintOptions1.Checked) {
+                if (optPrintOptions1.Checked) {
                     // Exportar para PDF
                     defaultPrintSettings.PrintAction = PrintActionEnum.prnActExportToFile;
                     defaultPrintSettings.ExportFileType = ExportFileTypeEnum.filePDF;
@@ -3283,7 +3282,7 @@ namespace Sage50c.API.Sample {
                 //Obter configurações de impressão na configuração de postos
                 objListPrintSettings = printingManager.GetTransactionPrintSettings(oDocument, transSerial, ref defaultPrintSettings);
                 //
-                if ( objListPrintSettings.getCount() > 0 ){
+                if (objListPrintSettings.getCount() > 0) {
                     // Neste exemplo, vamos escolher a primeira configuração
                     // Se houverem mais configuradas, deve-se alterar para a pretendida
                     oPrintSettings = (PrintSettings)objListPrintSettings.item[0];
@@ -3298,10 +3297,10 @@ namespace Sage50c.API.Sample {
                 }
                 MessageBox.Show("Concluido.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch( Exception ex ){
-                MessageBox.Show( ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation );
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            finally{
+            finally {
                 btnPrint.Enabled = true;
                 oDocument = null;
                 oPlaceHolders = null;
@@ -3331,7 +3330,7 @@ namespace Sage50c.API.Sample {
                            " ORDER BY SequenceNumber, WarehouseID";
 
             object recsAffected = new object();
-            ADODB.Recordset rs = mainProvider.Execute( query );
+            ADODB.Recordset rs = mainProvider.Execute(query);
 
             DataTable dt = new DataTable();
 
@@ -3342,16 +3341,15 @@ namespace Sage50c.API.Sample {
             var colSizeDesc = dt.Columns.Add("Desc.", typeof(string));
 
             var warehouseList = dsoCache.WarehouseProvider.GetWarehouseList();
-            foreach (Warehouse ware in warehouseList)
-            {
+            foreach (Warehouse ware in warehouseList) {
                 dt.Columns.Add(ware.WarehouseID.ToString(), typeof(double));
             }
-            
+
             while (!rs.EOF) {
                 var sizeId = (int)rs.Fields["SizeId"].Value;
                 var warehouseId = (int)rs.Fields["WarehouseId"].Value;
                 DataColumn col = dt.Columns[warehouseId.ToString()];
-                
+
                 var row = dt.Rows.Find(sizeId);
                 if (row == null) {
                     row = dt.NewRow();
@@ -3365,12 +3363,11 @@ namespace Sage50c.API.Sample {
             }
             rs.Close();
             rs = null;
-            
+
             return dt;
         }
 
-        private void cmbItemSize_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        private void cmbItemSize_SelectedIndexChanged(object sender, EventArgs e) {
             cmbItemColor.ResetText();
             dataGridView1.Columns.Clear();
             dataGridView1.RowHeadersVisible = false;
@@ -3381,8 +3378,7 @@ namespace Sage50c.API.Sample {
             dataGridView1.Refresh();
         }
 
-        private DataTable GetGridDataSize()
-        {
+        private DataTable GetGridDataSize() {
             var mainProvider = APIEngine.DataManager.MainProvider;
             ItemSize size = (ItemSize)cmbItemSize.SelectedItem;
             string query = "SELECT Stock.ItemID, Stock.ColorID, Stock.SizeID, ItemColor.SequenceNumber, Stock.WarehouseID, Stock.PhysicalQty, Color.Description AS ColorDescription" +
@@ -3406,20 +3402,17 @@ namespace Sage50c.API.Sample {
             var colColorDesc = dt.Columns.Add("Desc.", typeof(string));
 
             var warehouseList = dsoCache.WarehouseProvider.GetWarehouseList();
-            foreach (Warehouse ware in warehouseList)
-            {
+            foreach (Warehouse ware in warehouseList) {
                 dt.Columns.Add(ware.WarehouseID.ToString(), typeof(double));
             }
 
-            while (!rs.EOF)
-            {
+            while (!rs.EOF) {
                 var colorId = (int)rs.Fields["ColorId"].Value;
                 var warehouseId = (int)rs.Fields["WarehouseId"].Value;
                 DataColumn col = dt.Columns[warehouseId.ToString()];
 
                 var row = dt.Rows.Find(colorId);
-                if (row == null)
-                {
+                if (row == null) {
                     row = dt.NewRow();
                     row[keyCol] = colorId;
                     row[colColorDesc] = rs.Fields["ColorDescription"].Value.ToString();
@@ -3441,15 +3434,15 @@ namespace Sage50c.API.Sample {
             double Quantity = 0;
             string UnitOfSaleID = string.Empty;
             double UnitPrice = 0;
-            short  WarehouseID = 0;
-            
+            short WarehouseID = 0;
+
             CurrencyDefinition currency = new CurrencyDefinition();
 
             var doc = systemSettings.WorkstationInfo.Document[txtTransDoc.Text];
             ItemTransactionDetail itemComponent = new ItemTransactionDetail();
             ItemTransactionDetail StockTransactionDetail = new ItemTransactionDetail();
 
-            if (string.IsNullOrEmpty(txtTransCurrency.Text )) {
+            if (string.IsNullOrEmpty(txtTransCurrency.Text)) {
                 currency = systemSettings.BaseCurrency;
             }
             else {
@@ -3578,8 +3571,7 @@ namespace Sage50c.API.Sample {
                 itemDetails = GetItemComponentList(2);
                 addComponentListToGrid(itemDetails);
             }
-            else
-                {
+            else {
                 throw new Exception(string.Format("O documento indicado não é um documento de fabricação/transformação", transDoc));
             }
         }
@@ -3614,7 +3606,7 @@ namespace Sage50c.API.Sample {
                             }
                         }
                         else {
-                           result = TransItemL;
+                            result = TransItemL;
                         }
                     }
                 }
@@ -3646,7 +3638,7 @@ namespace Sage50c.API.Sample {
             else {
                 if (StockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     foreach (ItemTransactionDetail value in itemDetails) {
-                        if (value.PhysicalQtyRule == StockQtyRuleEnum.stkQtyReceipt ) {
+                        if (value.PhysicalQtyRule == StockQtyRuleEnum.stkQtyReceipt) {
                             var rowIndex = this.dataGridItemLines.Rows.Add(value.WarehouseID,
                                                         value.ItemID, value.UnitPrice,
                                                         value.Quantity,
@@ -3670,7 +3662,7 @@ namespace Sage50c.API.Sample {
         }
 
 
-        private bool SetExternalSignature( ItemTransaction trans ) {
+        private bool SetExternalSignature(ItemTransaction trans) {
             var result = true;
             using (var formSig = new FormExternalSignature()) {
                 if (trans != null) {
@@ -3727,9 +3719,9 @@ namespace Sage50c.API.Sample {
             LblL2.Text = string.Empty;
         }
 
-        private void Fill_ShareDetails( string ShareTransSerial   ,  string ShareTransDocument , string ShareTransDocumentNumber) {
+        private void Fill_ShareDetails(string ShareTransSerial, string ShareTransDocument, string ShareTransDocumentNumber) {
 
-            double TransDocNumber= 0;
+            double TransDocNumber = 0;
             double.TryParse(txtShareTransDocNumber_R1.Text, out TransDocNumber);
             ItemTransaction objTempItemTransaction = new ItemTransaction();
             DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
@@ -3752,8 +3744,7 @@ namespace Sage50c.API.Sample {
                     }
                 }
             }
-            else 
-            {
+            else {
                 txtShareAmount_R1.Text = string.Empty;
                 txtAmout_R1_L1.Text = string.Empty;
                 txtAmout_R1_L2.Text = string.Empty;
