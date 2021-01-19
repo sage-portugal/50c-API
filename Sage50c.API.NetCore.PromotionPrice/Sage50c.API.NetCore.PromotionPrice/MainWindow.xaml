@@ -1,0 +1,22 @@
+﻿<Window x:Class="Sage50c.API.PromotionPrice.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sage50c.API.PromotionPrice"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="183" Width="437" Loaded="Window_Loaded">
+    <Grid Margin="0,0,10,-6" >
+        <Button x:Name="btnCalcPrice" Content="Calculate Price" HorizontalAlignment="Left" Margin="230,83,0,0" VerticalAlignment="Top" Height="29" Width="86" Click="btnCalcPrice_Click" IsEnabled="False"/>
+        <Button x:Name="btnOpenAPI" Content="Open API" HorizontalAlignment="Left" Margin="229,33,0,0" VerticalAlignment="Top" Height="26" Width="87" Click="btnOpenAPI_Click"/>
+        <Button x:Name="btnCloseAPI" Content="Close API" HorizontalAlignment="Left" Margin="321,33,0,0" VerticalAlignment="Top" Height="26" Width="86" Click="btnCloseAPI_Click" IsEnabled="False"/>
+        <TextBox x:Name="txtCompany" HorizontalAlignment="Left" Height="22" Margin="91,35,0,0" Text="MALIWAN" TextWrapping="Wrap" VerticalAlignment="Top" Width="133"/>
+        <ComboBox x:Name="cmbApp" HorizontalAlignment="Left" Height="22" Margin="10,35,0,0" VerticalAlignment="Top" Width="76" SelectedIndex="0" >
+            <ComboBoxItem>CRTL</ComboBoxItem>
+            <ComboBoxItem>CGCO</ComboBoxItem>
+        </ComboBox>
+        <Label x:Name="label" Content="Aplication" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" VerticalAlignment="Top" Width="70"/>
+        <TextBox x:Name="txtItemId" HorizontalAlignment="Left" Height="22" Margin="91,88,0,0" Text="MBL" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" IsEnabled="False"/>
+        <Label x:Name="labelItemId" Content="Ref/CB:" HorizontalAlignment="Left" Height="25" Margin="10,87,0,0" VerticalAlignment="Top" Width="70"/>
+    </Grid>
+</Window>
