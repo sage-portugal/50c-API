@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <DefineConstants>TRACE;WPF NETCORE</DefineConstants>
+    <DefineConstants>TRACE;WPF</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
