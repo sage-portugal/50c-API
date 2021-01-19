@@ -24,7 +24,10 @@ namespace Sage50c.API.PromotionPrice {
 
         private void btnCalcPrice_Click(object sender, RoutedEventArgs e) {
             try {
-                MessageBox.Show($"Promotion Price={ APITransactionHelper.CheckPrice(txtItemId.Text) }", 
+                this.Cursor = Cursors.Wait;
+                var promotionPrice = APITransactionHelper.CheckPrice(txtItemId.Text);
+                this.Cursor = Cursors.Arrow;
+                MessageBox.Show($"Promotion Price={promotionPrice}", 
                                 Application.Current.MainWindow.Title,
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Information);
@@ -35,10 +38,14 @@ namespace Sage50c.API.PromotionPrice {
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error);
             }
+            finally {
+                this.Cursor = Cursors.Arrow;
+            }
         }
 
         private void btnOpenAPI_Click(object sender, RoutedEventArgs e) {
             try {
+                this.Cursor = Cursors.Wait;
                 APIEngine.Initialize(cmbApp.Text, txtCompany.Text, true);
             }
             catch(Exception ex) {
@@ -47,10 +54,14 @@ namespace Sage50c.API.PromotionPrice {
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error);
             }
+            finally {
+                this.Cursor = Cursors.Arrow;
+            }
         }
 
         private void btnCloseAPI_Click(object sender, RoutedEventArgs e) {
             try {
+                this.Cursor = Cursors.Wait;
                 APIEngine.Terminate();
             }
             catch(Exception ex) {
@@ -58,6 +69,9 @@ namespace Sage50c.API.PromotionPrice {
                                 Application.Current.MainWindow.Title,
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Error);
+            }
+            finally {
+                this.Cursor = Cursors.Arrow;
             }
         }
 
