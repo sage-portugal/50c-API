@@ -151,5 +151,11 @@ namespace Sage50c.API {
                 return _stringFunctions;
             }
         }
+
+        public static S50cBL18.BSODiscountManager DiscountManager {
+            get {
+                return s50cBLGlobals.DiscountManager;
+            }
+        }
     }
 }
