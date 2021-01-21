@@ -78,6 +78,8 @@ namespace Sage50c.ExtenderSample {
             try {
                 // Traduzir para pixels
                 this.SetBounds(0, 0, (int)(Width/16), (int)(Height/16));
+                this.Visible = true;
+                this.BringToFront();
             }
             catch { }
 
