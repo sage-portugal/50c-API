@@ -1103,9 +1103,15 @@ namespace Sage50c.API.Sample {
                 //
                 //Set Create date and deliverydate
                 var createDate = DateTime.Today;
+                var createTime = DateTime.Today;
                 DateTime.TryParse(txtTransDate.Text, out createDate);
+                DateTime.TryParse(txtTransTime.Text, out createTime);
+
                 trans.CreateDate = createDate;
+                trans.CreateTime = createTime;
+
                 trans.ActualDeliveryDate = createDate;
+                
                 //
                 // Definir se o imposto é incluido
                 trans.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
@@ -1768,6 +1774,7 @@ namespace Sage50c.API.Sample {
                 //txtTransColor1.Text = 
                 txtTransCurrency.Text = trans.BaseCurrency.CurrencyID;
                 txtTransDate.Text = trans.CreateDate.ToShortDateString();
+                txtTransTime.Text = trans.CreateTime.ToShortTimeString(); ;
                 txtTransDoc.Text = trans.TransDocument;
 
                 chkTransTaxIncluded.Checked = trans.TransactionTaxIncluded;
@@ -1941,6 +1948,7 @@ namespace Sage50c.API.Sample {
             txtTransColor1.Text = string.Empty;
             txtTransCurrency.Text = systemSettings.BaseCurrency.CurrencyID;
             txtTransDate.Text = DateTime.Today.ToShortDateString();
+            txtTransTime.Text = DateTime.Now.ToShortTimeString();
             string docId = string.Empty;
 
             if (rbTransBuySell.Checked) {
