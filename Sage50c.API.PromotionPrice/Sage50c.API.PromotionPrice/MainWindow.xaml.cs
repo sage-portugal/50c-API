@@ -24,7 +24,7 @@ namespace Sage50c.API.PromotionPrice {
         }
         private void btnCalcPrice_Click(object sender, RoutedEventArgs e) {
             try {
-                MessageBox.Show($"Price={CheckPrice("MBL")}");
+                MessageBox.Show($"Price={CheckPrice(txtItemId.Text)}");
             }
             catch( Exception ex) {
                 MessageBox.Show(ex.Message, Application.Current.MainWindow.Title, MessageBoxButton.OK, MessageBoxImage.Error);
