@@ -38,6 +38,7 @@ namespace Sage50c.API.PromotionPrice {
                 bsoItemTransactionDetail.SetTransactionTaxIncluded(true);
                 bsoItemTransactionDetail.TransactionType = DocumentTypeEnum.dcTypeSale;
                 bsoItemTransactionDetail.Reset();
+                bsoItemTransactionDetail.BaseCurrency = APIEngine.SystemSettings.BaseCurrency;
 
                 // Ensure it's empty and with defaults
                 bsoItemTransaction.AbortTransaction();
