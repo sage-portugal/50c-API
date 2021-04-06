@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Sage50c.API {
     public static partial class APIEngine {
@@ -53,20 +52,38 @@ namespace Sage50c.API {
                 APIStarted(null, null);
         }
 
+#if WPF
         private static void DataManagerEvents___DataManagerEvents_Event_Message(string Prompt, int Flags, string Title, ref int result) {
             if (Message != null) {
                 var args = new MessageEventArgs() {
                     Prompt = Prompt,
-                    Result = DialogResult.None,
+                    Result = System.Windows.MessageBoxResult.None,
                     Title = Title,
-                    DefaultButton = (MessageBoxDefaultButton)(Flags & 0xF00),
-                    Buttons = (MessageBoxButtons)(Flags & 0xF),
-                    Icon = (MessageBoxIcon)(Flags & 0xF0)
+                    DefaultButton = ((Flags & 0xF00)>>8),
+                    Buttons = (System.Windows.MessageBoxButton)(Flags & 0xF),
+                    Icon = (System.Windows.MessageBoxImage)(Flags & 0xF0)
                 };
                 Message(args);
                 result = (int)args.Result;
             }
         }
+
+#else
+        private static void DataManagerEvents___DataManagerEvents_Event_Message(string Prompt, int Flags, string Title, ref int result) {
+            if (Message != null) {
+                var args = new MessageEventArgs() {
+                    Prompt = Prompt,
+                    Result = System.Windows.Forms.DialogResult.None,
+                    Title = Title,
+                    DefaultButton = (System.Windows.Forms.MessageBoxDefaultButton)(Flags & 0xF00),
+                    Buttons = (System.Windows.Forms.MessageBoxButtons)(Flags & 0xF),
+                    Icon = (System.Windows.Forms.MessageBoxIcon)(Flags & 0xF0)
+                };
+                Message(args);
+                result = (int)args.Result;
+            }
+        }
+#endif
 
         /// <summary>
         /// Trata os eventos vindos da API e dispara um novo evento para ser tratado pelo .NET

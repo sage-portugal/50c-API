@@ -3,6 +3,7 @@ using S50cBO18;
 using S50cSys18;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -80,6 +81,11 @@ namespace Sage50c.API {
             }
             //
             return tillSession;
+        }
+
+        public static void SetTransactionTaxIncluded(this BSOItemTransactionDetail BSOTransDetail, bool Value) {
+            var tdProp = TypeDescriptor.GetProperties(BSOTransDetail).Find("TransactionTaxIncluded", true);
+            tdProp?.SetValue(BSOTransDetail, Value);
         }
         #endregion
     }

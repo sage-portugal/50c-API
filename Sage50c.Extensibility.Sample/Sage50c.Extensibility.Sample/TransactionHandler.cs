@@ -253,6 +253,9 @@ namespace Sage50c.ExtenderSample {
             ItemTransactionDetail itemTransactionDetail = (ItemTransactionDetail)properties.get_Value("Data");
             string errorMessage = string.Empty;
 
+            //Navigate home
+            bsoItemTrans.ExecuteFunction("GOTOPAGE", "-1");
+
             //TODO:
             //Insert line handling code HERE
             //------------------------------
