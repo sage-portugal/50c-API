@@ -2,7 +2,6 @@
 using S50cDL18;
 using S50cPrint18;
 using System;
-using System.Windows.Forms;
 
 namespace Sage50c.API {
     public static partial class APIEngine {
@@ -13,14 +12,25 @@ namespace Sage50c.API {
             Sage50c
         }
 
+#if WPF
         public class MessageEventArgs : EventArgs {
             public string Prompt { get; set; }
-            public MessageBoxButtons Buttons { get; set; }
-            public MessageBoxDefaultButton DefaultButton { get; set; }
-            public MessageBoxIcon Icon { get; set; }
+            public System.Windows.MessageBoxButton Buttons { get; set; }
+            public int DefaultButton { get; set; }
+            public System.Windows.MessageBoxImage Icon { get; set; }
             public string Title { get; set; }
-            public DialogResult Result { get; set; }
+            public System.Windows.MessageBoxResult Result { get; set; }
         }
+#else
+        public class MessageEventArgs : EventArgs {
+            public string Prompt { get; set; }
+            public System.Windows.Forms.MessageBoxButtons Buttons { get; set; }
+            public System.Windows.Forms.MessageBoxDefaultButton DefaultButton { get; set; }
+            public System.Windows.Forms.MessageBoxIcon Icon { get; set; }
+            public string Title { get; set; }
+            public System.Windows.Forms.DialogResult Result { get; set; }
+        }
+#endif
 
         public delegate void MessageEventHandler(MessageEventArgs Args);
         public delegate void WarningErrorEventHandler(int Number, string Source, string Description);
@@ -149,6 +159,12 @@ namespace Sage50c.API {
                     _stringFunctions = new S50cUtil18.StringFunctions();
                 }
                 return _stringFunctions;
+            }
+        }
+
+        public static S50cBL18.BSODiscountManager DiscountManager {
+            get {
+                return s50cBLGlobals.DiscountManager;
             }
         }
     }

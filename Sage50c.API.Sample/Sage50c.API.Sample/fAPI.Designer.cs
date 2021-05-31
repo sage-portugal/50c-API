@@ -259,6 +259,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
             this.btnTransactionRestoreTemp = new System.Windows.Forms.Button();
+            this.txtTransTime = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1116,6 +1118,8 @@
             // tabBuySaleTransaction
             // 
             this.tabBuySaleTransaction.BackColor = System.Drawing.Color.White;
+            this.tabBuySaleTransaction.Controls.Add(this.txtTransTime);
+            this.tabBuySaleTransaction.Controls.Add(this.label39);
             this.tabBuySaleTransaction.Controls.Add(this.btnExternalSignature);
             this.tabBuySaleTransaction.Controls.Add(this.rbTransStockDecompose);
             this.tabBuySaleTransaction.Controls.Add(this.rbTransStockCompose);
@@ -1217,7 +1221,7 @@
             // 
             // btnRefreshGridLines
             // 
-            this.btnRefreshGridLines.Location = new System.Drawing.Point(521, 442);
+            this.btnRefreshGridLines.Location = new System.Drawing.Point(563, 442);
             this.btnRefreshGridLines.Name = "btnRefreshGridLines";
             this.btnRefreshGridLines.Size = new System.Drawing.Size(80, 31);
             this.btnRefreshGridLines.TabIndex = 405;
@@ -1241,7 +1245,7 @@
             this.dataGridItemLines.Location = new System.Drawing.Point(32, 235);
             this.dataGridItemLines.Name = "dataGridItemLines";
             this.dataGridItemLines.ReadOnly = true;
-            this.dataGridItemLines.Size = new System.Drawing.Size(569, 201);
+            this.dataGridItemLines.Size = new System.Drawing.Size(611, 201);
             this.dataGridItemLines.TabIndex = 404;
             this.dataGridItemLines.Visible = false;
             // 
@@ -1283,17 +1287,17 @@
             // 
             // txtPaymentID
             // 
-            this.txtPaymentID.Location = new System.Drawing.Point(607, 124);
+            this.txtPaymentID.Location = new System.Drawing.Point(643, 124);
             this.txtPaymentID.Name = "txtPaymentID";
             this.txtPaymentID.Size = new System.Drawing.Size(72, 23);
             this.txtPaymentID.TabIndex = 346;
             // 
             // txtTenderID
             // 
-            this.txtTenderID.Location = new System.Drawing.Point(607, 80);
+            this.txtTenderID.Location = new System.Drawing.Point(643, 80);
             this.txtTenderID.Name = "txtTenderID";
             this.txtTenderID.Size = new System.Drawing.Size(72, 23);
-            this.txtTenderID.TabIndex = 344;
+            this.txtTenderID.TabIndex = 85;
             // 
             // txtTransFactorL2
             // 
@@ -1485,7 +1489,7 @@
             this.txtTransGlobalDiscount.BackColor = System.Drawing.SystemColors.Window;
             this.txtTransGlobalDiscount.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtTransGlobalDiscount.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransGlobalDiscount.Location = new System.Drawing.Point(516, 80);
+            this.txtTransGlobalDiscount.Location = new System.Drawing.Point(569, 80);
             this.txtTransGlobalDiscount.MaxLength = 0;
             this.txtTransGlobalDiscount.Name = "txtTransGlobalDiscount";
             this.txtTransGlobalDiscount.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1498,7 +1502,7 @@
             this.txtTransPartyId.BackColor = System.Drawing.SystemColors.Window;
             this.txtTransPartyId.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtTransPartyId.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransPartyId.Location = new System.Drawing.Point(440, 80);
+            this.txtTransPartyId.Location = new System.Drawing.Point(495, 80);
             this.txtTransPartyId.MaxLength = 0;
             this.txtTransPartyId.Name = "txtTransPartyId";
             this.txtTransPartyId.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1511,11 +1515,11 @@
             this.txtTransCurrency.BackColor = System.Drawing.SystemColors.Window;
             this.txtTransCurrency.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtTransCurrency.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransCurrency.Location = new System.Drawing.Point(280, 82);
+            this.txtTransCurrency.Location = new System.Drawing.Point(340, 82);
             this.txtTransCurrency.MaxLength = 0;
             this.txtTransCurrency.Name = "txtTransCurrency";
             this.txtTransCurrency.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransCurrency.Size = new System.Drawing.Size(39, 23);
+            this.txtTransCurrency.Size = new System.Drawing.Size(41, 23);
             this.txtTransCurrency.TabIndex = 50;
             // 
             // txtTransDate
@@ -1528,7 +1532,7 @@
             this.txtTransDate.MaxLength = 0;
             this.txtTransDate.Name = "txtTransDate";
             this.txtTransDate.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransDate.Size = new System.Drawing.Size(77, 23);
+            this.txtTransDate.Size = new System.Drawing.Size(76, 23);
             this.txtTransDate.TabIndex = 40;
             // 
             // txtTransDocNumber
@@ -1576,7 +1580,7 @@
             this.lblPaymentID.Cursor = System.Windows.Forms.Cursors.Default;
             this.lblPaymentID.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPaymentID.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblPaymentID.Location = new System.Drawing.Point(604, 106);
+            this.lblPaymentID.Location = new System.Drawing.Point(640, 106);
             this.lblPaymentID.Name = "lblPaymentID";
             this.lblPaymentID.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblPaymentID.Size = new System.Drawing.Size(85, 15);
@@ -1589,10 +1593,10 @@
             this.lblTenderID.Cursor = System.Windows.Forms.Cursors.Default;
             this.lblTenderID.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTenderID.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblTenderID.Location = new System.Drawing.Point(606, 62);
+            this.lblTenderID.Location = new System.Drawing.Point(642, 62);
             this.lblTenderID.Name = "lblTenderID";
             this.lblTenderID.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblTenderID.Size = new System.Drawing.Size(85, 15);
+            this.lblTenderID.Size = new System.Drawing.Size(74, 15);
             this.lblTenderID.TabIndex = 343;
             this.lblTenderID.Text = "Modo Pag.";
             // 
@@ -1602,7 +1606,7 @@
             this.groupBox3.Controls.Add(this.btnTransactionFinalize);
             this.groupBox3.Controls.Add(this.btnTransSavePrep);
             this.groupBox3.Controls.Add(this.btnTransGetPrep);
-            this.groupBox3.Location = new System.Drawing.Point(698, 44);
+            this.groupBox3.Location = new System.Drawing.Point(725, 44);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(170, 197);
             this.groupBox3.TabIndex = 342;
@@ -2506,7 +2510,7 @@
             "Fornecedor",
             "Cliente",
             "Nenhum"});
-            this.cmbTransPartyType.Location = new System.Drawing.Point(331, 81);
+            this.cmbTransPartyType.Location = new System.Drawing.Point(388, 81);
             this.cmbTransPartyType.Name = "cmbTransPartyType";
             this.cmbTransPartyType.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.cmbTransPartyType.Size = new System.Drawing.Size(101, 23);
@@ -2532,7 +2536,7 @@
             this.Label24.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label24.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label24.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label24.Location = new System.Drawing.Point(329, 64);
+            this.Label24.Location = new System.Drawing.Point(384, 64);
             this.Label24.Name = "Label24";
             this.Label24.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label24.Size = new System.Drawing.Size(62, 15);
@@ -2545,7 +2549,7 @@
             this.Label48.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label48.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label48.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label48.Location = new System.Drawing.Point(440, 62);
+            this.Label48.Location = new System.Drawing.Point(492, 62);
             this.Label48.Name = "Label48";
             this.Label48.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label48.Size = new System.Drawing.Size(57, 15);
@@ -2571,7 +2575,7 @@
             this.lblTransCurrency.Cursor = System.Windows.Forms.Cursors.Default;
             this.lblTransCurrency.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTransCurrency.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblTransCurrency.Location = new System.Drawing.Point(276, 65);
+            this.lblTransCurrency.Location = new System.Drawing.Point(338, 65);
             this.lblTransCurrency.Name = "lblTransCurrency";
             this.lblTransCurrency.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblTransCurrency.Size = new System.Drawing.Size(52, 15);
@@ -2623,10 +2627,10 @@
             this.Label25.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label25.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label25.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label25.Location = new System.Drawing.Point(516, 62);
+            this.Label25.Location = new System.Drawing.Point(563, 62);
             this.Label25.Name = "Label25";
             this.Label25.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label25.Size = new System.Drawing.Size(85, 15);
+            this.Label25.Size = new System.Drawing.Size(75, 15);
             this.Label25.TabIndex = 283;
             this.Label25.Text = "Desc. Global";
             // 
@@ -3368,6 +3372,31 @@
             this.btnTransactionRestoreTemp.Text = "Restaurar temporário";
             this.btnTransactionRestoreTemp.UseVisualStyleBackColor = true;
             this.btnTransactionRestoreTemp.Click += new System.EventHandler(this.btnTransactionRestoreTemp_Click);
+            // txtTransTime
+            // 
+            this.txtTransTime.AcceptsReturn = true;
+            this.txtTransTime.BackColor = System.Drawing.SystemColors.Window;
+            this.txtTransTime.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtTransTime.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtTransTime.Location = new System.Drawing.Point(271, 81);
+            this.txtTransTime.MaxLength = 0;
+            this.txtTransTime.Name = "txtTransTime";
+            this.txtTransTime.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTransTime.Size = new System.Drawing.Size(62, 23);
+            this.txtTransTime.TabIndex = 45;
+            // 
+            // label39
+            // 
+            this.label39.BackColor = System.Drawing.Color.Transparent;
+            this.label39.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label39.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label39.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label39.Location = new System.Drawing.Point(271, 63);
+            this.label39.Name = "label39";
+            this.label39.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label39.Size = new System.Drawing.Size(61, 15);
+            this.label39.TabIndex = 410;
+            this.label39.Text = "Hora";
             // 
             // fApi
             // 
@@ -3673,6 +3702,8 @@
         private System.Windows.Forms.Label LblL2;
         private System.Windows.Forms.Label LblL1;
         private System.Windows.Forms.Button btnTransactionRestoreTemp;
+        private System.Windows.Forms.TextBox txtTransTime;
+        private System.Windows.Forms.Label label39;
     }
 }
 

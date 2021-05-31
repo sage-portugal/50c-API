@@ -1095,6 +1095,12 @@ namespace Sage50c.API.Sample {
                 //
                 //// Definir o terceiro (cliente ou fornecedor)
                 bsoItemTransaction.PartyID = partyId;
+                //
+                //To use an EXISTING party address:
+                //bsoItemTransaction.PartyAddressByKey = 33 // Specify Address ID; Address Id 33 must exists
+                //bsoItemTransaction.PartyAddressID=33      // Specify the Index of: trans.Party.PartyInfo.AddressList; Index 33 must exist
+                //
+                // To manually specify an address:
                 //bsoItemTransaction.PartyFederalTaxID = "123456789";
                 //bsoItemTransaction.PartyAddressLine1 = "Rua 1";
                 //bsoItemTransaction.PartyPostalCode = "4000 Porto";
@@ -1105,9 +1111,15 @@ namespace Sage50c.API.Sample {
                 //
                 //Set Create date and deliverydate
                 var createDate = DateTime.Today;
+                var createTime = DateTime.Today;
                 DateTime.TryParse(txtTransDate.Text, out createDate);
+                DateTime.TryParse(txtTransTime.Text, out createTime);
+
                 trans.CreateDate = createDate;
+                trans.CreateTime = createTime;
+
                 trans.ActualDeliveryDate = createDate;
+                
                 //
                 // Definir se o imposto é incluido
                 trans.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
@@ -1766,9 +1778,7 @@ namespace Sage50c.API.Sample {
                         throw new Exception(string.Format(" O documento [{0}] é de um tipo não suportado por este exemplo: {1}.", transDoc, doc.TransDocType));
                 }
             }
-
             ShowTransaction(trans);
-
         }
 
 
@@ -1781,6 +1791,7 @@ namespace Sage50c.API.Sample {
             txtTransColor1.Text = string.Empty;
             txtTransCurrency.Text = systemSettings.BaseCurrency.CurrencyID;
             txtTransDate.Text = DateTime.Today.ToShortDateString();
+            txtTransTime.Text = DateTime.Now.ToShortTimeString();
             string docId = string.Empty;
 
             if (rbTransBuySell.Checked) {
