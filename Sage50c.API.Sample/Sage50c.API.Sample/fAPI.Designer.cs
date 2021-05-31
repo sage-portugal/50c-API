@@ -258,6 +258,7 @@
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
+            this.btnTransactionRestoreTemp = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1597,12 +1598,13 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btnTransactionRestoreTemp);
             this.groupBox3.Controls.Add(this.btnTransactionFinalize);
             this.groupBox3.Controls.Add(this.btnTransSavePrep);
             this.groupBox3.Controls.Add(this.btnTransGetPrep);
             this.groupBox3.Location = new System.Drawing.Point(698, 44);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(170, 147);
+            this.groupBox3.Size = new System.Drawing.Size(170, 197);
             this.groupBox3.TabIndex = 342;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Preparação";
@@ -1643,9 +1645,9 @@
             this.groupBox1.Controls.Add(this.optPrintOptions0);
             this.groupBox1.Controls.Add(this.chkPrintPreview);
             this.groupBox1.Controls.Add(this.btnPrint);
-            this.groupBox1.Location = new System.Drawing.Point(631, 197);
+            this.groupBox1.Location = new System.Drawing.Point(631, 270);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(237, 231);
+            this.groupBox1.Size = new System.Drawing.Size(237, 166);
             this.groupBox1.TabIndex = 341;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Impressão";
@@ -1655,7 +1657,7 @@
             this.optPrintOptions1.AutoSize = true;
             this.optPrintOptions1.Location = new System.Drawing.Point(20, 51);
             this.optPrintOptions1.Name = "optPrintOptions1";
-            this.optPrintOptions1.Size = new System.Drawing.Size(118, 19);
+            this.optPrintOptions1.Size = new System.Drawing.Size(119, 19);
             this.optPrintOptions1.TabIndex = 344;
             this.optPrintOptions1.Text = "Exportar para PDF";
             this.optPrintOptions1.UseVisualStyleBackColor = true;
@@ -1688,7 +1690,7 @@
             // btnPrint
             // 
             this.btnPrint.Enabled = false;
-            this.btnPrint.Location = new System.Drawing.Point(131, 197);
+            this.btnPrint.Location = new System.Drawing.Point(132, 127);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(92, 27);
             this.btnPrint.TabIndex = 341;
@@ -3357,6 +3359,16 @@
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
             // 
+            // btnTransactionRestoreTemp
+            // 
+            this.btnTransactionRestoreTemp.Location = new System.Drawing.Point(18, 160);
+            this.btnTransactionRestoreTemp.Name = "btnTransactionRestoreTemp";
+            this.btnTransactionRestoreTemp.Size = new System.Drawing.Size(139, 28);
+            this.btnTransactionRestoreTemp.TabIndex = 342;
+            this.btnTransactionRestoreTemp.Text = "Restaurar temporário";
+            this.btnTransactionRestoreTemp.UseVisualStyleBackColor = true;
+            this.btnTransactionRestoreTemp.Click += new System.EventHandler(this.btnTransactionRestoreTemp_Click);
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3660,6 +3672,7 @@
         private System.Windows.Forms.Button btnClearRep1;
         private System.Windows.Forms.Label LblL2;
         private System.Windows.Forms.Label LblL1;
+        private System.Windows.Forms.Button btnTransactionRestoreTemp;
     }
 }
 
