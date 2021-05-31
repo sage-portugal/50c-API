@@ -1778,7 +1778,7 @@ namespace Sage50c.API.Sample {
                         throw new Exception(string.Format(" O documento [{0}] é de um tipo não suportado por este exemplo: {1}.", transDoc, doc.TransDocType));
                 }
             }
-            ShowTransaction(trans);
+            TransactionShow(trans);
         }
 
 
@@ -3627,12 +3627,26 @@ namespace Sage50c.API.Sample {
                 bsoItemTransaction.InitNewTransaction(txtTransDoc.Text, txtTransSerial.Text);
                 //Nr. do documento temporário a importar.
                 bsoItemTransaction.RestoreTempTransaction(DocumentTypeEnum.dcTypeSale, txtTransDocNumber.Text.ToInt());
-                //ShowTransaction(bsoItemTransaction.Transaction);
+                if (bsoItemTransaction.Transaction.Details.Count > 0) {
+                    TransactionShow(bsoItemTransaction.Transaction);
 
-                //Após importar, se pretender, será gravado automaticamente o documento.
-                bsoItemTransaction.TenderID = APIEngine.DSOCache.TenderProvider.GetFirstID();
-                bsoItemTransaction.SaveDocument(false, false);
-                MessageBox.Show($"Documento gravado: {bsoItemTransaction.Transaction.TransactionID.ToString()}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (DialogResult.Yes ==
+                        MessageBox.Show("Guardar o documento temporário recuperado?", Application.ProductName,
+                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+                        //Após importar, se pretender, será gravado automaticamente o documento.
+                        if (bsoItemTransaction.Transaction.Tender.TenderID == 0) {
+                            // Set the first TenderId, just in case...
+                            bsoItemTransaction.TenderID = APIEngine.DSOCache.TenderProvider.GetFirstID();
+                        }
+                        bsoItemTransaction.SaveDocument(false, false);
+                        MessageBox.Show($"Documento gravado: {bsoItemTransaction.Transaction.TransactionID.ToString()}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        TransactionClear();
+                    }
+                }
+                else {
+                    MessageBox.Show($"O temporário indicado '{txtTransDocNumber.Text}' não existe ou não existem mais temporários.",
+                                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch(Exception ex) {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -3640,9 +3654,8 @@ namespace Sage50c.API.Sample {
         }
 
 
-        private void ShowTransaction(ItemTransaction trans) {
+        private void TransactionShow(ItemTransaction trans) {
             if (trans != null) {
-                double LineNumber = 0;
                 var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
                 TransactionClear();
@@ -3680,7 +3693,7 @@ namespace Sage50c.API.Sample {
                 if (trans.Details.Count > 0) {
                     int lineNumber = (int)getLineNumberTotxtTransItemL(1, doc.TransDocType, doc.StockBehavior, trans.Details);
 
-                    if (LineNumber != 0) {
+                    if (lineNumber != 0) {
                         var transDetail = trans.Details[lineNumber];
 
                         txtTransFactorL1.Text = transDetail.QuantityFactor.ToString();
