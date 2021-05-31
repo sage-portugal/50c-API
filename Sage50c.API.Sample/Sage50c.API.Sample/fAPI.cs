@@ -1093,6 +1093,12 @@ namespace Sage50c.API.Sample {
                 //
                 //// Definir o terceiro (cliente ou fornecedor)
                 bsoItemTransaction.PartyID = partyId;
+                //
+                //To use an EXISTING party address:
+                //bsoItemTransaction.PartyAddressByKey = 33 // Specify Address ID; Address Id 33 must exists
+                //bsoItemTransaction.PartyAddressID=33      // Specify the Index of: trans.Party.PartyInfo.AddressList; Index 33 must exist
+                //
+                // To manually specify an address:
                 //bsoItemTransaction.PartyFederalTaxID = "123456789";
                 //bsoItemTransaction.PartyAddressLine1 = "Rua 1";
                 //bsoItemTransaction.PartyPostalCode = "4000 Porto";
