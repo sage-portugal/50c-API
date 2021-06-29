@@ -64,10 +64,6 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\ADODB27.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="CGCOAPI50c18">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\CGCOAPI50c18.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="DAO">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\DAO.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -93,14 +89,6 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cAPI18.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="S50cAPICGCO18">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cAPICGCO18.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="S50cBase18">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBase18.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="S50cBL18">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cBL18.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -115,10 +103,6 @@
     </Reference>
     <Reference Include="S50cData18">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cData18.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="S50cDL16">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cDL16.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cDL18">
@@ -149,16 +133,16 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cSAFTX18.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="S50cSC18">
+      <HintPath>..\..\..\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cSC18.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="S50cSys18">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cSys18.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cUIBase18">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUIBase18.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="S50cUpdate16">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Interops\S50cUpdate16.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cUpdate18">

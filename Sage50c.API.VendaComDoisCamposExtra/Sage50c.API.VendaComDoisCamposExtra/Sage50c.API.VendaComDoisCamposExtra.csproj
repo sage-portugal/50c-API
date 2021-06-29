@@ -135,6 +135,10 @@
       <HintPath>..\..\..\..\..\..\..\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cSAFTX18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="S50cSC18">
+      <HintPath>..\..\..\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cSC18.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="S50cSys18">
       <HintPath>..\..\..\..\..\..\..\Dev\POS\SystemPOS\50c\Build\PPOS\COMMONFILES\SAGE\2070\50c2018\Interops\S50cSys18.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
