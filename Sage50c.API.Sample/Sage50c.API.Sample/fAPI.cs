@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using S50cSys18;
-using S50cUtil18;
-using S50cBO18;
-using S50cBL18;
-using S50cDL18;
-using S50cPrint18;
+using S50cSys22;
+using S50cUtil22;
+using S50cBO22;
+using S50cBL22;
+using S50cDL22;
+using S50cPrint22;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
@@ -458,14 +458,14 @@ namespace Sage50c.API.Sample {
                 newItem.ShortDescription = txtItemShortDescription.Text;
                 newItem.Comments = txtItemComments.Text;
                 // IVA/Imposto por omissão do sistema
-                newItem.TaxableGroupID = systemSettings.SystemInfo.DefaultTaxableGroupID;
+                newItem.TaxableGroupID = systemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
                 //
                 newItem.SupplierID = APIEngine.DSOCache.SupplierProvider.GetFirstSupplierEx();
                 //
                 //Inicializar as linhas de preço do artigo
                 newItem.InitPriceList(dsoPriceLine.GetPriceLineRS());
                 // Preço do artigo (linha de preço=1)
-                Price myPrice = newItem.SalePrice[1, 0, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit];
+                Price myPrice = newItem.SalePrice[1, 0, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit];
                 //
                 // Definir o preços (neste caso, com imposto (IVA) incluido)
                 myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value;
@@ -473,7 +473,7 @@ namespace Sage50c.API.Sample {
                 myPrice.UnitPrice = APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
                                                     myPrice.TaxIncludedPrice,
                                                     newItem.TaxableGroupID,
-                                                    systemSettings.SystemInfo.DefaultCountryID,
+                                                    systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
                                                     systemSettings.SystemInfo.TaxRegionID);
                 //
                 // *Familia: Obter a primeira disponivel
@@ -484,7 +484,7 @@ namespace Sage50c.API.Sample {
                 //// Criar nova côr na base de dados.
                 //var newColorId = dsoCache.ColorProvider.GetNewID();
                 //var colorCode = System.Drawing.Color.Blue.B << 32 + System.Drawing.Color.Blue.G << 16 + System.Drawing.Color.Blue.R;
-                //var newColor = new S50cBO18.Color() {
+                //var newColor = new S50cBO22.Color() {
                 //    ColorCode = colorCode,
                 //    ColorID = newColorId,
                 //    Description = "Cor " + newColorId.ToString()
@@ -503,7 +503,7 @@ namespace Sage50c.API.Sample {
                 //// Descomentar para criar um novo tamanho e adicionar ao artigo
                 //// Criar um tamanho nov
                 //var newSizeID = dsoCache.SizeProvider.GetNewID();
-                //var newSize = new S50cBO18.Size() {
+                //var newSize = new S50cBO22.Size() {
                 //    Description = "Size " + newSizeID.ToString(),
                 //    SizeID = newSizeID,
                 //    //SizeKey = NÃO USAR
@@ -564,7 +564,7 @@ namespace Sage50c.API.Sample {
                 myPrice.UnitPrice = APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
                                                     myPrice.TaxIncludedPrice,
                                                     myItem.TaxableGroupID,
-                                                    systemSettings.SystemInfo.DefaultCountryID,
+                                                    systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
                                                     systemSettings.SystemInfo.TaxRegionID);
                 //
                 // Guardar as alterações
@@ -687,7 +687,7 @@ namespace Sage50c.API.Sample {
             }
             // Se o pais não existir, rectificar
             if (!dsoCache.CountryProvider.CountryExists(myCustomer.CountryID))
-                myCustomer.CountryID = systemSettings.SystemInfo.DefaultCountryID;
+                myCustomer.CountryID = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
             // Se a moeda não existir, guar a moeda base
             if (!dsoCache.CurrencyProvider.CurrencyExists(myCustomer.CurrencyID))
                 myCustomer.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
@@ -745,7 +745,7 @@ namespace Sage50c.API.Sample {
 
             UIUtils.FillCountryCombo(cmbCustomerCountry);
             var country = cmbCustomerCountry.Items.Cast<CountryCode>()
-                                            .FirstOrDefault(x => x.CountryID.Equals(systemSettings.SystemInfo.DefaultCountryID, StringComparison.CurrentCultureIgnoreCase));
+                                            .FirstOrDefault(x => x.CountryID.Equals(systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, StringComparison.CurrentCultureIgnoreCase));
             cmbCustomerCountry.SelectedItem = country;
             //
             UIUtils.FillCurrencyCombo(cmbCustomerCurrency);
@@ -754,7 +754,7 @@ namespace Sage50c.API.Sample {
             cmbCustomerCurrency.SelectedItem = currency;
             //
             UIUtils.FillEntityFiscalStatusCombo(cmbCustomerTax);
-            cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.SystemFiscalStatusID);
+            cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.PartySettings.SystemFiscalStatusID);
             if (cmbCustomerTax.SelectedItem == null && cmbCustomerTax.Items.Count > 0) {
                 cmbCustomerTax.SelectedIndex = 0;
             }
@@ -833,7 +833,7 @@ namespace Sage50c.API.Sample {
 
         private void SupplierClear() {
             txtSupplierComments.Text = string.Empty;
-            txtSupplierCountry.Text = systemSettings.SystemInfo.DefaultCountryID;
+            txtSupplierCountry.Text = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
             txtSupplierCurrency.Text = systemSettings.BaseCurrency.CurrencyID;
             txtSupplierId.Text = dsoCache.SupplierProvider.GetNewID().ToString();
             txtSupplierName.Text = string.Empty;
@@ -841,7 +841,7 @@ namespace Sage50c.API.Sample {
             txtSupplierZone.Text = dsoCache.ZoneProvider.GetFirstID().ToString();
 
             UIUtils.FillEntityFiscalStatusCombo(cmbSupplierTax);
-            cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.SystemFiscalStatusID);
+            cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.PartySettings.SystemFiscalStatusID);
             if (cmbSupplierTax.SelectedItem == null && cmbSupplierTax.Items.Count > 0) {
                 cmbSupplierTax.SelectedIndex = 0;
             }
@@ -1619,7 +1619,7 @@ namespace Sage50c.API.Sample {
                 TaxGroupId = item.TaxableGroupID;
             }
             else {
-                TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, systemSettings.SystemInfo.DefaultCountryID, systemSettings.SystemInfo.TaxRegionID);
+                TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, systemSettings.SystemInfo.TaxRegionID);
             }
             transDetail.TaxableGroupID = TaxGroupId;
             //*** Uncomment for discout
@@ -1862,7 +1862,7 @@ namespace Sage50c.API.Sample {
             txtTransQuantityL1.Text = string.Empty;
             txtTransTaxRateL1.Text = string.Empty;
             txtTransUnitPriceL1.Text = string.Empty;
-            txtTransUnL1.Text = systemSettings.SystemInfo.ItemDefaultUnit;
+            txtTransUnL1.Text = systemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
             txtTransWarehouseL1.Text = string.Empty;
 
             //Propriedades: NS
@@ -1878,7 +1878,7 @@ namespace Sage50c.API.Sample {
             txtTransFactorL2.Text = "1";
             txtTransItemL2.Text = string.Empty;
             txtTransQuantityL2.Text = string.Empty;
-            txtTransUnL2.Text = systemSettings.SystemInfo.ItemDefaultUnit;
+            txtTransUnL2.Text = systemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
             txtTransTaxRateL2.Text = string.Empty;
             txtTransUnitPriceL2.Text = string.Empty;
             txtTransWarehouseL2.Text = string.Empty;
@@ -2005,8 +2005,8 @@ namespace Sage50c.API.Sample {
                 bsoStockTransaction.PartyID = partyId;
             }
             //TODO: Verify
-            bsoCommonTransaction.CountryID = APIEngine.SystemSettings.SystemInfo.DefaultCountryID;
-            bsoCommonTransaction.TaxRegionID = APIEngine.SystemSettings.SystemInfo.TaxRegionID;
+            //bsoCommonTransaction.CountryID = APIEngine.SystemSettings.SystemInfo.DefaultCountryID;
+            //bsoCommonTransaction.TaxRegionID = APIEngine.SystemSettings.SystemInfo.TaxRegionID;
             bsoCommonTransaction.EntityFiscalStatusID = bsoStockTransaction.Transaction.PartyFiscalStatus;
             //------------> ZONA
             //------------> MOEDA
@@ -2252,12 +2252,12 @@ namespace Sage50c.API.Sample {
                 item.ItemID = "=";
                 item.Description = "Só descrição";
                 item.ItemType = ItemTypeEnum.itmComments;
-                item.UnitOfSaleID = APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit;
-                item.AlternativeUnitOfStock = APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit;
-                item.DefaultStockUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit;
-                item.DefaultBuyUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit;
-                item.DefaultSellingUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit;
-                item.TaxableGroupID = APIEngine.SystemSettings.SystemInfo.DefaultTaxableGroupID;
+                item.UnitOfSaleID = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
+                item.AlternativeUnitOfStock = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
+                item.DefaultStockUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
+                item.DefaultBuyUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
+                item.DefaultSellingUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
+                item.TaxableGroupID = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
                 item.CurrencyID = APIEngine.SystemSettings.BaseCurrency.CurrencyID;
                 item.CurrencyExchange = APIEngine.SystemSettings.BaseCurrency.SaleExchange;
                 item.CurrencyFactor = APIEngine.SystemSettings.BaseCurrency.EuroConversionRate;
@@ -2268,7 +2268,7 @@ namespace Sage50c.API.Sample {
 
             //-----> Taxa de IVA
             transDetail.TaxableGroupID = APIEngine.DSOCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(itemTaxRate,
-                                                                                                           APIEngine.SystemSettings.SystemInfo.DefaultCountryID,
+                                                                                                           APIEngine.SystemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
                                                                                                            APIEngine.SystemSettings.SystemInfo.TaxRegionID);
 
             //-----> Cores e Tamanhos. Uncomment to SET
@@ -2355,7 +2355,7 @@ namespace Sage50c.API.Sample {
             //transDetail.CumulativeDiscountPercent2 = 2
             //transDetail.CumulativeDiscountPercent3 = 3
 
-            S50cUtil18.MathFunctions mathUtil = new MathFunctions();
+            S50cUtil22.MathFunctions mathUtil = new MathFunctions();
 
             if (transDetail.DiscountPercent == 0 && (transDetail.CumulativeDiscountPercent1 != 0 || transDetail.CumulativeDiscountPercent2 != 0 || transDetail.CumulativeDiscountPercent3 != 0))
                 transDetail.DiscountPercent = mathUtil.GetCumulativeDiscount(transDetail.CumulativeDiscountPercent1, transDetail.CumulativeDiscountPercent2, transDetail.CumulativeDiscountPercent3);
@@ -2540,7 +2540,7 @@ namespace Sage50c.API.Sample {
             // Remover todos os pagamentos da ledger account (se o recibo estiver a ser alterado)
             int i = 1;
             while (accountTrans.Details.Count > 0) {
-                accountTrans.Details.Remove(ref i);
+                accountTrans.Details.Remove(i);
             }
             accountTransManager.SetAccountID(ACCOUNT_TYPE); // Conta corrente
             accountTransManager.SetBaseCurrencyID(txtAccountTransDocCurrency.Text);
@@ -2581,7 +2581,7 @@ namespace Sage50c.API.Sample {
             accountTransManager.EnsureOpenTill(accountTrans.Till.TillID);
             //
             // Gravar
-            if (!accountTransManager.SaveDocumentEx(false)) {
+            if (!accountTransManager.SaveDocument(false)) {
                 throw new Exception("A gravação do recibo falhou!");
             }
             else {
@@ -3823,6 +3823,15 @@ namespace Sage50c.API.Sample {
                 MessageBox.Show("A transação indicada não existe.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            for (int i = 1; i < 3; i++) {
+                var oStockTrans = dsoCache.StockTransactionProvider.GetStockTransaction(DocumentTypeEnum.dcTypeStock, "1", "TR", i);
+                if (oStockTrans != null) {
+                    dsoCache.StockTransactionProvider.Save(oStockTrans);
+                }
+            }
         }
     }
 }

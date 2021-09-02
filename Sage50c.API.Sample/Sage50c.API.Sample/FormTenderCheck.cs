@@ -1,4 +1,4 @@
-﻿using S50cBO18;
+﻿using S50cBO22;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -49,7 +49,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void FillBanks() {
-            var dsoBankAccountCodes = new S50cDL18.DSOBankAccountCodes();
+            var dsoBankAccountCodes = new S50cDL22.DSOBankAccountCodes();
 
             cmbBank.Items.Clear();
             cmbBank.DisplayMember = "BankId";

@@ -86,6 +86,8 @@
             this.Label30 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabBuySaleTransaction = new System.Windows.Forms.TabPage();
+            this.txtTransTime = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.btnExternalSignature = new System.Windows.Forms.Button();
             this.rbTransStockDecompose = new System.Windows.Forms.RadioButton();
             this.rbTransStockCompose = new System.Windows.Forms.RadioButton();
@@ -122,6 +124,7 @@
             this.lblPaymentID = new System.Windows.Forms.Label();
             this.lblTenderID = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnTransactionRestoreTemp = new System.Windows.Forms.Button();
             this.btnTransactionFinalize = new System.Windows.Forms.Button();
             this.btnTransSavePrep = new System.Windows.Forms.Button();
             this.btnTransGetPrep = new System.Windows.Forms.Button();
@@ -258,9 +261,7 @@
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
-            this.btnTransactionRestoreTemp = new System.Windows.Forms.Button();
-            this.txtTransTime = new System.Windows.Forms.TextBox();
-            this.label39 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -362,6 +363,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this._Label1_0);
             this.panel2.Controls.Add(this.btnClear);
             this.panel2.Controls.Add(this.btnGet);
@@ -1183,6 +1185,32 @@
             this.tabBuySaleTransaction.TabIndex = 3;
             this.tabBuySaleTransaction.Text = "Compra/Venda/Stock";
             // 
+            // txtTransTime
+            // 
+            this.txtTransTime.AcceptsReturn = true;
+            this.txtTransTime.BackColor = System.Drawing.SystemColors.Window;
+            this.txtTransTime.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtTransTime.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtTransTime.Location = new System.Drawing.Point(271, 81);
+            this.txtTransTime.MaxLength = 0;
+            this.txtTransTime.Name = "txtTransTime";
+            this.txtTransTime.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtTransTime.Size = new System.Drawing.Size(62, 23);
+            this.txtTransTime.TabIndex = 45;
+            // 
+            // label39
+            // 
+            this.label39.BackColor = System.Drawing.Color.Transparent;
+            this.label39.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label39.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label39.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label39.Location = new System.Drawing.Point(271, 63);
+            this.label39.Name = "label39";
+            this.label39.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label39.Size = new System.Drawing.Size(61, 15);
+            this.label39.TabIndex = 410;
+            this.label39.Text = "Hora";
+            // 
             // btnExternalSignature
             // 
             this.btnExternalSignature.Location = new System.Drawing.Point(32, 442);
@@ -1613,6 +1641,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Preparação";
             // 
+            // btnTransactionRestoreTemp
+            // 
+            this.btnTransactionRestoreTemp.Location = new System.Drawing.Point(18, 160);
+            this.btnTransactionRestoreTemp.Name = "btnTransactionRestoreTemp";
+            this.btnTransactionRestoreTemp.Size = new System.Drawing.Size(139, 28);
+            this.btnTransactionRestoreTemp.TabIndex = 342;
+            this.btnTransactionRestoreTemp.Text = "Restaurar temporário";
+            this.btnTransactionRestoreTemp.UseVisualStyleBackColor = true;
+            this.btnTransactionRestoreTemp.Click += new System.EventHandler(this.btnTransactionRestoreTemp_Click);
+            // 
             // btnTransactionFinalize
             // 
             this.btnTransactionFinalize.Location = new System.Drawing.Point(19, 102);
@@ -1661,7 +1699,7 @@
             this.optPrintOptions1.AutoSize = true;
             this.optPrintOptions1.Location = new System.Drawing.Point(20, 51);
             this.optPrintOptions1.Name = "optPrintOptions1";
-            this.optPrintOptions1.Size = new System.Drawing.Size(119, 19);
+            this.optPrintOptions1.Size = new System.Drawing.Size(118, 19);
             this.optPrintOptions1.TabIndex = 344;
             this.optPrintOptions1.Text = "Exportar para PDF";
             this.optPrintOptions1.UseVisualStyleBackColor = true;
@@ -3363,40 +3401,15 @@
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
             // 
-            // btnTransactionRestoreTemp
+            // button1
             // 
-            this.btnTransactionRestoreTemp.Location = new System.Drawing.Point(18, 160);
-            this.btnTransactionRestoreTemp.Name = "btnTransactionRestoreTemp";
-            this.btnTransactionRestoreTemp.Size = new System.Drawing.Size(139, 28);
-            this.btnTransactionRestoreTemp.TabIndex = 342;
-            this.btnTransactionRestoreTemp.Text = "Restaurar temporário";
-            this.btnTransactionRestoreTemp.UseVisualStyleBackColor = true;
-            this.btnTransactionRestoreTemp.Click += new System.EventHandler(this.btnTransactionRestoreTemp_Click);
-            // txtTransTime
-            // 
-            this.txtTransTime.AcceptsReturn = true;
-            this.txtTransTime.BackColor = System.Drawing.SystemColors.Window;
-            this.txtTransTime.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTransTime.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtTransTime.Location = new System.Drawing.Point(271, 81);
-            this.txtTransTime.MaxLength = 0;
-            this.txtTransTime.Name = "txtTransTime";
-            this.txtTransTime.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransTime.Size = new System.Drawing.Size(62, 23);
-            this.txtTransTime.TabIndex = 45;
-            // 
-            // label39
-            // 
-            this.label39.BackColor = System.Drawing.Color.Transparent;
-            this.label39.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label39.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label39.Location = new System.Drawing.Point(271, 63);
-            this.label39.Name = "label39";
-            this.label39.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label39.Size = new System.Drawing.Size(61, 15);
-            this.label39.TabIndex = 410;
-            this.label39.Text = "Hora";
+            this.button1.Location = new System.Drawing.Point(468, 5);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(93, 29);
+            this.button1.TabIndex = 182;
+            this.button1.Text = "Regrava TRFs";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // fApi
             // 
@@ -3704,6 +3717,7 @@
         private System.Windows.Forms.Button btnTransactionRestoreTemp;
         private System.Windows.Forms.TextBox txtTransTime;
         private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Button button1;
     }
 }
 

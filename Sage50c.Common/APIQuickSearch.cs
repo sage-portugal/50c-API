@@ -1,6 +1,6 @@
-using S50cSys18;
-using S50cUtil18;
-using S50cBO18;
+using S50cSys22;
+using S50cUtil22;
+using S50cBO22;
 
 namespace Sage50c.API {
     public class APIQuickSearch {
