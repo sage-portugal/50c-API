@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using S50cBL18;
-using S50cSys18;
-using S50cBO18;
+using S50cBL22;
+using S50cSys22;
+using S50cBO22;
 using System.Windows.Forms;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.ExtenderSample22 {
     class TenderTransactionHandler : IDisposable {
         private ExtenderEvents headerEvents = null;
-        private ExtenderEvents detailEvents = null;
+        //private ExtenderEvents detailEvents = null;
 
         private TenderTransactionManager    _tenderTransactionManager = null;
         private PropertyChangeNotifier      _propChangeNotifier = null;
@@ -198,7 +198,7 @@ namespace Sage50c.ExtenderSample {
 
         public void Dispose() {
             headerEvents = null;
-            detailEvents = null;
+            //detailEvents = null;
             if (_tenderTransactionManager != null) {
                 _tenderTransactionManager = null;
             }

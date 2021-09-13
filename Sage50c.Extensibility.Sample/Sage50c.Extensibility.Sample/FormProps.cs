@@ -1,4 +1,4 @@
-﻿using S50cBL18;
+﻿using S50cBL22;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.ExtenderSample22 {
     public partial class FormProps : Form, IChildPanel {
         public FormProps() {
             InitializeComponent();

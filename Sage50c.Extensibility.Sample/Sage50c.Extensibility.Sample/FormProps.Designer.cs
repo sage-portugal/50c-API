@@ -1,4 +1,4 @@
-﻿namespace Sage50c.ExtenderSample {
+﻿namespace Sage50c.ExtenderSample22 {
     partial class FormProps {
         /// <summary>
         /// Required designer variable.

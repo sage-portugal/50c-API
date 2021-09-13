@@ -1,11 +1,11 @@
-﻿using S50cBL18;
-using S50cSys18;
+﻿using S50cBL22;
+using S50cSys22;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.ExtenderSample22 {
     internal class SystemInfoHandler : IDisposable {
         private IManagementConsole managementConsole = null;   //Consola de gestão dos parâmetros
         private ExtenderEvents myEvents = null;

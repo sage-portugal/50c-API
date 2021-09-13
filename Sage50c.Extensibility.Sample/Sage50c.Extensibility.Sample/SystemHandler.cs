@@ -1,5 +1,5 @@
-﻿using S50cBL18;
-using S50cSys18;
+﻿using S50cBL22;
+using S50cSys22;
 using Sage50c.API;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.ExtenderSample22 {
     internal class SystemHandler : IDisposable {
 
 
@@ -16,7 +16,7 @@ namespace Sage50c.ExtenderSample {
         private ExtenderSystemEvents myEvents = null;
         //
         // General child windows interfaces
-        private static IChildWindow2 generalChildWindow = null;
+        private static IChildWindow generalChildWindow = null;
 
         private static IWorkspaceWindow generalWorkspaceWindow = null;
         private static IDialogWindow generalDialogWindow = null;
@@ -24,7 +24,7 @@ namespace Sage50c.ExtenderSample {
         private static IUIMasterTable generalUIMasterTableManager = null;
         private static IUIMenu generalUIMenuManager = null;
 
-        public static IChildWindow2 GeneralChildWindow { get { return generalChildWindow; } }
+        public static IChildWindow GeneralChildWindow { get { return generalChildWindow; } }
         public static IWorkspaceWindow GeneralWorkspaceWindow { get { return generalWorkspaceWindow; } }
         public static IDialogWindow GeneralDialogWindow { get { return generalDialogWindow; } }
         public static IUITransaction GeneralUITransaction { get { return generalUITransactionManager; } }
@@ -50,7 +50,7 @@ namespace Sage50c.ExtenderSample {
         /// <param name="functionName"></param>
         /// <param name="language"></param>
         private void AddMyFunction(string functionName, string language = "PTG") {
-            var tmpFfunc = new S50cBO18.FuncPOS();
+            var tmpFfunc = new S50cBO22.FuncPOS();
             tmpFfunc.POSFunctionID = functionName;
             tmpFfunc.LocalizedFunction = functionName;
             tmpFfunc.LanguageID = language;
@@ -68,7 +68,7 @@ namespace Sage50c.ExtenderSample {
 
             //this property will only be available in the backoffice
             if (properties.PropertyExists("ChildWindow")) {
-                generalChildWindow = (IChildWindow2)properties.get_Value("ChildWindow");
+                generalChildWindow = (IChildWindow)properties.get_Value("ChildWindow");
             }
 
             //this property will only be available in the backoffice

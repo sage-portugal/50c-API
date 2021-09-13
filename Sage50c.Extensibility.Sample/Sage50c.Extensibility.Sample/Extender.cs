@@ -1,11 +1,11 @@
-﻿using S50cBL18;
+﻿using S50cBL22;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Sage50c.ExtenderSample {
-    [ProgId("Sage50c.ExtenderSample")]
+namespace Sage50c.ExtenderSample22 {
+    [ProgId("Sage50c.ExtenderSample22")]
     public class Extender : ISageExtender, IDisposable {
         private SystemHandler           systemHandler = null;       // System handler, startup, system menus
         private SystemInfoHandler       systemInfoHandler = null;   // Parâmetros do sistema

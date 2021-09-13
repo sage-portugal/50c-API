@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sage50c.ExtenderSample")]
-[assembly: AssemblyDescription("Sage 50c Extender Sample")]
+[assembly: AssemblyTitle("Sage50c.ExtenderSample22 2022")]
+[assembly: AssemblyDescription("Sage 50c Extender Sample 2022")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sage Portugal")]
 [assembly: AssemblyProduct("Sage 50c")]
-[assembly: AssemblyCopyright("Copyright © Sage Portugal 2017")]
+[assembly: AssemblyCopyright("Copyright © Sage Portugal 2021")]
 [assembly: AssemblyTrademark("Sage Portugal")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(true)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("90154821-9221-43A8-866E-03DA0A3A8809")]
+[assembly: Guid("BB13F3C3-0154-41D3-99F3-3A71B362230C")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2022.0.0.1")]
+[assembly: AssemblyFileVersion("2022.0.0.1")]

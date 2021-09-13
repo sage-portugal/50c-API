@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using S50cBL18;
-using S50cSys18;
-using S50cBO18;
+using S50cBL22;
+using S50cSys22;
+using S50cBO22;
 using System.Windows.Forms;
 using Sage50c.API;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.ExtenderSample22 {
     class TransactionHandler : IDisposable {
         private ExtenderEvents headerEvents = null;
         private ExtenderEvents detailEvents = null;
@@ -319,7 +319,7 @@ namespace Sage50c.ExtenderSample {
             // Definir a unidade de venda/compra
             transDetail.SetUnitOfSaleID(unitOfMeasureId);
             //Definir os impostos
-            short TaxGroupId = APIEngine.DSOCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, APIEngine.SystemSettings.SystemInfo.DefaultCountryID, APIEngine.SystemSettings.SystemInfo.TaxRegionID);
+            short TaxGroupId = APIEngine.DSOCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, APIEngine.SystemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, APIEngine.SystemSettings.SystemInfo.TaxRegionID);
             transDetail.TaxableGroupID = TaxGroupId;
             //*** Uncomment for discout
             //transDetail.DiscountPercent = 10

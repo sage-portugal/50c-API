@@ -1,4 +1,4 @@
-﻿using S50cBL18;
+﻿using S50cBL22;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using stdole;
-using S50cSys18;
-using S50cUtil18;
+using S50cSys22;
+using S50cUtil22;
 using Sage50c.API;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.ExtenderSample22 {
     public partial class FormCallMenu : Form, IChildPanel {
 
-        private IChildWindow2 childWindow = null;
+        private IChildWindow childWindow = null;
         private IUITransaction uiTransactionManager = null;
         private IUIMasterTable uiMasterTableManager = null;
         private IUIMenu uiMenuManager = null;

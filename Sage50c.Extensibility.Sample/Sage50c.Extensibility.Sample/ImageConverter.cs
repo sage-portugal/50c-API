@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.ExtenderSample22 {
     internal class ImageConverter: System.Windows.Forms.AxHost {
         private ImageConverter(): base(string.Empty){}
         public static stdole.IPictureDisp GetIPictureDispFromImage(System.Drawing.Image image) {

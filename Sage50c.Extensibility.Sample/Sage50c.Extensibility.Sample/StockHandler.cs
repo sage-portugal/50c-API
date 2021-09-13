@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using S50cBL18;
-using S50cSys18;
-using S50cBO18;
+using S50cBL22;
+using S50cSys22;
+using S50cBO22;
 
-namespace Sage50c.ExtenderSample
+namespace Sage50c.ExtenderSample22
 {
     public class StockHandler : IDisposable
     {

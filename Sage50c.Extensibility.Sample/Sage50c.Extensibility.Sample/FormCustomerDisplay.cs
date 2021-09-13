@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Sage50c.ExtenderSample {
+namespace Sage50c.ExtenderSample22 {
     public partial class FormCustomerDisplay : System.Windows.Forms.Form {
         public Boolean UseCustomerDisplay { get; set; }
         public Boolean UseAdsViewer { get; set; }
