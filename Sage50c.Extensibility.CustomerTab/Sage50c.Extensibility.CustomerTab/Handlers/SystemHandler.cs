@@ -1,5 +1,5 @@
-﻿using S50cBL18;
-using S50cSys18;
+﻿using S50cBL22;
+using S50cSys22;
 using Sage50c.API;
 using System;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.SystemHandler {
         /// <param name="functionName"></param>
         /// <param name="language"></param>
         private void AddMyFunction(string functionName, string language = "PTG") {
-            var tmpFfunc = new S50cBO18.FuncPOS();
+            var tmpFfunc = new S50cBO22.FuncPOS();
             tmpFfunc.POSFunctionID = functionName;
             tmpFfunc.LocalizedFunction = functionName;
             tmpFfunc.LanguageID = language;

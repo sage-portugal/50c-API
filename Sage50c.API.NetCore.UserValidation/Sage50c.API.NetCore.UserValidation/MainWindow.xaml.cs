@@ -27,9 +27,9 @@ namespace Sage50c.API.PromotionPrice {
             bool validPasswd = false;
             try {
                 this.Cursor = Cursors.Wait;
-                var sysManager = new S50cSys18.SystemManager();
+                var sysManager = new S50cSys22.SystemManager();
                 if( sysManager.Initialize() ) {
-                    var user = sysManager.Users.OfType<S50cSys18.SystemUser>()
+                    var user = sysManager.Users.OfType<S50cSys22.SystemUser>()
                                                .FirstOrDefault(u => u.Id.Equals(txtUser.Text, StringComparison.CurrentCultureIgnoreCase));
                     validUser = (user != null);
                     if( user != null) {

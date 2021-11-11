@@ -7,18 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using S50cSys18;
-using S50cUtil18;
-using S50cBO18;
-using S50cBL18;
-using S50cDL18;
+using S50cSys22;
+using S50cUtil22;
+using S50cBO22;
+using S50cBL22;
+using S50cDL22;
 using Sage50c.API;
 
 namespace Sage50c.API.VendaComDoisCamposExtra {
     public partial class frmDocumentos : Form {
-        private S50cDL18.DSOItem itemProvider { get { return APIEngine.DSOCache.ItemProvider; } }
-        private S50cSys18.SystemSettings systemSettings { get { return APIEngine.SystemSettings; } }
-        private S50cDL18.DSOFactory dsoCache { get { return APIEngine.DSOCache; } }
+        private S50cDL22.DSOItem itemProvider { get { return APIEngine.DSOCache.ItemProvider; } }
+        private S50cSys22.SystemSettings systemSettings { get { return APIEngine.SystemSettings; } }
+        private S50cDL22.DSOFactory dsoCache { get { return APIEngine.DSOCache; } }
         private bool transactionError = false;
 
 
@@ -225,7 +225,7 @@ namespace Sage50c.API.VendaComDoisCamposExtra {
             // Definir a unidade de venda/compra
             transDetail.SetUnitOfSaleID(unitOfMeasureId);
             //Definir os impostos
-            short TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, systemSettings.SystemInfo.DefaultCountryID, systemSettings.SystemInfo.TaxRegionID);
+            short TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, systemSettings.SystemInfo.TaxRegionID);
             transDetail.TaxableGroupID = TaxGroupId;
             //armazém
             transDetail.WarehouseID = whareHouseId;

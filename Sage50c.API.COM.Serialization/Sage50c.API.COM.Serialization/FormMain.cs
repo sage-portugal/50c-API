@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using S50cBO18;
+using S50cBO22;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -67,7 +67,7 @@ namespace Sage50c.API.COM.Serialization
             try {
                 var serializer = ShopConnection.JsonCOMSerialization.JsonCOMSerializer.GetDefaultSerializer();
                 var jsonToken = JToken.Parse(txtJSONBox.Text);
-                var item = jsonToken.ToObject<S50cBO18.Item>(serializer);
+                var item = jsonToken.ToObject<S50cBO22.Item>(serializer);
                 txtJSONBox.Text = $"Item '{item.ItemID}' '{item.Description}' deserialized";
             }
             catch (Exception ex) {
@@ -126,7 +126,7 @@ namespace Sage50c.API.COM.Serialization
             try {
                 var serializer = ShopConnection.JsonCOMSerialization.JsonCOMSerializer.GetDefaultSerializer();
                 var jsonToken = JToken.Parse(txtJSONBox.Text);
-                var trans = jsonToken.ToObject<S50cBO18.ItemTransaction>(serializer);
+                var trans = jsonToken.ToObject<S50cBO22.ItemTransaction>(serializer);
                 txtJSONBox.Text = $"Transacion {trans.TransactionID.ToString()} deserialized";
             }
             catch (Exception ex) {
@@ -138,7 +138,7 @@ namespace Sage50c.API.COM.Serialization
             try {
                 var serializer = ShopConnection.JsonCOMSerialization.JsonCOMSerializer.GetDefaultSerializer();
                 var jsonToken = JToken.Parse(txtJSONBox.Text);
-                var customer = jsonToken.ToObject<S50cBO18.Customer> (serializer);
+                var customer = jsonToken.ToObject<S50cBO22.Customer> (serializer);
                 txtJSONBox.Text = $"Customer '{customer.CustomerID}' '{customer.OrganizationName}' deserialized";
             }
             catch (Exception ex) {
@@ -153,7 +153,7 @@ namespace Sage50c.API.COM.Serialization
         private void DeserializeTransaction() {
             var serializer = ShopConnection.JsonCOMSerialization.JsonCOMSerializer.GetDefaultSerializer();
             var jsonToken = JToken.Parse(txtJSONBox.Text);
-            var item = jsonToken.ToObject<S50cBO18.ItemTransaction>(serializer);
+            var item = jsonToken.ToObject<S50cBO22.ItemTransaction>(serializer);
             txtJSONBox.Text = $"Transaction '{item.TransactionID}' deserialized";
         }
 
@@ -162,7 +162,7 @@ namespace Sage50c.API.COM.Serialization
         /// Sample transaction serialization
         /// </summary>
         private void SerializeTransaction() {
-            var item = APIEngine.DSOCache.ItemTransactionProvider.GetItemTransaction(S50cSys18.DocumentTypeEnum.dcTypeSale, "1", "FAC", 1);
+            var item = APIEngine.DSOCache.ItemTransactionProvider.GetItemTransaction(S50cSys22.DocumentTypeEnum.dcTypeSale, "1", "FAC", 1);
             if (item != null) {
                 var serializer = ShopConnection.JsonCOMSerialization.JsonCOMSerializer.GetDefaultSerializer();
                 var jsonToken = JToken.FromObject(item, serializer);

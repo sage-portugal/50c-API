@@ -18,7 +18,7 @@ namespace Sage50c.API {
             } 
         }
         //// Colocar SEMPRE ao nivel do módulo/class para não ser descarregado indevidamente
-        //private static S50cAPICGCO18.SystemStarter systemStarter = null;
+        //private static S50cAPICGCO22.SystemStarter systemStarter = null;
 
         /// <summary>basMain
         /// Inicializa a API da 50c

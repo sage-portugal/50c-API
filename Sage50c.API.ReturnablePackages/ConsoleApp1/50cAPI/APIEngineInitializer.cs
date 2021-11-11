@@ -1,4 +1,4 @@
-﻿using S50cData18;
+﻿using S50cData22;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace Sage50c.API {
             } 
         }
         //// Colocar SEMPRE ao nivel do módulo/class para não ser descarregado indevidamente
-        //private static S50cAPICGCO18.SystemStarter systemStarter = null;
+        //private static S50cAPICGCO22.SystemStarter systemStarter = null;
 
         /// <summary>basMain
         /// Inicializa a API da 50c
@@ -33,7 +33,7 @@ namespace Sage50c.API {
             Terminate();
             //
             // NEW RECOMMENDED Startup - CGCO / CRTL
-            var systemStarter = new S50cAPI18.SystemStarter();
+            var systemStarter = new S50cAPI22.SystemStarter();
             systemStarter.DebugMode = DebugMode;
 
             if (systemStarter.Initialize(ProductCode, CompanyId) != 0) {
@@ -42,7 +42,7 @@ namespace Sage50c.API {
                 throw new Exception(initError);
             }
             // Eventos de erros e avisos vindos da API
-            dataManagerEvents = (S50cData18.DataManagerEventsClass)s50cDataGlobals.DataManager.Events;
+            dataManagerEvents = (S50cData22.DataManagerEventsClass)s50cDataGlobals.DataManager.Events;
             dataManagerEvents.__DataManagerEvents_Event_WarningMessage += dataManagerEvents___DataManagerEvents_Event_WarningMessage;
             dataManagerEvents.__DataManagerEvents_Event_WarningError += dataManagerEvents___DataManagerEvents_Event_WarningError;
             dataManagerEvents.__DataManagerEvents_Event_Message += DataManagerEvents___DataManagerEvents_Event_Message;

@@ -1,4 +1,4 @@
-﻿using S50cBL18;
+﻿using S50cBL22;
 using Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler;
 using Sage50c.Extensibility.CustomerTab.Handlers.SupplierHandler;
 using Sage50c.Extensibility.CustomerTab.Handlers.SalesmanHandler;

@@ -1,4 +1,4 @@
-﻿using S50cBL18;
+﻿using S50cBL22;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Sage50c.Common;
-using S50cSys18;
+using S50cSys22;
 
 namespace Sage50c.Extensibility.CustomerTab.Handlers {
     public partial class FormSalesmanTab : Form, IChildPanel {
