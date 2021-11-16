@@ -3826,14 +3826,5 @@ namespace Sage50c.API.Sample {
             }
 
         }
-
-        private void button1_Click(object sender, EventArgs e) {
-            for (int i = 1; i < 3; i++) {
-                var oStockTrans = dsoCache.StockTransactionProvider.GetStockTransaction(DocumentTypeEnum.dcTypeStock, "1", "TR", i);
-                if (oStockTrans != null) {
-                    dsoCache.StockTransactionProvider.Save(oStockTrans);
-                }
-            }
-        }
     }
 }
