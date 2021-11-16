@@ -1619,7 +1619,9 @@ namespace Sage50c.API.Sample {
                 TaxGroupId = item.TaxableGroupID;
             }
             else {
-                TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, systemSettings.SystemInfo.TaxRegionID);
+                // Carrega o imposto pela ZONA
+                // IMPORTANTE OSS: A transação já deve ter neste ponto a ZONA correta carregada
+                TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxPercent, trans.Zone.CountryID, trans.Zone.TaxRegionID);
             }
             transDetail.TaxableGroupID = TaxGroupId;
             //*** Uncomment for discout
