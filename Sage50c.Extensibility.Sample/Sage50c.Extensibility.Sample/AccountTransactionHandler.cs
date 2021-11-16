@@ -166,7 +166,6 @@ namespace Sage50c.ExtenderSample22 {
 
         void HeaderEvents_OnMenuItem(object Sender, ExtenderEventArgs e) {
             var menuId = (string)e.get_data();
-            var rnd = new Random();
 
             switch (menuId.ToUpper()) {
                 case "MNIXTRANS1":

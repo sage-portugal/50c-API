@@ -30,7 +30,8 @@ namespace Sage50c.ExtenderSample22 {
         /// <param name="EntityID"></param>
         /// <param name="EventHandler"></param>
         public void SetExtenderEventHandler(string EntityID, ExtenderEvents EventHandler) {
-            Debug.Write($"Set events for: {EntityID}... ");
+            // Just to enum all EntityIDs....
+            Debug.WriteLine($"Requesting handler for... {EntityID}");
 
             switch (EntityID.ToLower()) {
                 case "item":
@@ -46,7 +47,6 @@ namespace Sage50c.ExtenderSample22 {
                         customerHandler = new CustomerHandler();
                         customerHandler.SetEventHandler(EventHandler);
                     }
-                    Debug.WriteLine($"Done.");
                     break;
 
                 case "customeraccounttransaction":
@@ -55,7 +55,6 @@ namespace Sage50c.ExtenderSample22 {
                         accountTransactionHandler = new AccountTransactionHandler();
                     }
                     accountTransactionHandler.SetHeaderEventsHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
 
                 case "buytransaction":  //Compras
@@ -63,7 +62,6 @@ namespace Sage50c.ExtenderSample22 {
                         buyTransactionHandler = new TransactionHandler();
                     }
                     buyTransactionHandler.SetHeaderEventsHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
 
                 case "buytransactiondetail":  //Compras (detalhes)
@@ -71,7 +69,6 @@ namespace Sage50c.ExtenderSample22 {
                         buyTransactionHandler = new TransactionHandler();
                     }
                     buyTransactionHandler.SetDetailEventsHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
 
                 case "saletransaction":
@@ -79,7 +76,6 @@ namespace Sage50c.ExtenderSample22 {
                         transactionHandler = new TransactionHandler();
                     }
                     transactionHandler.SetHeaderEventsHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
 
                 case "saletransactiondetail":
@@ -87,7 +83,6 @@ namespace Sage50c.ExtenderSample22 {
                         transactionHandler = new TransactionHandler();
                     }
                     transactionHandler.SetDetailEventsHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
 
                 case "stocktransaction":
@@ -95,7 +90,6 @@ namespace Sage50c.ExtenderSample22 {
                         stockHandler = new StockHandler();
                     }
                     stockHandler.SetHeaderEventsHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
 
                 case "stocktransactiondetail":
@@ -104,7 +98,6 @@ namespace Sage50c.ExtenderSample22 {
                         stockHandler = new StockHandler();
                     }
                     stockHandler.SetDetailEventsHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
 
                 case "tendertransaction":
@@ -112,7 +105,6 @@ namespace Sage50c.ExtenderSample22 {
                         tenderTransactionHandler = new TenderTransactionHandler();
                     }
                     tenderTransactionHandler.SetHeaderEventsHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
 
                 //case "confstores":  // delegações
@@ -124,11 +116,9 @@ namespace Sage50c.ExtenderSample22 {
                         systemInfoHandler = new SystemInfoHandler();
                     }
                     systemInfoHandler.SetEventHandler(EventHandler);
-                    Debug.WriteLine($"Done.");
                     break;
                 
                 default:
-                    Debug.WriteLine($"NOT AVAILABLE.");
                     break;
 
             }
