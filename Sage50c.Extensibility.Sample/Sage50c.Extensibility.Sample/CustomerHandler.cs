@@ -32,7 +32,7 @@ namespace Sage50c.ExtenderSample22 {
         /// <param name="Sender">GenericExtensibilityController</param>
         /// <param name="e">
         /// IN:
-        ///     e.get_Data(): ExtendedPropertyList
+        ///     e.get_data(): ExtendedPropertyList
         ///         "Data":  Customer
         ///         "PreviousID": Identificador anterior (ItemId). Pode não estar presente
         ///         "IsNew": O Artigo é novo
@@ -53,7 +53,7 @@ namespace Sage50c.ExtenderSample22 {
         /// <param name="Sender">GenericExtensibilityController</param>
         /// <param name="e">
         /// IN:
-        ///     e.get_Data(): Id do menu (string)
+        ///     e.get_data(): Id do menu (string)
         ///     
         /// OUT:
         ///     Ignorado
@@ -78,7 +78,7 @@ namespace Sage50c.ExtenderSample22 {
         /// <param name="Sender">GenericExtensibilityController</param>
         /// <param name="e">
         /// IN:
-        ///     e.get_Data():  Customer
+        ///     e.get_data():  Customer
         ///     
         /// OUT:
         ///     Sucess: true or false
@@ -107,7 +107,7 @@ namespace Sage50c.ExtenderSample22 {
         /// 
         /// OUT:
         ///     e.result:     true: para extender os menus, e sinalizar sucesso
-        ///     e.set_Data(): Passar um ExtenderMenuItems para extender os menus
+        ///     e.set_data(): Passar um ExtenderMenuItems para extender os menus
         ///     
         /// Não mostra mensagens
         ///</param>
@@ -154,7 +154,7 @@ namespace Sage50c.ExtenderSample22 {
         /// Chamado quando o artigo vai ser eliminado
         /// </summary>
         /// <param name="Sender">GenericExtensibilityController</param>
-        /// <param name="e">e.get_Data():  Customer</param>
+        /// <param name="e">e.get_data():  Customer</param>
         void myEvents_OnDelete(object Sender, ExtenderEventArgs e) {
         }
 
@@ -190,7 +190,7 @@ namespace Sage50c.ExtenderSample22 {
         /// <param name="Sender">GenericExtensibilityController</param>
         /// <param name="e">
         /// IN:
-        ///  e.get_Data(): ExtendedPropertyList
+        ///  e.get_data(): ExtendedPropertyList
         ///     "Data":  Customer,
         ///     "ForDeletion": bool que indica se o  Customer vai ser apagado
         ///

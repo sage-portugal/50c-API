@@ -1,6 +1,7 @@
 ﻿using S50cBL22;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -10,12 +11,13 @@ namespace Sage50c.ExtenderSample22 {
         private SystemHandler           systemHandler = null;       // System handler, startup, system menus
         private SystemInfoHandler       systemInfoHandler = null;   // Parâmetros do sistema
 
-        private TransactionHandler      transactionHandler = null;      // Sales Transaction handler
-        private TransactionHandler      buyTransactionHandler = null;   // Purchases Transaction handler
+        private AccountTransactionHandler accountTransactionHandler = null; //AccountTransactionHandler
+        private TransactionHandler      transactionHandler = null;          // Sales Transaction handler
+        private TransactionHandler      buyTransactionHandler = null;       // Purchases Transaction handler
         private TenderTransactionHandler tenderTransactionHandler = null;   // Tender Transaction handler
-        private StockHandler            stockHandler = null;        // StockTransaction handler
-        private ItemHandler             itemHandler = null;         // Items
-        private CustomerHandler         customerHandler = null;
+        private StockHandler            stockHandler = null;                // StockTransaction handler
+        private ItemHandler             itemHandler = null;                 // Items
+        private CustomerHandler         customerHandler = null;             // Customer
 
         public string Initialize(string ApplicationKey) {
             //Do Nothing for now
@@ -28,12 +30,15 @@ namespace Sage50c.ExtenderSample22 {
         /// <param name="EntityID"></param>
         /// <param name="EventHandler"></param>
         public void SetExtenderEventHandler(string EntityID, ExtenderEvents EventHandler) {
+            Debug.Write($"Set events for: {EntityID}... ");
+
             switch (EntityID.ToLower()) {
                 case "item":
                     if (itemHandler == null) {
                         itemHandler = new ItemHandler();
                         itemHandler.SetEventHandler(EventHandler);
                     }
+                    Debug.WriteLine($"Done.");
                     break;
 
                 case "customer":    //Clientes
@@ -41,6 +46,16 @@ namespace Sage50c.ExtenderSample22 {
                         customerHandler = new CustomerHandler();
                         customerHandler.SetEventHandler(EventHandler);
                     }
+                    Debug.WriteLine($"Done.");
+                    break;
+
+                case "customeraccounttransaction":
+                case "supplieraccounttransaction":
+                    if (accountTransactionHandler == null) {
+                        accountTransactionHandler = new AccountTransactionHandler();
+                    }
+                    accountTransactionHandler.SetHeaderEventsHandler(EventHandler);
+                    Debug.WriteLine($"Done.");
                     break;
 
                 case "buytransaction":  //Compras
@@ -48,6 +63,7 @@ namespace Sage50c.ExtenderSample22 {
                         buyTransactionHandler = new TransactionHandler();
                     }
                     buyTransactionHandler.SetHeaderEventsHandler(EventHandler);
+                    Debug.WriteLine($"Done.");
                     break;
 
                 case "buytransactiondetail":  //Compras (detalhes)
@@ -55,6 +71,7 @@ namespace Sage50c.ExtenderSample22 {
                         buyTransactionHandler = new TransactionHandler();
                     }
                     buyTransactionHandler.SetDetailEventsHandler(EventHandler);
+                    Debug.WriteLine($"Done.");
                     break;
 
                 case "saletransaction":
@@ -62,6 +79,7 @@ namespace Sage50c.ExtenderSample22 {
                         transactionHandler = new TransactionHandler();
                     }
                     transactionHandler.SetHeaderEventsHandler(EventHandler);
+                    Debug.WriteLine($"Done.");
                     break;
 
                 case "saletransactiondetail":
@@ -69,6 +87,7 @@ namespace Sage50c.ExtenderSample22 {
                         transactionHandler = new TransactionHandler();
                     }
                     transactionHandler.SetDetailEventsHandler(EventHandler);
+                    Debug.WriteLine($"Done.");
                     break;
 
                 case "stocktransaction":
@@ -76,7 +95,7 @@ namespace Sage50c.ExtenderSample22 {
                         stockHandler = new StockHandler();
                     }
                     stockHandler.SetHeaderEventsHandler(EventHandler);
-                    
+                    Debug.WriteLine($"Done.");
                     break;
 
                 case "stocktransactiondetail":
@@ -85,6 +104,7 @@ namespace Sage50c.ExtenderSample22 {
                         stockHandler = new StockHandler();
                     }
                     stockHandler.SetDetailEventsHandler(EventHandler);
+                    Debug.WriteLine($"Done.");
                     break;
 
                 case "tendertransaction":
@@ -92,6 +112,7 @@ namespace Sage50c.ExtenderSample22 {
                         tenderTransactionHandler = new TenderTransactionHandler();
                     }
                     tenderTransactionHandler.SetHeaderEventsHandler(EventHandler);
+                    Debug.WriteLine($"Done.");
                     break;
 
                 //case "confstores":  // delegações
@@ -103,6 +124,11 @@ namespace Sage50c.ExtenderSample22 {
                         systemInfoHandler = new SystemInfoHandler();
                     }
                     systemInfoHandler.SetEventHandler(EventHandler);
+                    Debug.WriteLine($"Done.");
+                    break;
+                
+                default:
+                    Debug.WriteLine($"NOT AVAILABLE.");
                     break;
 
             }

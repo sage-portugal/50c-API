@@ -213,8 +213,19 @@ namespace Sage50c.ExtenderSample22 {
                         bsoItemTrans.AddDetail(detail);
                     }
                     break;
+
                 case "XFunctionA":
-                    MessageBox.Show("Your function here...");
+                    if (!string.IsNullOrEmpty(e.ExtraData)) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Your function: {menuId}{Environment.NewLine}" +
+                                                                $"Your function extra parameter: {e.ExtraData}",
+                                                                VBA.VbMsgBoxStyle.vbInformation,
+                                                                APIEngine.SystemSettings.Application.LongName);
+                    }
+                    else {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Your function: {menuId}",
+                                                                VBA.VbMsgBoxStyle.vbInformation,
+                                                                APIEngine.SystemSettings.Application.LongName);
+                    }
                     break;
 
                 case "XPosDisplay":
