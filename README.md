@@ -11,12 +11,12 @@
 ![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/clone.png)
 
 #### 2.2. Abrir a solução com o visual studio 2019<br/>
-#### 2.3. Na primeira vez que se abre o projeto, é possivel que todas as referências à API não estejam a apontar para o lugar correto.<br/>
-Por isso, é necessário removê-las para as voltar a adicionar:<br/>
+#### 2.3. Na primeira vez que se abre o projeto, é possivel que as referências à API não estejam a apontar para o lugar correto.<br/>
+Se for o caso, é necessário removê-las para as voltar a adicionar. Exemplo com os Interops da versão 2021 ou anteriores (necessário substituir pelas da versão 2022):<br/>
 ![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/refsRemove.png)
 
 #### 2.4. A localização tipica dos INTEROPS é:<br/>
-C:\Program Files (x86)\Common Files\sage\2070\50c2018\Interops<br/>
+C:\Program Files (x86)\Common Files\sage\2070\50c2022\Interops<br/>
 Devem ser adicionadas todas as DLLs presentes nesta pasta.<br/>
 
 #### 2.5. Depois de adicionados os INTEROPS como referências o VS2019 deve ficar assim:<br/>
