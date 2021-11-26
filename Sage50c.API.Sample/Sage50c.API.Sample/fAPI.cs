@@ -808,8 +808,8 @@ namespace Sage50c.API.Sample {
             supplier.OrganizationName = txtSupplierName.Text;
             supplier.FederalTaxId = txtSupplierTaxId.Text;
 
-            if (cmbCustomerTax.SelectedItem != null) {
-                var entityFiscalStatus = (EntityFiscalStatus)cmbCustomerTax.SelectedItem;
+            if (cmbSupplierTax.SelectedIndex >=0 ) {
+                var entityFiscalStatus = (EntityFiscalStatus)cmbSupplierTax.SelectedItem;
                 supplier.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
             }
 
