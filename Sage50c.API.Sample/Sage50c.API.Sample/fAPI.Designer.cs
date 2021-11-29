@@ -244,11 +244,11 @@
             this.Label6 = new System.Windows.Forms.Label();
             this.Label4 = new System.Windows.Forms.Label();
             this.tabItem = new System.Windows.Forms.TabPage();
-            this.lblItemTam = new System.Windows.Forms.Label();
-            this.cmbItemSize = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.lblItemColor = new System.Windows.Forms.Label();
             this.cmbItemColor = new System.Windows.Forms.ComboBox();
+            this.lblItemTam = new System.Windows.Forms.Label();
+            this.lblItemColor = new System.Windows.Forms.Label();
+            this.cmbItemSize = new System.Windows.Forms.ComboBox();
             this.btnItemBrow = new System.Windows.Forms.Button();
             this.numItemPriceTaxIncluded = new System.Windows.Forms.NumericUpDown();
             this.txtItemPriceTaxIncluded = new System.Windows.Forms.Label();
@@ -1271,7 +1271,7 @@
             this.dataGridItemLines.Location = new System.Drawing.Point(32, 235);
             this.dataGridItemLines.Name = "dataGridItemLines";
             this.dataGridItemLines.ReadOnly = true;
-            this.dataGridItemLines.Size = new System.Drawing.Size(611, 201);
+            this.dataGridItemLines.Size = new System.Drawing.Size(595, 201);
             this.dataGridItemLines.TabIndex = 404;
             this.dataGridItemLines.Visible = false;
             // 
@@ -1685,7 +1685,7 @@
             this.groupBox1.Controls.Add(this.optPrintOptions0);
             this.groupBox1.Controls.Add(this.chkPrintPreview);
             this.groupBox1.Controls.Add(this.btnPrint);
-            this.groupBox1.Location = new System.Drawing.Point(631, 270);
+            this.groupBox1.Location = new System.Drawing.Point(659, 270);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(237, 166);
             this.groupBox1.TabIndex = 341;
@@ -3198,13 +3198,13 @@
             // tabItem
             // 
             this.tabItem.BackColor = System.Drawing.Color.Transparent;
-            this.tabItem.Controls.Add(this.lblItemTam);
-            this.tabItem.Controls.Add(this.cmbItemSize);
             this.tabItem.Controls.Add(this.dataGridView1);
-            this.tabItem.Controls.Add(this.lblItemColor);
             this.tabItem.Controls.Add(this.cmbItemColor);
+            this.tabItem.Controls.Add(this.lblItemTam);
             this.tabItem.Controls.Add(this.btnItemBrow);
+            this.tabItem.Controls.Add(this.lblItemColor);
             this.tabItem.Controls.Add(this.numItemPriceTaxIncluded);
+            this.tabItem.Controls.Add(this.cmbItemSize);
             this.tabItem.Controls.Add(this.txtItemPriceTaxIncluded);
             this.tabItem.Controls.Add(this.lblitemShortDescription);
             this.tabItem.Controls.Add(this.txtItemComments);
@@ -3222,27 +3222,6 @@
             this.tabItem.Text = "Artigo";
             this.tabItem.Click += new System.EventHandler(this.tabItem_Click);
             // 
-            // lblItemTam
-            // 
-            this.lblItemTam.AutoSize = true;
-            this.lblItemTam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemTam.Location = new System.Drawing.Point(458, 70);
-            this.lblItemTam.Name = "lblItemTam";
-            this.lblItemTam.Size = new System.Drawing.Size(33, 15);
-            this.lblItemTam.TabIndex = 18;
-            this.lblItemTam.Text = "Tam:";
-            // 
-            // cmbItemSize
-            // 
-            this.cmbItemSize.DisplayMember = "SizeName";
-            this.cmbItemSize.FormattingEnabled = true;
-            this.cmbItemSize.Location = new System.Drawing.Point(576, 67);
-            this.cmbItemSize.Name = "cmbItemSize";
-            this.cmbItemSize.Size = new System.Drawing.Size(140, 23);
-            this.cmbItemSize.TabIndex = 17;
-            this.cmbItemSize.ValueMember = "SizeID";
-            this.cmbItemSize.SelectedIndexChanged += new System.EventHandler(this.cmbItemSize_SelectedIndexChanged);
-            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToOrderColumns = true;
@@ -3251,31 +3230,52 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(464, 100);
+            this.dataGridView1.Location = new System.Drawing.Point(483, 110);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(440, 246);
+            this.dataGridView1.Size = new System.Drawing.Size(439, 189);
             this.dataGridView1.TabIndex = 16;
-            // 
-            // lblItemColor
-            // 
-            this.lblItemColor.AutoSize = true;
-            this.lblItemColor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemColor.Location = new System.Drawing.Point(458, 43);
-            this.lblItemColor.Name = "lblItemColor";
-            this.lblItemColor.Size = new System.Drawing.Size(29, 15);
-            this.lblItemColor.TabIndex = 15;
-            this.lblItemColor.Text = "Cor:";
             // 
             // cmbItemColor
             // 
             this.cmbItemColor.DisplayMember = "ColorName";
             this.cmbItemColor.FormattingEnabled = true;
-            this.cmbItemColor.Location = new System.Drawing.Point(576, 35);
+            this.cmbItemColor.Location = new System.Drawing.Point(542, 38);
             this.cmbItemColor.Name = "cmbItemColor";
-            this.cmbItemColor.Size = new System.Drawing.Size(140, 23);
+            this.cmbItemColor.Size = new System.Drawing.Size(198, 23);
             this.cmbItemColor.TabIndex = 14;
             this.cmbItemColor.ValueMember = "ColorID";
             this.cmbItemColor.SelectedIndexChanged += new System.EventHandler(this.cmbItemColor_SelectedIndexChanged);
+            // 
+            // lblItemTam
+            // 
+            this.lblItemTam.AutoSize = true;
+            this.lblItemTam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemTam.Location = new System.Drawing.Point(482, 73);
+            this.lblItemTam.Name = "lblItemTam";
+            this.lblItemTam.Size = new System.Drawing.Size(33, 15);
+            this.lblItemTam.TabIndex = 18;
+            this.lblItemTam.Text = "Tam:";
+            // 
+            // lblItemColor
+            // 
+            this.lblItemColor.AutoSize = true;
+            this.lblItemColor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemColor.Location = new System.Drawing.Point(482, 46);
+            this.lblItemColor.Name = "lblItemColor";
+            this.lblItemColor.Size = new System.Drawing.Size(29, 15);
+            this.lblItemColor.TabIndex = 15;
+            this.lblItemColor.Text = "Cor:";
+            // 
+            // cmbItemSize
+            // 
+            this.cmbItemSize.DisplayMember = "SizeName";
+            this.cmbItemSize.FormattingEnabled = true;
+            this.cmbItemSize.Location = new System.Drawing.Point(542, 70);
+            this.cmbItemSize.Name = "cmbItemSize";
+            this.cmbItemSize.Size = new System.Drawing.Size(198, 23);
+            this.cmbItemSize.TabIndex = 17;
+            this.cmbItemSize.ValueMember = "SizeID";
+            this.cmbItemSize.SelectedIndexChanged += new System.EventHandler(this.cmbItemSize_SelectedIndexChanged);
             // 
             // btnItemBrow
             // 

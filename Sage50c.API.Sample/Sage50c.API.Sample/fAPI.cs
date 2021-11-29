@@ -327,7 +327,7 @@ namespace Sage50c.API.Sample {
                 if (!transactionError) {
                     string msg = null;
                     if (transId != null) {
-                       
+
 
                         msg = string.Format("Registo inserido: {0}", transId.ToString());
                     }
@@ -518,19 +518,22 @@ namespace Sage50c.API.Sample {
                 //newItem.Sizes.Add(newItemSize);
                 ////
                 //// Adicionar um preço ao tamanho
-                //myPrice = newItem.SalePrice[1, newSizeID, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit];
+                //myPrice = newItem.SalePrice[1, newSizeID, string.Empty, 0, systemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit];
                 //// Para ser diferente, vamos colocar este preço com mais 10%
                 //myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value * 1.10;
-                //myPrice.UnitPrice = S50cAPIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
+                //myPrice.UnitPrice = APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
                 //                                    myPrice.TaxIncludedPrice,
                 //                                    newItem.TaxableGroupID,
-                //                                    systemSettings.SystemInfo.DefaultCountryID,
+                //                                    systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
                 //                                    systemSettings.SystemInfo.TaxRegionID);
                 ////NOTA: A linha seguinte só é necessário se for um novo preço. Se já existe, não adicionar o preço à coleção. Neste exemplo criamos um tamanho novo por isso o preço também é novo
                 //newItem.SalePrice.Add(myPrice);
                 //
                 // Gravar
+
                 dsoCache.ItemProvider.Save(newItem, newItem.ItemID, true);
+
+
             }
         }
 
@@ -729,7 +732,12 @@ namespace Sage50c.API.Sample {
         /// </summary>
         /// <param name="customerId"></param>
         private void CustomerRemove(double customerId) {
-            dsoCache.CustomerProvider.Delete(customerId);
+            if (dsoCache.CustomerProvider.HasRelatedRecords(customerId)) {
+                throw new Exception(string.Format("O Cliente {0} tem movimentos em conta corrente, movimentos de pontos ou foi usado na imputação de documentos de compra, por isso não pode ser eliminado.", customerId));
+            }
+            else {
+                dsoCache.CustomerProvider.Delete(customerId);
+            }
             CustomerClear();
         }
 
@@ -808,7 +816,7 @@ namespace Sage50c.API.Sample {
             supplier.OrganizationName = txtSupplierName.Text;
             supplier.FederalTaxId = txtSupplierTaxId.Text;
 
-            if (cmbSupplierTax.SelectedIndex >=0 ) {
+            if (cmbSupplierTax.SelectedIndex >= 0) {
                 var entityFiscalStatus = (EntityFiscalStatus)cmbSupplierTax.SelectedItem;
                 supplier.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
             }
@@ -1119,7 +1127,7 @@ namespace Sage50c.API.Sample {
                 trans.CreateTime = createTime;
 
                 trans.ActualDeliveryDate = createDate;
-                
+
                 //
                 // Definir se o imposto é incluido
                 trans.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
@@ -1416,7 +1424,7 @@ namespace Sage50c.API.Sample {
                 //Unsubscribe from event
                 bsoItemTransaction.TenderIDChanged -= bsoItemTransaction_TenderIDChanged;
             }
-            
+
             TransactionPrint2(bsoItemTransaction.Transaction.TransSerial, bsoItemTransaction.Transaction.TransDocument, bsoItemTransaction.Transaction.TransDocNumber);
 
             return insertedTrans;
@@ -1726,9 +1734,9 @@ namespace Sage50c.API.Sample {
             double transDocNumber = 0;
             double.TryParse(txtTransDocNumber.Text, out transDocNumber);
 
-            // trans pode ser SaleTransaction ou BuyTransaction
-            // dynamic permite utilizar as propriedades como num 'object' do VB6, sem que o compilador valide propriedades e métodos no momento da compilação
-            dynamic trans = null;
+   
+            ItemTransaction ItemTrans = null;
+            StockTransaction StockTrans = null;
 
             if (systemSettings.WorkstationInfo.Document.IsInCollection(transDoc)) {
                 doc = systemSettings.WorkstationInfo.Document[transDoc];
@@ -1739,7 +1747,8 @@ namespace Sage50c.API.Sample {
 
             if (suspendedTransaction) {
                 if (bsoItemTransaction.LoadSuspendedTransaction(transSerial, transDoc, transDocNumber)) {
-                    trans = bsoItemTransaction.Transaction;
+                    ItemTrans = bsoItemTransaction.Transaction;
+                    TransactionShow(ItemTrans);
                 }
                 else {
                     MessageBox.Show(string.Format("Não foi encontrada a transação em preparação: {0} {1}/{2}", transDoc, transSerial, transDocNumber),
@@ -1753,15 +1762,17 @@ namespace Sage50c.API.Sample {
                         if (!bsoItemTransaction.LoadItemTransaction(doc.TransDocType, transSerial, transDoc, transDocNumber)) {
                             throw new Exception(string.Format("Não foi possivel ler o documento [{0} {1}/{2}]", transDoc, transSerial, transDocNumber));
                         }
-                        trans = bsoItemTransaction.Transaction;
+                        ItemTrans = bsoItemTransaction.Transaction;
                         rbTransBuySell.Checked = true;
+
+                        TransactionShow(ItemTrans);
                         break;
 
                     case DocumentTypeEnum.dcTypeStock:
                         if (!bsoStockTransaction.LoadStockTransaction(doc.TransDocType, transSerial, transDoc, transDocNumber)) {
                             throw new Exception(string.Format("Não foi possivel ler o documento [{0} {1}/{2}]", transDoc, transSerial, transDocNumber));
                         }
-                        trans = bsoStockTransaction.Transaction;
+                        StockTrans = bsoStockTransaction.Transaction;
 
                         if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose) {
                             rbTransStockCompose.Checked = true;
@@ -1774,13 +1785,15 @@ namespace Sage50c.API.Sample {
                                 rbTransStock.Checked = true;
                             }
                         }
+
+                        StockTransactionShow(StockTrans);
+
                         break;
 
                     default:
                         throw new Exception(string.Format(" O documento [{0}] é de um tipo não suportado por este exemplo: {1}.", transDoc, doc.TransDocType));
                 }
             }
-            TransactionShow(trans);
         }
 
 
@@ -2831,7 +2844,7 @@ namespace Sage50c.API.Sample {
                 else {
                     // Impressão customizada, exportação para PDF, ...
                     TransactionPrint2(txtTransSerial.Text, txtTransDoc.Text, transDocNumber);
-                }
+                }            
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -2994,7 +3007,7 @@ namespace Sage50c.API.Sample {
 
         private void btnTransGetPrep_Click(object sender, EventArgs e) {
             try {
-               TransactionGet(true);
+                TransactionGet(true);
 
             }
             catch (Exception ex) {
@@ -3147,8 +3160,8 @@ namespace Sage50c.API.Sample {
                     }
                     else {
                         bsoItemTransaction.PrintTransaction
-                            (transSerial, transDoc, transDocNumber, 
-                            PrintJobEnum.jobPrint, oPrintSettings.PrintCopies, 
+                            (transSerial, transDoc, transDocNumber,
+                            PrintJobEnum.jobPrint, oPrintSettings.PrintCopies,
                             oPrintSettings);
                     }
                 }
@@ -3172,7 +3185,9 @@ namespace Sage50c.API.Sample {
             dataGridView1.DataSource = GetGridDataColor();
             dataGridView1.Columns[0].Visible = false;
             dataGridView1.AutoSize = true;
+            dataGridView1.ReadOnly = true;
             dataGridView1.Refresh();
+
         }
 
         private DataTable GetGridDataColor() {
@@ -3232,7 +3247,9 @@ namespace Sage50c.API.Sample {
             dataGridView1.DataSource = GetGridDataSize();
             dataGridView1.Columns[0].Visible = false;
             dataGridView1.AutoSize = true;
+            dataGridView1.ReadOnly = true;
             dataGridView1.Refresh();
+
         }
 
         private DataTable GetGridDataSize() {
@@ -3508,7 +3525,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnExternalSignature_Click(object sender, EventArgs e) {
-            MessageBox.Show("NOTA: Só é possivel definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Nota: Só é possível definir a assinatura em séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             using (var frm = new FormExternalSignature()) {
                 frm.Signature = bsoItemTransaction.Transaction.Signature;
@@ -3650,18 +3667,17 @@ namespace Sage50c.API.Sample {
                                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
-
-        private void TransactionShow(ItemTransaction trans) {
+        
+        private void StockTransactionShow(StockTransaction trans) {
             if (trans != null) {
-                var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
+                Document doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
                 TransactionClear();
-                //txtTransColor1.Text = 
                 txtTransCurrency.Text = trans.BaseCurrency.CurrencyID;
                 txtTransDate.Text = trans.CreateDate.ToShortDateString();
                 txtTransDoc.Text = trans.TransDocument;
@@ -3669,147 +3685,22 @@ namespace Sage50c.API.Sample {
                 chkTransTaxIncluded.Checked = trans.TransactionTaxIncluded;
 
                 txtTransDocNumber.Text = trans.TransDocNumber.ToString();
-                if (doc.TransDocType != DocumentTypeEnum.dcTypeStock) {
-                    txtPaymentID.Text = trans.Payment.PaymentID.ToString();
-                    txtTenderID.Text = trans.Tender.TenderID.ToString();
-                }
-                else {
-                    txtPaymentID.Text = string.Empty;
-                    txtTenderID.Text = string.Empty;
-                }
 
-                //
-                //ItemTransaction i; i.PaymentDiscountPercent
-                if (doc.TransDocType == DocumentTypeEnum.dcTypeSale || doc.TransDocType == DocumentTypeEnum.dcTypePurchase) {
-                    txtTransGlobalDiscount.Text = trans.PaymentDiscountPercent.ToString();
-                    txtTransGlobalDiscount.Enabled = true;
-                }
-                else {
-                    txtTransGlobalDiscount.Text = string.Empty;
-                    txtTransGlobalDiscount.Enabled = false;
-                }
+                txtPaymentID.Text = string.Empty;
+                txtTenderID.Text = string.Empty;
+
+                txtTransGlobalDiscount.Text = string.Empty;
+                txtTransGlobalDiscount.Enabled = false;
+
                 txtTransPartyId.Text = trans.PartyID.ToString();
                 txtTransSerial.Text = trans.TransSerial;
-                //
-                //Linha 1
-                if (trans.Details.Count > 0) {
-                    int lineNumber = (int)getLineNumberTotxtTransItemL(1, doc.TransDocType, doc.StockBehavior, trans.Details);
 
-                    if (lineNumber != 0) {
-                        var transDetail = trans.Details[lineNumber];
-
-                        txtTransFactorL1.Text = transDetail.QuantityFactor.ToString();
-                        txtTransItemL1.Text = transDetail.ItemID;
-                        txtTransQuantityL1.Text = transDetail.Quantity.ToString();
-                        if (transDetail.TaxList.Count > 0)
-                            txtTransTaxRateL1.Text = transDetail.TaxList[1].TaxRate.ToString();
-                        if (trans.TransactionTaxIncluded)
-                            txtTransUnitPriceL1.Text = transDetail.TaxIncludedPrice.ToString();
-                        else
-                            txtTransUnitPriceL1.Text = transDetail.UnitPrice.ToString();
-                        txtTransUnL1.Text = transDetail.UnitOfSaleID;
-                        txtTransWarehouseL1.Text = transDetail.WarehouseID.ToString();
-                        // Cores e Tamanhos - Só na linha 1 
-                        if (transDetail.Color.ColorID > 0) {
-                            txtTransColor1.Text = transDetail.Color.ColorID.ToString();
-                            chkTransModuleSizeColor.Checked = true;
-                        }
-                        if (transDetail.Size.SizeID > 0) {
-                            txtTransSize1.Text = transDetail.Size.SizeID.ToString();
-                            chkTransModuleSizeColor.Checked = true;
-                        }
-                        // Propriedades: Números de série
-                        if (transDetail.ItemProperties.HasPropertyValues) {
-                            lblTransPropNameL1.Text = transDetail.ItemProperties.PropertyID1;
-                            txtTransPropValueL1.Text = transDetail.ItemProperties.PropertyValue1;
-                            // Também é possivel utilizar as restantes 3 propriedades. Para isso necessitariamos de outra forma de apresentar os dados (com mais controlos, p.ex.)
-                            //lblTransPropNameL1_2.Text = transDetail.ItemProperties.PropertyID2;
-                            //txtTransPropValueL1_2.Text = transDetail.ItemProperties.PropertyValue2;
-                            //lblTransPropNameL1_3.Text = transDetail.ItemProperties.PropertyID3;
-                            //txtTransPropValueL1_3.Text = transDetail.ItemProperties.PropertyValue3;
-
-                            chkTransModuleProps.Checked = true;
-                        }
-                    }
-
-                    // Linha 2 - Não tem cores e tamanhos 
-                    if (trans.Details.Count > 1) {
-                        int line = (int)getLineNumberTotxtTransItemL(2, doc.TransDocType, doc.StockBehavior, trans.Details);
-
-                        if (line != 0) {
-                            var transDetail = trans.Details[line];
-                            txtTransFactorL2.Text = transDetail.QuantityFactor.ToString();
-                            txtTransItemL2.Text = transDetail.ItemID;
-                            txtTransQuantityL2.Text = transDetail.Quantity.ToString();
-                            if (transDetail.TaxList.Count > 0)
-                                txtTransTaxRateL2.Text = transDetail.TaxList[1].TaxRate.ToString();
-                            if (trans.TransactionTaxIncluded)
-                                txtTransUnitPriceL2.Text = transDetail.TaxIncludedPrice.ToString();
-                            else
-                                txtTransUnitPriceL2.Text = transDetail.UnitPrice.ToString();
-                            txtTransUnL2.Text = transDetail.UnitOfSaleID;
-                            txtTransWarehouseL2.Text = transDetail.WarehouseID.ToString();
-                            // Propriedades: Números de série
-                            if (transDetail.ItemProperties.HasPropertyValues) {
-                                lblTransPropNameL2.Text = transDetail.ItemProperties.PropertyID1;
-                                txtTransPropValueL2.Text = transDetail.ItemProperties.PropertyValue1;
-
-                                chkTransModuleProps.Checked = true;
-                            }
-                        }
-                    }
-
-                    if (bsoItemTransaction.Transaction.BuyShareOtherCostList.Count > 0) {
-
-                        SimpleDocumentList objDocumentList = new SimpleDocumentList();
-                        objDocumentList = bsoItemTransaction.Transaction.BuyShareOtherCostList;
-
-                        ItemTransaction objTempItemTransaction = new ItemTransaction();
-                        DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
-
-                        string sDetailKey;
-                        foreach (SimpleDocument objDocument in objDocumentList) {
-
-                            if (objDocument.Details.Count > 0) {
-
-                                objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber);
-
-                                txtShareTransSerial_R1.Text = objDocument.TransID.TransSerial;
-                                txtShareTransDocument_R1.Text = objDocument.TransID.TransDocument;
-                                txtShareTransDocNumber_R1.Text = objDocument.TransID.TransDocNumber.ToString();
-                                txtShareAmount_R1.Text = objDocument.TotalTransactionAmount.ToString();
-
-                                foreach (ItemTransactionDetail objTempItemTransactionDetail in objTempItemTransaction.Details) {
-
-                                    sDetailKey = objDocument.TransID.TransSerial + "|" + objDocument.TransID.TransDocument + "|" + objDocument.TransID.TransDocNumber.ToString() + "|" + objTempItemTransactionDetail.LineItemID.ToString() + "|" + objTempItemTransactionDetail.ItemID + "|" + objTempItemTransactionDetail.Color.ColorID + "|" + objTempItemTransactionDetail.Size.SizeID;
-
-                                    switch ((int)objTempItemTransactionDetail.LineItemID) {
-                                        case 1:
-                                            LblL1.Text = objDocument.Details.ItemByIndex[1].ItemID;
-                                            txtAmout_R1_L1.Text = objDocument.Details.ItemByIndex[1].UnitPrice.ToString();
-                                            break;
-
-                                        case 2:
-                                            LblL2.Text = objDocument.Details.ItemByIndex[2].ItemID;
-                                            txtAmout_R1_L2.Text = objDocument.Details.ItemByIndex[2].UnitPrice.ToString();
-                                            break;
-                                    }
-                                }
-                            }
-                            else {
-                                txtShareTransSerial_R2.Text = objDocument.TransID.TransSerial;
-                                txtShareTransDocument_R2.Text = objDocument.TransID.TransDocument;
-                                txtShareTransDocNumber_R2.Text = objDocument.TransID.TransDocNumber.ToString();
-                                txtShareAmount_R2.Text = objDocument.TotalTransactionAmount.ToString();
-                            }
-                        }
-                    }
-                }
-
+                // Detalhes
+                FillItemTransactionDetailList(trans.Details, doc, trans.TransactionTaxIncluded);
+          
                 //Fabricação/Transformação - restantes linhas
                 if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose || doc.StockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     fillComponentListGrid(doc.StockBehavior, trans.Details);
-
                 }
 
                 //
@@ -3826,5 +3717,195 @@ namespace Sage50c.API.Sample {
             }
 
         }
+
+        private void TransactionShow(ItemTransaction trans) {
+            if (trans != null) {
+                Document doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
+
+                TransactionClear();
+                txtTransCurrency.Text = trans.BaseCurrency.CurrencyID;
+                txtTransDate.Text = trans.CreateDate.ToShortDateString();
+                txtTransDoc.Text = trans.TransDocument;
+
+                chkTransTaxIncluded.Checked = trans.TransactionTaxIncluded;
+
+                txtTransDocNumber.Text = trans.TransDocNumber.ToString();
+                txtPaymentID.Text = string.Empty;
+                txtTenderID.Text = string.Empty;
+            
+                //
+                //ItemTransaction i; i.PaymentDiscountPercent
+                if (doc.TransDocType == DocumentTypeEnum.dcTypeSale || doc.TransDocType == DocumentTypeEnum.dcTypePurchase) {
+                    txtTransGlobalDiscount.Text = trans.PaymentDiscountPercent.ToString();
+                    txtTransGlobalDiscount.Enabled = true;
+                }
+                else {
+                    txtTransGlobalDiscount.Text = string.Empty;
+                    txtTransGlobalDiscount.Enabled = false;
+                }
+                txtTransPartyId.Text = trans.PartyID.ToString();
+                txtTransSerial.Text = trans.TransSerial;
+
+                // Detalhes
+                FillItemTransactionDetailList(trans.Details, doc, trans.TransactionTaxIncluded);
+          
+                // O Documento está anulado ?
+                if ((int)trans.TransStatus == (int)TransStatusEnum.stVoid) {
+                    tabBuySaleTransaction.BackgroundImage = Properties.Resources.stamp_Void;
+                }
+                else {
+                    tabBuySaleTransaction.BackgroundImage = null;
+                }
+            }
+            else {
+                MessageBox.Show("A transação indicada não existe.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
+        private void FillItemTransactionDetailList(ItemTransactionDetailList TransactionDetails, Document doc, bool TaxIncluded) {
+
+            if (TransactionDetails.Count > 0) {
+                //Linha 1
+                int lineNumber = (int)getLineNumberTotxtTransItemL(1, doc.TransDocType, doc.StockBehavior, TransactionDetails);
+
+                if (lineNumber != 0) {
+                    var transDetail = TransactionDetails[lineNumber];
+
+                    txtTransFactorL1.Text = transDetail.QuantityFactor.ToString();
+                    txtTransItemL1.Text = transDetail.ItemID;
+                    txtTransQuantityL1.Text = transDetail.Quantity.ToString();
+                    if (transDetail.TaxList.Count > 0)
+                        txtTransTaxRateL1.Text = transDetail.TaxList[1].TaxRate.ToString();
+                    if (TaxIncluded)
+                        txtTransUnitPriceL1.Text = transDetail.TaxIncludedPrice.ToString();
+                    else
+                        txtTransUnitPriceL1.Text = transDetail.UnitPrice.ToString();
+                    txtTransUnL1.Text = transDetail.UnitOfSaleID;
+                    txtTransWarehouseL1.Text = transDetail.WarehouseID.ToString();
+                    // Cores e Tamanhos - Só na linha 1 
+                    if (transDetail.Color.ColorID > 0) {
+                        txtTransColor1.Text = transDetail.Color.ColorID.ToString();
+                        chkTransModuleSizeColor.Checked = true;
+                    }
+                    if (transDetail.Size.SizeID > 0) {
+                        txtTransSize1.Text = transDetail.Size.SizeID.ToString();
+                        chkTransModuleSizeColor.Checked = true;
+                    }
+                    // Propriedades: Números de série
+                    if (transDetail.ItemProperties.HasPropertyValues) {
+                        lblTransPropNameL1.Text = transDetail.ItemProperties.PropertyID1;
+                        txtTransPropValueL1.Text = transDetail.ItemProperties.PropertyValue1;
+                        // Também é possivel utilizar as restantes 3 propriedades. Para isso necessitariamos de outra forma de apresentar os dados (com mais controlos, p.ex.)
+                        //lblTransPropNameL1_2.Text = transDetail.ItemProperties.PropertyID2;
+                        //txtTransPropValueL1_2.Text = transDetail.ItemProperties.PropertyValue2;
+                        //lblTransPropNameL1_3.Text = transDetail.ItemProperties.PropertyID3;
+                        //txtTransPropValueL1_3.Text = transDetail.ItemProperties.PropertyValue3;
+
+                        chkTransModuleProps.Checked = true;
+                    }
+                }
+
+                // Linha 2 - Não tem cores e tamanhos 
+                if (TransactionDetails.Count > 1) {
+                    int line = (int)getLineNumberTotxtTransItemL(2, doc.TransDocType, doc.StockBehavior, TransactionDetails);
+
+                    if (line != 0) {
+                        var transDetail = TransactionDetails[line];
+                        txtTransFactorL2.Text = transDetail.QuantityFactor.ToString();
+                        txtTransItemL2.Text = transDetail.ItemID;
+                        txtTransQuantityL2.Text = transDetail.Quantity.ToString();
+                        if (transDetail.TaxList.Count > 0)
+                            txtTransTaxRateL2.Text = transDetail.TaxList[1].TaxRate.ToString();
+                        if (TaxIncluded)
+                            txtTransUnitPriceL2.Text = transDetail.TaxIncludedPrice.ToString();
+                        else
+                            txtTransUnitPriceL2.Text = transDetail.UnitPrice.ToString();
+                        txtTransUnL2.Text = transDetail.UnitOfSaleID;
+                        txtTransWarehouseL2.Text = transDetail.WarehouseID.ToString();
+                        // Propriedades: Números de série
+                        if (transDetail.ItemProperties.HasPropertyValues) {
+                            lblTransPropNameL2.Text = transDetail.ItemProperties.PropertyID1;
+                            txtTransPropValueL2.Text = transDetail.ItemProperties.PropertyValue1;
+
+                            chkTransModuleProps.Checked = true;
+                        }
+                    }
+                }
+
+                if (bsoItemTransaction.Transaction.BuyShareOtherCostList.Count > 0) {
+
+                    SimpleDocumentList objDocumentList = new SimpleDocumentList();
+                    objDocumentList = bsoItemTransaction.Transaction.BuyShareOtherCostList;
+
+                    ItemTransaction objTempItemTransaction = new ItemTransaction();
+                    DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
+
+                    string sDetailKey;
+                    foreach (SimpleDocument objDocument in objDocumentList) {
+
+                        if (objDocument.Details.Count > 0) {
+
+                            objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber);
+
+                            txtShareTransSerial_R1.Text = objDocument.TransID.TransSerial;
+                            txtShareTransDocument_R1.Text = objDocument.TransID.TransDocument;
+                            txtShareTransDocNumber_R1.Text = objDocument.TransID.TransDocNumber.ToString();
+                            txtShareAmount_R1.Text = objDocument.TotalTransactionAmount.ToString();
+
+                            foreach (ItemTransactionDetail objTempItemTransactionDetail in objTempItemTransaction.Details) {
+
+                                sDetailKey = objDocument.TransID.TransSerial + "|" + objDocument.TransID.TransDocument + "|" + objDocument.TransID.TransDocNumber.ToString() + "|" + objTempItemTransactionDetail.LineItemID.ToString() + "|" + objTempItemTransactionDetail.ItemID + "|" + objTempItemTransactionDetail.Color.ColorID + "|" + objTempItemTransactionDetail.Size.SizeID;
+
+                                switch ((int)objTempItemTransactionDetail.LineItemID) {
+                                    case 1:
+                                        LblL1.Text = objDocument.Details.ItemByIndex[1].ItemID;
+                                        txtAmout_R1_L1.Text = objDocument.Details.ItemByIndex[1].UnitPrice.ToString();
+                                        break;
+
+                                    case 2:
+                                        LblL2.Text = objDocument.Details.ItemByIndex[2].ItemID;
+                                        txtAmout_R1_L2.Text = objDocument.Details.ItemByIndex[2].UnitPrice.ToString();
+                                        break;
+                                }
+                            }
+                        }
+                        else {
+                            txtShareTransSerial_R2.Text = objDocument.TransID.TransSerial;
+                            txtShareTransDocument_R2.Text = objDocument.TransID.TransDocument;
+                            txtShareTransDocNumber_R2.Text = objDocument.TransID.TransDocNumber.ToString();
+                            txtShareAmount_R2.Text = objDocument.TotalTransactionAmount.ToString();
+                        }
+                    }
+                }
+            }
+        }
+
+        private int GetItemSize() {
+            QuickSearch quickSearch = null;
+            int result = 0;
+            quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Sizes, systemSettings.StartUpInfo.CacheQuickSearchItem);
+
+            if (quickSearch.SelectValue()) {
+                result = quickSearch.ValueSelectedLong();
+            }
+
+            quickSearch = null;
+            return result;
+        }
+        private int GetItemColor() {
+            QuickSearch quickSearch = null;
+            int result = 0;
+            quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Color, systemSettings.StartUpInfo.CacheQuickSearchItem);
+
+            if (quickSearch.SelectValue()) {
+                result = quickSearch.ValueSelectedLong();
+            }
+
+            quickSearch = null;
+            return result;
+        }
+
+
     }
 }
