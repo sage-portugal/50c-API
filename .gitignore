@@ -201,3 +201,7 @@
 /Sage50c.API.COM.Serialization/packages/log4net.2.0.12/log4net.2.0.12.nupkg
 /Sage50c.API.COM.Serialization/packages/log4net.2.0.12/package-icon.png
 /.vs
+/Sage50c.API.Template/.vs
+/Sage50c.API.Template/Sage50c.API.Template/bin/x86/Debug
+/Sage50c.API.Template/Sage50c.API.Template/obj/x86/Debug
+/Sage50c.Extensibility.Sample/Sage50c.Extensibility.Sample/Sage50c.Extensibility.Sample.csproj.vspscc
