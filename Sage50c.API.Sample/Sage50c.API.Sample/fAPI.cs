@@ -3826,5 +3826,9 @@ namespace Sage50c.API.Sample {
             }
 
         }
+
+        private void btnTest_Click(object sender, EventArgs e) {
+            bsoItemTransaction.Transaction.Taxes.Remove("IVA", 1, TaxItemTypeEnum.txitmProduct);
+        }
     }
 }

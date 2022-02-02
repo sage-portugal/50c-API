@@ -261,6 +261,7 @@
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
+            this.btnTest = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1118,6 +1119,7 @@
             // tabBuySaleTransaction
             // 
             this.tabBuySaleTransaction.BackColor = System.Drawing.Color.White;
+            this.tabBuySaleTransaction.Controls.Add(this.btnTest);
             this.tabBuySaleTransaction.Controls.Add(this.txtTransTime);
             this.tabBuySaleTransaction.Controls.Add(this.label39);
             this.tabBuySaleTransaction.Controls.Add(this.btnExternalSignature);
@@ -3399,6 +3401,16 @@
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
             // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(725, 444);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(92, 27);
+            this.btnTest.TabIndex = 411;
+            this.btnTest.Text = "Test";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3705,6 +3717,7 @@
         private System.Windows.Forms.Button btnTransactionRestoreTemp;
         private System.Windows.Forms.TextBox txtTransTime;
         private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Button btnTest;
     }
 }
 
