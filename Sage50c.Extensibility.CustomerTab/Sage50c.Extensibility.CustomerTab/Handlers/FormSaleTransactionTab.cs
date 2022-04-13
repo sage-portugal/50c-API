@@ -8,17 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Sage50c.Common;
+using S50cSys22;
 using S50cBO22;
+namespace Sage50c.Extensibility.CustomerTab.Handlers
+{
+    public partial class FormSaleTransactionTab : Form, IChildPanel
+    {
 
-namespace Sage50c.Extensibility.CustomerTab.Handlers {
-    public partial class FormCustomerTab : Form, IChildPanel {
-
-        public FormCustomerTab() {
+        public FormSaleTransactionTab()
+        {
             InitializeComponent();
         }
 
-        public void SetSize(float Width, float Height) {
-            try {
+        public void SetSize(float Width, float Height)
+        {
+            try
+            {
                 // Traduzir para pixels
                 int tabWidth = (int)(Width / 16);
                 int tabHeight = (int)(Height / 16);
@@ -29,48 +34,60 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers {
             catch { }
         }
 
-        public void ResetInterface() {
-            lblCustomerName.Text = string.Empty;
+
+        public void ResetInterface()
+        {
+            lblTransactionName.Text = string.Empty;
         }
 
-        public void SetFocus() {
-            try {
+        public void SetFocus()
+        {
+            try
+            {
                 this.SetFocus();
             }
             catch { }
         }
 
-        public bool OnMenuItem(string MenuItemID) {
+        public bool OnMenuItem(string MenuItemID)
+        {
             return false;
         }
 
-        public void OnLoad(Customer value) {
-
-            if (value != null) {
-                lblCustomerName.Text = value.OrganizationName;
+        public void OnLoad(ItemTransaction value)
+        {
+            if (value != null)
+            {
+                lblTransactionName.Text = value.TransactionID.ToString();
             }
         }
 
-        public bool CheckIDValue(string value) {
+        public bool CheckIDValue(string value)
+        {
             return true;
         }
 
-        public void SetBackcolor(int value) {
+        public void SetBackcolor(int value)
+        {
             this.BackColor = System.Drawing.Color.FromArgb(value);
         }
 
-        public bool BeforeOk() {
+        public bool BeforeOk()
+        {
             return true;
         }
 
-        public bool BeforeCancel() {
+        public bool BeforeCancel()
+        {
             return true;
         }
 
         public int Handler => this.Handle.ToInt32();
 
-        public stdole.StdPicture Picture {
-            get {
+        public stdole.StdPicture Picture
+        {
+            get
+            {
                 //return null;
                 return (stdole.StdPicture)ImageConverter.GetIPictureDispFromImage(Icon.ToBitmap());
             }
@@ -79,9 +96,9 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers {
 
         public string Description => "Custom panel long description";
 
-        private void btnOk_Click(object sender, EventArgs e) {
+        private void btnOk_Click(object sender, EventArgs e)
+        {
             MessageBox.Show("Hello!");
         }
-
-        }
     }
+}

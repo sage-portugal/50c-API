@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using Sage50c.API;
 
-namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
+namespace Sage50c.Extensibility.CustomerTab.Handlers.BuyTransactionHandler
 {
-    class CustomerHandler : IDisposable
+    class BuyTransactionHandler : IDisposable
     {
         private IManagementConsole _managementConsole = null;   //Consola de gestão dos parâmetros
         private ExtenderEvents _myEvents = null;
-        private FormCustomerTab _formTab = null;                     //Form das propriedades
+        private FormBuyTransactionTab _formTab = null;                     //Form das propriedades
 
         public void SetEventHandler(ExtenderEvents e)
         {
@@ -48,7 +48,7 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
         void myEvents_OnSave(object Sender, ExtenderEventArgs e)
         {
             var proplist = (ExtendedPropertyList)e.get_data();
-            var Customer = (Customer)proplist.get_Value("Data");    // The  Customer
+            var Transaction = (ItemTransaction)proplist.get_Value("Data");    // The  Customer
             var isNew = (bool)proplist.get_Value("IsNew");  // Is new?
         }
 
@@ -69,12 +69,12 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
 
             switch (menuId)
             {
-                case "mniXCustomer1":
-                    System.Windows.Forms.MessageBox.Show("Pressionei  Customer 1");
+                case "mniXItemTransaction1":
+                    System.Windows.Forms.MessageBox.Show("Pressionei  BuyTransaction 1");
                     break;
 
-                case "mniXCustomer2":
-                    System.Windows.Forms.MessageBox.Show("Pressionei  Customer 2");
+                case "mniXItemTransaction2":
+                    System.Windows.Forms.MessageBox.Show("Pressionei  BuyTransaction 2");
                     break;
             }
         }
@@ -93,11 +93,11 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
         /// </param>
         void myEvents_OnLoad(object Sender, ExtenderEventArgs e)
         {
-            var Customer = (Customer)e.get_data();
+            var Transaction = (ItemTransaction)e.get_data();
 
-            if (Customer != null)
+            if (Transaction != null)
             {
-                _formTab.OnLoad(Customer);
+                _formTab.OnLoad(Transaction);
             }
 
         }
@@ -128,8 +128,8 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
             {
                 _managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
 
-                // Form a colocar no TAB dos clientes
-                _formTab = new FormCustomerTab();
+                // Form a colocar no TAB dos Vendas
+                _formTab = new FormBuyTransactionTab();
                 _managementConsole.AddChildPanel(_formTab);
             }
 
@@ -140,10 +140,10 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
             menuGroup.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;   //Opções de menu
             menuGroup.BeginGroup = true;                                             //Novo grupo
             //
-            var menuItem = menuGroup.ChildItems.Add("mniXCustomer1", "Meu menu 1");
+            var menuItem = menuGroup.ChildItems.Add("mniXItemTransaction1", "Meu menu 1");
             menuItem.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;   //Opções de menu
 
-            menuItem = menuGroup.ChildItems.Add("mniXCustomer2", "Meu menu 2");
+            menuItem = menuGroup.ChildItems.Add("mniXItemTransaction2", "Meu menu 2");
             menuItem.GroupType = ExtenderGroupType.ExtenderGroupTypeExtraOptions;   //Opções de menu
 
             object oMenu = newMenu;
@@ -191,7 +191,7 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
         /// <param name="e">Event parameters</param>
         void myEvents_OnNew(object Sender, ExtenderEventArgs e)
         {
-            var customer = (Customer)e.get_data();
+            var Transaction = (ItemTransaction)e.get_data();
 
             _formTab.ResetInterface();
 
@@ -220,7 +220,7 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
         void myEvents_OnValidating(object Sender, ExtenderEventArgs e)
         {
             var proplist = (ExtendedPropertyList)e.get_data();
-            var Customer = (Customer)proplist.get_Value("Data");
+            var Transaction = (ItemTransaction)proplist.get_Value("Data");
             var forDeletion = (bool)proplist.get_Value("ForDeletion");
 
             e.result.Success = true;
