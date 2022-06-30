@@ -86,6 +86,7 @@
             this.Label30 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabBuySaleTransaction = new System.Windows.Forms.TabPage();
+            this.btnTest = new System.Windows.Forms.Button();
             this.txtTransTime = new System.Windows.Forms.TextBox();
             this.label39 = new System.Windows.Forms.Label();
             this.btnExternalSignature = new System.Windows.Forms.Button();
@@ -261,7 +262,6 @@
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
-            this.btnTest = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1185,6 +1185,16 @@
             this.tabBuySaleTransaction.TabIndex = 3;
             this.tabBuySaleTransaction.Text = "Compra/Venda/Stock";
             // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(725, 444);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(92, 27);
+            this.btnTest.TabIndex = 411;
+            this.btnTest.Text = "Test";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // txtTransTime
             // 
             this.txtTransTime.AcceptsReturn = true;
@@ -1419,6 +1429,7 @@
             this.txtTransItemL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtTransItemL1.Size = new System.Drawing.Size(77, 23);
             this.txtTransItemL1.TabIndex = 110;
+            this.txtTransItemL1.TextChanged += new System.EventHandler(this.txtTransItemL1_TextChanged);
             // 
             // txtTransUnitPriceL1
             // 
@@ -1699,7 +1710,7 @@
             this.optPrintOptions1.AutoSize = true;
             this.optPrintOptions1.Location = new System.Drawing.Point(20, 51);
             this.optPrintOptions1.Name = "optPrintOptions1";
-            this.optPrintOptions1.Size = new System.Drawing.Size(118, 19);
+            this.optPrintOptions1.Size = new System.Drawing.Size(119, 19);
             this.optPrintOptions1.TabIndex = 344;
             this.optPrintOptions1.Text = "Exportar para PDF";
             this.optPrintOptions1.UseVisualStyleBackColor = true;
@@ -3400,16 +3411,6 @@
             this.tabEntities.Size = new System.Drawing.Size(951, 509);
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
-            // 
-            // btnTest
-            // 
-            this.btnTest.Location = new System.Drawing.Point(725, 444);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(92, 27);
-            this.btnTest.TabIndex = 411;
-            this.btnTest.Text = "Test";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // fApi
             // 
