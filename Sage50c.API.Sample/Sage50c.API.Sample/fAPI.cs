@@ -1712,7 +1712,10 @@ namespace Sage50c.API.Sample {
             //.WeightMeasure = item.WeightMeasure;
 
             transDetail.ItemType = item.ItemType;
-            transDetail.RetentionTax = item.WithholdingTaxRate;
+
+            if (item.ItemType == ItemTypeEnum.itmService || item.ItemType == ItemTypeEnum.itmInterestRate || item.ItemType == ItemTypeEnum.itmOtherProductOrService) {
+                transDetail.RetentionTax = item.WithholdingTaxRate;
+            }
 
             item = null;
             //
