@@ -1574,7 +1574,7 @@ namespace Sage50c.API.Sample {
                                      short colorId, short sizeId,
                                      string serialNumberPropId, string serialNumberPropValue) {
 
-
+            
             var doc = systemSettings.WorkstationInfo.Document[trans.TransDocument];
 
             ItemTransactionDetail transDetail = new ItemTransactionDetail();
@@ -1710,6 +1710,12 @@ namespace Sage50c.API.Sample {
             transDetail.ItemTax3 = item.ItemTax3;
             //.WeightUnitOfMeasure = item.WeightUnitOfMeasure;
             //.WeightMeasure = item.WeightMeasure;
+
+            transDetail.ItemType = item.ItemType;
+
+            if (item.ItemType == ItemTypeEnum.itmService || item.ItemType == ItemTypeEnum.itmInterestRate || item.ItemType == ItemTypeEnum.itmOtherProductOrService) {
+                transDetail.RetentionTax = item.WithholdingTaxRate;
+            }
 
             item = null;
             //
