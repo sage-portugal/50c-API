@@ -119,90 +119,73 @@
       <HintPath>Interops\MSXML2.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="S50cAPI22, Version=1.1.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cAPI22">
+      <HintPath>Interops\S50cAPI22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cAPI22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cBL22, Version=1.5.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cBL22">
+      <HintPath>Interops\S50cBL22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cBL22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cBO22, Version=1.8.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cBO22">
+      <HintPath>Interops\S50cBO22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cBO22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cCore22, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cCore22">
+      <HintPath>Interops\S50cCore22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cCore22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cData22, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cData22">
+      <HintPath>Interops\S50cData22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cData22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cDL22, Version=1.18.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cDL22">
+      <HintPath>Interops\S50cDL22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cDL22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cDP22, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cDP22">
+      <HintPath>Interops\S50cDP22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cDP22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cLocalize22, Version=1.1.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cLocalize22">
+      <HintPath>Interops\S50cLocalize22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cLocalize22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cPrint22, Version=1.1.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cPrint22">
+      <HintPath>Interops\S50cPrint22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cPrint22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cQS22, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cQS22">
+      <HintPath>Interops\S50cQS22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cQS22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cRV22, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cRV22">
+      <HintPath>Interops\S50cRV22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cRV22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cSAFTX22, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cSAFTX22">
+      <HintPath>Interops\S50cSAFTX22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cSAFTX22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cSC22, Version=1.3.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cSC22">
+      <HintPath>Interops\S50cSC22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cSC22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cSys22, Version=1.14.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cSys22">
+      <HintPath>Interops\S50cSys22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cSys22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cUIBase22, Version=1.1.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cUIBase22">
+      <HintPath>Interops\S50cUIBase22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cUIBase22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cUpdate22, Version=1.1.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cUpdate22">
+      <HintPath>Interops\S50cUpdate22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cUpdate22.dll</HintPath>
     </Reference>
-    <Reference Include="S50cUtil22, Version=1.1.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="S50cUtil22">
+      <HintPath>Interops\S50cUtil22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cUtil22.dll</HintPath>
     </Reference>
     <Reference Include="SageCEMV15">
       <HintPath>Interops\SageCEMV15.dll</HintPath>

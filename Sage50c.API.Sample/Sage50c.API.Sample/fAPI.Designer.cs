@@ -1429,7 +1429,6 @@
             this.txtTransItemL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtTransItemL1.Size = new System.Drawing.Size(77, 23);
             this.txtTransItemL1.TabIndex = 110;
-            this.txtTransItemL1.TextChanged += new System.EventHandler(this.txtTransItemL1_TextChanged);
             // 
             // txtTransUnitPriceL1
             // 
