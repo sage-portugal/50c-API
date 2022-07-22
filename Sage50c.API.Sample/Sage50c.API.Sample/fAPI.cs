@@ -1713,6 +1713,7 @@ namespace Sage50c.API.Sample {
 
             transDetail.ItemType = item.ItemType;
             transDetail.RetentionTax = item.WithholdingTaxRate;
+
             item = null;
             //
             trans.Details.Add(transDetail);
