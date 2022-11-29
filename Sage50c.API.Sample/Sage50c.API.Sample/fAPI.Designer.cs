@@ -262,6 +262,10 @@
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
+            this.txtQrCode = new System.Windows.Forms.TextBox();
+            this.txtAtcud = new System.Windows.Forms.TextBox();
+            this.label49 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1119,6 +1123,10 @@
             // tabBuySaleTransaction
             // 
             this.tabBuySaleTransaction.BackColor = System.Drawing.Color.White;
+            this.tabBuySaleTransaction.Controls.Add(this.label49);
+            this.tabBuySaleTransaction.Controls.Add(this.label51);
+            this.tabBuySaleTransaction.Controls.Add(this.txtQrCode);
+            this.tabBuySaleTransaction.Controls.Add(this.txtAtcud);
             this.tabBuySaleTransaction.Controls.Add(this.btnTest);
             this.tabBuySaleTransaction.Controls.Add(this.txtTransTime);
             this.tabBuySaleTransaction.Controls.Add(this.label39);
@@ -1709,7 +1717,7 @@
             this.optPrintOptions1.AutoSize = true;
             this.optPrintOptions1.Location = new System.Drawing.Point(20, 51);
             this.optPrintOptions1.Name = "optPrintOptions1";
-            this.optPrintOptions1.Size = new System.Drawing.Size(119, 19);
+            this.optPrintOptions1.Size = new System.Drawing.Size(118, 19);
             this.optPrintOptions1.TabIndex = 344;
             this.optPrintOptions1.Text = "Exportar para PDF";
             this.optPrintOptions1.UseVisualStyleBackColor = true;
@@ -3411,6 +3419,60 @@
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
             // 
+            // txtQrCode
+            // 
+            this.txtQrCode.AcceptsReturn = true;
+            this.txtQrCode.BackColor = System.Drawing.SystemColors.Window;
+            this.txtQrCode.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtQrCode.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtQrCode.Location = new System.Drawing.Point(196, 455);
+            this.txtQrCode.MaxLength = 0;
+            this.txtQrCode.Name = "txtQrCode";
+            this.txtQrCode.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtQrCode.Size = new System.Drawing.Size(303, 23);
+            this.txtQrCode.TabIndex = 413;
+            this.txtQrCode.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // txtAtcud
+            // 
+            this.txtAtcud.AcceptsReturn = true;
+            this.txtAtcud.BackColor = System.Drawing.SystemColors.Window;
+            this.txtAtcud.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtAtcud.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtAtcud.Location = new System.Drawing.Point(131, 455);
+            this.txtAtcud.MaxLength = 0;
+            this.txtAtcud.Name = "txtAtcud";
+            this.txtAtcud.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtAtcud.Size = new System.Drawing.Size(59, 23);
+            this.txtAtcud.TabIndex = 412;
+            // 
+            // label49
+            // 
+            this.label49.BackColor = System.Drawing.Color.Transparent;
+            this.label49.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label49.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label49.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label49.Location = new System.Drawing.Point(136, 439);
+            this.label49.Name = "label49";
+            this.label49.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label49.Size = new System.Drawing.Size(54, 15);
+            this.label49.TabIndex = 415;
+            this.label49.Text = "ATCUD";
+            this.label49.Click += new System.EventHandler(this.label49_Click);
+            // 
+            // label51
+            // 
+            this.label51.BackColor = System.Drawing.Color.Transparent;
+            this.label51.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label51.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label51.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label51.Location = new System.Drawing.Point(197, 439);
+            this.label51.Name = "label51";
+            this.label51.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label51.Size = new System.Drawing.Size(67, 15);
+            this.label51.TabIndex = 414;
+            this.label51.Text = "QRCODE";
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3718,6 +3780,10 @@
         private System.Windows.Forms.TextBox txtTransTime;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.TextBox txtQrCode;
+        private System.Windows.Forms.TextBox txtAtcud;
     }
 }
 
