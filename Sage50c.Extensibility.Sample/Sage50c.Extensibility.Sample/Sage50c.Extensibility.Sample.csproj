@@ -76,6 +76,8 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.Compatibility" />
     <Reference Include="MSScriptControl">
       <HintPath>..\..\Interops\MSScriptControl.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
