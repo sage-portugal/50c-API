@@ -270,6 +270,7 @@
     </Compile>
     <Compile Include="StockHandler.cs" />
     <Compile Include="SystemHandler.cs" />
+    <Compile Include="WokstationInfoHandler.cs" />
     <Compile Include="SystemInfoHandler.cs" />
     <Compile Include="TenderTransactionHandler.cs" />
     <Compile Include="AccountTransactionHandler.cs" />
