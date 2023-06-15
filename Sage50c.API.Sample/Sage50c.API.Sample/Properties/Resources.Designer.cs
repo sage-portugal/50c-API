@@ -19,7 +19,7 @@ namespace Sage50c.API.Sample.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,19 +63,9 @@ namespace Sage50c.API.Sample.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Sage {
+        internal static System.Drawing.Bitmap Sage_logo {
             get {
-                object obj = ResourceManager.GetObject("Sage", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Sage50c {
-            get {
-                object obj = ResourceManager.GetObject("Sage50c", resourceCulture);
+                object obj = ResourceManager.GetObject("Sage logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -86,16 +76,6 @@ namespace Sage50c.API.Sample.Properties {
         internal static System.Drawing.Bitmap stamp_Void {
             get {
                 object obj = ResourceManager.GetObject("stamp_Void", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap VS2 {
-            get {
-                object obj = ResourceManager.GetObject("VS2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

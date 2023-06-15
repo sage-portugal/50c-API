@@ -25,8 +25,10 @@
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fApi));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pbCSharp = new System.Windows.Forms.PictureBox();
             this.chkAPIDebugMode = new System.Windows.Forms.CheckBox();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.panel6 = new System.Windows.Forms.Panel();
             this.txtCompanyId = new System.Windows.Forms.TextBox();
             this.Label40 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -43,7 +45,6 @@
             this.btnStartAPI = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pbCSharp = new System.Windows.Forms.PictureBox();
             this.tabUnitOfMeasure = new System.Windows.Forms.TabPage();
             this.txtUnitOfMeasureName = new System.Windows.Forms.TextBox();
             this.txtUnitOfMeasureId = new System.Windows.Forms.TextBox();
@@ -86,7 +87,10 @@
             this.Label30 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabBuySaleTransaction = new System.Windows.Forms.TabPage();
-            this.btnTest = new System.Windows.Forms.Button();
+            this.label49 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
+            this.txtQrCode = new System.Windows.Forms.TextBox();
+            this.txtAtcud = new System.Windows.Forms.TextBox();
             this.txtTransTime = new System.Windows.Forms.TextBox();
             this.label39 = new System.Windows.Forms.Label();
             this.btnExternalSignature = new System.Windows.Forms.Button();
@@ -262,16 +266,13 @@
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
-            this.txtQrCode = new System.Windows.Forms.TextBox();
-            this.txtAtcud = new System.Windows.Forms.TextBox();
-            this.label49 = new System.Windows.Forms.Label();
-            this.label51 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
+            this.panel5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.tabUnitOfMeasure.SuspendLayout();
             this.tabAccount.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -301,8 +302,9 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel1.Controls.Add(this.pbCSharp);
             this.panel1.Controls.Add(this.chkAPIDebugMode);
             this.panel1.Controls.Add(this.panel5);
             this.panel1.Controls.Add(this.txtCompanyId);
@@ -311,14 +313,26 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.panel1.Size = new System.Drawing.Size(951, 106);
+            this.panel1.Size = new System.Drawing.Size(1091, 106);
             this.panel1.TabIndex = 9;
+            // 
+            // pbCSharp
+            // 
+            this.pbCSharp.Cursor = System.Windows.Forms.Cursors.Default;
+            this.pbCSharp.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pbCSharp.Image = ((System.Drawing.Image)(resources.GetObject("pbCSharp.Image")));
+            this.pbCSharp.Location = new System.Drawing.Point(851, 0);
+            this.pbCSharp.Name = "pbCSharp";
+            this.pbCSharp.Size = new System.Drawing.Size(240, 103);
+            this.pbCSharp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbCSharp.TabIndex = 309;
+            this.pbCSharp.TabStop = false;
             // 
             // chkAPIDebugMode
             // 
             this.chkAPIDebugMode.AutoSize = true;
-            this.chkAPIDebugMode.ForeColor = System.Drawing.Color.Black;
-            this.chkAPIDebugMode.Location = new System.Drawing.Point(782, 41);
+            this.chkAPIDebugMode.ForeColor = System.Drawing.Color.White;
+            this.chkAPIDebugMode.Location = new System.Drawing.Point(718, 41);
             this.chkAPIDebugMode.Name = "chkAPIDebugMode";
             this.chkAPIDebugMode.Size = new System.Drawing.Size(98, 19);
             this.chkAPIDebugMode.TabIndex = 305;
@@ -327,13 +341,26 @@
             // 
             // panel5
             // 
-            this.panel5.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Sage50c;
-            this.panel5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.panel5.BackColor = System.Drawing.Color.Black;
+            this.panel5.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Sage_logo;
+            this.panel5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel5.Controls.Add(this.panel6);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(283, 103);
+            this.panel5.Size = new System.Drawing.Size(281, 103);
             this.panel5.TabIndex = 304;
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.Black;
+            this.panel6.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Sage_logo;
+            this.panel6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel6.Location = new System.Drawing.Point(0, 0);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(281, 103);
+            this.panel6.TabIndex = 305;
             // 
             // txtCompanyId
             // 
@@ -342,7 +369,7 @@
             this.txtCompanyId.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtCompanyId.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCompanyId.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtCompanyId.Location = new System.Drawing.Point(465, 38);
+            this.txtCompanyId.Location = new System.Drawing.Point(401, 38);
             this.txtCompanyId.MaxLength = 0;
             this.txtCompanyId.Name = "txtCompanyId";
             this.txtCompanyId.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -356,8 +383,8 @@
             this.Label40.BackColor = System.Drawing.Color.Transparent;
             this.Label40.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label40.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label40.ForeColor = System.Drawing.Color.Black;
-            this.Label40.Location = new System.Drawing.Point(383, 42);
+            this.Label40.ForeColor = System.Drawing.Color.White;
+            this.Label40.Location = new System.Drawing.Point(319, 42);
             this.Label40.Name = "Label40";
             this.Label40.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label40.Size = new System.Drawing.Size(57, 15);
@@ -512,37 +539,25 @@
             // 
             this.panel4.BackColor = System.Drawing.Color.Transparent;
             this.panel4.Controls.Add(this.pictureBox2);
-            this.panel4.Controls.Add(this.pbCSharp);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel4.Location = new System.Drawing.Point(951, 0);
+            this.panel4.Location = new System.Drawing.Point(951, 106);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(140, 615);
+            this.panel4.Size = new System.Drawing.Size(140, 509);
             this.panel4.TabIndex = 12;
             // 
             // pictureBox2
             // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Default;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = global::Sage50c.API.Sample.Properties.Resources.Sage;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 106);
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(140, 509);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox2.TabIndex = 306;
             this.pictureBox2.TabStop = false;
-            // 
-            // pbCSharp
-            // 
-            this.pbCSharp.Cursor = System.Windows.Forms.Cursors.Default;
-            this.pbCSharp.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbCSharp.Image = ((System.Drawing.Image)(resources.GetObject("pbCSharp.Image")));
-            this.pbCSharp.Location = new System.Drawing.Point(0, 0);
-            this.pbCSharp.Name = "pbCSharp";
-            this.pbCSharp.Size = new System.Drawing.Size(140, 106);
-            this.pbCSharp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbCSharp.TabIndex = 305;
-            this.pbCSharp.TabStop = false;
             // 
             // tabUnitOfMeasure
             // 
@@ -1127,7 +1142,6 @@
             this.tabBuySaleTransaction.Controls.Add(this.label51);
             this.tabBuySaleTransaction.Controls.Add(this.txtQrCode);
             this.tabBuySaleTransaction.Controls.Add(this.txtAtcud);
-            this.tabBuySaleTransaction.Controls.Add(this.btnTest);
             this.tabBuySaleTransaction.Controls.Add(this.txtTransTime);
             this.tabBuySaleTransaction.Controls.Add(this.label39);
             this.tabBuySaleTransaction.Controls.Add(this.btnExternalSignature);
@@ -1193,15 +1207,57 @@
             this.tabBuySaleTransaction.TabIndex = 3;
             this.tabBuySaleTransaction.Text = "Compra/Venda/Stock";
             // 
-            // btnTest
+            // label49
             // 
-            this.btnTest.Location = new System.Drawing.Point(725, 444);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(92, 27);
-            this.btnTest.TabIndex = 411;
-            this.btnTest.Text = "Test";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            this.label49.BackColor = System.Drawing.Color.Transparent;
+            this.label49.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label49.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label49.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label49.Location = new System.Drawing.Point(136, 439);
+            this.label49.Name = "label49";
+            this.label49.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label49.Size = new System.Drawing.Size(54, 15);
+            this.label49.TabIndex = 415;
+            this.label49.Text = "ATCUD";
+            // 
+            // label51
+            // 
+            this.label51.BackColor = System.Drawing.Color.Transparent;
+            this.label51.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label51.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label51.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label51.Location = new System.Drawing.Point(197, 439);
+            this.label51.Name = "label51";
+            this.label51.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label51.Size = new System.Drawing.Size(67, 15);
+            this.label51.TabIndex = 414;
+            this.label51.Text = "QRCODE";
+            // 
+            // txtQrCode
+            // 
+            this.txtQrCode.AcceptsReturn = true;
+            this.txtQrCode.BackColor = System.Drawing.SystemColors.Window;
+            this.txtQrCode.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtQrCode.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtQrCode.Location = new System.Drawing.Point(196, 455);
+            this.txtQrCode.MaxLength = 0;
+            this.txtQrCode.Name = "txtQrCode";
+            this.txtQrCode.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtQrCode.Size = new System.Drawing.Size(303, 23);
+            this.txtQrCode.TabIndex = 413;
+            // 
+            // txtAtcud
+            // 
+            this.txtAtcud.AcceptsReturn = true;
+            this.txtAtcud.BackColor = System.Drawing.SystemColors.Window;
+            this.txtAtcud.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtAtcud.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtAtcud.Location = new System.Drawing.Point(131, 455);
+            this.txtAtcud.MaxLength = 0;
+            this.txtAtcud.Name = "txtAtcud";
+            this.txtAtcud.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtAtcud.Size = new System.Drawing.Size(59, 23);
+            this.txtAtcud.TabIndex = 412;
             // 
             // txtTransTime
             // 
@@ -1717,7 +1773,7 @@
             this.optPrintOptions1.AutoSize = true;
             this.optPrintOptions1.Location = new System.Drawing.Point(20, 51);
             this.optPrintOptions1.Name = "optPrintOptions1";
-            this.optPrintOptions1.Size = new System.Drawing.Size(118, 19);
+            this.optPrintOptions1.Size = new System.Drawing.Size(119, 19);
             this.optPrintOptions1.TabIndex = 344;
             this.optPrintOptions1.Text = "Exportar para PDF";
             this.optPrintOptions1.UseVisualStyleBackColor = true;
@@ -3273,7 +3329,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(464, 100);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(440, 246);
+            this.dataGridView1.Size = new System.Drawing.Size(440, 232);
             this.dataGridView1.TabIndex = 16;
             // 
             // lblItemColor
@@ -3419,60 +3475,6 @@
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
             // 
-            // txtQrCode
-            // 
-            this.txtQrCode.AcceptsReturn = true;
-            this.txtQrCode.BackColor = System.Drawing.SystemColors.Window;
-            this.txtQrCode.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtQrCode.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtQrCode.Location = new System.Drawing.Point(196, 455);
-            this.txtQrCode.MaxLength = 0;
-            this.txtQrCode.Name = "txtQrCode";
-            this.txtQrCode.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtQrCode.Size = new System.Drawing.Size(303, 23);
-            this.txtQrCode.TabIndex = 413;
-            this.txtQrCode.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // txtAtcud
-            // 
-            this.txtAtcud.AcceptsReturn = true;
-            this.txtAtcud.BackColor = System.Drawing.SystemColors.Window;
-            this.txtAtcud.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtAtcud.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtAtcud.Location = new System.Drawing.Point(131, 455);
-            this.txtAtcud.MaxLength = 0;
-            this.txtAtcud.Name = "txtAtcud";
-            this.txtAtcud.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAtcud.Size = new System.Drawing.Size(59, 23);
-            this.txtAtcud.TabIndex = 412;
-            // 
-            // label49
-            // 
-            this.label49.BackColor = System.Drawing.Color.Transparent;
-            this.label49.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label49.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label49.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label49.Location = new System.Drawing.Point(136, 439);
-            this.label49.Name = "label49";
-            this.label49.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label49.Size = new System.Drawing.Size(54, 15);
-            this.label49.TabIndex = 415;
-            this.label49.Text = "ATCUD";
-            this.label49.Click += new System.EventHandler(this.label49_Click);
-            // 
-            // label51
-            // 
-            this.label51.BackColor = System.Drawing.Color.Transparent;
-            this.label51.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label51.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label51.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label51.Location = new System.Drawing.Point(197, 439);
-            this.label51.Name = "label51";
-            this.label51.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label51.Size = new System.Drawing.Size(67, 15);
-            this.label51.TabIndex = 414;
-            this.label51.Text = "QRCODE";
-            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3480,10 +3482,10 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1091, 700);
             this.Controls.Add(this.tabEntities);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -3493,11 +3495,12 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fApi_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).EndInit();
+            this.panel5.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).EndInit();
             this.tabUnitOfMeasure.ResumeLayout(false);
             this.tabUnitOfMeasure.PerformLayout();
             this.tabAccount.ResumeLayout(false);
@@ -3558,7 +3561,6 @@
         private System.Windows.Forms.Label _Label1_0;
         private System.Windows.Forms.Label _Bar1_1;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.PictureBox pbCSharp;
         private System.Windows.Forms.CheckBox chkAPIDebugMode;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ComboBox cmbAPI;
@@ -3779,11 +3781,12 @@
         private System.Windows.Forms.Button btnTransactionRestoreTemp;
         private System.Windows.Forms.TextBox txtTransTime;
         private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.Button btnTest;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.Label label51;
         private System.Windows.Forms.TextBox txtQrCode;
         private System.Windows.Forms.TextBox txtAtcud;
+        private System.Windows.Forms.PictureBox pbCSharp;
+        private System.Windows.Forms.Panel panel6;
     }
 }
 

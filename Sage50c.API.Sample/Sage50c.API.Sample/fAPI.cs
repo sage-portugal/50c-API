@@ -3839,15 +3839,5 @@ namespace Sage50c.API.Sample {
         private void btnTest_Click(object sender, EventArgs e) {
             bsoItemTransaction.Transaction.Taxes.Remove("IVA", 1, TaxItemTypeEnum.txitmProduct);
         }
-
-        private void label49_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
