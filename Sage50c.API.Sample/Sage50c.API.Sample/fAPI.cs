@@ -3640,7 +3640,7 @@ namespace Sage50c.API.Sample {
 
                     // Linha 2 - Não tem cores e tamanhos 
                     if (trans.Details.Count > 1) {
-                        int line = (int)getLineNumberTotxtTransItemL(2, doc.TransDocType, doc.StockBehavior, trans.Details);
+                        int line = (int)getLineNumberTotxtTransItemL(2, (DocumentTypeEnum)doc.TransDocType, (StockBehaviorEnum)doc.StockBehavior, trans.Details);
 
                         if (line != 0) {
                             var transDetail = trans.Details[line];
@@ -3714,8 +3714,7 @@ namespace Sage50c.API.Sample {
 
                 //Fabricação/Transformação - restantes linhas
                 if ((int)doc.StockBehavior == (int)StockBehaviorEnum.sbStockCompose || (int)doc.StockBehavior == (int)StockBehaviorEnum.sbStockDecompose) {
-                    fillComponentListGrid(doc.StockBehavior, trans.Details);
-
+                    fillComponentListGrid((StockBehaviorEnum)doc.StockBehavior, trans.Details);
                 }
 
                 //

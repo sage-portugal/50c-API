@@ -139,8 +139,20 @@ namespace Sage50c.API.Sample {
                 if (!_itemTransIsFindind) {
                     _itemTransIsFindind = true;
 
+                    var doc = APIEngine.SystemSettings.WorkstationInfo.Document[TransDocument];
+                    switch (doc.TransDocType) {
+                        case DocumentTypeEnum.dcTypeSale:
+                            quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_SaleTransaction, false);
+                            break;
+
+                        case DocumentTypeEnum.dcTypePurchase:
+                            quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_BuyTransaction, false);
+                            break;
+
+                        default:
+                            throw new Exception($"Document {TransDocument} not supported.");
+                    }
                     // Create without cache
-                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_SaleTransaction, false);
                     clsCollection qsParams = new clsCollection();
                     qsParams.add(TransSerial, "@TransSerial");
                     qsParams.add(TransDocument, "@TransDocument");
@@ -154,7 +166,7 @@ namespace Sage50c.API.Sample {
             }
             catch (Exception ex) {
                 _itemTransIsFindind = false;
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, APIEngine.SystemSettings.Application.LongName);
             }
             finally {
 
