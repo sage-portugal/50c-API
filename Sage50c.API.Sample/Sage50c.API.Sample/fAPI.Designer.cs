@@ -71,7 +71,7 @@
             this.txtAccountTransDocNumberL1 = new System.Windows.Forms.TextBox();
             this.label35 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
+            this.lblAccountTransDocNumber = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.cmbRecPeg = new System.Windows.Forms.ComboBox();
@@ -208,7 +208,7 @@
             this.lblTransCurrency = new System.Windows.Forms.Label();
             this.Label45 = new System.Windows.Forms.Label();
             this._Label15_5 = new System.Windows.Forms.Label();
-            this.Label23 = new System.Windows.Forms.Label();
+            this.lblTransDocNumber = new System.Windows.Forms.Label();
             this.Label25 = new System.Windows.Forms.Label();
             this.tabSupplier = new System.Windows.Forms.TabPage();
             this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
@@ -646,7 +646,7 @@
             this.tabAccount.Controls.Add(this.txtAccountTransDocNumberL1);
             this.tabAccount.Controls.Add(this.label35);
             this.tabAccount.Controls.Add(this.label33);
-            this.tabAccount.Controls.Add(this.label20);
+            this.tabAccount.Controls.Add(this.lblAccountTransDocNumber);
             this.tabAccount.Controls.Add(this.label15);
             this.tabAccount.Controls.Add(this.label14);
             this.tabAccount.Controls.Add(this.cmbRecPeg);
@@ -930,19 +930,20 @@
             this.label33.TabIndex = 334;
             this.label33.Text = "Moeda";
             // 
-            // label20
+            // lblAccountTransDocNumber
             // 
-            this.label20.AutoSize = true;
-            this.label20.BackColor = System.Drawing.Color.Transparent;
-            this.label20.Cursor = System.Windows.Forms.Cursors.Default;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label20.Location = new System.Drawing.Point(234, 38);
-            this.label20.Name = "label20";
-            this.label20.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label20.Size = new System.Drawing.Size(53, 15);
-            this.label20.TabIndex = 333;
-            this.label20.Text = "Número";
+            this.lblAccountTransDocNumber.AutoSize = true;
+            this.lblAccountTransDocNumber.BackColor = System.Drawing.Color.Transparent;
+            this.lblAccountTransDocNumber.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblAccountTransDocNumber.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAccountTransDocNumber.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.lblAccountTransDocNumber.Location = new System.Drawing.Point(234, 38);
+            this.lblAccountTransDocNumber.Name = "lblAccountTransDocNumber";
+            this.lblAccountTransDocNumber.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblAccountTransDocNumber.Size = new System.Drawing.Size(53, 15);
+            this.lblAccountTransDocNumber.TabIndex = 333;
+            this.lblAccountTransDocNumber.Text = "Número";
+            this.lblAccountTransDocNumber.Click += new System.EventHandler(this.lblAccountTransDocNumber_Click);
             // 
             // label15
             // 
@@ -1199,7 +1200,7 @@
             this.tabBuySaleTransaction.Controls.Add(this.lblTransCurrency);
             this.tabBuySaleTransaction.Controls.Add(this.Label45);
             this.tabBuySaleTransaction.Controls.Add(this._Label15_5);
-            this.tabBuySaleTransaction.Controls.Add(this.Label23);
+            this.tabBuySaleTransaction.Controls.Add(this.lblTransDocNumber);
             this.tabBuySaleTransaction.Controls.Add(this.Label25);
             this.tabBuySaleTransaction.Location = new System.Drawing.Point(4, 24);
             this.tabBuySaleTransaction.Name = "tabBuySaleTransaction";
@@ -1347,6 +1348,7 @@
             this.dataGridItemLines.Location = new System.Drawing.Point(32, 235);
             this.dataGridItemLines.Name = "dataGridItemLines";
             this.dataGridItemLines.ReadOnly = true;
+            this.dataGridItemLines.RowHeadersWidth = 51;
             this.dataGridItemLines.Size = new System.Drawing.Size(611, 201);
             this.dataGridItemLines.TabIndex = 404;
             this.dataGridItemLines.Visible = false;
@@ -1355,34 +1357,43 @@
             // 
             this.WarehouseId.DataPropertyName = "WarehouseID";
             this.WarehouseId.HeaderText = "Armazem";
+            this.WarehouseId.MinimumWidth = 6;
             this.WarehouseId.Name = "WarehouseId";
             this.WarehouseId.ReadOnly = true;
+            this.WarehouseId.Width = 125;
             // 
             // ItemId
             // 
             this.ItemId.DataPropertyName = "ItemID";
             this.ItemId.HeaderText = "Artigo";
+            this.ItemId.MinimumWidth = 6;
             this.ItemId.Name = "ItemId";
             this.ItemId.ReadOnly = true;
+            this.ItemId.Width = 125;
             // 
             // UnitPrice
             // 
             this.UnitPrice.DataPropertyName = "UnitPrice";
             this.UnitPrice.HeaderText = "Preço";
+            this.UnitPrice.MinimumWidth = 6;
             this.UnitPrice.Name = "UnitPrice";
             this.UnitPrice.ReadOnly = true;
+            this.UnitPrice.Width = 125;
             // 
             // Qty
             // 
             this.Qty.DataPropertyName = "Quantity";
             this.Qty.HeaderText = "Quantidade";
+            this.Qty.MinimumWidth = 6;
             this.Qty.Name = "Qty";
             this.Qty.ReadOnly = true;
+            this.Qty.Width = 125;
             // 
             // Uni
             // 
             this.Uni.DataPropertyName = "UnitOfSaleID";
             this.Uni.HeaderText = "Uni";
+            this.Uni.MinimumWidth = 6;
             this.Uni.Name = "Uni";
             this.Uni.ReadOnly = true;
             this.Uni.Width = 75;
@@ -2700,7 +2711,7 @@
             this.Label45.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label45.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label45.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label45.Location = new System.Drawing.Point(35, 65);
+            this.Label45.Location = new System.Drawing.Point(35, 64);
             this.Label45.Name = "Label45";
             this.Label45.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label45.Size = new System.Drawing.Size(43, 15);
@@ -2713,25 +2724,26 @@
             this._Label15_5.Cursor = System.Windows.Forms.Cursors.Default;
             this._Label15_5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._Label15_5.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._Label15_5.Location = new System.Drawing.Point(83, 65);
+            this._Label15_5.Location = new System.Drawing.Point(82, 64);
             this._Label15_5.Name = "_Label15_5";
             this._Label15_5.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._Label15_5.Size = new System.Drawing.Size(43, 15);
             this._Label15_5.TabIndex = 291;
             this._Label15_5.Text = "Serie";
             // 
-            // Label23
+            // lblTransDocNumber
             // 
-            this.Label23.BackColor = System.Drawing.Color.Transparent;
-            this.Label23.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label23.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label23.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label23.Location = new System.Drawing.Point(129, 63);
-            this.Label23.Name = "Label23";
-            this.Label23.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label23.Size = new System.Drawing.Size(61, 14);
-            this.Label23.TabIndex = 289;
-            this.Label23.Text = "Número";
+            this.lblTransDocNumber.BackColor = System.Drawing.Color.Transparent;
+            this.lblTransDocNumber.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblTransDocNumber.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTransDocNumber.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.lblTransDocNumber.Location = new System.Drawing.Point(129, 64);
+            this.lblTransDocNumber.Name = "lblTransDocNumber";
+            this.lblTransDocNumber.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblTransDocNumber.Size = new System.Drawing.Size(53, 14);
+            this.lblTransDocNumber.TabIndex = 289;
+            this.lblTransDocNumber.Text = "Número";
+            this.lblTransDocNumber.Click += new System.EventHandler(this.lblTransDocNumber_Click);
             // 
             // Label25
             // 
@@ -3329,6 +3341,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(464, 100);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.Size = new System.Drawing.Size(440, 232);
             this.dataGridView1.TabIndex = 16;
             // 
@@ -3590,7 +3603,7 @@
         public System.Windows.Forms.TextBox txtAccountTransDocNumberL1;
         public System.Windows.Forms.Label label35;
         public System.Windows.Forms.Label label33;
-        public System.Windows.Forms.Label label20;
+        public System.Windows.Forms.Label lblAccountTransDocNumber;
         public System.Windows.Forms.Label label15;
         public System.Windows.Forms.Label label14;
         public System.Windows.Forms.ComboBox cmbRecPeg;
@@ -3693,7 +3706,7 @@
         private System.Windows.Forms.Label lblTransCurrency;
         private System.Windows.Forms.Label Label45;
         private System.Windows.Forms.Label _Label15_5;
-        private System.Windows.Forms.Label Label23;
+        private System.Windows.Forms.Label lblTransDocNumber;
         private System.Windows.Forms.Label Label25;
         private System.Windows.Forms.TabPage tabSupplier;
         private System.Windows.Forms.ComboBox cmbSupplierTax;

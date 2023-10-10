@@ -286,7 +286,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="StockHelper.cs" />
+    <Compile Include="Helpers\QuickSearchHelper.cs" />
+    <Compile Include="Helpers\StockHelper.cs" />
     <Compile Include="UIUtils.cs" />
     <EmbeddedResource Include="fAPI.resx">
       <DependentUpon>fAPI.cs</DependentUpon>

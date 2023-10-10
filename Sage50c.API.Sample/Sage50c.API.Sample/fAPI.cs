@@ -13,6 +13,7 @@ using S50cBO22;
 using S50cBL22;
 using S50cDL22;
 using S50cPrint22;
+using SageCoreSaft60;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
@@ -634,7 +635,7 @@ namespace Sage50c.API.Sample {
         /// </summary>
         /// <param name="customerId"></param>
         private void CustomerUpdate(double customerId, bool isNew) {
-            Customer myCustomer = null;
+            S50cBO22.Customer myCustomer = null;
 
             //Ler da BD se não for novo
             myCustomer = dsoCache.CustomerProvider.GetCustomer(customerId);
@@ -648,7 +649,7 @@ namespace Sage50c.API.Sample {
             if (myCustomer == null) {
                 // Cliente NOVO
                 // Obter um novo Id
-                myCustomer = new Customer();
+                myCustomer = new S50cBO22.Customer();
                 myCustomer.CustomerID = (double)numCustomerId.Value;
                 // Colocar credito por limite de valor para não bloquear o cliente
                 myCustomer.LimitType = CustomerLimitType.ltValue;
@@ -785,7 +786,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void SupplierUpdate(double supplierId, bool isNew) {
-            Supplier supplier = null;
+            S50cBO22.Supplier supplier = null;
 
             if (isNew && dsoCache.SupplierProvider.SupplierExists(supplierId)) {
                 throw new Exception(string.Format("O fornecedor [{0}] já existe.", supplierId));
@@ -799,7 +800,7 @@ namespace Sage50c.API.Sample {
             //
             if (supplier == null) {
                 // Como o fornecedor não existe na base de dados, vamos criar um novo
-                supplier = new Supplier();
+                supplier = new S50cBO22.Supplier();
                 supplier.SupplierID = supplierId;
             }
             supplier.Comments = txtSupplierComments.Text;
@@ -2873,132 +2874,28 @@ namespace Sage50c.API.Sample {
         #region QuickSearch
 
         private void btnItemBrow_Click(object sender, EventArgs e) {
-            ItemFind();
+            var item = QuickSearchHelper.ItemFind();
+            if (!string.IsNullOrEmpty(item)) {
+                ItemGet(item);
+            }
         }
-
-
-        private static bool itemIsFindind = false;
-        private bool ItemFind() {
-            QuickSearch quickSearch = null;
-            bool result = false;
-
-            try {
-                if (!itemIsFindind) {
-                    itemIsFindind = true;
-                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Item, systemSettings.StartUpInfo.CacheQuickSearchItem);
-                    clsCollection qsParams = new clsCollection();
-                    qsParams.add(systemSettings.QuickSearchDefaults.WarehouseID, "@WarehouseID");
-                    qsParams.add(systemSettings.QuickSearchDefaults.PriceLineID, "@PriceLineID");
-                    qsParams.add(systemSettings.QuickSearchDefaults.LanguageID, "@LanguageID");
-                    qsParams.add(systemSettings.QuickSearchDefaults.DisplayDiscontinued, "@Discontinued");
-                    if (systemSettings.StartUpInfo.UseItemSearchAlterCurrency) {
-                        qsParams.add(systemSettings.AlternativeCurrency.SaleExchange, "@ctxBaseCurrency");
-                    }
-                    else {
-                        qsParams.add(systemSettings.QuickSearchDefaults.EuroConversionRate, "@ctxBaseCurrency");
-                    }
-                    quickSearch.Parameters = qsParams;
-
-                    if (quickSearch.SelectValue()) {
-                        result = true;
-                        var itemId = quickSearch.ValueSelectedString();
-                        ItemGet(itemId);
-                    }
-                    itemIsFindind = false;
-                }
-            }
-            catch (Exception ex) {
-                itemIsFindind = false;
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            finally {
-
-            }
-            quickSearch = null;
-
-            return result;
-        }
-
 
         private void btnCustomerBrow_Click(object sender, EventArgs e) {
-            CustomerFind();
+            var customerId = QuickSearchHelper.CustomerFind();
+            if (customerId > 0) {
+                numCustomerId.Value = (decimal)customerId;
+                CustomerGet(customerId);
+            }
         }
 
-
-        private static bool customerIsFinding = false;
-        private bool CustomerFind() {
-            QuickSearch quickSearch = null;
-            bool result = false;
-
-            try {
-                //show data for view with id=0: the title is fetched by the
-                //quick search viewer.
-                if (!customerIsFinding) {
-                    customerIsFinding = true;
-
-                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Customer, systemSettings.StartUpInfo.CacheQuickSearchItem);
-
-                    if (quickSearch.SelectValue()) {
-                        double customerId = quickSearch.ValueSelectedDouble();
-                        numCustomerId.Value = (decimal)customerId;
-                        CustomerGet(customerId);
-                        result = true;
-                    }
-                    else {
-                        //Not found... do nothing
-                    }
-                    customerIsFinding = false;
-                    quickSearch = null;
-                }
-            }
-            catch (Exception ex) {
-                customerIsFinding = false;
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            finally {
-            }
-
-            return result;
-        }
 
         private void btnSupplierBrow_Click(object sender, EventArgs e) {
-            SupplierFind();
+            var supplierId = QuickSearchHelper.SupplierFind();
+            if (supplierId > 0) {
+                SupplierGet(supplierId);
+            }
         }
 
-        private static bool supplierIsFinding = false;
-        private bool SupplierFind() {
-            QuickSearch quickSearch = null;
-            bool result = false;
-
-            try {
-                //show data for view with id=0: the title is fetched by the
-                //quick search viewer.
-                if (!supplierIsFinding) {
-                    supplierIsFinding = true;
-
-                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Supplier, systemSettings.StartUpInfo.CacheQuickSearchItem);
-
-                    if (quickSearch.SelectValue()) {
-                        double supplierId = quickSearch.ValueSelectedDouble();
-                        SupplierGet(supplierId);
-                        result = true;
-                    }
-                    else {
-                        //Not found... do nothing
-                    }
-                    supplierIsFinding = false;
-                    quickSearch = null;
-                }
-            }
-            catch (Exception ex) {
-                supplierIsFinding = false;
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            finally {
-            }
-
-            return result;
-        }
         #endregion
 
         private void btnTransGetPrep_Click(object sender, EventArgs e) {
@@ -3665,7 +3562,7 @@ namespace Sage50c.API.Sample {
         }
 
 
-        private void TransactionShow(ItemTransaction trans) {
+        private void TransactionShow(dynamic trans) {
             if (trans != null) {
                 var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
@@ -3678,7 +3575,7 @@ namespace Sage50c.API.Sample {
                 chkTransTaxIncluded.Checked = trans.TransactionTaxIncluded;
 
                 txtTransDocNumber.Text = trans.TransDocNumber.ToString();
-                if (doc.TransDocType != DocumentTypeEnum.dcTypeStock) {
+                if ((int)doc.TransDocType != (int)DocumentTypeEnum.dcTypeStock) {
                     txtPaymentID.Text = trans.Payment.PaymentID.ToString();
                     txtTenderID.Text = trans.Tender.TenderID.ToString();
                 }
@@ -3689,7 +3586,7 @@ namespace Sage50c.API.Sample {
 
                 //
                 //ItemTransaction i; i.PaymentDiscountPercent
-                if (doc.TransDocType == DocumentTypeEnum.dcTypeSale || doc.TransDocType == DocumentTypeEnum.dcTypePurchase) {
+                if ((int)doc.TransDocType == (int)DocumentTypeEnum.dcTypeSale || (int)doc.TransDocType == (int)DocumentTypeEnum.dcTypePurchase) {
                     txtTransGlobalDiscount.Text = trans.PaymentDiscountPercent.ToString();
                     txtTransGlobalDiscount.Enabled = true;
                 }
@@ -3702,7 +3599,7 @@ namespace Sage50c.API.Sample {
                 //
                 //Linha 1
                 if (trans.Details.Count > 0) {
-                    int lineNumber = (int)getLineNumberTotxtTransItemL(1, doc.TransDocType, doc.StockBehavior, trans.Details);
+                    int lineNumber = (int)getLineNumberTotxtTransItemL(1, (DocumentTypeEnum)doc.TransDocType, (StockBehaviorEnum)doc.StockBehavior, trans.Details);
 
                     if (lineNumber != 0) {
                         var transDetail = trans.Details[lineNumber];
@@ -3816,7 +3713,7 @@ namespace Sage50c.API.Sample {
                 }
 
                 //Fabricação/Transformação - restantes linhas
-                if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose || doc.StockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                if ((int)doc.StockBehavior == (int)StockBehaviorEnum.sbStockCompose || (int)doc.StockBehavior == (int)StockBehaviorEnum.sbStockDecompose) {
                     fillComponentListGrid(doc.StockBehavior, trans.Details);
 
                 }
@@ -3838,6 +3735,67 @@ namespace Sage50c.API.Sample {
 
         private void btnTest_Click(object sender, EventArgs e) {
             bsoItemTransaction.Transaction.Taxes.Remove("IVA", 1, TaxItemTypeEnum.txitmProduct);
+        }
+
+        private void lblTransDocNumber_Click(object sender, EventArgs e) {
+            try {
+                var transSerial = string.IsNullOrEmpty(txtTransSerial.Text) ? APIEngine.SystemSettings.WorkstationInfo.DefaultTransSerial : txtTransSerial.Text;
+                var transDocument = string.IsNullOrEmpty(txtTransDoc.Text) ? APIEngine.SystemSettings.WorkstationInfo.DefaultTransDocument : txtTransDoc.Text;
+                double transdocNumber = 0;
+                if (rbTransBuySell.Checked) {
+                    transdocNumber = QuickSearchHelper.ItemTransactionFind(transSerial, transDocument);
+                }
+                else {
+                    transdocNumber = QuickSearchHelper.StockTransactionFind(transSerial, transDocument);
+                }
+                if (transdocNumber > 0) {
+                    txtTransDoc.Text = transDocument;
+                    txtTransSerial.Text = transSerial;
+                    txtTransDocNumber.Text = transdocNumber.ToString();
+                    // Load the document
+                    TransactionGet( false );
+                    txtTransDocNumber.Focus();
+                }
+            }
+            catch(Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        private void lblAccountTransDocNumber_Click(object sender, EventArgs e) {
+            try {
+                var transSerial = string.IsNullOrEmpty(txtAccountTransSerial.Text) ? APIEngine.SystemSettings.WorkstationInfo.DefaultTransSerial : txtAccountTransSerial.Text;
+                string transDocument = txtAccountTransDoc.Text;
+                if (string.IsNullOrEmpty(transDocument)) {
+                    if (cmbRecPeg.SelectedIndex == 0) {
+                        // Recebimentos
+                        transDocument = APIEngine.SystemSettings.WorkstationInfo.Document.FindByNature(TransactionNatureEnum.Account_Customer)
+                                                                                         .OfType<Document>()
+                                                                                         .FirstOrDefault(d => !d.Inactive)
+                                                                                         .DocumentID;
+                    }
+                    else {
+                        // Pagamentos
+                        transDocument = APIEngine.SystemSettings.WorkstationInfo.Document.FindByNature(TransactionNatureEnum.Account_Supplier)
+                                                                                         .OfType<Document>()
+                                                                                         .FirstOrDefault(d => !d.Inactive)
+                                                                                         .DocumentID;
+                    }
+                }
+                //
+                var transdocNumber = QuickSearchHelper.AccountTransactionFind(transSerial, transDocument);
+                if (transdocNumber > 0) {
+                    txtAccountTransDoc.Text = transDocument;
+                    txtAccountTransSerial.Text = transSerial;
+                    txtAccountTransDocNumber.Text = transdocNumber.ToString();
+                    txtAccountTransDocNumber.Focus();
+                    // Load the document
+                    AccountTransactionGet();
+                }
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
         }
     }
 }
