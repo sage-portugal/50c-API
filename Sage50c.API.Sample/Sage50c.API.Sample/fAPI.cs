@@ -57,6 +57,7 @@ namespace Sage50c.API.Sample {
 
             InitializeComponent();
 
+            chkAPIDebugMode.Checked = Properties.Settings.Default.DebugMode;
             txtCompanyId.Text = Properties.Settings.Default.CompanyId;
             cmbAPI.SelectedItem = Properties.Settings.Default.API;
 
@@ -284,6 +285,7 @@ namespace Sage50c.API.Sample {
 
         private void fApi_FormClosed(object sender, FormClosedEventArgs e) {
             // Guardar a empresa de testes
+            Properties.Settings.Default.DebugMode = chkAPIDebugMode.Checked;
             Properties.Settings.Default.CompanyId = txtCompanyId.Text;
             Properties.Settings.Default.API = cmbAPI.SelectedItem.ToString();
             Properties.Settings.Default.Save();
@@ -328,12 +330,11 @@ namespace Sage50c.API.Sample {
                 if (!transactionError) {
                     string msg = null;
                     if (transId != null) {
-                       
-
                         msg = string.Format("Registo inserido: {0}", transId.ToString());
                     }
-                    else
+                    else {
                         msg = "Registo inserido.";
+                    }
 
                     MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -3561,8 +3562,7 @@ namespace Sage50c.API.Sample {
             }
         }
 
-
-        private void TransactionShow(dynamic trans) {
+        private void TransactionShow(ItemTransaction trans) {
             if (trans != null) {
                 var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
@@ -3594,6 +3594,180 @@ namespace Sage50c.API.Sample {
                     txtTransGlobalDiscount.Text = string.Empty;
                     txtTransGlobalDiscount.Enabled = false;
                 }
+                txtTransPartyId.Text = trans.PartyID.ToString();
+                txtTransSerial.Text = trans.TransSerial;
+                //
+                //Linha 1
+                if (trans.Details.Count > 0) {
+                    int lineNumber = (int)getLineNumberTotxtTransItemL(1, (DocumentTypeEnum)doc.TransDocType, (StockBehaviorEnum)doc.StockBehavior, trans.Details);
+
+                    if (lineNumber != 0) {
+                        var transDetail = trans.Details[lineNumber];
+
+                        txtTransFactorL1.Text = transDetail.QuantityFactor.ToString();
+                        txtTransItemL1.Text = transDetail.ItemID;
+                        txtTransQuantityL1.Text = transDetail.Quantity.ToString();
+                        if (transDetail.TaxList.Count > 0)
+                            txtTransTaxRateL1.Text = transDetail.TaxList[1].TaxRate.ToString();
+                        if (trans.TransactionTaxIncluded)
+                            txtTransUnitPriceL1.Text = transDetail.TaxIncludedPrice.ToString();
+                        else
+                            txtTransUnitPriceL1.Text = transDetail.UnitPrice.ToString();
+                        txtTransUnL1.Text = transDetail.UnitOfSaleID;
+                        txtTransWarehouseL1.Text = transDetail.WarehouseID.ToString();
+                        // Cores e Tamanhos - Só na linha 1 
+                        if (transDetail.Color.ColorID > 0) {
+                            txtTransColor1.Text = transDetail.Color.ColorID.ToString();
+                            chkTransModuleSizeColor.Checked = true;
+                        }
+                        if (transDetail.Size.SizeID > 0) {
+                            txtTransSize1.Text = transDetail.Size.SizeID.ToString();
+                            chkTransModuleSizeColor.Checked = true;
+                        }
+                        // Propriedades: Números de série
+                        if (transDetail.ItemProperties.HasPropertyValues) {
+                            lblTransPropNameL1.Text = transDetail.ItemProperties.PropertyID1;
+                            txtTransPropValueL1.Text = transDetail.ItemProperties.PropertyValue1;
+                            // Também é possivel utilizar as restantes 3 propriedades. Para isso necessitariamos de outra forma de apresentar os dados (com mais controlos, p.ex.)
+                            //lblTransPropNameL1_2.Text = transDetail.ItemProperties.PropertyID2;
+                            //txtTransPropValueL1_2.Text = transDetail.ItemProperties.PropertyValue2;
+                            //lblTransPropNameL1_3.Text = transDetail.ItemProperties.PropertyID3;
+                            //txtTransPropValueL1_3.Text = transDetail.ItemProperties.PropertyValue3;
+
+                            chkTransModuleProps.Checked = true;
+                        }
+                    }
+
+                    // Linha 2 - Não tem cores e tamanhos 
+                    if (trans.Details.Count > 1) {
+                        int line = (int)getLineNumberTotxtTransItemL(2, (DocumentTypeEnum)doc.TransDocType, (StockBehaviorEnum)doc.StockBehavior, trans.Details);
+
+                        if (line != 0) {
+                            var transDetail = trans.Details[line];
+                            txtTransFactorL2.Text = transDetail.QuantityFactor.ToString();
+                            txtTransItemL2.Text = transDetail.ItemID;
+                            txtTransQuantityL2.Text = transDetail.Quantity.ToString();
+                            if (transDetail.TaxList.Count > 0)
+                                txtTransTaxRateL2.Text = transDetail.TaxList[1].TaxRate.ToString();
+                            if (trans.TransactionTaxIncluded)
+                                txtTransUnitPriceL2.Text = transDetail.TaxIncludedPrice.ToString();
+                            else
+                                txtTransUnitPriceL2.Text = transDetail.UnitPrice.ToString();
+                            txtTransUnL2.Text = transDetail.UnitOfSaleID;
+                            txtTransWarehouseL2.Text = transDetail.WarehouseID.ToString();
+                            // Propriedades: Números de série
+                            if (transDetail.ItemProperties.HasPropertyValues) {
+                                lblTransPropNameL2.Text = transDetail.ItemProperties.PropertyID1;
+                                txtTransPropValueL2.Text = transDetail.ItemProperties.PropertyValue1;
+
+                                chkTransModuleProps.Checked = true;
+                            }
+                        }
+                    }
+
+                    if (bsoItemTransaction.Transaction.BuyShareOtherCostList.Count > 0) {
+
+                        SimpleDocumentList objDocumentList = new SimpleDocumentList();
+                        objDocumentList = bsoItemTransaction.Transaction.BuyShareOtherCostList;
+
+                        ItemTransaction objTempItemTransaction = new ItemTransaction();
+                        DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
+
+                        string sDetailKey;
+                        foreach (SimpleDocument objDocument in objDocumentList) {
+
+                            if (objDocument.Details.Count > 0) {
+
+                                objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber);
+
+                                txtShareTransSerial_R1.Text = objDocument.TransID.TransSerial;
+                                txtShareTransDocument_R1.Text = objDocument.TransID.TransDocument;
+                                txtShareTransDocNumber_R1.Text = objDocument.TransID.TransDocNumber.ToString();
+                                txtShareAmount_R1.Text = objDocument.TotalTransactionAmount.ToString();
+
+                                foreach (ItemTransactionDetail objTempItemTransactionDetail in objTempItemTransaction.Details) {
+
+                                    sDetailKey = objDocument.TransID.TransSerial + "|" + objDocument.TransID.TransDocument + "|" + objDocument.TransID.TransDocNumber.ToString() + "|" + objTempItemTransactionDetail.LineItemID.ToString() + "|" + objTempItemTransactionDetail.ItemID + "|" + objTempItemTransactionDetail.Color.ColorID + "|" + objTempItemTransactionDetail.Size.SizeID;
+
+                                    switch ((int)objTempItemTransactionDetail.LineItemID) {
+                                        case 1:
+                                            LblL1.Text = objDocument.Details.ItemByIndex[1].ItemID;
+                                            txtAmout_R1_L1.Text = objDocument.Details.ItemByIndex[1].UnitPrice.ToString();
+                                            break;
+
+                                        case 2:
+                                            LblL2.Text = objDocument.Details.ItemByIndex[2].ItemID;
+                                            txtAmout_R1_L2.Text = objDocument.Details.ItemByIndex[2].UnitPrice.ToString();
+                                            break;
+                                    }
+                                }
+                            }
+                            else {
+                                txtShareTransSerial_R2.Text = objDocument.TransID.TransSerial;
+                                txtShareTransDocument_R2.Text = objDocument.TransID.TransDocument;
+                                txtShareTransDocNumber_R2.Text = objDocument.TransID.TransDocNumber.ToString();
+                                txtShareAmount_R2.Text = objDocument.TotalTransactionAmount.ToString();
+                            }
+                        }
+                    }
+                }
+
+                //Fabricação/Transformação - restantes linhas
+                if ((int)doc.StockBehavior == (int)StockBehaviorEnum.sbStockCompose || (int)doc.StockBehavior == (int)StockBehaviorEnum.sbStockDecompose) {
+                    fillComponentListGrid((StockBehaviorEnum)doc.StockBehavior, trans.Details);
+                }
+
+                //
+                // O Documento está anulado ?
+                if ((int)trans.TransStatus == (int)TransStatusEnum.stVoid) {
+                    tabBuySaleTransaction.BackgroundImage = Properties.Resources.stamp_Void;
+                }
+                else {
+                    tabBuySaleTransaction.BackgroundImage = null;
+                }
+            }
+            else {
+                MessageBox.Show("A transação indicada não existe.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
+        private void TransactionShow(StockTransaction trans) {
+            if (trans != null) {
+                var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
+
+                TransactionClear();
+                //txtTransColor1.Text = 
+                txtTransCurrency.Text = trans.BaseCurrency.CurrencyID;
+                txtTransDate.Text = trans.CreateDate.ToShortDateString();
+                txtTransDoc.Text = trans.TransDocument;
+
+                chkTransTaxIncluded.Checked = trans.TransactionTaxIncluded;
+
+                txtTransDocNumber.Text = trans.TransDocNumber.ToString();
+                /*if ((int)doc.TransDocType != (int)DocumentTypeEnum.dcTypeStock)
+                {
+                    txtPaymentID.Text = trans.Payment.PaymentID.ToString();
+                    txtTenderID.Text = trans.Tender.TenderID.ToString();
+                }
+                else
+                {*/
+                txtPaymentID.Text = string.Empty;
+                txtTenderID.Text = string.Empty;
+                //}
+
+                //
+                //ItemTransaction i; i.PaymentDiscountPercent
+                /*if ((int)doc.TransDocType == (int)DocumentTypeEnum.dcTypeSale || (int)doc.TransDocType == (int)DocumentTypeEnum.dcTypePurchase)
+                {
+                    txtTransGlobalDiscount.Text = trans.PaymentDiscountPercent.ToString();
+                    txtTransGlobalDiscount.Enabled = true;
+                }
+                else
+                {*/
+                txtTransGlobalDiscount.Text = string.Empty;
+                txtTransGlobalDiscount.Enabled = false;
+                //}
                 txtTransPartyId.Text = trans.PartyID.ToString();
                 txtTransSerial.Text = trans.TransSerial;
                 //
