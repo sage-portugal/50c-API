@@ -619,6 +619,8 @@ namespace Sage50c.API.Sample {
             if (clearItemId) {
                 txtItemId.Text = string.Empty;
             }
+            cmbItemColor.Items.Clear();
+            cmbItemSize.Items.Clear();
             txtItemDescription.Text = string.Empty;
             txtItemShortDescription.Text = string.Empty;
             numItemPriceTaxIncluded.Value = 0;
