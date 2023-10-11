@@ -1348,8 +1348,9 @@
             this.dataGridItemLines.Location = new System.Drawing.Point(32, 235);
             this.dataGridItemLines.Name = "dataGridItemLines";
             this.dataGridItemLines.ReadOnly = true;
+            this.dataGridItemLines.RowHeadersVisible = false;
             this.dataGridItemLines.RowHeadersWidth = 51;
-            this.dataGridItemLines.Size = new System.Drawing.Size(611, 201);
+            this.dataGridItemLines.Size = new System.Drawing.Size(578, 201);
             this.dataGridItemLines.TabIndex = 404;
             this.dataGridItemLines.Visible = false;
             // 

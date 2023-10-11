@@ -1844,6 +1844,10 @@ namespace Sage50c.API.Sample {
                     var doc = docs.get_ItemByIndex(1);
                     docId = doc.DocumentID;
                     chkTransTaxIncluded.Checked = doc.TaxIncludedPrice;
+
+                    if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose || doc.StockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                        dataGridItemLines.Rows.Clear();
+                }
                 }
                 // partyTye = Nenhum
                 cmbTransPartyType.SelectedIndex = 2;
