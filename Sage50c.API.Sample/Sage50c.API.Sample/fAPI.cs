@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
-using S50cSys22;
-using S50cUtil22;
-using S50cBO22;
 using S50cBL22;
+using S50cBO22;
 using S50cDL22;
 using S50cPrint22;
-using SageCoreSaft60;
+using S50cSys22;
+using S50cUtil22;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
@@ -129,7 +125,7 @@ namespace Sage50c.API.Sample {
             //
             // Load combos
             // Customer -- Load combos data and clear
-            ItemClear(true);
+            ItemClear(true, true);
             CustomerClear();
             SupplierClear();
             TransactionClear();
@@ -540,7 +536,7 @@ namespace Sage50c.API.Sample {
             string itemId = txtItemId.Text.Trim();
             itemProvider.Delete(itemId);
             //
-            ItemClear(false);
+            ItemClear(false, true);
         }
 
         /// <summary>
@@ -582,7 +578,7 @@ namespace Sage50c.API.Sample {
             }
             else {
                 //
-                ItemClear(false);
+                ItemClear(false, false);
                 //Ler o artigo da BD na moeda base
                 var item = itemProvider.GetItem(itemId, systemSettings.BaseCurrency);
 
@@ -614,7 +610,7 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Limpar o form
         /// </summary>
-        private void ItemClear(bool clearItemId) {
+        private void ItemClear(bool clearItemId, bool fillColorSize) {
             //Limpar
             if (clearItemId) {
                 txtItemId.Text = string.Empty;
@@ -625,6 +621,11 @@ namespace Sage50c.API.Sample {
             txtItemShortDescription.Text = string.Empty;
             numItemPriceTaxIncluded.Value = 0;
             txtItemComments.Text = string.Empty;
+
+            if (fillColorSize) {
+                FillItemColorsCMB();
+                FillItemSizesCMB();
+        }
         }
         #endregion
 
@@ -2428,7 +2429,7 @@ namespace Sage50c.API.Sample {
 
         private void btnClear_Click(object sender, EventArgs e) {
             switch (tabEntities.SelectedIndex) {
-                case 0: ItemClear(false); break;
+                case 0: ItemClear(false, true); break;
                 case 1: CustomerClear(); break;
                 case 2: SupplierClear(); break;
                 case 3: TransactionClear(); break;
