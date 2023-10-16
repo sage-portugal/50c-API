@@ -52,6 +52,9 @@ namespace Sage50c.API.Sample {
 
             InitializeComponent();
 
+            FormatColorGrid();
+            FormatSizeGrid();
+
             chkAPIDebugMode.Checked = Properties.Settings.Default.DebugMode;
             txtCompanyId.Text = Properties.Settings.Default.CompanyId;
             cmbAPI.SelectedItem = Properties.Settings.Default.API;
@@ -492,6 +495,22 @@ namespace Sage50c.API.Sample {
                 //    ColorCode = (int)newColor.ColorCode,
                 //    //ColorKey = NÃO USAR
                 //};
+
+                // Adicionar cores ao artigo
+                
+                foreach (DataGridViewRow colorRow in dgvColor.Rows) {
+                    var colorID = (short)colorRow.Cells[0].Value;
+                    var color = APIEngine.DSOCache.ColorProvider.GetColor(colorID);
+
+                    var newItemColor = new ItemColor() {
+                        ColorID = color.ColorID,
+                        ColorName = color.Description,
+                        ColorCode = (int)color.ColorCode,
+                    };
+
+                    newItem.Colors.Add(newItemColor);
+                }
+
                 //newItem.Colors.Add(newItemColor);
 
                 //// Descomentar para criar um novo tamanho e adicionar ao artigo
@@ -593,12 +612,29 @@ namespace Sage50c.API.Sample {
                     cmbItemColor.ValueMember = "ColorID";
                     foreach (ItemColor value in item.Colors) {
                         cmbItemColor.Items.Add(value);
+
+                        DataGridViewRow newRow = new DataGridViewRow();
+                        newRow.CreateCells(dgvColor);
+
+                        newRow.Cells[0].Value = value.ColorID;
+                        newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)value.ColorCode);
+                        newRow.Cells[2].Value = value.ColorName;
+
+                        dgvColor.Rows.Add(newRow);
                     }
 
                     cmbItemSize.DisplayMember = "SizeName";
                     cmbItemSize.ValueMember = "SizeID";
                     foreach (ItemSize value in item.Sizes) {
                         cmbItemSize.Items.Add(value);
+
+                        DataGridViewRow newRow = new DataGridViewRow();
+                        newRow.CreateCells(dgvSize);
+
+                        newRow.Cells[0].Value = value.SizeID;
+                        newRow.Cells[1].Value = value.SizeName;
+
+                        dgvSize.Rows.Add(newRow);
                     }
                 }
                 else {
@@ -625,7 +661,7 @@ namespace Sage50c.API.Sample {
             if (fillColorSize) {
                 FillItemColorsCMB();
                 FillItemSizesCMB();
-        }
+            }
         }
         #endregion
 
@@ -3105,13 +3141,13 @@ namespace Sage50c.API.Sample {
 
         private void cmbItemColor_SelectedIndexChanged(object sender, EventArgs e) {
             cmbItemSize.ResetText();
-            dataGridView1.Columns.Clear();
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dataGridView1.DataSource = GetGridDataColor();
-            dataGridView1.Columns[0].Visible = false;
-            dataGridView1.AutoSize = true;
-            dataGridView1.Refresh();
+            //dataGridView1.Columns.Clear();
+            //dataGridView1.RowHeadersVisible = false;
+            //dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            //dataGridView1.DataSource = GetGridDataColor();
+            //dataGridView1.Columns[0].Visible = false;
+            //dataGridView1.AutoSize = true;
+            //dataGridView1.Refresh();
         }
 
         private DataTable GetGridDataColor() {
@@ -3165,13 +3201,13 @@ namespace Sage50c.API.Sample {
 
         private void cmbItemSize_SelectedIndexChanged(object sender, EventArgs e) {
             cmbItemColor.ResetText();
-            dataGridView1.Columns.Clear();
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dataGridView1.DataSource = GetGridDataSize();
-            dataGridView1.Columns[0].Visible = false;
-            dataGridView1.AutoSize = true;
-            dataGridView1.Refresh();
+            //dataGridView1.Columns.Clear();
+            //dataGridView1.RowHeadersVisible = false;
+            //dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            //dataGridView1.DataSource = GetGridDataSize();
+            //dataGridView1.Columns[0].Visible = false;
+            //dataGridView1.AutoSize = true;
+            //dataGridView1.Refresh();
         }
 
         private DataTable GetGridDataSize() {
@@ -3820,6 +3856,188 @@ namespace Sage50c.API.Sample {
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
+        }
+
+        private void FillItemColorsCMB() {
+
+            cmbItemColor.Items.Clear();
+            cmbItemColor.ValueMember = "ColorID";
+            cmbItemColor.DisplayMember = "Description";
+
+            var rs = APIEngine.DSOCache.ColorProvider.GetColorTableRS();
+
+            while (!rs.EOF) {
+                var colorID = Convert.ToInt16(rs.Fields["ColorID"].Value);
+                var color = APIEngine.DSOCache.ColorProvider.GetColor(colorID);
+                cmbItemColor.Items.Add(color);
+
+                rs.MoveNext();
+            }
+            rs.Close();
+        }
+
+        private void FillItemSizesCMB() {
+
+            cmbItemSize.Items.Clear();
+            cmbItemSize.ValueMember = "SizeID";
+            cmbItemSize.DisplayMember = "Description";
+
+            var rs = APIEngine.DSOCache.SizeProvider.GetSizeTableRS();
+
+            while (!rs.EOF) {
+                var sizeID = Convert.ToInt16(rs.Fields["SizeID"].Value);
+                var size = APIEngine.DSOCache.SizeProvider.GetSize(sizeID);
+                cmbItemSize.Items.Add(size);
+
+                rs.MoveNext();
+            }
+            rs.Close();
+        }
+
+        private void btnAddColor_Click(object sender, EventArgs e) {
+
+            //if (cmbItemColor.SelectedIndex != -1) {
+            var colorId = QuickSearchHelper.ColorFind();
+            if(colorId > 0) {
+                var colorToAdd = APIEngine.DSOCache.ColorProvider.GetColor((short)colorId);
+
+                var isDuplicated = false;
+                foreach (DataGridViewRow colorRow in dgvColor.Rows) {
+                    var colorID = (short)colorRow.Cells[0].Value;
+
+                    if (colorID == colorToAdd.ColorID) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possivel adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        isDuplicated = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicated) {
+                    var newRowIndex = dgvColor.Rows.Add();
+                    var newRow = dgvColor.Rows[newRowIndex];
+
+                    newRow.Cells[0].Value = colorToAdd.ColorID;
+                    newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)colorToAdd.ColorCode);
+                    newRow.Cells[2].Value = colorToAdd.Description;
+                }
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione uma cor para adicionar.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void btnRemoveColor_Click(object sender, EventArgs e) {
+
+            if (dgvColor.CurrentCell != null) {
+                dgvColor.Rows.RemoveAt(dgvColor.CurrentCell.RowIndex);
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione uma cor para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void btnAddSize_Click(object sender, EventArgs e) {
+
+            if (cmbItemSize.SelectedIndex != -1) {
+                var sizeToAdd = (S50cBO22.Size)cmbItemSize.SelectedItem;
+
+                foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
+                    var sizeID = (short)sizeRow.Cells[0].Value;
+
+                    if (sizeID == sizeToAdd.SizeID) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possivel adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        return;
+                    }
+                }
+
+                DataGridViewRow newRow = new DataGridViewRow();
+                newRow.CreateCells(dgvSize);
+
+                newRow.Cells[0].Value = sizeToAdd.SizeID;
+                newRow.Cells[1].Value = sizeToAdd.Description;
+
+                dgvSize.Rows.Add(newRow);
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione um tamanho para adicionar.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void btnRemoveSize_Click(object sender, EventArgs e) {
+
+            if (dgvSize.CurrentCell != null) {
+                dgvSize.Rows.RemoveAt(dgvSize.CurrentCell.RowIndex);
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione um tamanho para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void FormatColorGrid() {
+
+            var ColorID = new DataGridViewTextBoxColumn {
+                HeaderText = "Cód.",
+                Name = "ColorID",
+                ReadOnly = true,
+                Width = 50
+            };
+
+            var ColorUI = new DataGridViewTextBoxColumn {
+                HeaderText = "Cor",
+                Name = "ColorUI",
+                ReadOnly = true,
+                Width = 50
+            };
+
+            var ColorDescription = new DataGridViewTextBoxColumn {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                HeaderText = "Descrição",
+                Name = "Description",
+                ReadOnly = true
+            };
+
+            ApplyGridStyle(dgvColor, new DataGridViewColumn[] {
+                ColorID,
+                ColorUI,
+                ColorDescription
+            });
+        }
+
+        private void FormatSizeGrid() {
+
+            var SizeID = new DataGridViewTextBoxColumn {
+                HeaderText = "Cód.",
+                Name = "SizeID",
+                ReadOnly = true,
+                Width = 119
+            };
+
+            var SizeDescription = new DataGridViewTextBoxColumn {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                HeaderText = "Tamanho",
+                Name = "Description",
+                ReadOnly = true
+            };
+
+            ApplyGridStyle(dgvSize, new DataGridViewColumn[] {
+                SizeID,
+                SizeDescription
+            });
+        }
+
+        private void ApplyGridStyle(DataGridView dgv, DataGridViewColumn[] columns) {
+
+            dgv.BackgroundColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.AppHeaderBackColor);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TextNoFocus);
+            dgv.GridColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.LightGray);
+
+            dgv.RowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TabBackColor);
+
+            dgv.Columns.Clear();
+            dgv.Rows.Clear();
+            dgv.Columns.AddRange(columns);
         }
     }
 }
