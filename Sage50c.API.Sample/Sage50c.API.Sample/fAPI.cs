@@ -4009,7 +4009,7 @@ namespace Sage50c.API.Sample {
                 HeaderText = "Cód.",
                 Name = "SizeID",
                 ReadOnly = true,
-                Width = 119
+                Width = 50
             };
 
             var SizeDescription = new DataGridViewTextBoxColumn {

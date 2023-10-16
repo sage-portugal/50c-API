@@ -249,10 +249,8 @@
             this.Label6 = new System.Windows.Forms.Label();
             this.Label4 = new System.Windows.Forms.Label();
             this.tabItem = new System.Windows.Forms.TabPage();
-            this.lblItemTam = new System.Windows.Forms.Label();
             this.cmbItemSize = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.lblItemColor = new System.Windows.Forms.Label();
             this.cmbItemColor = new System.Windows.Forms.ComboBox();
             this.btnItemBrow = new System.Windows.Forms.Button();
             this.numItemPriceTaxIncluded = new System.Windows.Forms.NumericUpDown();
@@ -267,7 +265,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
             this.dgvColor = new System.Windows.Forms.DataGridView();
-            this.lblColor = new System.Windows.Forms.Label();
             this.btnAddColor = new System.Windows.Forms.Button();
             this.btnRemoveColor = new System.Windows.Forms.Button();
             this.btnCreateColor = new System.Windows.Forms.Button();
@@ -275,8 +272,8 @@
             this.btnAddSize = new System.Windows.Forms.Button();
             this.btnRemoveSize = new System.Windows.Forms.Button();
             this.btnCreateSize = new System.Windows.Forms.Button();
-            this.label20 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -311,6 +308,8 @@
             this.tabEntities.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSize)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -3300,21 +3299,10 @@
             // tabItem
             // 
             this.tabItem.BackColor = System.Drawing.Color.Transparent;
+            this.tabItem.Controls.Add(this.groupBox5);
             this.tabItem.Controls.Add(this.groupBox4);
-            this.tabItem.Controls.Add(this.label20);
-            this.tabItem.Controls.Add(this.btnCreateSize);
-            this.tabItem.Controls.Add(this.btnRemoveSize);
-            this.tabItem.Controls.Add(this.btnAddSize);
-            this.tabItem.Controls.Add(this.dgvSize);
-            this.tabItem.Controls.Add(this.btnCreateColor);
-            this.tabItem.Controls.Add(this.btnRemoveColor);
-            this.tabItem.Controls.Add(this.btnAddColor);
-            this.tabItem.Controls.Add(this.lblColor);
-            this.tabItem.Controls.Add(this.dgvColor);
-            this.tabItem.Controls.Add(this.lblItemTam);
             this.tabItem.Controls.Add(this.cmbItemSize);
             this.tabItem.Controls.Add(this.dataGridView1);
-            this.tabItem.Controls.Add(this.lblItemColor);
             this.tabItem.Controls.Add(this.cmbItemColor);
             this.tabItem.Controls.Add(this.btnItemBrow);
             this.tabItem.Controls.Add(this.numItemPriceTaxIncluded);
@@ -3335,22 +3323,12 @@
             this.tabItem.Text = "Artigo";
             this.tabItem.Click += new System.EventHandler(this.tabItem_Click);
             // 
-            // lblItemTam
-            // 
-            this.lblItemTam.AutoSize = true;
-            this.lblItemTam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemTam.Location = new System.Drawing.Point(454, 67);
-            this.lblItemTam.Name = "lblItemTam";
-            this.lblItemTam.Size = new System.Drawing.Size(33, 15);
-            this.lblItemTam.TabIndex = 18;
-            this.lblItemTam.Text = "Tam:";
-            // 
             // cmbItemSize
             // 
             this.cmbItemSize.DisplayMember = "SizeName";
             this.cmbItemSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbItemSize.FormattingEnabled = true;
-            this.cmbItemSize.Location = new System.Drawing.Point(497, 290);
+            this.cmbItemSize.Location = new System.Drawing.Point(714, 296);
             this.cmbItemSize.Name = "cmbItemSize";
             this.cmbItemSize.Size = new System.Drawing.Size(140, 23);
             this.cmbItemSize.TabIndex = 17;
@@ -3365,29 +3343,19 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(457, 93);
+            this.dataGridView1.Location = new System.Drawing.Point(693, 376);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.Size = new System.Drawing.Size(454, 140);
             this.dataGridView1.TabIndex = 16;
             this.dataGridView1.Visible = false;
             // 
-            // lblItemColor
-            // 
-            this.lblItemColor.AutoSize = true;
-            this.lblItemColor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemColor.Location = new System.Drawing.Point(454, 35);
-            this.lblItemColor.Name = "lblItemColor";
-            this.lblItemColor.Size = new System.Drawing.Size(29, 15);
-            this.lblItemColor.TabIndex = 15;
-            this.lblItemColor.Text = "Cor:";
-            // 
             // cmbItemColor
             // 
             this.cmbItemColor.DisplayMember = "ColorName";
             this.cmbItemColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbItemColor.FormattingEnabled = true;
-            this.cmbItemColor.Location = new System.Drawing.Point(163, 290);
+            this.cmbItemColor.Location = new System.Drawing.Point(693, 325);
             this.cmbItemColor.Name = "cmbItemColor";
             this.cmbItemColor.Size = new System.Drawing.Size(140, 23);
             this.cmbItemColor.TabIndex = 14;
@@ -3526,29 +3494,19 @@
             this.dgvColor.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvColor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvColor.EnableHeadersVisualStyles = false;
-            this.dgvColor.Location = new System.Drawing.Point(63, 323);
+            this.dgvColor.Location = new System.Drawing.Point(40, 22);
             this.dgvColor.MultiSelect = false;
             this.dgvColor.Name = "dgvColor";
             this.dgvColor.ReadOnly = true;
             this.dgvColor.RowHeadersVisible = false;
-            this.dgvColor.Size = new System.Drawing.Size(240, 131);
+            this.dgvColor.Size = new System.Drawing.Size(200, 131);
             this.dgvColor.TabIndex = 19;
-            // 
-            // lblColor
-            // 
-            this.lblColor.AutoSize = true;
-            this.lblColor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblColor.Location = new System.Drawing.Point(59, 298);
-            this.lblColor.Name = "lblColor";
-            this.lblColor.Size = new System.Drawing.Size(41, 15);
-            this.lblColor.TabIndex = 21;
-            this.lblColor.Text = "Cores:";
             // 
             // btnAddColor
             // 
             this.btnAddColor.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Add;
             this.btnAddColor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAddColor.Location = new System.Drawing.Point(31, 323);
+            this.btnAddColor.Location = new System.Drawing.Point(8, 22);
             this.btnAddColor.Name = "btnAddColor";
             this.btnAddColor.Size = new System.Drawing.Size(25, 25);
             this.btnAddColor.TabIndex = 23;
@@ -3559,7 +3517,7 @@
             // 
             this.btnRemoveColor.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.remove;
             this.btnRemoveColor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRemoveColor.Location = new System.Drawing.Point(31, 354);
+            this.btnRemoveColor.Location = new System.Drawing.Point(8, 53);
             this.btnRemoveColor.Name = "btnRemoveColor";
             this.btnRemoveColor.Size = new System.Drawing.Size(25, 25);
             this.btnRemoveColor.TabIndex = 24;
@@ -3570,7 +3528,7 @@
             // 
             this.btnCreateColor.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Note;
             this.btnCreateColor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCreateColor.Location = new System.Drawing.Point(31, 429);
+            this.btnCreateColor.Location = new System.Drawing.Point(8, 128);
             this.btnCreateColor.Name = "btnCreateColor";
             this.btnCreateColor.Size = new System.Drawing.Size(25, 25);
             this.btnCreateColor.TabIndex = 25;
@@ -3586,19 +3544,19 @@
             this.dgvSize.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvSize.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSize.EnableHeadersVisualStyles = false;
-            this.dgvSize.Location = new System.Drawing.Point(397, 323);
+            this.dgvSize.Location = new System.Drawing.Point(39, 22);
             this.dgvSize.MultiSelect = false;
             this.dgvSize.Name = "dgvSize";
             this.dgvSize.ReadOnly = true;
             this.dgvSize.RowHeadersVisible = false;
-            this.dgvSize.Size = new System.Drawing.Size(240, 131);
+            this.dgvSize.Size = new System.Drawing.Size(150, 131);
             this.dgvSize.TabIndex = 26;
             // 
             // btnAddSize
             // 
             this.btnAddSize.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Add;
             this.btnAddSize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAddSize.Location = new System.Drawing.Point(366, 323);
+            this.btnAddSize.Location = new System.Drawing.Point(8, 22);
             this.btnAddSize.Name = "btnAddSize";
             this.btnAddSize.Size = new System.Drawing.Size(25, 25);
             this.btnAddSize.TabIndex = 27;
@@ -3609,7 +3567,7 @@
             // 
             this.btnRemoveSize.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.remove;
             this.btnRemoveSize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRemoveSize.Location = new System.Drawing.Point(366, 354);
+            this.btnRemoveSize.Location = new System.Drawing.Point(8, 53);
             this.btnRemoveSize.Name = "btnRemoveSize";
             this.btnRemoveSize.Size = new System.Drawing.Size(25, 25);
             this.btnRemoveSize.TabIndex = 28;
@@ -3620,30 +3578,37 @@
             // 
             this.btnCreateSize.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Note;
             this.btnCreateSize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCreateSize.Location = new System.Drawing.Point(366, 429);
+            this.btnCreateSize.Location = new System.Drawing.Point(8, 128);
             this.btnCreateSize.Name = "btnCreateSize";
             this.btnCreateSize.Size = new System.Drawing.Size(25, 25);
             this.btnCreateSize.TabIndex = 29;
             this.btnCreateSize.UseVisualStyleBackColor = true;
             // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(394, 298);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(65, 15);
-            this.label20.TabIndex = 30;
-            this.label20.Text = "Tamanhos:";
-            // 
             // groupBox4
             // 
-            this.groupBox4.Location = new System.Drawing.Point(687, 279);
+            this.groupBox4.Controls.Add(this.dgvColor);
+            this.groupBox4.Controls.Add(this.btnAddColor);
+            this.groupBox4.Controls.Add(this.btnRemoveColor);
+            this.groupBox4.Controls.Add(this.btnCreateColor);
+            this.groupBox4.Location = new System.Drawing.Point(465, 32);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(205, 160);
+            this.groupBox4.Size = new System.Drawing.Size(250, 164);
             this.groupBox4.TabIndex = 31;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "groupBox4";
+            this.groupBox4.Text = "Cores";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.dgvSize);
+            this.groupBox5.Controls.Add(this.btnAddSize);
+            this.groupBox5.Controls.Add(this.btnCreateSize);
+            this.groupBox5.Controls.Add(this.btnRemoveSize);
+            this.groupBox5.Location = new System.Drawing.Point(729, 32);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(199, 164);
+            this.groupBox5.TabIndex = 32;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Tamanhos";
             // 
             // fApi
             // 
@@ -3712,6 +3677,8 @@
             this.tabEntities.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvColor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSize)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3906,9 +3873,7 @@
         public System.Windows.Forms.Label Label6;
         public System.Windows.Forms.Label Label4;
         private System.Windows.Forms.TabPage tabItem;
-        private System.Windows.Forms.Label lblItemTam;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Label lblItemColor;
         private System.Windows.Forms.ComboBox cmbItemColor;
         private System.Windows.Forms.Button btnItemBrow;
         private System.Windows.Forms.NumericUpDown numItemPriceTaxIncluded;
@@ -3960,7 +3925,6 @@
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.ComboBox cmbItemSize;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button btnCreateSize;
         private System.Windows.Forms.Button btnRemoveSize;
         private System.Windows.Forms.Button btnAddSize;
@@ -3968,8 +3932,8 @@
         private System.Windows.Forms.Button btnCreateColor;
         private System.Windows.Forms.Button btnRemoveColor;
         private System.Windows.Forms.Button btnAddColor;
-        private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.DataGridView dgvColor;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }
 
