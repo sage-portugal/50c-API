@@ -249,9 +249,6 @@
             this.Label6 = new System.Windows.Forms.Label();
             this.Label4 = new System.Windows.Forms.Label();
             this.tabItem = new System.Windows.Forms.TabPage();
-            this.cmbItemSize = new System.Windows.Forms.ComboBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.cmbItemColor = new System.Windows.Forms.ComboBox();
             this.btnItemBrow = new System.Windows.Forms.Button();
             this.numItemPriceTaxIncluded = new System.Windows.Forms.NumericUpDown();
             this.txtItemPriceTaxIncluded = new System.Windows.Forms.Label();
@@ -272,8 +269,8 @@
             this.btnAddSize = new System.Windows.Forms.Button();
             this.btnRemoveSize = new System.Windows.Forms.Button();
             this.btnCreateSize = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.gbColor = new System.Windows.Forms.GroupBox();
+            this.gbSize = new System.Windows.Forms.GroupBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -303,13 +300,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numCustomerZoneId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCustomerId)).BeginInit();
             this.tabItem.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numItemPriceTaxIncluded)).BeginInit();
             this.tabEntities.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvColor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSize)).BeginInit();
-            this.groupBox4.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.gbColor.SuspendLayout();
+            this.gbSize.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -3299,11 +3295,8 @@
             // tabItem
             // 
             this.tabItem.BackColor = System.Drawing.Color.Transparent;
-            this.tabItem.Controls.Add(this.groupBox5);
-            this.tabItem.Controls.Add(this.groupBox4);
-            this.tabItem.Controls.Add(this.cmbItemSize);
-            this.tabItem.Controls.Add(this.dataGridView1);
-            this.tabItem.Controls.Add(this.cmbItemColor);
+            this.tabItem.Controls.Add(this.gbSize);
+            this.tabItem.Controls.Add(this.gbColor);
             this.tabItem.Controls.Add(this.btnItemBrow);
             this.tabItem.Controls.Add(this.numItemPriceTaxIncluded);
             this.tabItem.Controls.Add(this.txtItemPriceTaxIncluded);
@@ -3322,45 +3315,6 @@
             this.tabItem.TabIndex = 0;
             this.tabItem.Text = "Artigo";
             this.tabItem.Click += new System.EventHandler(this.tabItem_Click);
-            // 
-            // cmbItemSize
-            // 
-            this.cmbItemSize.DisplayMember = "SizeName";
-            this.cmbItemSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbItemSize.FormattingEnabled = true;
-            this.cmbItemSize.Location = new System.Drawing.Point(714, 296);
-            this.cmbItemSize.Name = "cmbItemSize";
-            this.cmbItemSize.Size = new System.Drawing.Size(140, 23);
-            this.cmbItemSize.TabIndex = 17;
-            this.cmbItemSize.ValueMember = "SizeID";
-            this.cmbItemSize.SelectedIndexChanged += new System.EventHandler(this.cmbItemSize_SelectedIndexChanged);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(693, 376);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(454, 140);
-            this.dataGridView1.TabIndex = 16;
-            this.dataGridView1.Visible = false;
-            // 
-            // cmbItemColor
-            // 
-            this.cmbItemColor.DisplayMember = "ColorName";
-            this.cmbItemColor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbItemColor.FormattingEnabled = true;
-            this.cmbItemColor.Location = new System.Drawing.Point(693, 325);
-            this.cmbItemColor.Name = "cmbItemColor";
-            this.cmbItemColor.Size = new System.Drawing.Size(140, 23);
-            this.cmbItemColor.TabIndex = 14;
-            this.cmbItemColor.ValueMember = "ColorID";
-            this.cmbItemColor.SelectedIndexChanged += new System.EventHandler(this.cmbItemColor_SelectedIndexChanged);
             // 
             // btnItemBrow
             // 
@@ -3584,31 +3538,31 @@
             this.btnCreateSize.TabIndex = 29;
             this.btnCreateSize.UseVisualStyleBackColor = true;
             // 
-            // groupBox4
+            // gbColor
             // 
-            this.groupBox4.Controls.Add(this.dgvColor);
-            this.groupBox4.Controls.Add(this.btnAddColor);
-            this.groupBox4.Controls.Add(this.btnRemoveColor);
-            this.groupBox4.Controls.Add(this.btnCreateColor);
-            this.groupBox4.Location = new System.Drawing.Point(465, 32);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(250, 164);
-            this.groupBox4.TabIndex = 31;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Cores";
+            this.gbColor.Controls.Add(this.dgvColor);
+            this.gbColor.Controls.Add(this.btnAddColor);
+            this.gbColor.Controls.Add(this.btnRemoveColor);
+            this.gbColor.Controls.Add(this.btnCreateColor);
+            this.gbColor.Location = new System.Drawing.Point(465, 32);
+            this.gbColor.Name = "gbColor";
+            this.gbColor.Size = new System.Drawing.Size(250, 164);
+            this.gbColor.TabIndex = 31;
+            this.gbColor.TabStop = false;
+            this.gbColor.Text = "Cores";
             // 
-            // groupBox5
+            // gbSize
             // 
-            this.groupBox5.Controls.Add(this.dgvSize);
-            this.groupBox5.Controls.Add(this.btnAddSize);
-            this.groupBox5.Controls.Add(this.btnCreateSize);
-            this.groupBox5.Controls.Add(this.btnRemoveSize);
-            this.groupBox5.Location = new System.Drawing.Point(729, 32);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(199, 164);
-            this.groupBox5.TabIndex = 32;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Tamanhos";
+            this.gbSize.Controls.Add(this.dgvSize);
+            this.gbSize.Controls.Add(this.btnAddSize);
+            this.gbSize.Controls.Add(this.btnCreateSize);
+            this.gbSize.Controls.Add(this.btnRemoveSize);
+            this.gbSize.Location = new System.Drawing.Point(729, 32);
+            this.gbSize.Name = "gbSize";
+            this.gbSize.Size = new System.Drawing.Size(199, 164);
+            this.gbSize.TabIndex = 32;
+            this.gbSize.TabStop = false;
+            this.gbSize.Text = "Tamanhos";
             // 
             // fApi
             // 
@@ -3672,13 +3626,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numCustomerId)).EndInit();
             this.tabItem.ResumeLayout(false);
             this.tabItem.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numItemPriceTaxIncluded)).EndInit();
             this.tabEntities.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvColor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSize)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
+            this.gbColor.ResumeLayout(false);
+            this.gbSize.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3873,8 +3826,6 @@
         public System.Windows.Forms.Label Label6;
         public System.Windows.Forms.Label Label4;
         private System.Windows.Forms.TabPage tabItem;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ComboBox cmbItemColor;
         private System.Windows.Forms.Button btnItemBrow;
         private System.Windows.Forms.NumericUpDown numItemPriceTaxIncluded;
         private System.Windows.Forms.Label txtItemPriceTaxIncluded;
@@ -3923,8 +3874,7 @@
         private System.Windows.Forms.TextBox txtAtcud;
         private System.Windows.Forms.PictureBox pbCSharp;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.ComboBox cmbItemSize;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox gbColor;
         private System.Windows.Forms.Button btnCreateSize;
         private System.Windows.Forms.Button btnRemoveSize;
         private System.Windows.Forms.Button btnAddSize;
@@ -3933,7 +3883,7 @@
         private System.Windows.Forms.Button btnRemoveColor;
         private System.Windows.Forms.Button btnAddColor;
         private System.Windows.Forms.DataGridView dgvColor;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox gbSize;
     }
 }
 

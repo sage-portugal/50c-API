@@ -262,7 +262,10 @@ namespace Sage50c.API.Sample {
         }
 
         private static bool _colorIsFindind = false;
-
+        /// <summary>
+        /// Creates a quick search and returns the id of a color selected by the user
+        /// </summary>
+        /// <returns>The id of a color or 0 if cancelled</returns>
         internal static long ColorFind() {
             QuickSearch quickSearch = null;
             long result = 0;
@@ -283,7 +286,6 @@ namespace Sage50c.API.Sample {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
             finally {
-
             }
             quickSearch = null;
 
