@@ -501,6 +501,9 @@ namespace Sage50c.API.Sample {
                 // Definir as cores do artigo
                 AddColorsToItem(newItem);
 
+                //Definir os tamanhos do artigo
+                AddSizesToItem(newItem);
+
                 //newItem.Colors.Add(newItemColor);
 
                 //// Descomentar para criar um novo tamanho e adicionar ao artigo
@@ -572,6 +575,9 @@ namespace Sage50c.API.Sample {
 
                 // Definir as cores do artigo
                 AddColorsToItem(myItem);
+
+                //Definir os tamanhos do artigo
+                AddSizesToItem(myItem);
 
                 // Guardar as alterações
                 APIEngine.DSOCache.ItemProvider.Save(myItem, myItem.ItemID, false);
@@ -4038,6 +4044,24 @@ namespace Sage50c.API.Sample {
         private void btnCreateColor_Click(object sender, EventArgs e) {
             fColor colorForm = new fColor();
             colorForm.Show();
+        }
+
+        private void AddSizesToItem(Item item) {
+
+            item.Sizes.Clear();
+            foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
+                var sizeID = (short)(sizeRow.Cells[0].Value);
+                var size = APIEngine.DSOCache.SizeProvider.GetSize(sizeID);
+
+                var newItemSize = new ItemSize() {
+                    SizeID = size.SizeID,
+                    SizeName = size.Description,
+                    Quantity = 1,
+                    Units = 1,
+                };
+
+                item.Sizes.Add(newItemSize);
+            }
         }
     }
 }

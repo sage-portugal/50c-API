@@ -291,5 +291,37 @@ namespace Sage50c.API.Sample {
 
             return result;
         }
+
+        private static bool _sizeIsFindind = false;
+        /// <summary>
+        /// Creates a quick search and returns the id of a size selected by the user
+        /// </summary>
+        /// <returns>The id of a size or 0 if cancelled</returns>
+        internal static long SizeFind() {
+            QuickSearch quickSearch = null;
+            long result = 0;
+
+            try {
+                if (!_sizeIsFindind) {
+                    _sizeIsFindind = true;
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Sizes, false);
+
+                    if (quickSearch.SelectValue()) {
+                        result = quickSearch.ValueSelectedLong();
+                    }
+                    _sizeIsFindind = false;
+                }
+            }
+            catch (Exception ex) {
+                _sizeIsFindind = false;
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+            finally {
+
+            }
+            quickSearch = null;
+
+            return result;
+        }
     }
 }
