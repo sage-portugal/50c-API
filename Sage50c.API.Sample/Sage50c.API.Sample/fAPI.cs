@@ -4063,5 +4063,10 @@ namespace Sage50c.API.Sample {
                 item.Sizes.Add(newItemSize);
             }
         }
+
+        private void btnCreateSize_Click(object sender, EventArgs e) {
+            FormSizes formSizes = new FormSizes();
+            formSizes.Show();
+        }
     }
 }

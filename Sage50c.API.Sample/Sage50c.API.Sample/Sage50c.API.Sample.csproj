@@ -278,6 +278,12 @@
     <Compile Include="FormExternalSignature.Designer.cs">
       <DependentUpon>FormExternalSignature.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSizes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSizes.Designer.cs">
+      <DependentUpon>FormSizes.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTenderCheck.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -305,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormExternalSignature.resx">
       <DependentUpon>FormExternalSignature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSizes.resx">
+      <DependentUpon>FormSizes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTenderCheck.resx">
       <DependentUpon>FormTenderCheck.cs</DependentUpon>
