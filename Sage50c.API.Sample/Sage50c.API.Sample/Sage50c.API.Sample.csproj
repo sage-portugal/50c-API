@@ -266,6 +266,12 @@
     <Compile Include="fAPI.Designer.cs">
       <DependentUpon>fAPI.cs</DependentUpon>
     </Compile>
+    <Compile Include="fColor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fColor.Designer.cs">
+      <DependentUpon>fColor.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormExternalSignature.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -293,6 +299,9 @@
     <EmbeddedResource Include="fAPI.resx">
       <DependentUpon>fAPI.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fColor.resx">
+      <DependentUpon>fColor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormExternalSignature.resx">
       <DependentUpon>FormExternalSignature.cs</DependentUpon>
@@ -349,6 +358,12 @@
     <None Include="Resources\Add.ico" />
     <None Include="Resources\remove.ico" />
     <None Include="Resources\Note.ico" />
+    <None Include="Resources\CaretLeft.ico" />
+    <None Include="Resources\caretRight.ico" />
+    <None Include="Resources\PaleteCores.ico" />
+    <None Include="Resources\Search.ico" />
+    <None Include="Resources\caretDoubleLeft.ico" />
+    <None Include="Resources\caretDoubleRight.ico" />
     <Content Include="S_ico_Black.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

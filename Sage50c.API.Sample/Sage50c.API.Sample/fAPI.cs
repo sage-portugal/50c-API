@@ -498,18 +498,8 @@ namespace Sage50c.API.Sample {
 
                 // Adicionar cores ao artigo
 
-                foreach (DataGridViewRow colorRow in dgvColor.Rows) {
-                    var colorID = (short)colorRow.Cells[0].Value;
-                    var color = APIEngine.DSOCache.ColorProvider.GetColor(colorID);
-
-                    var newItemColor = new ItemColor() {
-                        ColorID = color.ColorID,
-                        ColorName = color.Description,
-                        ColorCode = (int)color.ColorCode,
-                    };
-
-                    newItem.Colors.Add(newItemColor);
-                }
+                // Definir as cores do artigo
+                AddColorsToItem(newItem);
 
                 //newItem.Colors.Add(newItemColor);
 
@@ -579,7 +569,10 @@ namespace Sage50c.API.Sample {
                                                     myItem.TaxableGroupID,
                                                     systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
                                                     systemSettings.SystemInfo.TaxRegionID);
-                //
+
+                // Definir as cores do artigo
+                AddColorsToItem(myItem);
+
                 // Guardar as alterações
                 APIEngine.DSOCache.ItemProvider.Save(myItem, myItem.ItemID, false);
             }
@@ -4021,6 +4014,30 @@ namespace Sage50c.API.Sample {
             dgv.Columns.Clear();
             dgv.Rows.Clear();
             dgv.Columns.AddRange(columns);
+        }
+
+        private void AddColorsToItem(Item item) {
+
+            // Limpar as cores anteriores
+            item.Colors.Clear();
+            // Adicionar as cores atualizadas
+            foreach (DataGridViewRow colorRow in dgvColor.Rows) {
+                var colorID = (short)colorRow.Cells[0].Value;
+                var color = APIEngine.DSOCache.ColorProvider.GetColor(colorID);
+
+                var newItemColor = new ItemColor() {
+                    ColorID = color.ColorID,
+                    ColorName = color.Description,
+                    ColorCode = (int)color.ColorCode,
+                };
+
+                item.Colors.Add(newItemColor);
+            }
+        }
+
+        private void btnCreateColor_Click(object sender, EventArgs e) {
+            fColor colorForm = new fColor();
+            colorForm.Show();
         }
     }
 }

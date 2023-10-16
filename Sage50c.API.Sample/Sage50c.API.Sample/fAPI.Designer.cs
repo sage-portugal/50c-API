@@ -3487,6 +3487,7 @@
             this.btnCreateColor.Size = new System.Drawing.Size(25, 25);
             this.btnCreateColor.TabIndex = 25;
             this.btnCreateColor.UseVisualStyleBackColor = true;
+            this.btnCreateColor.Click += new System.EventHandler(this.btnCreateColor_Click);
             // 
             // dgvSize
             // 
