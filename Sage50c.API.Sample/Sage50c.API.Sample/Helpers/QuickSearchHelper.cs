@@ -124,7 +124,7 @@ namespace Sage50c.API.Sample {
 
 
         private static bool _itemTransIsFindind = false;
-        
+
         /// <summary>
         /// Creates a quick search and return the document number selected by the user
         /// </summary>
@@ -259,6 +259,69 @@ namespace Sage50c.API.Sample {
             quickSearch = null;
 
             return transDocNumber;
+        }
+
+        private static bool _colorIsFindind = false;
+        /// <summary>
+        /// Creates a quick search and returns the id of a color selected by the user
+        /// </summary>
+        /// <returns>The id of a color or 0 if cancelled</returns>
+        internal static long ColorFind() {
+            QuickSearch quickSearch = null;
+            long result = 0;
+
+            try {
+                if (!_colorIsFindind) {
+                    _colorIsFindind = true;
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Color, false);
+
+                    if (quickSearch.SelectValue()) {
+                        result = quickSearch.ValueSelectedLong();
+                    }
+                    _colorIsFindind = false;
+                }
+            }
+            catch (Exception ex) {
+                _colorIsFindind = false;
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+            finally {
+            }
+            quickSearch = null;
+
+            return result;
+        }
+
+        private static bool _sizeIsFindind = false;
+        /// <summary>
+        /// Creates a quick search and returns the id of a size selected by the user
+        /// </summary>
+        /// <returns>The id of a size or 0 if cancelled</returns>
+        internal static long SizeFind() {
+            QuickSearch quickSearch = null;
+            long result = 0;
+
+            try {
+                if (!_sizeIsFindind) {
+                    _sizeIsFindind = true;
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Sizes, false);
+
+                    if (quickSearch.SelectValue()) {
+                        result = quickSearch.ValueSelectedLong();
+                    }
+                    _sizeIsFindind = false;
+                }
+            }
+            catch (Exception ex) {
+                _sizeIsFindind = false;
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+            finally {
+
+            }
+            quickSearch = null;
+
+            return result;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Sage.S50c.API.Sample.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Sage50c.API.Sample.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="CompanyId" Type="System.String" Scope="User">
@@ -9,6 +9,9 @@
       <Value Profile="(Default)">CGCO</Value>
     </Setting>
     <Setting Name="S50cSGCOAPI" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DebugMode" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

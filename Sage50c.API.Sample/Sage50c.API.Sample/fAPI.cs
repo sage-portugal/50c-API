@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
-using S50cSys22;
-using S50cUtil22;
-using S50cBO22;
 using S50cBL22;
+using S50cBO22;
 using S50cDL22;
 using S50cPrint22;
-using SageCoreSaft60;
+using S50cSys22;
+using S50cUtil22;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
-
         /// <summary>
         /// Motor de dados para os artigos.
         /// NOTA: Api tem de estar inicializada antes de usar!
@@ -57,6 +52,10 @@ namespace Sage50c.API.Sample {
 
             InitializeComponent();
 
+            FormatColorGrid();
+            FormatSizeGrid();
+
+            chkAPIDebugMode.Checked = Properties.Settings.Default.DebugMode;
             txtCompanyId.Text = Properties.Settings.Default.CompanyId;
             cmbAPI.SelectedItem = Properties.Settings.Default.API;
 
@@ -256,11 +255,11 @@ namespace Sage50c.API.Sample {
         private void S50cAPIEngine_Message(APIEngine.MessageEventArgs Args) {
             Args.Result = MessageBox.Show(Args.Prompt, Args.Title, Args.Buttons, Args.Icon);
         }
+
         #endregion
 
-
-
         #region User interface
+
         /// <summary>
         /// Inicialização da API
         /// </summary>
@@ -284,6 +283,7 @@ namespace Sage50c.API.Sample {
 
         private void fApi_FormClosed(object sender, FormClosedEventArgs e) {
             // Guardar a empresa de testes
+            Properties.Settings.Default.DebugMode = chkAPIDebugMode.Checked;
             Properties.Settings.Default.CompanyId = txtCompanyId.Text;
             Properties.Settings.Default.API = cmbAPI.SelectedItem.ToString();
             Properties.Settings.Default.Save();
@@ -301,8 +301,6 @@ namespace Sage50c.API.Sample {
         }
 
         #endregion
-
-
 
         #region ITEM
 
@@ -328,12 +326,11 @@ namespace Sage50c.API.Sample {
                 if (!transactionError) {
                     string msg = null;
                     if (transId != null) {
-                       
-
                         msg = string.Format("Registo inserido: {0}", transId.ToString());
                     }
-                    else
+                    else {
                         msg = "Registo inserido.";
+                    }
 
                     MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -380,7 +377,6 @@ namespace Sage50c.API.Sample {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
-
 
         /// <summary>
         /// Altera um artigo
@@ -499,6 +495,15 @@ namespace Sage50c.API.Sample {
                 //    ColorCode = (int)newColor.ColorCode,
                 //    //ColorKey = NÃO USAR
                 //};
+
+                // Adicionar cores ao artigo
+
+                // Definir as cores do artigo
+                AddColorsToItem(newItem);
+
+                //Definir os tamanhos do artigo
+                AddSizesToItem(newItem);
+
                 //newItem.Colors.Add(newItemColor);
 
                 //// Descomentar para criar um novo tamanho e adicionar ao artigo
@@ -567,7 +572,13 @@ namespace Sage50c.API.Sample {
                                                     myItem.TaxableGroupID,
                                                     systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
                                                     systemSettings.SystemInfo.TaxRegionID);
-                //
+
+                // Definir as cores do artigo
+                AddColorsToItem(myItem);
+
+                //Definir os tamanhos do artigo
+                AddSizesToItem(myItem);
+
                 // Guardar as alterações
                 APIEngine.DSOCache.ItemProvider.Save(myItem, myItem.ItemID, false);
             }
@@ -584,7 +595,6 @@ namespace Sage50c.API.Sample {
                 throw new Exception("O código do artigo está vazio!");
             }
             else {
-                //
                 ItemClear(false);
                 //Ler o artigo da BD na moeda base
                 var item = itemProvider.GetItem(itemId, systemSettings.BaseCurrency);
@@ -596,16 +606,21 @@ namespace Sage50c.API.Sample {
                     numItemPriceTaxIncluded.Value = (decimal)item.SalePrice[1, 0, string.Empty, 0, item.UnitOfSaleID].TaxIncludedPrice;
                     txtItemComments.Text = item.Comments;
 
-                    cmbItemColor.DisplayMember = "ColorName";
-                    cmbItemColor.ValueMember = "ColorID";
                     foreach (ItemColor value in item.Colors) {
-                        cmbItemColor.Items.Add(value);
+                        var newRowIndex = dgvColor.Rows.Add();
+                        var newRow = dgvColor.Rows[newRowIndex];
+
+                        newRow.Cells[0].Value = value.ColorID;
+                        newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)value.ColorCode);
+                        newRow.Cells[2].Value = value.ColorName;
                     }
 
-                    cmbItemSize.DisplayMember = "SizeName";
-                    cmbItemSize.ValueMember = "SizeID";
                     foreach (ItemSize value in item.Sizes) {
-                        cmbItemSize.Items.Add(value);
+                        var newRowIndex = dgvSize.Rows.Add();
+                        var newRow = dgvSize.Rows[newRowIndex];
+
+                        newRow.Cells[0].Value = value.SizeID;
+                        newRow.Cells[1].Value = value.SizeName;
                     }
                 }
                 else {
@@ -619,8 +634,13 @@ namespace Sage50c.API.Sample {
         /// </summary>
         private void ItemClear(bool clearItemId) {
             //Limpar
-            if (clearItemId)
+            if (clearItemId) {
                 txtItemId.Text = string.Empty;
+            }
+
+            dgvColor.Rows.Clear();
+            dgvSize.Rows.Clear();
+
             txtItemDescription.Text = string.Empty;
             txtItemShortDescription.Text = string.Empty;
             numItemPriceTaxIncluded.Value = 0;
@@ -628,8 +648,8 @@ namespace Sage50c.API.Sample {
         }
         #endregion
 
-
         #region CUSTOMER
+
         /// <summary>
         /// Gravar (inserir ou alterar) um cliente
         /// </summary>
@@ -664,11 +684,13 @@ namespace Sage50c.API.Sample {
                 myCustomer.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
             }
             myCustomer.SalesmanId = (int)numCustomerSalesmanId.Value;
-            if (cmbCustomerCurrency.SelectedValue != null)
+            if (cmbCustomerCurrency.SelectedValue != null) {
                 myCustomer.CurrencyID = (string)cmbCustomerCurrency.SelectedValue;
+            }
             myCustomer.ZoneID = (short)numCustomerZoneId.Value;
-            if (cmbCustomerCountry.SelectedItem != null)
+            if (cmbCustomerCountry.SelectedItem != null) {
                 myCustomer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
+            }
             //
             // Outros campos obrigatórios
             myCustomer.CarrierID = dsoCache.CarrierProvider.GetFirstCarrierID();
@@ -676,8 +698,9 @@ namespace Sage50c.API.Sample {
             myCustomer.CurrencyID = cmbCustomerCurrency.Text;
 
             // Se a zone estiver vazia, considerar a primeira zona nacional
-            if (myCustomer.ZoneID == 0)
+            if (myCustomer.ZoneID == 0) {
                 myCustomer.ZoneID = dsoCache.ZoneProvider.FindZone(ZoneTypeEnum.ztNational);
+            }
             // Se o modo de pagamento estiver vazio, obter o primeiro disponivel
             if (myCustomer.PaymentID == 0) {
                 myCustomer.PaymentID = dsoCache.PaymentProvider.GetFirstID();
@@ -687,11 +710,13 @@ namespace Sage50c.API.Sample {
                 myCustomer.SalesmanId = (int)dsoCache.SalesmanProvider.GetFirstSalesmanID();
             }
             // Se o pais não existir, rectificar
-            if (!dsoCache.CountryProvider.CountryExists(myCustomer.CountryID))
+            if (!dsoCache.CountryProvider.CountryExists(myCustomer.CountryID)) {
                 myCustomer.CountryID = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
+            }
             // Se a moeda não existir, guar a moeda base
-            if (!dsoCache.CurrencyProvider.CurrencyExists(myCustomer.CurrencyID))
+            if (!dsoCache.CurrencyProvider.CurrencyExists(myCustomer.CurrencyID)) {
                 myCustomer.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
+            }
 
             // Gravar. Se for novo NewRec = true;
             dsoCache.CustomerProvider.Save(myCustomer, myCustomer.CustomerID, isNew);
@@ -734,7 +759,6 @@ namespace Sage50c.API.Sample {
             CustomerClear();
         }
 
-
         private void CustomerClear() {
             // Obter um novo ID (para um novo cliente)
             numCustomerId.Value = (decimal)dsoCache.CustomerProvider.GetNewID();
@@ -763,7 +787,6 @@ namespace Sage50c.API.Sample {
 
         #endregion
 
-
         #region SUPPLIER
 
         private void SupplierGet(double supplierId) {
@@ -782,7 +805,6 @@ namespace Sage50c.API.Sample {
             else {
                 SupplierClear();
             }
-
         }
 
         private void SupplierUpdate(double supplierId, bool isNew) {
@@ -809,7 +831,7 @@ namespace Sage50c.API.Sample {
             supplier.OrganizationName = txtSupplierName.Text;
             supplier.FederalTaxId = txtSupplierTaxId.Text;
 
-            if (cmbSupplierTax.SelectedIndex >=0 ) {
+            if (cmbSupplierTax.SelectedIndex >= 0) {
                 var entityFiscalStatus = (EntityFiscalStatus)cmbSupplierTax.SelectedItem;
                 supplier.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
             }
@@ -825,7 +847,6 @@ namespace Sage50c.API.Sample {
 
             SupplierClear();
         }
-
 
         private void SupplierRemove(double supplierId) {
             dsoCache.SupplierProvider.Delete(supplierId);
@@ -849,7 +870,6 @@ namespace Sage50c.API.Sample {
         }
 
         #endregion
-
 
         #region Unit of measure
 
@@ -895,7 +915,6 @@ namespace Sage50c.API.Sample {
 
         #endregion
 
-
         #region Buy/Sale TRANSACTION
 
         private TransactionID TransactionRemove() {
@@ -918,13 +937,16 @@ namespace Sage50c.API.Sample {
                     bsoItemTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
                     //
                     result = bsoItemTransaction.DeleteItemTransaction(false);
-                    if (result)
+                    if (result) {
                         transId = bsoItemTransaction.Transaction.TransactionID;
-                    else
+                    }
+                    else {
                         throw new Exception(string.Format("Não foi possivel anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
+                    }
                 }
-                else
+                else {
                     throw new Exception(string.Format("Não foi possivel carregar o documento {0} {1}/{2}.", transDoc, transSerial, transDocNumber));
+                }
             }
             else {
                 if (transType != DocumentTypeEnum.dcTypeStock) {
@@ -943,8 +965,9 @@ namespace Sage50c.API.Sample {
                         transId.TransDocument = transDoc;
                         transId.TransDocNumber = transDocNumber;
                     }
-                    else
+                    else {
                         throw new Exception(string.Format("Não foi possivel anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
+                    }
                 }
                 else {
                     throw new Exception("O documento indicado não existe.");
@@ -952,7 +975,6 @@ namespace Sage50c.API.Sample {
             }
             return transId;
         }
-
 
         /// <summary>
         /// Inserir ou Actualizar uma transação na base dados
@@ -965,9 +987,9 @@ namespace Sage50c.API.Sample {
             double.TryParse(txtTransDocNumber.Text, out transDocNumber);
 
             TransactionID result = null;
-            if (rbTransBuySell.Checked)
+            if (rbTransBuySell.Checked) {
                 result = TransactionUpdate(transSerial, transDoc, transDocNumber, true, suspendTransaction);
-
+            }
             else {
                 result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, true);
             }
@@ -982,13 +1004,14 @@ namespace Sage50c.API.Sample {
             double.TryParse(txtTransDocNumber.Text, out transDocNumber);
 
             TransactionID result = null;
-            if (rbTransBuySell.Checked)
+            if (rbTransBuySell.Checked) {
                 result = TransactionUpdate(transSerial, transDoc, transDocNumber, false, suspendedTransaction);
-            else
+            }
+            else {
                 result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, false);
+            }
             return result;
         }
-
 
         /// <summary>
         /// Insere ou altera uma transação (compra/venda)
@@ -1120,7 +1143,7 @@ namespace Sage50c.API.Sample {
                 trans.CreateTime = createTime;
 
                 trans.ActualDeliveryDate = createDate;
-                
+
                 //
                 // Definir se o imposto é incluido
                 trans.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
@@ -1307,8 +1330,6 @@ namespace Sage50c.API.Sample {
                     insertedTrans = bsoItemTransaction.SuspendCurrentTransaction();
                 }
                 else {
-
-
                     //Exemplo da Repartição de Custos
                     //INICIO
                     if (APIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
@@ -1407,8 +1428,9 @@ namespace Sage50c.API.Sample {
                     //
                     bsoItemTransaction.SaveDocument(false, false);
                     //
-                    if (!transactionError)
+                    if (!transactionError) {
                         insertedTrans = bsoItemTransaction.Transaction.TransactionID;
+                    }
                 }
                 //
                 BSOItemTransDetail = null;
@@ -1420,19 +1442,15 @@ namespace Sage50c.API.Sample {
                 //Unsubscribe from event
                 bsoItemTransaction.TenderIDChanged -= bsoItemTransaction_TenderIDChanged;
             }
-            
+
             TransactionPrint2(bsoItemTransaction.Transaction.TransSerial, bsoItemTransaction.Transaction.TransDocument, bsoItemTransaction.Transaction.TransDocNumber);
 
             return insertedTrans;
         }
 
-
-
         void bsoItemTransaction_TenderIDChanged(ref short value) {
             MessageBox.Show("bsoItemTransaction_TenderIDChanged");
         }
-
-
 
         /// <summary>
         /// Obtém ou cria um artigo novo e devolve-o
@@ -1578,7 +1596,7 @@ namespace Sage50c.API.Sample {
                                      short colorId, short sizeId,
                                      string serialNumberPropId, string serialNumberPropValue) {
 
-            
+
             var doc = systemSettings.WorkstationInfo.Document[trans.TransDocument];
 
             ItemTransactionDetail transDetail = new ItemTransactionDetail();
@@ -1608,10 +1626,12 @@ namespace Sage50c.API.Sample {
             // definir a quantidade
             transDetail.Quantity = qty;
             // Preço unitário. NOTA: Ver a diferença se o documento for com impostos incluidos!
-            if (trans.TransactionTaxIncluded)
+            if (trans.TransactionTaxIncluded) {
                 transDetail.TaxIncludedPrice = unitPrice;
-            else
+            }
+            else {
                 transDetail.UnitPrice = unitPrice;
+            }
             // Definir a lista de unidades
             transDetail.UnitList = item.UnitList;
             // Definir a unidade de venda/compra
@@ -1632,10 +1652,12 @@ namespace Sage50c.API.Sample {
             //transDetail.DiscountPercent = 10
             //
             // Se o Armazém não existir, utilizar o default que se encontra no documento.
-            if (dsoCache.WarehouseProvider.WarehouseExists(whareHouseId))
+            if (dsoCache.WarehouseProvider.WarehouseExists(whareHouseId)) {
                 transDetail.WarehouseID = whareHouseId;
-            else
+            }
+            else {
                 transDetail.WarehouseID = doc.Defaults.Warehouse;
+            }
             // Identificador da linha
             transDetail.LineItemID = trans.Details.Count + 1;
             //
@@ -1790,9 +1812,10 @@ namespace Sage50c.API.Sample {
                         throw new Exception(string.Format(" O documento [{0}] é de um tipo não suportado por este exemplo: {1}.", transDoc, doc.TransDocType));
                 }
             }
-            TransactionShow(trans);
-        }
 
+            var Transaction = new GenericTransaction(trans);
+            TransactionShow(Transaction);
+        }
 
         private void TransactionClear() {
             RepClear();
@@ -1843,8 +1866,12 @@ namespace Sage50c.API.Sample {
                     var doc = docs.get_ItemByIndex(1);
                     docId = doc.DocumentID;
                     chkTransTaxIncluded.Checked = doc.TaxIncludedPrice;
+
+                    if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose || doc.StockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                        dataGridItemLines.Rows.Clear();
+                    }
                 }
-                // partyTye = Nenhum
+                // partyType = Nenhum
                 cmbTransPartyType.SelectedIndex = 2;
             }
             //
@@ -1859,8 +1886,9 @@ namespace Sage50c.API.Sample {
             var externalSeries = systemSettings.DocumentSeries
                                                .OfType<DocumentsSeries>()
                                                .FirstOrDefault(x => x.SeriesType == SeriesTypeEnum.SeriesExternal);
-            if (externalSeries != null)
+            if (externalSeries != null) {
                 txtTransSerial.Text = externalSeries.Series;
+            }
             //
             TransClearL1();
             TransClearL2();
@@ -1883,7 +1911,6 @@ namespace Sage50c.API.Sample {
             //Size and colors
             TransClearSize1();
             TransClearColor1();
-
         }
 
         private void TransClearL2() {
@@ -1902,12 +1929,15 @@ namespace Sage50c.API.Sample {
         private void TransClearNS1() {
             txtTransPropValueL1.Text = string.Empty;
         }
+
         private void TransClearNS2() {
             txtTransPropValueL2.Text = string.Empty;
         }
+
         private void TransClearSize1() {
             txtTransSize1.Text = string.Empty;
         }
+
         private void TransClearColor1() {
             txtTransColor1.Text = string.Empty;
         }
@@ -1940,12 +1970,13 @@ namespace Sage50c.API.Sample {
             short lotRetWeek = (short)System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(currentDate,
                                                                                                              System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule,
                                                                                                             System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
-            if (lotRetWeek < 52) lotRetWeek++;
+            if (lotRetWeek < 52) {
+                lotRetWeek++;
+            }
             return lotRetWeek;
         }
 
         #endregion
-
 
         #region Stock
 
@@ -1981,8 +2012,9 @@ namespace Sage50c.API.Sample {
             bsoStockTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
             if (isNew) {
                 bsoStockTransaction.InitNewTransaction(transDocument, transSerial);
-                if (transDocNumber > 0)
+                if (transDocNumber > 0) {
                     bsoStockTransaction.Transaction.TransDocNumber = transDocNumber;
+                }
             }
             else {
                 var loadResult = bsoStockTransaction.LoadStockTransaction(transType, transSerial, transDocument, transDocNumber);
@@ -2023,7 +2055,9 @@ namespace Sage50c.API.Sample {
             //------------> ZONA
             //------------> MOEDA
             var currency = APIEngine.DSOCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
-            if (currency == null) currency = APIEngine.SystemSettings.BaseCurrency;
+            if (currency == null) {
+                currency = APIEngine.SystemSettings.BaseCurrency;
+            }
             bsoStockTransaction.BaseCurrency = currency.CurrencyID;
             bsoStockTransaction.BaseCurrencyExchange = currency.BuyExchange;
 
@@ -2161,12 +2195,15 @@ namespace Sage50c.API.Sample {
             //
             //*** WAREHOUSE
             if (warehouseId > 0)
-                if (APIEngine.DSOCache.WarehouseProvider.WarehouseExists(warehouseId))
+                if (APIEngine.DSOCache.WarehouseProvider.WarehouseExists(warehouseId)) {
                     transDetail.WarehouseID = warehouseId;
-                else
+                }
+                else {
                     transDetail.WarehouseID = warehouseId;
-            else
+                }
+            else {
                 transDetail.WarehouseID = warehouseId;
+            }
             //
             transDetail.WarehouseOutgoing = transDetail.WarehouseID;
             transDetail.WarehouseReceipt = transDetail.WarehouseID;
@@ -2225,10 +2262,12 @@ namespace Sage50c.API.Sample {
                 transDetail.ItemTax3 = item.ItemTax3;
                 transDetail.ItemExtraInfo.ItemQuantityCalcFormula = item.ItemQuantityCalcFormula;
 
-                if (item.UnitList.IsInCollection(unitOfSaleId))
+                if (item.UnitList.IsInCollection(unitOfSaleId)) {
                     transDetail.UnitOfSaleID = unitOfSaleId;
-                else
+                }
+                else {
                     transDetail.UnitOfSaleID = item.GetDefaultUnitForTransaction(DocumentTypeEnum.dcTypeStock);
+                }
 
                 //*** PROPERTIES -- Uncomment to use
                 //if(item.PropertyEnabled){
@@ -2342,22 +2381,27 @@ namespace Sage50c.API.Sample {
             transDetail.Quantity3 = Quantity3;
             transDetail.Quantity4 = Quantity4;
             if (!blnHaveSetUnits) {
-                if (!string.IsNullOrEmpty(transDetail.ItemExtraInfo.ItemQuantityCalcFormula) && APIEngine.SystemSettings.SystemInfo.UseUnitWithFormulaItems)
+                if (!string.IsNullOrEmpty(transDetail.ItemExtraInfo.ItemQuantityCalcFormula) && APIEngine.SystemSettings.SystemInfo.UseUnitWithFormulaItems) {
                     transDetail.SetQuantity(StockHelper.CalculateQuantity(transDetail.ItemExtraInfo.ItemQuantityCalcFormula, transDetail, true));
-                else
+                }
+                else {
                     transDetail.SetQuantity(StockHelper.CalculateQuantity(null, transDetail, true));
+                }
             }
             //    
-            if (!blnHaveSetUnits)
+            if (!blnHaveSetUnits) {
                 transDetail.SetQuantity(Quantity);
+            }
             transDetail.Description = item.Description;     // OR "Custom description"
             transDetail.Comments = "Observações de linha: Gerada por" + Application.ProductName;
 
             //*** UnitPrice
-            if (bsoStockTransaction.TransactionTaxIncluded)
+            if (bsoStockTransaction.TransactionTaxIncluded) {
                 transDetail.TaxIncludedPrice = unitPrice;
-            else
+            }
+            else {
                 transDetail.UnitPrice = unitPrice;
+            }
             //
             // Descomentar para indicar desconto na linha
             //transDetail.DiscountPercent = 10;
@@ -2369,11 +2413,13 @@ namespace Sage50c.API.Sample {
 
             S50cUtil22.MathFunctions mathUtil = new MathFunctions();
 
-            if (transDetail.DiscountPercent == 0 && (transDetail.CumulativeDiscountPercent1 != 0 || transDetail.CumulativeDiscountPercent2 != 0 || transDetail.CumulativeDiscountPercent3 != 0))
+            if (transDetail.DiscountPercent == 0 && (transDetail.CumulativeDiscountPercent1 != 0 || transDetail.CumulativeDiscountPercent2 != 0 || transDetail.CumulativeDiscountPercent3 != 0)) {
                 transDetail.DiscountPercent = mathUtil.GetCumulativeDiscount(transDetail.CumulativeDiscountPercent1, transDetail.CumulativeDiscountPercent2, transDetail.CumulativeDiscountPercent3);
+            }
 
-            if (transDetail.DiscountPercent != 0 && (transDetail.CumulativeDiscountPercent1 == 0 && transDetail.CumulativeDiscountPercent2 == 0 && transDetail.CumulativeDiscountPercent3 == 0))
+            if (transDetail.DiscountPercent != 0 && (transDetail.CumulativeDiscountPercent1 == 0 && transDetail.CumulativeDiscountPercent2 == 0 && transDetail.CumulativeDiscountPercent3 == 0)) {
                 transDetail.CumulativeDiscountPercent1 = transDetail.DiscountPercent;
+            }
 
             ////*** Kit ITEMS -- Uncomment to use
             //if( item != null ){
@@ -2384,8 +2430,9 @@ namespace Sage50c.API.Sample {
             //transDetail.ItemExtraInfo.DoNotGroup = true;
 
             //*** PROPERTIES
-            if (transDetail.ItemProperties.HasPropertyValues)
+            if (transDetail.ItemProperties.HasPropertyValues) {
                 APIEngine.DSOCache.ItemPropertyProvider.GetItemPropertyStock(transDetail.ItemID, transDetail.WarehouseID, transDetail.ItemProperties);
+            }
 
             //*** Delivery time -- Uncomment to set
             //transDetail.RequiredDeliveryDateTime = DateTime.Now.AddDays(10);  // Hoje + 10 dias
@@ -2397,9 +2444,7 @@ namespace Sage50c.API.Sample {
             item = null;
         }
 
-
         #endregion
-
 
         private void btnClear_Click(object sender, EventArgs e) {
             switch (tabEntities.SelectedIndex) {
@@ -2422,6 +2467,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void tabEntities_SelectedIndexChanged(object sender, EventArgs e) {
+            //TODO: Perguntar ao jorge
         }
 
         #region Account documents
@@ -2435,21 +2481,22 @@ namespace Sage50c.API.Sample {
             //
             // Obter a transação (recibo ou pagamento)
             var result = accountTransManager.LoadTransaction(transSerial, transDoc, transDocNumber);
-            if (!result)
+            if (!result) {
                 throw new Exception(string.Format(" O documento {0} {1}/{2} não existe ou não é possivel carregá-lo.", transDoc, transSerial, transDocNumber));
+            }
             //
             //Colocar o motivo de isenção: obrigatóriedade depende da definição do documento
             accountTransManager.Transaction.VoidMotive = "Anulado por " + Application.ProductName;
             // Anular o documento
-            if (accountTransManager.DeleteDocument())
+            if (accountTransManager.DeleteDocument()) {
                 transId = accountTransManager.Transaction.TransactionID;
-            else
+            }
+            else {
                 throw new Exception(string.Format("Não foi possivel anular o documento {0} {1}/{2}.", transDoc, transSerial, transDocNumber));
+            }
 
             return transId;
         }
-
-
 
         private void AccountTransAddDetail(AccountTransactionManager accountTransMan, AccountUsedEnum accountUsed, string accountTypeId,
                                             string docId, string docSeries, double docNumber, short transInstallment, double paymentValue) {
@@ -2465,8 +2512,9 @@ namespace Sage50c.API.Sample {
                             throw new Exception(string.Format("O valor a pagar é superior ao valor em divida no documento: {0} {1}/{2}", docId, docSeries, docNumber));
                         }
                         AccountTransactionDetail detail = accountTrans.Details.Find(docSeries, docId, docNumber, transInstallment);
-                        if (detail == null)
+                        if (detail == null) {
                             detail = new AccountTransactionDetail();
+                        }
                         // Lançar o pagamento correcto, acertando também a retenção.
                         accountTransMan.SetPaymentValue(ledger.Guid, paymentValue);
                         //
@@ -2506,7 +2554,6 @@ namespace Sage50c.API.Sample {
                 }
             }
         }
-
 
         /// <summary>
         /// Insere ou altera um pagamento ou recibo
@@ -2603,7 +2650,6 @@ namespace Sage50c.API.Sample {
             return result;
         }
 
-
         /// <summary>
         /// Preencher os meios de pagamentos utilizados no recebimento/pagamento
         /// </summary>
@@ -2648,7 +2694,6 @@ namespace Sage50c.API.Sample {
 
             return TenderLines;
         }
-
 
         /// <summary>
         /// Lê e mostra no ecran um recibo ou pagamento
@@ -2730,27 +2775,35 @@ namespace Sage50c.API.Sample {
         /// Limpa a transação (recibo ou pagamento) do ecran e preenche alguns valores por omissão
         /// </summary>
         private void AccountTransactionClear() {
-            if (cmbRecPeg.SelectedIndex < 0) cmbRecPeg.SelectedIndex = 0;
+            if (cmbRecPeg.SelectedIndex < 0) {
+                cmbRecPeg.SelectedIndex = 0;
+            }
 
             var accountDoc = AccountTransGetDocument();
-            if (accountDoc != null)
+            if (accountDoc != null) {
                 txtAccountTransDoc.Text = accountDoc.DocumentID;
-            else
+            }
+            else {
                 txtAccountTransDoc.Text = string.Empty;
+            }
             var externalSeries = systemSettings.DocumentSeries.OfType<DocumentsSeries>().FirstOrDefault(x => x.SeriesType == SeriesTypeEnum.SeriesExternal);
-            if (externalSeries != null)
+            if (externalSeries != null) {
                 txtAccountTransSerial.Text = externalSeries.Series;
-            else
+            }
+            else {
                 txtAccountTransSerial.Text = string.Empty;
+            }
             txtAccountTransDocNumber.Text = "0";
             txtAccountTransDocCurrency.Text = systemSettings.BaseCurrency.CurrencyID;
             txtAccountTransPartyId.Text = string.Empty;
             txtAccountTransDocDate.Text = DateTime.Today.ToShortDateString();
             var tender = dsoCache.TenderProvider.GetFirstMoneyTender(TenderUseEnum.tndUsedOnBoth);
-            if (tender != null)
+            if (tender != null) {
                 txtAccountTransPaymentId.Text = tender.TenderID.ToString();
-            else
+            }
+            else {
                 txtAccountTransPaymentId.Text = string.Empty;
+            }
             txtAccountTransPaymentId.Text = dsoCache.PaymentProvider.GetFirstID().ToString();
             //
             AccountTransClearL1();
@@ -2800,6 +2853,7 @@ namespace Sage50c.API.Sample {
             else
                 txtAccountTransDoc.Text = string.Empty;
         }
+
         #endregion
 
         private void rbTransStock_CheckedChanged(object sender, EventArgs e) {
@@ -2808,8 +2862,10 @@ namespace Sage50c.API.Sample {
             txtTransGlobalDiscount.Enabled = false;
             dataGridItemLines.Visible = false;
             btnRefreshGridLines.Visible = false;
-            //
-            TransactionClear();
+
+            if (rbTransStock.Checked) {
+                TransactionClear();
+            }
         }
 
         private void rbTransBuySell_CheckedChanged(object sender, EventArgs e) {
@@ -2818,8 +2874,10 @@ namespace Sage50c.API.Sample {
             txtTransGlobalDiscount.Enabled = true;
             dataGridItemLines.Visible = false;
             btnRefreshGridLines.Visible = false;
-            //
-            TransactionClear();
+
+            if (rbTransBuySell.Checked) {
+                TransactionClear();
+            }
         }
 
         private void cmbTransPartyType_SelectedIndexChanged(object sender, EventArgs e) {
@@ -2846,9 +2904,7 @@ namespace Sage50c.API.Sample {
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
         }
-
 
         /// <summary>
         /// Impressão normal via caixa de diálogo e regras da 50c
@@ -2867,9 +2923,8 @@ namespace Sage50c.API.Sample {
         }
 
         private void tabItem_Click(object sender, EventArgs e) {
-
+            //TODO: Perguntar ao Jorge
         }
-
 
         #region QuickSearch
 
@@ -2900,8 +2955,7 @@ namespace Sage50c.API.Sample {
 
         private void btnTransGetPrep_Click(object sender, EventArgs e) {
             try {
-               TransactionGet(true);
-
+                TransactionGet(true);
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -3012,8 +3066,6 @@ namespace Sage50c.API.Sample {
             }
         }
 
-
-
         private void TransactionPrint2(string transSerial, string transDoc, double transDocNumber) {
             clsLArrayObject objListPrintSettings;
             PrintSettings oPrintSettings = null;
@@ -3053,8 +3105,8 @@ namespace Sage50c.API.Sample {
                     }
                     else {
                         bsoItemTransaction.PrintTransaction
-                            (transSerial, transDoc, transDocNumber, 
-                            PrintJobEnum.jobPrint, oPrintSettings.PrintCopies, 
+                            (transSerial, transDoc, transDocNumber,
+                            PrintJobEnum.jobPrint, oPrintSettings.PrintCopies,
                             oPrintSettings);
                     }
                 }
@@ -3070,126 +3122,126 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void cmbItemColor_SelectedIndexChanged(object sender, EventArgs e) {
-            cmbItemSize.ResetText();
-            dataGridView1.Columns.Clear();
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dataGridView1.DataSource = GetGridDataColor();
-            dataGridView1.Columns[0].Visible = false;
-            dataGridView1.AutoSize = true;
-            dataGridView1.Refresh();
-        }
+        //private void cmbItemColor_SelectedIndexChanged(object sender, EventArgs e) {
+        //    cmbItemSize.ResetText();
+        //    dataGridView1.Columns.Clear();
+        //    dataGridView1.RowHeadersVisible = false;
+        //    dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+        //    dataGridView1.DataSource = GetGridDataColor();
+        //    dataGridView1.Columns[0].Visible = false;
+        //    dataGridView1.AutoSize = true;
+        //    dataGridView1.Refresh();
+        //}
 
-        private DataTable GetGridDataColor() {
-            var mainProvider = APIEngine.DataManager.MainProvider;
-            ItemColor color = (ItemColor)cmbItemColor.SelectedItem;
-            string query = "SELECT Stock.ItemID, Stock.ColorID, Stock.SizeID, ItemSize.SequenceNumber, Stock.WarehouseID, Stock.PhysicalQty, Size.Description AS SizeDescription" +
-                           " FROM ((Stock " +
-                           " inner join Size on Stock.SizeID = Size.SizeID) " +
-                           " inner join ItemSize on Stock.SizeID = ItemSize.SizeID AND Stock.ItemID = ItemSize.ItemID) " +
-                           " WHERE Stock.ItemID = '" + mainProvider.SQLFormatter.SQLString(txtItemId.Text) + "' AND " +
-                           " ColorID = " + mainProvider.SQLFormatter.SQLNumber(color.ColorID) +
-                           " ORDER BY SequenceNumber, WarehouseID";
+        //private DataTable GetGridDataColor() {
+        //    var mainProvider = APIEngine.DataManager.MainProvider;
+        //    ItemColor color = (ItemColor)cmbItemColor.SelectedItem;
+        //    string query = "SELECT Stock.ItemID, Stock.ColorID, Stock.SizeID, ItemSize.SequenceNumber, Stock.WarehouseID, Stock.PhysicalQty, Size.Description AS SizeDescription" +
+        //                   " FROM ((Stock " +
+        //                   " inner join Size on Stock.SizeID = Size.SizeID) " +
+        //                   " inner join ItemSize on Stock.SizeID = ItemSize.SizeID AND Stock.ItemID = ItemSize.ItemID) " +
+        //                   " WHERE Stock.ItemID = '" + mainProvider.SQLFormatter.SQLString(txtItemId.Text) + "' AND " +
+        //                   " ColorID = " + mainProvider.SQLFormatter.SQLNumber(color.ColorID) +
+        //                   " ORDER BY SequenceNumber, WarehouseID";
 
-            object recsAffected = new object();
-            ADODB.Recordset rs = mainProvider.Execute(query);
+        //    object recsAffected = new object();
+        //    ADODB.Recordset rs = mainProvider.Execute(query);
 
-            DataTable dt = new DataTable();
+        //    DataTable dt = new DataTable();
 
-            var keyCol = dt.Columns.Add("SizeId", typeof(int));
-            keyCol.ColumnName = "Tamanho";
-            dt.PrimaryKey = new DataColumn[] { keyCol };
+        //    var keyCol = dt.Columns.Add("SizeId", typeof(int));
+        //    keyCol.ColumnName = "Tamanho";
+        //    dt.PrimaryKey = new DataColumn[] { keyCol };
 
-            var colSizeDesc = dt.Columns.Add("Desc.", typeof(string));
+        //    var colSizeDesc = dt.Columns.Add("Desc.", typeof(string));
 
-            var warehouseList = dsoCache.WarehouseProvider.GetWarehouseList();
-            foreach (Warehouse ware in warehouseList) {
-                dt.Columns.Add(ware.WarehouseID.ToString(), typeof(double));
-            }
+        //    var warehouseList = dsoCache.WarehouseProvider.GetWarehouseList();
+        //    foreach (Warehouse ware in warehouseList) {
+        //        dt.Columns.Add(ware.WarehouseID.ToString(), typeof(double));
+        //    }
 
-            while (!rs.EOF) {
-                var sizeId = (int)rs.Fields["SizeId"].Value;
-                var warehouseId = (int)rs.Fields["WarehouseId"].Value;
-                DataColumn col = dt.Columns[warehouseId.ToString()];
+        //    while (!rs.EOF) {
+        //        var sizeId = (int)rs.Fields["SizeId"].Value;
+        //        var warehouseId = (int)rs.Fields["WarehouseId"].Value;
+        //        DataColumn col = dt.Columns[warehouseId.ToString()];
 
-                var row = dt.Rows.Find(sizeId);
-                if (row == null) {
-                    row = dt.NewRow();
-                    row[keyCol] = sizeId;
-                    row[colSizeDesc] = rs.Fields["SizeDescription"].Value.ToString();
-                    dt.Rows.Add(row);
-                }
-                row[col] = Math.Round((double)rs.Fields["PhysicalQty"].Value, 5);
+        //        var row = dt.Rows.Find(sizeId);
+        //        if (row == null) {
+        //            row = dt.NewRow();
+        //            row[keyCol] = sizeId;
+        //            row[colSizeDesc] = rs.Fields["SizeDescription"].Value.ToString();
+        //            dt.Rows.Add(row);
+        //        }
+        //        row[col] = Math.Round((double)rs.Fields["PhysicalQty"].Value, 5);
 
-                rs.MoveNext();
-            }
-            rs.Close();
-            rs = null;
+        //        rs.MoveNext();
+        //    }
+        //    rs.Close();
+        //    rs = null;
 
-            return dt;
-        }
+        //    return dt;
+        //}
 
-        private void cmbItemSize_SelectedIndexChanged(object sender, EventArgs e) {
-            cmbItemColor.ResetText();
-            dataGridView1.Columns.Clear();
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dataGridView1.DataSource = GetGridDataSize();
-            dataGridView1.Columns[0].Visible = false;
-            dataGridView1.AutoSize = true;
-            dataGridView1.Refresh();
-        }
+        //private void cmbItemSize_SelectedIndexChanged(object sender, EventArgs e) {
+        //    cmbItemColor.ResetText();
+        //    dataGridView1.Columns.Clear();
+        //    dataGridView1.RowHeadersVisible = false;
+        //    dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+        //    dataGridView1.DataSource = GetGridDataSize();
+        //    dataGridView1.Columns[0].Visible = false;
+        //    dataGridView1.AutoSize = true;
+        //    dataGridView1.Refresh();
+        //}
 
-        private DataTable GetGridDataSize() {
-            var mainProvider = APIEngine.DataManager.MainProvider;
-            ItemSize size = (ItemSize)cmbItemSize.SelectedItem;
-            string query = "SELECT Stock.ItemID, Stock.ColorID, Stock.SizeID, ItemColor.SequenceNumber, Stock.WarehouseID, Stock.PhysicalQty, Color.Description AS ColorDescription" +
-                           " FROM ((Stock " +
-                           " inner join Color on Stock.ColorID = Color.ColorID) " +
-                           " inner join ItemColor on Stock.ColorID = ItemColor.ColorID AND Stock.ItemID = ItemColor.ItemID) " +
-                           " WHERE Stock.ItemID = '" + mainProvider.SQLFormatter.SQLString(txtItemId.Text) + "' AND " +
-                           " Stock.SizeID = " + mainProvider.SQLFormatter.SQLNumber(size.SizeID) +
-                           " ORDER BY SequenceNumber, WarehouseID";
+        //private DataTable GetGridDataSize() {
+        //    var mainProvider = APIEngine.DataManager.MainProvider;
+        //    ItemSize size = (ItemSize)cmbItemSize.SelectedItem;
+        //    string query = "SELECT Stock.ItemID, Stock.ColorID, Stock.SizeID, ItemColor.SequenceNumber, Stock.WarehouseID, Stock.PhysicalQty, Color.Description AS ColorDescription" +
+        //                   " FROM ((Stock " +
+        //                   " inner join Color on Stock.ColorID = Color.ColorID) " +
+        //                   " inner join ItemColor on Stock.ColorID = ItemColor.ColorID AND Stock.ItemID = ItemColor.ItemID) " +
+        //                   " WHERE Stock.ItemID = '" + mainProvider.SQLFormatter.SQLString(txtItemId.Text) + "' AND " +
+        //                   " Stock.SizeID = " + mainProvider.SQLFormatter.SQLNumber(size.SizeID) +
+        //                   " ORDER BY SequenceNumber, WarehouseID";
 
 
 
-            var rs = mainProvider.Execute(query);
+        //    var rs = mainProvider.Execute(query);
 
-            DataTable dt = new DataTable();
+        //    DataTable dt = new DataTable();
 
-            var keyCol = dt.Columns.Add("ColorId", typeof(int));
-            keyCol.ColumnName = "Cor";
-            dt.PrimaryKey = new DataColumn[] { keyCol };
+        //    var keyCol = dt.Columns.Add("ColorId", typeof(int));
+        //    keyCol.ColumnName = "Cor";
+        //    dt.PrimaryKey = new DataColumn[] { keyCol };
 
-            var colColorDesc = dt.Columns.Add("Desc.", typeof(string));
+        //    var colColorDesc = dt.Columns.Add("Desc.", typeof(string));
 
-            var warehouseList = dsoCache.WarehouseProvider.GetWarehouseList();
-            foreach (Warehouse ware in warehouseList) {
-                dt.Columns.Add(ware.WarehouseID.ToString(), typeof(double));
-            }
+        //    var warehouseList = dsoCache.WarehouseProvider.GetWarehouseList();
+        //    foreach (Warehouse ware in warehouseList) {
+        //        dt.Columns.Add(ware.WarehouseID.ToString(), typeof(double));
+        //    }
 
-            while (!rs.EOF) {
-                var colorId = (int)rs.Fields["ColorId"].Value;
-                var warehouseId = (int)rs.Fields["WarehouseId"].Value;
-                DataColumn col = dt.Columns[warehouseId.ToString()];
+        //    while (!rs.EOF) {
+        //        var colorId = (int)rs.Fields["ColorId"].Value;
+        //        var warehouseId = (int)rs.Fields["WarehouseId"].Value;
+        //        DataColumn col = dt.Columns[warehouseId.ToString()];
 
-                var row = dt.Rows.Find(colorId);
-                if (row == null) {
-                    row = dt.NewRow();
-                    row[keyCol] = colorId;
-                    row[colColorDesc] = rs.Fields["ColorDescription"].Value.ToString();
-                    dt.Rows.Add(row);
-                }
-                row[col] = Math.Round((double)rs.Fields["PhysicalQty"].Value, 5);
+        //        var row = dt.Rows.Find(colorId);
+        //        if (row == null) {
+        //            row = dt.NewRow();
+        //            row[keyCol] = colorId;
+        //            row[colColorDesc] = rs.Fields["ColorDescription"].Value.ToString();
+        //            dt.Rows.Add(row);
+        //        }
+        //        row[col] = Math.Round((double)rs.Fields["PhysicalQty"].Value, 5);
 
-                rs.MoveNext();
-            }
-            rs.Close();
-            rs = null;
+        //        rs.MoveNext();
+        //    }
+        //    rs.Close();
+        //    rs = null;
 
-            return dt;
-        }
+        //    return dt;
+        //}
 
         private ItemTransactionDetailList GetItemComponentList(int LineID) {
             var itemDetails = new ItemTransactionDetailList();
@@ -3233,9 +3285,7 @@ namespace Sage50c.API.Sample {
                     WarehouseID = txtTransWarehouseL2.Text.ToShort();
 
                     break;
-
             }
-
 
             var item = itemProvider.GetItem(itemID, currency, false);
             if (item != null) {
@@ -3286,7 +3336,6 @@ namespace Sage50c.API.Sample {
                     dataGridItemLines.Rows[rowIndex].Tag = value;
                 }
             }
-
         }
 
         private void rbTransStockCompose_CheckedChanged(object sender, EventArgs e) {
@@ -3296,9 +3345,10 @@ namespace Sage50c.API.Sample {
             dataGridItemLines.Visible = true;
             btnRefreshGridLines.Visible = true;
             dataGridItemLines.Rows.Clear();
-            //
-            TransactionClear();
 
+            if (rbTransStockCompose.Checked) {
+                TransactionClear();
+            }
         }
 
         private void rbTransStockDecompose_CheckedChanged(object sender, EventArgs e) {
@@ -3308,9 +3358,10 @@ namespace Sage50c.API.Sample {
             dataGridItemLines.Visible = true;
             btnRefreshGridLines.Visible = true;
             dataGridItemLines.Rows.Clear();
-            //
-            TransactionClear();
 
+            if (rbTransStockDecompose.Checked) {
+                TransactionClear();
+            }
         }
 
         private void btnRefreshGridLines_Click(object sender, EventArgs e) {
@@ -3424,7 +3475,6 @@ namespace Sage50c.API.Sample {
             };
         }
 
-
         private bool SetExternalSignature(ItemTransaction trans) {
             var result = true;
             using (var formSig = new FormExternalSignature()) {
@@ -3514,7 +3564,6 @@ namespace Sage50c.API.Sample {
                 LblL1.Text = string.Empty;
                 LblL2.Text = string.Empty;
             }
-
         }
 
         private void txtShareTransDocument_R1_LostFocus(object sender, EventArgs e) {
@@ -3536,7 +3585,9 @@ namespace Sage50c.API.Sample {
                 //Nr. do documento temporário a importar.
                 bsoItemTransaction.RestoreTempTransaction(DocumentTypeEnum.dcTypeSale, txtTransDocNumber.Text.ToInt());
                 if (bsoItemTransaction.Transaction.Details.Count > 0) {
-                    TransactionShow(bsoItemTransaction.Transaction);
+
+                    var Transaction = new GenericTransaction(bsoItemTransaction.Transaction);
+                    TransactionShow(Transaction);
 
                     if (DialogResult.Yes ==
                         MessageBox.Show("Guardar o documento temporário recuperado?", Application.ProductName,
@@ -3556,13 +3607,12 @@ namespace Sage50c.API.Sample {
                                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
-
-        private void TransactionShow(dynamic trans) {
+        private void TransactionShow(GenericTransaction trans) {
             if (trans != null) {
                 var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
@@ -3575,28 +3625,18 @@ namespace Sage50c.API.Sample {
                 chkTransTaxIncluded.Checked = trans.TransactionTaxIncluded;
 
                 txtTransDocNumber.Text = trans.TransDocNumber.ToString();
-                if ((int)doc.TransDocType != (int)DocumentTypeEnum.dcTypeStock) {
-                    txtPaymentID.Text = trans.Payment.PaymentID.ToString();
-                    txtTenderID.Text = trans.Tender.TenderID.ToString();
-                }
-                else {
-                    txtPaymentID.Text = string.Empty;
-                    txtTenderID.Text = string.Empty;
-                }
 
-                //
+                txtPaymentID.Text = trans.PaymentID;
+                txtTenderID.Text = trans.TenderID;
+
                 //ItemTransaction i; i.PaymentDiscountPercent
-                if ((int)doc.TransDocType == (int)DocumentTypeEnum.dcTypeSale || (int)doc.TransDocType == (int)DocumentTypeEnum.dcTypePurchase) {
-                    txtTransGlobalDiscount.Text = trans.PaymentDiscountPercent.ToString();
-                    txtTransGlobalDiscount.Enabled = true;
-                }
-                else {
-                    txtTransGlobalDiscount.Text = string.Empty;
-                    txtTransGlobalDiscount.Enabled = false;
-                }
+
+                txtTransGlobalDiscount.Text = trans.PaymentDiscountPercent;
+                txtTransGlobalDiscount.Enabled = trans.TransGlobalDiscountEnabled;
+
                 txtTransPartyId.Text = trans.PartyID.ToString();
                 txtTransSerial.Text = trans.TransSerial;
-                //
+
                 //Linha 1
                 if (trans.Details.Count > 0) {
                     int lineNumber = (int)getLineNumberTotxtTransItemL(1, (DocumentTypeEnum)doc.TransDocType, (StockBehaviorEnum)doc.StockBehavior, trans.Details);
@@ -3607,12 +3647,15 @@ namespace Sage50c.API.Sample {
                         txtTransFactorL1.Text = transDetail.QuantityFactor.ToString();
                         txtTransItemL1.Text = transDetail.ItemID;
                         txtTransQuantityL1.Text = transDetail.Quantity.ToString();
-                        if (transDetail.TaxList.Count > 0)
+                        if (transDetail.TaxList.Count > 0) {
                             txtTransTaxRateL1.Text = transDetail.TaxList[1].TaxRate.ToString();
-                        if (trans.TransactionTaxIncluded)
+                        }
+                        if (trans.TransactionTaxIncluded) {
                             txtTransUnitPriceL1.Text = transDetail.TaxIncludedPrice.ToString();
-                        else
+                        }
+                        else {
                             txtTransUnitPriceL1.Text = transDetail.UnitPrice.ToString();
+                        }
                         txtTransUnL1.Text = transDetail.UnitOfSaleID;
                         txtTransWarehouseL1.Text = transDetail.WarehouseID.ToString();
                         // Cores e Tamanhos - Só na linha 1 
@@ -3647,12 +3690,15 @@ namespace Sage50c.API.Sample {
                             txtTransFactorL2.Text = transDetail.QuantityFactor.ToString();
                             txtTransItemL2.Text = transDetail.ItemID;
                             txtTransQuantityL2.Text = transDetail.Quantity.ToString();
-                            if (transDetail.TaxList.Count > 0)
+                            if (transDetail.TaxList.Count > 0) {
                                 txtTransTaxRateL2.Text = transDetail.TaxList[1].TaxRate.ToString();
-                            if (trans.TransactionTaxIncluded)
+                            }
+                            if (trans.TransactionTaxIncluded) {
                                 txtTransUnitPriceL2.Text = transDetail.TaxIncludedPrice.ToString();
-                            else
+                            }
+                            else {
                                 txtTransUnitPriceL2.Text = transDetail.UnitPrice.ToString();
+                            }
                             txtTransUnL2.Text = transDetail.UnitOfSaleID;
                             txtTransWarehouseL2.Text = transDetail.WarehouseID.ToString();
                             // Propriedades: Números de série
@@ -3717,7 +3763,6 @@ namespace Sage50c.API.Sample {
                     fillComponentListGrid((StockBehaviorEnum)doc.StockBehavior, trans.Details);
                 }
 
-                //
                 // O Documento está anulado ?
                 if ((int)trans.TransStatus == (int)TransStatusEnum.stVoid) {
                     tabBuySaleTransaction.BackgroundImage = Properties.Resources.stamp_Void;
@@ -3729,7 +3774,6 @@ namespace Sage50c.API.Sample {
             else {
                 MessageBox.Show("A transação indicada não existe.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
         }
 
         private void btnTest_Click(object sender, EventArgs e) {
@@ -3752,11 +3796,11 @@ namespace Sage50c.API.Sample {
                     txtTransSerial.Text = transSerial;
                     txtTransDocNumber.Text = transdocNumber.ToString();
                     // Load the document
-                    TransactionGet( false );
+                    TransactionGet(false);
                     txtTransDocNumber.Focus();
                 }
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
@@ -3795,6 +3839,234 @@ namespace Sage50c.API.Sample {
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
+        }
+
+        //private void FillItemColorsCMB() {
+
+        //    cmbItemColor.Items.Clear();
+        //    cmbItemColor.ValueMember = "ColorID";
+        //    cmbItemColor.DisplayMember = "Description";
+
+        //    var rs = APIEngine.DSOCache.ColorProvider.GetColorTableRS();
+
+        //    while (!rs.EOF) {
+        //        var colorID = Convert.ToInt16(rs.Fields["ColorID"].Value);
+        //        var color = APIEngine.DSOCache.ColorProvider.GetColor(colorID);
+        //        cmbItemColor.Items.Add(color);
+
+        //        rs.MoveNext();
+        //    }
+        //    rs.Close();
+        //}
+
+        //private void FillItemSizesCMB() {
+
+        //    cmbItemSize.Items.Clear();
+        //    cmbItemSize.ValueMember = "SizeID";
+        //    cmbItemSize.DisplayMember = "Description";
+
+        //    var rs = APIEngine.DSOCache.SizeProvider.GetSizeTableRS();
+
+        //    while (!rs.EOF) {
+        //        var sizeID = Convert.ToInt16(rs.Fields["SizeID"].Value);
+        //        var size = APIEngine.DSOCache.SizeProvider.GetSize(sizeID);
+        //        cmbItemSize.Items.Add(size);
+
+        //        rs.MoveNext();
+        //    }
+        //    rs.Close();
+        //}
+
+        private void btnAddColor_Click(object sender, EventArgs e) {
+
+            var colorId = QuickSearchHelper.ColorFind();
+            if (colorId > 0) {
+                var colorToAdd = APIEngine.DSOCache.ColorProvider.GetColor((short)colorId);
+
+                var isDuplicate = false;
+                foreach (DataGridViewRow colorRow in dgvColor.Rows) {
+                    var colorID = (short)colorRow.Cells[0].Value;
+
+                    if (colorID == colorToAdd.ColorID) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possivel adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicate) {
+                    var newRowIndex = dgvColor.Rows.Add();
+                    var newRow = dgvColor.Rows[newRowIndex];
+
+                    newRow.Cells[0].Value = colorToAdd.ColorID;
+                    newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)colorToAdd.ColorCode);
+                    newRow.Cells[2].Value = colorToAdd.Description;
+                }
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione uma cor para adicionar.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void btnRemoveColor_Click(object sender, EventArgs e) {
+
+            if (dgvColor.CurrentCell != null) {
+                dgvColor.Rows.RemoveAt(dgvColor.CurrentCell.RowIndex);
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione uma cor para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void btnAddSize_Click(object sender, EventArgs e) {
+
+            //if (cmbItemSize.SelectedIndex != -1) {
+            //    var sizeToAdd = (S50cBO22.Size)cmbItemSize.SelectedItem;
+
+            //    foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
+            //        var sizeID = (short)sizeRow.Cells[0].Value;
+
+            //        if (sizeID == sizeToAdd.SizeID) {
+            //            APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possivel adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            //            return;
+            //        }
+            //    }
+
+            //    DataGridViewRow newRow = new DataGridViewRow();
+            //    newRow.CreateCells(dgvSize);
+
+            //    newRow.Cells[0].Value = sizeToAdd.SizeID;
+            //    newRow.Cells[1].Value = sizeToAdd.Description;
+
+            //    dgvSize.Rows.Add(newRow);
+            //}
+            //else {
+            //    APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione um tamanho para adicionar.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            //}
+        }
+
+        private void btnRemoveSize_Click(object sender, EventArgs e) {
+
+            if (dgvSize.CurrentCell != null) {
+                dgvSize.Rows.RemoveAt(dgvSize.CurrentCell.RowIndex);
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione um tamanho para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void FormatColorGrid() {
+
+            var ColorID = new DataGridViewTextBoxColumn {
+                HeaderText = "Cód.",
+                Name = "ColorID",
+                ReadOnly = true,
+                Width = 50
+            };
+
+            var ColorUI = new DataGridViewTextBoxColumn {
+                HeaderText = "Cor",
+                Name = "ColorUI",
+                ReadOnly = true,
+                Width = 50
+            };
+
+            var ColorDescription = new DataGridViewTextBoxColumn {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                HeaderText = "Descrição",
+                Name = "Description",
+                ReadOnly = true
+            };
+
+            ApplyGridStyle(dgvColor, new DataGridViewColumn[] {
+                ColorID,
+                ColorUI,
+                ColorDescription
+            });
+        }
+
+        private void FormatSizeGrid() {
+
+            var SizeID = new DataGridViewTextBoxColumn {
+                HeaderText = "Cód.",
+                Name = "SizeID",
+                ReadOnly = true,
+                Width = 50
+            };
+
+            var SizeDescription = new DataGridViewTextBoxColumn {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                HeaderText = "Tamanho",
+                Name = "Description",
+                ReadOnly = true
+            };
+
+            ApplyGridStyle(dgvSize, new DataGridViewColumn[] {
+                SizeID,
+                SizeDescription
+            });
+        }
+
+        private void ApplyGridStyle(DataGridView dgv, DataGridViewColumn[] columns) {
+
+            dgv.BackgroundColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.AppHeaderBackColor);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TextNoFocus);
+            dgv.GridColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.LightGray);
+
+            dgv.RowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TabBackColor);
+
+            dgv.Columns.Clear();
+            dgv.Rows.Clear();
+            dgv.Columns.AddRange(columns);
+        }
+
+        private void AddColorsToItem(Item item) {
+
+            // Limpar as cores anteriores
+            item.Colors.Clear();
+            // Adicionar as cores atualizadas
+            foreach (DataGridViewRow colorRow in dgvColor.Rows) {
+                var colorID = (short)colorRow.Cells[0].Value;
+                var color = APIEngine.DSOCache.ColorProvider.GetColor(colorID);
+
+                var newItemColor = new ItemColor() {
+                    ColorID = color.ColorID,
+                    ColorName = color.Description,
+                    ColorCode = (int)color.ColorCode,
+                };
+
+                item.Colors.Add(newItemColor);
+            }
+        }
+
+        private void btnCreateColor_Click(object sender, EventArgs e) {
+            fColor colorForm = new fColor();
+            colorForm.Show();
+        }
+
+        private void AddSizesToItem(Item item) {
+
+            item.Sizes.Clear();
+            foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
+                var sizeID = (short)(sizeRow.Cells[0].Value);
+                var size = APIEngine.DSOCache.SizeProvider.GetSize(sizeID);
+
+                var newItemSize = new ItemSize() {
+                    SizeID = size.SizeID,
+                    SizeName = size.Description,
+                    Quantity = 1,
+                    Units = 1,
+                };
+
+                item.Sizes.Add(newItemSize);
+            }
+        }
+
+        private void btnCreateSize_Click(object sender, EventArgs e) {
+            FormSizes formSizes = new FormSizes();
+            formSizes.Show();
         }
     }
 }
