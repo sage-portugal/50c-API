@@ -41,134 +41,159 @@
             // lblNum
             // 
             this.lblNum.AutoSize = true;
-            this.lblNum.Location = new System.Drawing.Point(16, 13);
+            this.lblNum.Location = new System.Drawing.Point(12, 11);
+            this.lblNum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNum.Name = "lblNum";
-            this.lblNum.Size = new System.Drawing.Size(58, 16);
+            this.lblNum.Size = new System.Drawing.Size(47, 13);
             this.lblNum.TabIndex = 0;
             this.lblNum.Text = "Número:";
             // 
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(16, 53);
+            this.lblName.Location = new System.Drawing.Point(12, 45);
+            this.lblName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(47, 16);
+            this.lblName.Size = new System.Drawing.Size(38, 13);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "Nome:";
             // 
             // btnLast
             // 
+            this.btnLast.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnLast.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.caretDoubleRight;
             this.btnLast.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLast.Location = new System.Drawing.Point(387, 8);
-            this.btnLast.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLast.FlatAppearance.BorderSize = 0;
+            this.btnLast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLast.Location = new System.Drawing.Point(238, 10);
             this.btnLast.Name = "btnLast";
-            this.btnLast.Size = new System.Drawing.Size(33, 33);
+            this.btnLast.Size = new System.Drawing.Size(20, 20);
             this.btnLast.TabIndex = 11;
-            this.btnLast.UseVisualStyleBackColor = true;
+            this.btnLast.UseVisualStyleBackColor = false;
             this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
             // 
             // btnRight
             // 
+            this.btnRight.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnRight.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.caretRight;
             this.btnRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRight.Location = new System.Drawing.Point(345, 8);
-            this.btnRight.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRight.FlatAppearance.BorderSize = 0;
+            this.btnRight.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRight.Location = new System.Drawing.Point(213, 10);
             this.btnRight.Name = "btnRight";
-            this.btnRight.Size = new System.Drawing.Size(33, 33);
+            this.btnRight.Size = new System.Drawing.Size(20, 20);
             this.btnRight.TabIndex = 10;
-            this.btnRight.UseVisualStyleBackColor = true;
+            this.btnRight.UseVisualStyleBackColor = false;
             this.btnRight.Click += new System.EventHandler(this.btnRight_Click);
             // 
             // btnLeft
             // 
+            this.btnLeft.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnLeft.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.CaretLeft;
             this.btnLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLeft.Location = new System.Drawing.Point(304, 8);
-            this.btnLeft.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLeft.FlatAppearance.BorderSize = 0;
+            this.btnLeft.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLeft.Location = new System.Drawing.Point(188, 10);
             this.btnLeft.Name = "btnLeft";
-            this.btnLeft.Size = new System.Drawing.Size(33, 33);
+            this.btnLeft.Size = new System.Drawing.Size(20, 20);
             this.btnLeft.TabIndex = 9;
-            this.btnLeft.UseVisualStyleBackColor = true;
+            this.btnLeft.UseVisualStyleBackColor = false;
             this.btnLeft.Click += new System.EventHandler(this.btnLeft_Click);
             // 
             // btnFirst
             // 
+            this.btnFirst.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnFirst.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.caretDoubleLeft;
             this.btnFirst.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnFirst.Location = new System.Drawing.Point(263, 8);
-            this.btnFirst.Margin = new System.Windows.Forms.Padding(4);
+            this.btnFirst.FlatAppearance.BorderSize = 0;
+            this.btnFirst.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFirst.Location = new System.Drawing.Point(163, 10);
             this.btnFirst.Name = "btnFirst";
-            this.btnFirst.Size = new System.Drawing.Size(33, 33);
+            this.btnFirst.Size = new System.Drawing.Size(20, 20);
             this.btnFirst.TabIndex = 8;
-            this.btnFirst.UseVisualStyleBackColor = true;
+            this.btnFirst.UseVisualStyleBackColor = false;
             this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
             // 
             // btnSearch
             // 
+            this.btnSearch.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btnSearch.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
             this.btnSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearch.Location = new System.Drawing.Point(221, 8);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearch.FlatAppearance.BorderSize = 0;
+            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearch.Location = new System.Drawing.Point(136, 10);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(33, 33);
+            this.btnSearch.Size = new System.Drawing.Size(20, 20);
             this.btnSearch.TabIndex = 7;
-            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // txtId
             // 
-            this.txtId.Location = new System.Drawing.Point(80, 12);
+            this.txtId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtId.Location = new System.Drawing.Point(60, 10);
+            this.txtId.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtId.Name = "txtId";
-            this.txtId.Size = new System.Drawing.Size(132, 22);
+            this.txtId.Size = new System.Drawing.Size(70, 20);
             this.txtId.TabIndex = 12;
+            this.txtId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtId_KeyPress);
+            this.txtId.Leave += new System.EventHandler(this.txtId_Leave);
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(434, 95);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDelete.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnDelete.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelete.Location = new System.Drawing.Point(326, 77);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(125, 33);
+            this.btnDelete.Size = new System.Drawing.Size(94, 27);
             this.btnDelete.TabIndex = 17;
             this.btnDelete.Text = "Eliminar (F5)";
-            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(434, 51);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSave.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSave.Enabled = false;
+            this.btnSave.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Location = new System.Drawing.Point(326, 41);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(125, 33);
+            this.btnSave.Size = new System.Drawing.Size(94, 27);
             this.btnSave.TabIndex = 16;
             this.btnSave.Text = "Gravar";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(434, 8);
-            this.btnNew.Margin = new System.Windows.Forms.Padding(4);
+            this.btnNew.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnNew.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNew.Location = new System.Drawing.Point(326, 6);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(125, 33);
+            this.btnNew.Size = new System.Drawing.Size(94, 27);
             this.btnNew.TabIndex = 15;
             this.btnNew.Text = "Novo";
-            this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.UseVisualStyleBackColor = false;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(80, 50);
-            this.txtDescription.Margin = new System.Windows.Forms.Padding(4);
+            this.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDescription.Enabled = false;
+            this.txtDescription.Location = new System.Drawing.Point(60, 43);
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(339, 22);
+            this.txtDescription.Size = new System.Drawing.Size(255, 20);
             this.txtDescription.TabIndex = 18;
             // 
             // FormSizes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(575, 140);
+            this.ClientSize = new System.Drawing.Size(431, 114);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnSave);
@@ -182,6 +207,7 @@
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.lblNum);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FormSizes";
             this.Text = "Tamanhos";
             this.ResumeLayout(false);
