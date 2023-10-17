@@ -23,6 +23,15 @@ namespace Sage50c.API.Sample {
             ResetUI();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+
+            if (keyData == Keys.F5) {
+                btnDelete.PerformClick();
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void btnSearch_Click(object sender, EventArgs e) {
 
             var colorId = QuickSearchHelper.ColorFind();
