@@ -65,7 +65,7 @@ namespace Sage50c.API.Sample {
         /// Realiza o reset dos campos apresentados, limpando-os
         /// </summary>
         private void ResetUI() {
-            DisableComp();
+            EnableComp(false);
             UpdateUI(new S50cBO22.Size() {
                 SizeID = sizeProvider.GetNewID(),
                 Description = string.Empty,
@@ -79,7 +79,7 @@ namespace Sage50c.API.Sample {
             if(sizeId>0) {
                 var size = sizeProvider.GetSize((short)sizeId);
                 UpdateUI(size);
-                EnableComp();
+                EnableComp(true);
                 isLoaded = true;
             }
         }
@@ -89,7 +89,7 @@ namespace Sage50c.API.Sample {
             var size = sizeProvider.GetSize(1);
             //Atualiza os campos consoante o tamanho selecionado
             UpdateUI(size);
-            EnableComp();
+            EnableComp(true);
             isLoaded = true;
         }
 
@@ -100,7 +100,7 @@ namespace Sage50c.API.Sample {
                 var size = sizeProvider.GetSize(prevSize);
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
-                EnableComp();
+                EnableComp(true);
                 isLoaded =true;
             }
         }
@@ -112,7 +112,7 @@ namespace Sage50c.API.Sample {
                 var size = sizeProvider.GetSize(prevSize);
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
-                EnableComp();
+                EnableComp(true);
                 isLoaded = true;
             }
         }
@@ -123,7 +123,7 @@ namespace Sage50c.API.Sample {
             var size = sizeProvider.GetSize((short)sizeId);
             //Atualiza os campos consoante o tamanho selecionado
             UpdateUI(size);
-            EnableComp();
+            EnableComp(true);
             isLoaded = true;
         }
 
@@ -183,7 +183,7 @@ namespace Sage50c.API.Sample {
 
         private void txtId_KeyPress(object sender, KeyPressEventArgs e) {
             if(e.KeyChar == (char)Keys.Enter) {
-                EnableComp();
+                EnableComp(true);
                 txtDescription.Select();
             }
         }
@@ -193,18 +193,14 @@ namespace Sage50c.API.Sample {
             if( sizeId > 0) {
                 var size = sizeProvider.GetSize(sizeId);
                 UpdateUI(size);
-                EnableComp();
+                EnableComp(true);
             }
         }
 
-        private void EnableComp() {
-            btnSave.Enabled = true;
-            txtDescription.Enabled = true;
+        private void EnableComp(bool action) {
+            btnSave.Enabled = action;
+            txtDescription.Enabled = action;
         }
 
-        private void DisableComp() {
-            btnSave.Enabled=false;
-            txtDescription.Enabled=false;
-        }
     }
 }
