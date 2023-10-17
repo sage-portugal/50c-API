@@ -26,22 +26,47 @@ namespace Sage50c.API.Sample {
             InitializeComponent();
             //Insere o new id na textbox na inicalização do form
             txtId.Text = sizeProvider.GetNewID().ToString();
+            FormatForm();
+        }
+
+        public void FormatForm() {
+            btnSearch.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
+            btnFirst.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
+            btnRight.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
+            btnLeft.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
+            btnLast.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
+
+            btnNew.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
+            btnNew.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
+            btnSave.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
+            btnSave.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
+            btnSave.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor    );
+            btnDelete.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
+            btnDelete.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
         }
 
         /// <summary>
         /// Realiza o update dos campos apresentados
         /// </summary>
         /// <param name="size"></param>
-        private void UpdateForm(S50cBO22.Size size) {
-            txtId.Text = size.SizeID.ToString();
-            txtDescription.Text = size.Description.ToString();
+        private void UpdateUI(S50cBO22.Size size) {
+            if (size != null) {
+                txtId.Text = size.SizeID.ToString();
+                txtDescription.Text = size.Description.ToString();
+                isLoaded = true;
+            }
+            else {
+                txtDescription.Text = String.Empty;
+                isLoaded = false;
+            }
         }
 
         /// <summary>
         /// Realiza o reset dos campos apresentados, limpando-os
         /// </summary>
-        private void ResetForm() {
-            UpdateForm(new S50cBO22.Size() {
+        private void ResetUI() {
+            EnableComp(false);
+            UpdateUI(new S50cBO22.Size() {
                 SizeID = sizeProvider.GetNewID(),
                 Description = string.Empty,
             });
@@ -53,7 +78,9 @@ namespace Sage50c.API.Sample {
             //Atualiza os campos consoante o tamanho selecionado
             if(sizeId>0) {
                 var size = sizeProvider.GetSize((short)sizeId);
-                UpdateForm(size);
+                UpdateUI(size);
+                EnableComp(true);
+                isLoaded = true;
             }
         }
 
@@ -61,28 +88,31 @@ namespace Sage50c.API.Sample {
             //Tamanho com menor id
             var size = sizeProvider.GetSize(1);
             //Atualiza os campos consoante o tamanho selecionado
-            UpdateForm(size);
+            UpdateUI(size);
+            EnableComp(true);
             isLoaded = true;
         }
 
         private void btnLeft_Click(object sender, EventArgs e) {
-            if(Convert.ToInt16(txtId.Text) > 1) {
+            if(txtId.Text.ToShort() > 1) {
                 //Tamanho com o id anterior ao atual
-                var prevSize = sizeProvider.GetPreviousID(Convert.ToInt16(txtId.Text));
+                var prevSize = sizeProvider.GetPreviousID(txtId.Text.ToShort());
                 var size = sizeProvider.GetSize(prevSize);
                 //Atualiza os campos consoante o tamanho selecionado
-                UpdateForm(size);
-                isLoaded=true;
+                UpdateUI(size);
+                EnableComp(true);
+                isLoaded =true;
             }
         }
 
         private void btnRight_Click(object sender, EventArgs e) {
-            if (Convert.ToInt16(txtId.Text) < sizeProvider.GetLastID()) {
+            if (txtId.Text.ToShort() < sizeProvider.GetLastID()) {
                 //Tamanho com id seguinte ao atual
-                var prevSize = sizeProvider.GetNextID(Convert.ToInt16(txtId.Text));
+                var prevSize = sizeProvider.GetNextID(txtId.Text.ToShort());
                 var size = sizeProvider.GetSize(prevSize);
                 //Atualiza os campos consoante o tamanho selecionado
-                UpdateForm(size);
+                UpdateUI(size);
+                EnableComp(true);
                 isLoaded = true;
             }
         }
@@ -92,40 +122,55 @@ namespace Sage50c.API.Sample {
             var sizeId = sizeProvider.GetLastID();
             var size = sizeProvider.GetSize((short)sizeId);
             //Atualiza os campos consoante o tamanho selecionado
-            UpdateForm(size);
+            UpdateUI(size);
+            EnableComp(true);
             isLoaded = true;
         }
 
         private void btnNew_Click(object sender, EventArgs e) {
             isLoaded = false;
             //Limpa todos os campos para que se possa criar um novo tamanho 
-            ResetForm();
+            ResetUI();
         }
 
         private void btnSave_Click(object sender, EventArgs e) {
-            //Cria um novo tamanho com os valores apresentados
-            var newSize = new S50cBO22.Size() {
-                SizeID = Convert.ToInt16(txtId.Text),
-                Description = txtDescription.Text,
-            };
-
-            //Guarda o novo tamanho
-            if(isLoaded) {
-                sizeProvider.Save(newSize, newSize.SizeID, false);
+            //Confirmar a existência de uma descrição
+            if (txtDescription.Text == string.Empty) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Introduza uma descrição para adicionar", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
             else {
-                sizeProvider.Save(newSize, newSize.SizeID, true);
-            }
+                //Cria um novo tamanho com os valores apresentados
+                var newSize = new S50cBO22.Size() {
+                    SizeID = txtId.Text.ToShort(),
+                    Description = txtDescription.Text,
+                };
 
-            //Limpa todos os campos para que se possa criar um novo tamanho  
-            ResetForm();
+                //Guarda o novo tamanho
+                if (isLoaded) {
+                    sizeProvider.Save(newSize, newSize.SizeID, false);
+                }
+                else {
+                    sizeProvider.Save(newSize, newSize.SizeID, true);
+                }
+
+                //Limpa todos os campos para que se possa criar um novo tamanho  
+                ResetUI();
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e) {
-            //Elimina o tamanho apresentado
-            sizeProvider.Delete(Convert.ToInt16(txtId.Text));
-            //Limpa todos os campos para que se possa criar um novo tamanho 
-            ResetForm();
+            if (!isLoaded) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Não pode eliminar durante uma inserção!", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+            else {
+                var result = APIEngine.CoreGlobals.MsgBoxFrontOffice("Confirma a anulação deste registo?", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName);
+                if(result==VBA.VbMsgBoxResult.vbYes) {
+                    //Elimina o tamanho apresentado
+                    sizeProvider.Delete(txtId.Text.ToShort());
+                    //Limpa todos os campos para que se possa criar um novo tamanho 
+                    ResetUI();
+                }
+            }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
@@ -135,5 +180,27 @@ namespace Sage50c.API.Sample {
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        private void txtId_KeyPress(object sender, KeyPressEventArgs e) {
+            if(e.KeyChar == (char)Keys.Enter) {
+                EnableComp(true);
+                txtDescription.Select();
+            }
+        }
+
+        private void txtId_Leave(object sender, EventArgs e) {
+            var sizeId = txtId.Text.ToShort();
+            if( sizeId > 0) {
+                var size = sizeProvider.GetSize(sizeId);
+                UpdateUI(size);
+                EnableComp(true);
+            }
+        }
+
+        private void EnableComp(bool action) {
+            btnSave.Enabled = action;
+            txtDescription.Enabled = action;
+        }
+
     }
 }
