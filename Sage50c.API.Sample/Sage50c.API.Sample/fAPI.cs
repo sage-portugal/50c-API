@@ -3929,7 +3929,7 @@ namespace Sage50c.API.Sample {
                     var sizeId = (short)sizeRow.Cells[0].Value;
 
                     if (sizeId == sizeToAdd.SizeID) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         isDuplicate = true;
                         break;
                     }
