@@ -197,6 +197,7 @@ namespace Sage50c.API.Sample {
             }
         }
 
+
         private void EnableComp(bool action) {
             btnSave.Enabled = action;
             txtDescription.Enabled = action;
