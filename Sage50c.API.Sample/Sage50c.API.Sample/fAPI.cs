@@ -3920,29 +3920,29 @@ namespace Sage50c.API.Sample {
 
         private void btnAddSize_Click(object sender, EventArgs e) {
 
-            //if (cmbItemSize.SelectedIndex != -1) {
-            //    var sizeToAdd = (S50cBO22.Size)cmbItemSize.SelectedItem;
+            var size = QuickSearchHelper.SizeFind();
+            if (size > 0) {
+                var sizeToAdd = APIEngine.DSOCache.SizeProvider.GetSize((short)size);
 
-            //    foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
-            //        var sizeID = (short)sizeRow.Cells[0].Value;
+                var isDuplicate = false;
+                foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
+                    var sizeId = (short)sizeRow.Cells[0].Value;
 
-            //        if (sizeID == sizeToAdd.SizeID) {
-            //            APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possivel adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-            //            return;
-            //        }
-            //    }
+                    if (sizeId == sizeToAdd.SizeID) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possivel adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        isDuplicate = true;
+                        break;
+                    }
+                }
 
-            //    DataGridViewRow newRow = new DataGridViewRow();
-            //    newRow.CreateCells(dgvSize);
+                if (!isDuplicate) {
+                    var newRowIndex = dgvSize.Rows.Add();
+                    var newRow = dgvSize.Rows[newRowIndex];
 
-            //    newRow.Cells[0].Value = sizeToAdd.SizeID;
-            //    newRow.Cells[1].Value = sizeToAdd.Description;
-
-            //    dgvSize.Rows.Add(newRow);
-            //}
-            //else {
-            //    APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione um tamanho para adicionar.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-            //}
+                    newRow.Cells[0].Value = sizeToAdd.SizeID;
+                    newRow.Cells[1].Value = sizeToAdd.Description;
+                }
+            }
         }
 
         private void btnRemoveSize_Click(object sender, EventArgs e) {
