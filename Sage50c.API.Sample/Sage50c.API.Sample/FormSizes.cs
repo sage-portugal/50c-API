@@ -16,8 +16,7 @@ namespace Sage50c.API.Sample {
         /// Provedor de tamanhos
         /// </summary>
         private DSOSize sizeProvider = new DSOSize();
-
-        /// <summary>
+                /// <summary>
         /// Permite identificar se o tamanho foi carregado a partir da database
         /// </summary>
         private bool isLoaded = false;
@@ -152,7 +151,7 @@ namespace Sage50c.API.Sample {
                 else {
                     sizeProvider.Save(newSize, newSize.SizeID, true);
                 }
-
+                
                 //Limpa todos os campos para que se possa criar um novo tamanho  
                 ResetUI();
             }
