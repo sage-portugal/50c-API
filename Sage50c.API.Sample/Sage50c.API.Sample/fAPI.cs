@@ -3841,51 +3841,15 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        //private void FillItemColorsCMB() {
-
-        //    cmbItemColor.Items.Clear();
-        //    cmbItemColor.ValueMember = "ColorID";
-        //    cmbItemColor.DisplayMember = "Description";
-
-        //    var rs = APIEngine.DSOCache.ColorProvider.GetColorTableRS();
-
-        //    while (!rs.EOF) {
-        //        var colorID = Convert.ToInt16(rs.Fields["ColorID"].Value);
-        //        var color = APIEngine.DSOCache.ColorProvider.GetColor(colorID);
-        //        cmbItemColor.Items.Add(color);
-
-        //        rs.MoveNext();
-        //    }
-        //    rs.Close();
-        //}
-
-        //private void FillItemSizesCMB() {
-
-        //    cmbItemSize.Items.Clear();
-        //    cmbItemSize.ValueMember = "SizeID";
-        //    cmbItemSize.DisplayMember = "Description";
-
-        //    var rs = APIEngine.DSOCache.SizeProvider.GetSizeTableRS();
-
-        //    while (!rs.EOF) {
-        //        var sizeID = Convert.ToInt16(rs.Fields["SizeID"].Value);
-        //        var size = APIEngine.DSOCache.SizeProvider.GetSize(sizeID);
-        //        cmbItemSize.Items.Add(size);
-
-        //        rs.MoveNext();
-        //    }
-        //    rs.Close();
-        //}
-
         private void btnAddColor_Click(object sender, EventArgs e) {
 
-            var colorId = QuickSearchHelper.ColorFind();
-            if (colorId > 0) {
-                var colorToAdd = APIEngine.DSOCache.ColorProvider.GetColor((short)colorId);
+            var colorID = QuickSearchHelper.ColorFind();
+            if (colorID > 0) {
+                var colorToAdd = APIEngine.DSOCache.ColorProvider.GetColor((short)colorID);
 
                 var isDuplicate = false;
                 foreach (DataGridViewRow colorRow in dgvColor.Rows) {
-                    var colorID = (short)colorRow.Cells[0].Value;
+                    var colorRowID = (short)colorRow.Cells[0].Value;
 
                     if (colorID == colorToAdd.ColorID) {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
@@ -3902,9 +3866,6 @@ namespace Sage50c.API.Sample {
                     newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)colorToAdd.ColorCode);
                     newRow.Cells[2].Value = colorToAdd.Description;
                 }
-            }
-            else {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione uma cor para adicionar.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
         }
 

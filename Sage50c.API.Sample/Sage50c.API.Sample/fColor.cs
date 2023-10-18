@@ -23,6 +23,15 @@ namespace Sage50c.API.Sample {
             ResetUI();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+
+            if (keyData == Keys.F5) {
+                btnDelete.PerformClick();
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void btnSearch_Click(object sender, EventArgs e) {
 
             var colorId = QuickSearchHelper.ColorFind();
@@ -31,7 +40,7 @@ namespace Sage50c.API.Sample {
                 var color = colorProvider.GetColor((short)colorId);
                 UpdateUI(color);
                 isLoaded = true;
-                ToggleButtons(true);
+                ToggleUI(true);
             }
         }
 
@@ -40,7 +49,7 @@ namespace Sage50c.API.Sample {
             var color = colorProvider.GetColor(1);
             UpdateUI(color);
             isLoaded = true;
-            ToggleButtons(true);
+            ToggleUI(true);
         }
 
         private void btnLeft_Click(object sender, EventArgs e) {
@@ -53,7 +62,7 @@ namespace Sage50c.API.Sample {
                 var color = colorProvider.GetColor(previousID);
                 UpdateUI(color);
                 isLoaded = true;
-                ToggleButtons(true);
+                ToggleUI(true);
             }
         }
 
@@ -66,7 +75,7 @@ namespace Sage50c.API.Sample {
                 var color = colorProvider.GetColor(nextID);
                 UpdateUI(color);
                 isLoaded = true;
-                ToggleButtons(true);
+                ToggleUI(true);
             }
         }
 
@@ -75,7 +84,7 @@ namespace Sage50c.API.Sample {
             var color = colorProvider.GetColor(lastColorID);
             UpdateUI(color);
             isLoaded = true;
-            ToggleButtons(true);
+            ToggleUI(true);
         }
 
         private void btnPickColor_Click(object sender, EventArgs e) {
@@ -141,7 +150,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void ResetUI() {
-            ToggleButtons(false);
+            ToggleUI(false);
 
             UpdateUI(new S50cBO22.Color() {
                 ColorID = colorProvider.GetNewID(),
@@ -163,7 +172,7 @@ namespace Sage50c.API.Sample {
             var colorID = txtColorID.Text.ToShort();
             if (colorID > 0) {
 
-                ToggleButtons(true);
+                ToggleUI(true);
 
                 var color = colorProvider.GetColor(colorID);
                 if (color != null) {
@@ -184,8 +193,9 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void ToggleButtons(bool isEnabled) {
+        private void ToggleUI(bool isEnabled) {
             txtColorDescription.Enabled = isEnabled;
+            btnPickColor.Enabled = isEnabled;
             btnSave.Enabled = isEnabled;
         }
     }

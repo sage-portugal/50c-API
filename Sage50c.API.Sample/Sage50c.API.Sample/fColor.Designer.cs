@@ -183,7 +183,7 @@
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(94, 23);
             this.btnSave.TabIndex = 13;
-            this.btnSave.Text = "Gravar (F5)";
+            this.btnSave.Text = "Gravar";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -194,7 +194,7 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(94, 23);
             this.btnDelete.TabIndex = 14;
-            this.btnDelete.Text = "Eliminar";
+            this.btnDelete.Text = "Eliminar (F5)";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
