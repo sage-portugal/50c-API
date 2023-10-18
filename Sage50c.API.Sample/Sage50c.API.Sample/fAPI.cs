@@ -941,11 +941,11 @@ namespace Sage50c.API.Sample {
                         transId = bsoItemTransaction.Transaction.TransactionID;
                     }
                     else {
-                        throw new Exception(string.Format("Não foi possivel anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
+                        throw new Exception(string.Format("Não foi possível anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
                     }
                 }
                 else {
-                    throw new Exception(string.Format("Não foi possivel carregar o documento {0} {1}/{2}.", transDoc, transSerial, transDocNumber));
+                    throw new Exception(string.Format("Não foi possível carregar o documento {0} {1}/{2}.", transDoc, transSerial, transDocNumber));
                 }
             }
             else {
@@ -966,7 +966,7 @@ namespace Sage50c.API.Sample {
                         transId.TransDocNumber = transDocNumber;
                     }
                     else {
-                        throw new Exception(string.Format("Não foi possivel anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
+                        throw new Exception(string.Format("Não foi possível anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
                     }
                 }
                 else {
@@ -1104,10 +1104,10 @@ namespace Sage50c.API.Sample {
                 ItemTransaction trans = bsoItemTransaction.Transaction;
                 if (trans == null) {
                     if (newTransaction) {
-                        throw new Exception(string.Format("Não foi possivel inicializar o documento [{0}] da série [{1}]", transDoc, transSerial));
+                        throw new Exception(string.Format("Não foi possível inicializar o documento [{0}] da série [{1}]", transDoc, transSerial));
                     }
                     else {
-                        throw new Exception(string.Format("Não foi possivel carregar o documento [{0}] da série [{1}] número [{2}]", transDoc, transSerial, transDocNumber));
+                        throw new Exception(string.Format("Não foi possível carregar o documento [{0}] da série [{1}] número [{2}]", transDoc, transSerial, transDocNumber));
                     }
                 }
                 //
@@ -1783,7 +1783,7 @@ namespace Sage50c.API.Sample {
                     case DocumentTypeEnum.dcTypeSale:
                     case DocumentTypeEnum.dcTypePurchase:
                         if (!bsoItemTransaction.LoadItemTransaction(doc.TransDocType, transSerial, transDoc, transDocNumber)) {
-                            throw new Exception(string.Format("Não foi possivel ler o documento [{0} {1}/{2}]", transDoc, transSerial, transDocNumber));
+                            throw new Exception(string.Format("Não foi possível ler o documento [{0} {1}/{2}]", transDoc, transSerial, transDocNumber));
                         }
                         trans = bsoItemTransaction.Transaction;
                         rbTransBuySell.Checked = true;
@@ -1791,7 +1791,7 @@ namespace Sage50c.API.Sample {
 
                     case DocumentTypeEnum.dcTypeStock:
                         if (!bsoStockTransaction.LoadStockTransaction(doc.TransDocType, transSerial, transDoc, transDocNumber)) {
-                            throw new Exception(string.Format("Não foi possivel ler o documento [{0} {1}/{2}]", transDoc, transSerial, transDocNumber));
+                            throw new Exception(string.Format("Não foi possível ler o documento [{0} {1}/{2}]", transDoc, transSerial, transDocNumber));
                         }
                         trans = bsoStockTransaction.Transaction;
 
@@ -2019,7 +2019,7 @@ namespace Sage50c.API.Sample {
             else {
                 var loadResult = bsoStockTransaction.LoadStockTransaction(transType, transSerial, transDocument, transDocNumber);
                 if (!loadResult) {
-                    throw new Exception(string.Format("Não foi possivel carregar o documento {0} {1}/{2}.", transDocument, transSerial, transDocNumber));
+                    throw new Exception(string.Format("Não foi possível carregar o documento {0} {1}/{2}.", transDocument, transSerial, transDocNumber));
                 }
             }
             var bsoCommonTransaction = bsoStockTransaction.BSOCommonTransaction;
@@ -2482,7 +2482,7 @@ namespace Sage50c.API.Sample {
             // Obter a transação (recibo ou pagamento)
             var result = accountTransManager.LoadTransaction(transSerial, transDoc, transDocNumber);
             if (!result) {
-                throw new Exception(string.Format(" O documento {0} {1}/{2} não existe ou não é possivel carregá-lo.", transDoc, transSerial, transDocNumber));
+                throw new Exception(string.Format(" O documento {0} {1}/{2} não existe ou não é possível carregá-lo.", transDoc, transSerial, transDocNumber));
             }
             //
             //Colocar o motivo de isenção: obrigatóriedade depende da definição do documento
@@ -2492,7 +2492,7 @@ namespace Sage50c.API.Sample {
                 transId = accountTransManager.Transaction.TransactionID;
             }
             else {
-                throw new Exception(string.Format("Não foi possivel anular o documento {0} {1}/{2}.", transDoc, transSerial, transDocNumber));
+                throw new Exception(string.Format("Não foi possível anular o documento {0} {1}/{2}.", transDoc, transSerial, transDocNumber));
             }
 
             return transId;
@@ -2588,7 +2588,7 @@ namespace Sage50c.API.Sample {
             }
             var accountTrans = accountTransManager.Transaction;
             if (accountTrans == null) {
-                throw new Exception(string.Format("Não foi possivel iniciar/carregar o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
+                throw new Exception(string.Format("Não foi possível iniciar/carregar o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
             }
             //Obter a conta corrente do cliente
             accountTrans.LedgerAccounts = dsoCache.LedgerAccountProvider.GetLedgerAccountList(accountUsed, ACCOUNT_TYPE, partyId, accountTrans.BaseCurrency);
@@ -2707,7 +2707,7 @@ namespace Sage50c.API.Sample {
             AccountTransactionClear();
             var transLoaded = accountTransManager.LoadTransaction(accountTransSerial, accountTransDoc, accountTransDocNumber);
             if (!transLoaded) {
-                throw new Exception(string.Format("Não foi possivel carregar o documento {0} {1}/{2}.", accountTransDoc, accountTransSerial, accountTransDocNumber));
+                throw new Exception(string.Format("Não foi possível carregar o documento {0} {1}/{2}.", accountTransDoc, accountTransSerial, accountTransDocNumber));
             }
             var accountTrans = accountTransManager.Transaction;
             //
@@ -2977,7 +2977,7 @@ namespace Sage50c.API.Sample {
                     MessageBox.Show(string.Format("Colocado em preparação: {0}", result.ToString()), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else {
-                    MessageBox.Show(string.Format("Não foi possivel colocar em preparação: {0} {1}/{2}",
+                    MessageBox.Show(string.Format("Não foi possível colocar em preparação: {0} {1}/{2}",
                                                    txtTransSerial.Text, txtTransDoc.Text, txtTransDocNumber.Text),
                                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
@@ -3034,7 +3034,7 @@ namespace Sage50c.API.Sample {
                                          Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else {
-                        MessageBox.Show(string.Format("Não foi possivel finalizar o documento suspenso: {0} {1}/{2}.", transDoc, transSerial, transdocNumber),
+                        MessageBox.Show(string.Format("Não foi possível finalizar o documento suspenso: {0} {1}/{2}.", transDoc, transSerial, transdocNumber),
                                         Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                 }
@@ -3465,7 +3465,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnExternalSignature_Click(object sender, EventArgs e) {
-            MessageBox.Show("NOTA: Só é possivel definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("NOTA: Só é possível definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             using (var frm = new FormExternalSignature()) {
                 frm.Signature = bsoItemTransaction.Transaction.Signature;
@@ -3671,7 +3671,7 @@ namespace Sage50c.API.Sample {
                         if (transDetail.ItemProperties.HasPropertyValues) {
                             lblTransPropNameL1.Text = transDetail.ItemProperties.PropertyID1;
                             txtTransPropValueL1.Text = transDetail.ItemProperties.PropertyValue1;
-                            // Também é possivel utilizar as restantes 3 propriedades. Para isso necessitariamos de outra forma de apresentar os dados (com mais controlos, p.ex.)
+                            // Também é possível utilizar as restantes 3 propriedades. Para isso necessitariamos de outra forma de apresentar os dados (com mais controlos, p.ex.)
                             //lblTransPropNameL1_2.Text = transDetail.ItemProperties.PropertyID2;
                             //txtTransPropValueL1_2.Text = transDetail.ItemProperties.PropertyValue2;
                             //lblTransPropNameL1_3.Text = transDetail.ItemProperties.PropertyID3;
@@ -3851,8 +3851,8 @@ namespace Sage50c.API.Sample {
                 foreach (DataGridViewRow colorRow in dgvColor.Rows) {
                     var colorRowID = (short)colorRow.Cells[0].Value;
 
-                    if (colorRowID == colorToAdd.ColorID) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possivel adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                    if (colorID == colorToAdd.ColorID) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         isDuplicate = true;
                         break;
                     }
@@ -3890,7 +3890,7 @@ namespace Sage50c.API.Sample {
                     var sizeId = (short)sizeRow.Cells[0].Value;
 
                     if (sizeId == sizeToAdd.SizeID) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possivel adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         isDuplicate = true;
                         break;
                     }
