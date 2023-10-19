@@ -624,7 +624,7 @@ namespace Sage50c.API.Sample {
                     }
                 }
                 else {
-                    throw new Exception(string.Format("O Artigo {0} não foi encontrado!", itemId));
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice(string.Format("O Artigo {0} não foi encontrado!", itemId), VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
                 }
             }
         }
@@ -3849,9 +3849,9 @@ namespace Sage50c.API.Sample {
 
                 var isDuplicate = false;
                 foreach (DataGridViewRow colorRow in dgvColor.Rows) {
-                    var colorRowID = (short)colorRow.Cells[0].Value;
 
-                    if (colorID == colorToAdd.ColorID) {
+                    var colorRowID = (short)colorRow.Cells[0].Value;
+                    if (colorRowID == colorToAdd.ColorID) {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         isDuplicate = true;
                         break;
@@ -4004,7 +4004,7 @@ namespace Sage50c.API.Sample {
 
         private void btnCreateColor_Click(object sender, EventArgs e) {
             fColor colorForm = new fColor();
-            colorForm.Show();
+            colorForm.ShowDialog();
         }
 
         private void AddSizesToItem(Item item) {
@@ -4027,7 +4027,7 @@ namespace Sage50c.API.Sample {
 
         private void btnCreateSize_Click(object sender, EventArgs e) {
             FormSizes formSizes = new FormSizes();
-            formSizes.Show();
+            formSizes.ShowDialog();
         }
     }
 }

@@ -120,16 +120,46 @@ namespace Sage50c.API.Sample {
         private void btnDelete_Click(object sender, EventArgs e) {
 
             if (isLoaded) {
-                var result = APIEngine.CoreGlobals.MsgBoxFrontOffice("Confirma a anulação deste registo?", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName);
-                if (result == VBA.VbMsgBoxResult.vbYes) {
-                    colorProvider.Delete(txtColorID.Text.ToShort());
+
+                var answer1 = APIEngine.CoreGlobals.MsgBoxFrontOffice("Confirma a anulação deste registo?", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName);
+                if (answer1 == VBA.VbMsgBoxResult.vbYes) {
+
+                    try {
+
+                        colorProvider.Delete(txtColorID.Text.ToShort());
+                        ResetUI();
+                    }
+                    catch {
+
+                        var answer2 = APIEngine.CoreGlobals.MsgBoxFrontOffice("Existem registos relacionados com esta cor. Para manter a integridade referencial e poder apagar esta cor terá que indicar um código que a substitua.", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName);
+                        if (answer2 == VBA.VbMsgBoxResult.vbYes) {
+
+                            var answer3 = new S50cCore22.POSInputBox().Show("Qual é o código da cor?", "Integridade Referencial");
+                            if (answer3 != null) {
+
+                                // Trocar o registo
+                                var newColorID = answer3.ToString().ToShort();
+                                if (newColorID != txtColorID.Text.ToShort()) {
+
+                                    if (newColorID > 0 && colorProvider.ColorExists(newColorID)) {
+                                        colorProvider.Delete(txtColorID.Text.ToShort(), newColorID);
+                                        ResetUI();
+                                    }
+                                    else {
+                                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não existe uma cor correspondente ao código inserido.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                                    }
+                                }
+                                else {
+                                    APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível substituir a cor por ela mesma.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice("Não pode eliminar durante uma inserção.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
-
-            ResetUI();
         }
 
         private void FormatButtons() {
