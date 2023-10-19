@@ -3851,7 +3851,7 @@ namespace Sage50c.API.Sample {
                 foreach (DataGridViewRow colorRow in dgvColor.Rows) {
                     var colorRowID = (short)colorRow.Cells[0].Value;
 
-                    if (colorID == colorToAdd.ColorID) {
+                    if (colorRowID == colorToAdd.ColorID) {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         isDuplicate = true;
                         break;
@@ -4027,7 +4027,7 @@ namespace Sage50c.API.Sample {
 
         private void btnCreateSize_Click(object sender, EventArgs e) {
             FormSizes formSizes = new FormSizes();
-            formSizes.Show();
+            formSizes.ShowDialog();
         }
     }
 }

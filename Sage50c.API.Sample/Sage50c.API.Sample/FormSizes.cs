@@ -1,4 +1,5 @@
 ﻿using S50cDL22;
+using SageCoreSaft60;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,7 @@ namespace Sage50c.API.Sample {
         /// Provedor de tamanhos
         /// </summary>
         private DSOSize sizeProvider = new DSOSize();
-                /// <summary>
+        /// <summary>
         /// Permite identificar se o tamanho foi carregado a partir da database
         /// </summary>
         private bool isLoaded = false;
@@ -39,7 +40,7 @@ namespace Sage50c.API.Sample {
             btnNew.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
             btnSave.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
             btnSave.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
-            btnSave.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor    );
+            btnSave.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
             btnDelete.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
             btnDelete.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
         }
@@ -75,7 +76,7 @@ namespace Sage50c.API.Sample {
             //Abre quick search para procurar um determinado tamanho
             var sizeId = QuickSearchHelper.SizeFind();
             //Atualiza os campos consoante o tamanho selecionado
-            if(sizeId>0) {
+            if (sizeId > 0) {
                 var size = sizeProvider.GetSize((short)sizeId);
                 UpdateUI(size);
                 EnableComp(true);
@@ -93,14 +94,14 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnLeft_Click(object sender, EventArgs e) {
-            if(txtId.Text.ToShort() > 1) {
+            if (txtId.Text.ToShort() > 1) {
                 //Tamanho com o id anterior ao atual
                 var prevSize = sizeProvider.GetPreviousID(txtId.Text.ToShort());
                 var size = sizeProvider.GetSize(prevSize);
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
                 EnableComp(true);
-                isLoaded =true;
+                isLoaded = true;
             }
         }
 
@@ -151,37 +152,63 @@ namespace Sage50c.API.Sample {
                 else {
                     sizeProvider.Save(newSize, newSize.SizeID, true);
                 }
-                
+
                 //Limpa todos os campos para que se possa criar um novo tamanho  
                 ResetUI();
             }
         }
 
         private void btnDelete_Click(object sender, EventArgs e) {
+
             if (!isLoaded) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice("Não pode eliminar durante uma inserção!", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
             else {
                 var result = APIEngine.CoreGlobals.MsgBoxFrontOffice("Confirma a anulação deste registo?", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName);
-                if(result==VBA.VbMsgBoxResult.vbYes) {
-                    //Elimina o tamanho apresentado
-                    sizeProvider.Delete(txtId.Text.ToShort());
-                    //Limpa todos os campos para que se possa criar um novo tamanho 
-                    ResetUI();
+                if (result == VBA.VbMsgBoxResult.vbYes) {
+                    try {
+                        //Elimina o tamanho apresentado
+                        sizeProvider.Delete(txtId.Text.ToShort());
+                        //Limpa todos os campos para que se possa criar um novo tamanho 
+                        ResetUI();
+                    }
+                    catch {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível eliminar este tamanho porque existem registos relacionados com o mesmo.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        var opt = APIEngine.CoreGlobals.MsgBoxFrontOffice("Existem registos relacionados com este Tamanho. Para manter a integridade referencial e poder apagar este tamanho terá que indicar um código que o substitua.", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName);
+                        if (opt == VBA.VbMsgBoxResult.vbYes) {
+                            S50cCore22.POSInputBox box = new S50cCore22.POSInputBox();
+                            var x = box.Show("Qual é o código do tamanho?", "Integridade Referencial");
+                            if (x != null) {
+                                var newSizeId = x.ToString().ToShort();
+                                if (newSizeId != txtId.Text.ToShort()) {
+                                    if (newSizeId > 0 && sizeProvider.SizeExists(newSizeId)) {
+                                        sizeProvider.Delete(txtId.Text.ToShort(), newSizeId);
+                                        ResetUI();
+                                    }
+                                    else {
+                                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não existe um tamanho correspondente ao código inserido!", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                                    }
+                                }
+                                else {
+                                    APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível substituir um tamanho por ele mesmo!", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
             //Usar F5 para "simular" o click do btnDelete
-            if(keyData == Keys.F5){
+            if (keyData == Keys.F5) {
                 btnDelete.PerformClick();
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void txtId_KeyPress(object sender, KeyPressEventArgs e) {
-            if(e.KeyChar == (char)Keys.Enter) {
+            if (e.KeyChar == (char)Keys.Enter) {
                 EnableComp(true);
                 txtDescription.Select();
             }
@@ -189,7 +216,7 @@ namespace Sage50c.API.Sample {
 
         private void txtId_Leave(object sender, EventArgs e) {
             var sizeId = txtId.Text.ToShort();
-            if( sizeId > 0) {
+            if (sizeId > 0) {
                 var size = sizeProvider.GetSize(sizeId);
                 UpdateUI(size);
                 EnableComp(true);
