@@ -4027,7 +4027,7 @@ namespace Sage50c.API.Sample {
 
         private void btnCreateSize_Click(object sender, EventArgs e) {
             FormSizes formSizes = new FormSizes();
-            formSizes.Show();
+            formSizes.ShowDialog();
         }
     }
 }
