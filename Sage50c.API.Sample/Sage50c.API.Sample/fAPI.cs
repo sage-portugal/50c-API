@@ -624,7 +624,7 @@ namespace Sage50c.API.Sample {
                     }
                 }
                 else {
-                    throw new Exception(string.Format("O Artigo {0} não foi encontrado!", itemId));
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice(string.Format("O Artigo {0} não foi encontrado!", itemId), VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
                 }
             }
         }
@@ -4004,7 +4004,7 @@ namespace Sage50c.API.Sample {
 
         private void btnCreateColor_Click(object sender, EventArgs e) {
             fColor colorForm = new fColor();
-            colorForm.Show();
+            colorForm.ShowDialog();
         }
 
         private void AddSizesToItem(Item item) {
