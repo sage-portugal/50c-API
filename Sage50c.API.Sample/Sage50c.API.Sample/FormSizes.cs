@@ -173,7 +173,6 @@ namespace Sage50c.API.Sample {
                         ResetUI();
                     }
                     catch {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível eliminar este tamanho porque existem registos relacionados com o mesmo.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         var opt = APIEngine.CoreGlobals.MsgBoxFrontOffice("Existem registos relacionados com este Tamanho. Para manter a integridade referencial e poder apagar este tamanho terá que indicar um código que o substitua.", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName);
                         if (opt == VBA.VbMsgBoxResult.vbYes) {
                             S50cCore22.POSInputBox box = new S50cCore22.POSInputBox();
