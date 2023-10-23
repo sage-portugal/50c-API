@@ -3996,6 +3996,7 @@ namespace Sage50c.API.Sample {
                     ColorID = color.ColorID,
                     ColorName = color.Description,
                     ColorCode = (int)color.ColorCode,
+                    SequenceNumber = (short)(colorRow.Index + 1)
                 };
 
                 item.Colors.Add(newItemColor);
@@ -4009,9 +4010,11 @@ namespace Sage50c.API.Sample {
 
         private void AddSizesToItem(Item item) {
 
+            // Limpar os tamanhos anteriores
             item.Sizes.Clear();
+            // Adicionar os tamanhos atualizados
             foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
-                var sizeID = (short)(sizeRow.Cells[0].Value);
+                var sizeID = (short)sizeRow.Cells[0].Value;
                 var size = APIEngine.DSOCache.SizeProvider.GetSize(sizeID);
 
                 var newItemSize = new ItemSize() {
@@ -4019,6 +4022,7 @@ namespace Sage50c.API.Sample {
                     SizeName = size.Description,
                     Quantity = 1,
                     Units = 1,
+                    SequenceNumber = (short)(sizeRow.Index + 1)
                 };
 
                 item.Sizes.Add(newItemSize);
