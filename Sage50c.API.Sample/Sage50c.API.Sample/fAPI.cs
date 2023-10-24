@@ -47,6 +47,10 @@ namespace Sage50c.API.Sample {
         /// Printing MANAGER
         /// </summary>
         private PrintingManager printingManager { get { return APIEngine.PrintingManager; } }
+        /// <summary>
+        /// Motor dos armazens
+        /// </summary>
+        private DSOWarehouse dSOWarehouse = new DSOWarehouse();
 
         public fApi() {
 
@@ -2085,49 +2089,69 @@ namespace Sage50c.API.Sample {
                 }
             }
             //
+            //Lista de armazens
+            var warehouseList = dSOWarehouse.GetWarehouseList();
+            //
             //Linha 1
             string itemId = txtTransItemL1.Text;
             if (!string.IsNullOrEmpty(itemId)) {
-                short wareHouseId = txtTransWarehouseL1.Text.ToShort();
-                string unitOfMovId = txtTransUnL1.Text;
-                double taxRate = txtTransTaxRateL1.Text.ToDouble();
-                double qty = txtTransQuantityL1.Text.ToDouble();
-                double unitPrice = txtTransUnitPriceL1.Text.ToDouble();
-                TransStockAddDetail(wareHouseId, itemId, unitOfMovId, taxRate, qty, unitPrice, StockQtyRule);
+                if (itemProvider.ItemExist(itemId)) {
+                    short wareHouseId = txtTransWarehouseL1.Text.ToShort();
+                    if (warehouseList.IsInCollection(wareHouseId)) {
+                        string unitOfMovId = txtTransUnL1.Text;
+                        double taxRate = txtTransTaxRateL1.Text.ToDouble();
+                        double qty = txtTransQuantityL1.Text.ToDouble();
+                        double unitPrice = txtTransUnitPriceL1.Text.ToDouble();
+                        TransStockAddDetail(wareHouseId, itemId, unitOfMovId, taxRate, qty, unitPrice, StockQtyRule);
 
-                if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
-                    var itemDetails = GetItemComponentList(1);
-                    if (itemDetails != null) {
+                        if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                            var itemDetails = GetItemComponentList(1);
+                            if (itemDetails != null) {
 
-                        foreach (ItemTransactionDetail value in itemDetails) {
-                            TransStockAddDetail(wareHouseId, value.ItemID, value.UnitOfSaleID, taxRate, value.Quantity, value.UnitPrice, value.PhysicalQtyRule);
+                                foreach (ItemTransactionDetail value in itemDetails) {
+                                    TransStockAddDetail(wareHouseId, value.ItemID, value.UnitOfSaleID, taxRate, value.Quantity, value.UnitPrice, value.PhysicalQtyRule);
+                                }
+                            }
                         }
                     }
+                    else {
+                        throw new Exception("O armazém inserido não existe");
+                    }
                 }
-
-
+                else {
+                    throw new Exception("O artigo inserido não existe");
+                }
             }
             //
             // Linha 2
             itemId = txtTransItemL2.Text.Trim();
             if (!string.IsNullOrEmpty(itemId)) {
-                short wareHouseId = txtTransWarehouseL2.Text.ToShort();
-                string unitOfMovId = txtTransUnL2.Text;
-                double taxRate = txtTransTaxRateL2.Text.ToDouble();
-                double qty = txtTransQuantityL2.Text.ToDouble();
-                double unitPrice = txtTransUnitPriceL2.Text.ToDouble();
-                TransStockAddDetail(wareHouseId, itemId, unitOfMovId, taxRate, qty, unitPrice, StockQtyRule);
+                if (itemProvider.ItemExist(itemId)) {
+                    short wareHouseId = txtTransWarehouseL2.Text.ToShort();
+                    if (warehouseList.IsInCollection(wareHouseId)) {
+                        string unitOfMovId = txtTransUnL2.Text;
+                        double taxRate = txtTransTaxRateL2.Text.ToDouble();
+                        double qty = txtTransQuantityL2.Text.ToDouble();
+                        double unitPrice = txtTransUnitPriceL2.Text.ToDouble();
+                        TransStockAddDetail(wareHouseId, itemId, unitOfMovId, taxRate, qty, unitPrice, StockQtyRule);
 
-                if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
-                    var itemDetails = GetItemComponentList(2);
-                    if (itemDetails != null) {
+                        if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                            var itemDetails = GetItemComponentList(2);
+                            if (itemDetails != null) {
 
-                        foreach (ItemTransactionDetail value in itemDetails) {
-                            TransStockAddDetail(wareHouseId, value.ItemID, value.UnitOfSaleID, taxRate, value.Quantity, value.UnitPrice, value.PhysicalQtyRule);
+                                foreach (ItemTransactionDetail value in itemDetails) {
+                                    TransStockAddDetail(wareHouseId, value.ItemID, value.UnitOfSaleID, taxRate, value.Quantity, value.UnitPrice, value.PhysicalQtyRule);
+                                }
+                            }
                         }
                     }
+                    else {
+                        throw new Exception("O armazém inserido não existe");
+                    }
                 }
-
+                else {
+                    throw new Exception("O artigo inserido não existe");
+                }
             }
             //
             if (bsoStockTransaction.Transaction.Details.Count == 0) {
