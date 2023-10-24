@@ -26,6 +26,7 @@ namespace Sage50c.API.Sample {
             InitializeComponent();
             //Insere o new id na textbox na inicalização do form
             txtId.Text = sizeProvider.GetNewID().ToString();
+   
             FormatForm();
         }
 
@@ -73,63 +74,72 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnSearch_Click(object sender, EventArgs e) {
-            //Abre quick search para procurar um determinado tamanho
-            var sizeId = QuickSearchHelper.SizeFind();
-            //Atualiza os campos consoante o tamanho selecionado
-            if (sizeId > 0) {
-                var size = sizeProvider.GetSize((short)sizeId);
-                UpdateUI(size);
-                EnableComp(true);
-                isLoaded = true;
+            if (sizeProvider != null) {
+                //Abre quick search para procurar um determinado tamanho
+                var sizeId = QuickSearchHelper.SizeFind();
+                //Atualiza os campos consoante o tamanho selecionado
+                if (sizeId > 0) {
+                    var size = sizeProvider.GetSize((short)sizeId);
+                    UpdateUI(size);
+                    EnableComp(true);
+                    isLoaded = true;
+                }
             }
         }
 
         private void btnFirst_Click(object sender, EventArgs e) {
-            //Tamanho com menor id
-            var size = sizeProvider.GetSize(sizeProvider.GetNextID(0));
-
-            //Atualiza os campos consoante o tamanho selecionado
-            UpdateUI(size);
-            EnableComp(true);
-            isLoaded = true;
-        }
-
-        private void btnLeft_Click(object sender, EventArgs e) {
-            var sizeId = txtId.Text.ToShort();
-            //Tamanho com o id anterior ao atual
-            var prevSize = sizeProvider.GetPreviousID(sizeId);
-
-            if (prevSize != sizeId) {
-                var size = sizeProvider.GetSize(prevSize);
+            if (sizeProvider != null) {
+                //Tamanho com menor id
+                var size = sizeProvider.GetSize(sizeProvider.GetNextID(0));
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
                 EnableComp(true);
                 isLoaded = true;
+            }
+        }
+
+        private void btnLeft_Click(object sender, EventArgs e) {
+            if (sizeProvider != null) {
+                var sizeId = txtId.Text.ToShort();
+                //Tamanho com o id anterior ao atual
+                var prevSize = sizeProvider.GetPreviousID(sizeId);
+
+                if (prevSize != sizeId) {
+                    var size = sizeProvider.GetSize(prevSize);
+                    //Atualiza os campos consoante o tamanho selecionado
+                    UpdateUI(size);
+                    EnableComp(true);
+                    isLoaded = true;
+                }
             }
         }
 
         private void btnRight_Click(object sender, EventArgs e) {
-            var sizeId = txtId.Text.ToShort();
-            //Tamanho com id seguinte ao atual
-            var prevSize = sizeProvider.GetNextID(sizeId);
+            if (sizeProvider != null) {
+                var sizeId = txtId.Text.ToShort();
+                //Tamanho com id seguinte ao atual
+                var prevSize = sizeProvider.GetNextID(sizeId);
 
-            if (prevSize != sizeId) {
-                var size = sizeProvider.GetSize(prevSize);
+                if (prevSize != sizeId) {
+                    var size = sizeProvider.GetSize(prevSize);
+                    //Atualiza os campos consoante o tamanho selecionado
+                    UpdateUI(size);
+                    EnableComp(true);
+                    isLoaded = true;
+                }
+            }
+        }
+
+        private void btnLast_Click(object sender, EventArgs e) {
+            if (sizeProvider != null) {
+                //Tamanho com maior id
+                var sizeId = sizeProvider.GetLastID();
+                var size = sizeProvider.GetSize((short)sizeId);
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
                 EnableComp(true);
                 isLoaded = true;
             }
-        }
-
-        private void btnLast_Click(object sender, EventArgs e) {
-            //Tamanho com maior id
-            var sizeId = sizeProvider.GetLastID();
-            var size = sizeProvider.GetSize((short)sizeId);
-            //Atualiza os campos consoante o tamanho selecionado
-            UpdateUI(size);
-            EnableComp(true);
-            isLoaded = true;
         }
 
         private void btnNew_Click(object sender, EventArgs e) {
@@ -215,6 +225,7 @@ namespace Sage50c.API.Sample {
         private void txtId_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == (char)Keys.Enter) {
                 EnableComp(true);
+                CheckTextId();
                 txtDescription.Select();
             }
         }
@@ -226,6 +237,9 @@ namespace Sage50c.API.Sample {
                 UpdateUI(size);
                 EnableComp(true);
             }
+            else {
+                CheckTextId();
+            }
         }
 
         private void EnableComp(bool action) {
@@ -233,5 +247,10 @@ namespace Sage50c.API.Sample {
             txtDescription.Enabled = action;
         }
 
+        private void CheckTextId() {
+            if (txtId.Text.ToShort() == 0) {
+                btnSearch.PerformClick();
+            }
+        }
     }
 }
