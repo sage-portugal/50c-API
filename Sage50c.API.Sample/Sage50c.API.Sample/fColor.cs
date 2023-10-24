@@ -46,7 +46,9 @@ namespace Sage50c.API.Sample {
 
         private void btnFirst_Click(object sender, EventArgs e) {
 
-            var color = colorProvider.GetColor(1);
+            var firstID = colorProvider.GetNextID(0);
+            var color = colorProvider.GetColor(firstID);
+
             UpdateUI(color);
             isLoaded = true;
             ToggleUI(true);
@@ -54,11 +56,10 @@ namespace Sage50c.API.Sample {
 
         private void btnLeft_Click(object sender, EventArgs e) {
 
-            //TODO: Create a GetFirst() method
-            var firstColorID = 1;
-            if (txtColorID.Text.ToShort() > firstColorID) {
+            var currentID = txtColorID.Text.ToShort();
+            var previousID = colorProvider.GetPreviousID(currentID);
 
-                var previousID = colorProvider.GetPreviousID(txtColorID.Text.ToShort());
+            if (previousID > 0) {
                 var color = colorProvider.GetColor(previousID);
                 UpdateUI(color);
                 isLoaded = true;
@@ -68,10 +69,10 @@ namespace Sage50c.API.Sample {
 
         private void btnRight_Click(object sender, EventArgs e) {
 
-            var lastColorID = colorProvider.GetLastID();
-            if (txtColorID.Text.ToShort() < lastColorID) {
+            var currentID = txtColorID.Text.ToShort();
+            var nextID = colorProvider.GetNextID(currentID);
 
-                var nextID = colorProvider.GetNextID(txtColorID.Text.ToShort());
+            if (nextID > 0) {
                 var color = colorProvider.GetColor(nextID);
                 UpdateUI(color);
                 isLoaded = true;
@@ -80,8 +81,10 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnLast_Click(object sender, EventArgs e) {
-            var lastColorID = colorProvider.GetLastID();
-            var color = colorProvider.GetColor(lastColorID);
+
+            var lastID = colorProvider.GetLastID();
+            var color = colorProvider.GetColor(lastID);
+
             UpdateUI(color);
             isLoaded = true;
             ToggleUI(true);
