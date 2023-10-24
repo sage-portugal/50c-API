@@ -86,8 +86,8 @@ namespace Sage50c.API.Sample {
 
         private void btnFirst_Click(object sender, EventArgs e) {
             //Tamanho com menor id
-            var size = sizeProvider.GetSize(GetFirstSizeId());
-            
+            var size = sizeProvider.GetSize(sizeProvider.GetNextID(0));
+
             //Atualiza os campos consoante o tamanho selecionado
             UpdateUI(size);
             EnableComp(true);
@@ -95,9 +95,11 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnLeft_Click(object sender, EventArgs e) {
-            if (txtId.Text.ToShort() > GetFirstSizeId()) {
-                //Tamanho com o id anterior ao atual
-                var prevSize = sizeProvider.GetPreviousID(txtId.Text.ToShort());
+            var sizeId = txtId.Text.ToShort();
+            //Tamanho com o id anterior ao atual
+            var prevSize = sizeProvider.GetPreviousID(sizeId);
+
+            if (prevSize != sizeId) {
                 var size = sizeProvider.GetSize(prevSize);
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
@@ -107,9 +109,11 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnRight_Click(object sender, EventArgs e) {
-            if (txtId.Text.ToShort() < sizeProvider.GetLastID()) {
-                //Tamanho com id seguinte ao atual
-                var prevSize = sizeProvider.GetNextID(txtId.Text.ToShort());
+            var sizeId = txtId.Text.ToShort();
+            //Tamanho com id seguinte ao atual
+            var prevSize = sizeProvider.GetNextID(sizeId);
+
+            if (prevSize != sizeId) {
                 var size = sizeProvider.GetSize(prevSize);
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
@@ -170,6 +174,7 @@ namespace Sage50c.API.Sample {
                     try {
                         //Elimina o tamanho apresentado
                         sizeProvider.Delete(txtId.Text.ToShort());
+
                         //Limpa todos os campos para que se possa criar um novo tamanho 
                         ResetUI();
                     }
@@ -223,16 +228,9 @@ namespace Sage50c.API.Sample {
             }
         }
 
-
         private void EnableComp(bool action) {
             btnSave.Enabled = action;
             txtDescription.Enabled = action;
-        }
-
-        private short GetFirstSizeId() {
-            var sizes = sizeProvider.GetSizeTableRS();
-            var sizeId = sizes.Fields["SizeID"].Value.ToString().ToShort();
-            return sizeId;
         }
 
     }
