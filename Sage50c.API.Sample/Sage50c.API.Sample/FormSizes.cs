@@ -86,7 +86,8 @@ namespace Sage50c.API.Sample {
 
         private void btnFirst_Click(object sender, EventArgs e) {
             //Tamanho com menor id
-            var size = sizeProvider.GetSize(1);
+            var size = sizeProvider.GetSize(GetFirstSizeId());
+            
             //Atualiza os campos consoante o tamanho selecionado
             UpdateUI(size);
             EnableComp(true);
@@ -94,7 +95,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnLeft_Click(object sender, EventArgs e) {
-            if (txtId.Text.ToShort() > 1) {
+            if (txtId.Text.ToShort() > GetFirstSizeId()) {
                 //Tamanho com o id anterior ao atual
                 var prevSize = sizeProvider.GetPreviousID(txtId.Text.ToShort());
                 var size = sizeProvider.GetSize(prevSize);
@@ -226,6 +227,12 @@ namespace Sage50c.API.Sample {
         private void EnableComp(bool action) {
             btnSave.Enabled = action;
             txtDescription.Enabled = action;
+        }
+
+        private short GetFirstSizeId() {
+            var sizes = sizeProvider.GetSizeTableRS();
+            var sizeId = sizes.Fields["SizeID"].Value.ToString().ToShort();
+            return sizeId;
         }
 
     }
