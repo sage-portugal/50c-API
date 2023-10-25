@@ -1712,9 +1712,9 @@ namespace Sage50c.API.Sample {
             if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
                 // O Artigo tem propriedades ?
                 if (item.PropertyEnabled) {
-                    // NOTA: Para o exemplo atual apenas queremos uma propriedade definida no artigo com o ID1 = "NS".
+                    // NOTA: Para o exemplo atual apenas queremos uma propriedade definida no artigo com o ID1 = "NS ou "LOT"
                     //       Para outras propriedades e combinações, o código deve ser alterado em conformidade.
-                    if (item.PropertyID1.Equals("NS", StringComparison.CurrentCultureIgnoreCase)) {
+                    if (item.PropertyID1.Equals("NS", StringComparison.CurrentCultureIgnoreCase) || item.PropertyID1.Equals("LOT", StringComparison.CurrentCultureIgnoreCase)) {
                         transDetail.ItemProperties.ResetValues();
                         transDetail.ItemProperties.PropertyID1 = item.PropertyID1;
                         transDetail.ItemProperties.PropertyID2 = item.PropertyID2;
@@ -1731,6 +1731,13 @@ namespace Sage50c.API.Sample {
                         //
                         transDetail.ItemProperties.PropertyValue1 = serialNumberPropValue;
                     }
+                    else {
+                        throw new Exception(string.Format("O Artigo indicado [{0}] não possui a propriedade indicada.", item.ItemID));
+                    }
+                    //}
+                }
+                else {
+                    throw new Exception(string.Format("O Artigo indicado [{0}] não possui propriedades.", item.ItemID));
                 }
             }
 
@@ -2115,11 +2122,11 @@ namespace Sage50c.API.Sample {
                         }
                     }
                     else {
-                        throw new Exception("O armazém inserido não existe");
+                        throw new Exception("O armazém indicado não existe");
                     }
                 }
                 else {
-                    throw new Exception("O artigo inserido não existe");
+                    throw new Exception(string.Format("O Artigo [{0}] não foi entrado.", itemId));
                 }
             }
             //
@@ -2146,11 +2153,11 @@ namespace Sage50c.API.Sample {
                         }
                     }
                     else {
-                        throw new Exception("O armazém inserido não existe");
+                        throw new Exception("O armazém indicado não existe");
                     }
                 }
                 else {
-                    throw new Exception("O artigo inserido não existe");
+                    throw new Exception("O artigo indicado não existe");
                 }
             }
             //
