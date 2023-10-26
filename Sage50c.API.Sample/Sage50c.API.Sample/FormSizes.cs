@@ -17,6 +17,7 @@ namespace Sage50c.API.Sample {
         /// Provedor de tamanhos
         /// </summary>
         private DSOSize sizeProvider = new DSOSize();
+
         /// <summary>
         /// Permite identificar se o tamanho foi carregado a partir da database
         /// </summary>

@@ -628,7 +628,7 @@ namespace Sage50c.API.Sample {
                     }
                 }
                 else {
-                    throw new Exception(string.Format("O Artigo {0} não foi encontrado!", itemId));
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice(string.Format("O Artigo {0} não foi encontrado!", itemId), VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
                 }
             }
         }
@@ -3153,127 +3153,6 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        //private void cmbItemColor_SelectedIndexChanged(object sender, EventArgs e) {
-        //    cmbItemSize.ResetText();
-        //    dataGridView1.Columns.Clear();
-        //    dataGridView1.RowHeadersVisible = false;
-        //    dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-        //    dataGridView1.DataSource = GetGridDataColor();
-        //    dataGridView1.Columns[0].Visible = false;
-        //    dataGridView1.AutoSize = true;
-        //    dataGridView1.Refresh();
-        //}
-
-        //private DataTable GetGridDataColor() {
-        //    var mainProvider = APIEngine.DataManager.MainProvider;
-        //    ItemColor color = (ItemColor)cmbItemColor.SelectedItem;
-        //    string query = "SELECT Stock.ItemID, Stock.ColorID, Stock.SizeID, ItemSize.SequenceNumber, Stock.WarehouseID, Stock.PhysicalQty, Size.Description AS SizeDescription" +
-        //                   " FROM ((Stock " +
-        //                   " inner join Size on Stock.SizeID = Size.SizeID) " +
-        //                   " inner join ItemSize on Stock.SizeID = ItemSize.SizeID AND Stock.ItemID = ItemSize.ItemID) " +
-        //                   " WHERE Stock.ItemID = '" + mainProvider.SQLFormatter.SQLString(txtItemId.Text) + "' AND " +
-        //                   " ColorID = " + mainProvider.SQLFormatter.SQLNumber(color.ColorID) +
-        //                   " ORDER BY SequenceNumber, WarehouseID";
-
-        //    object recsAffected = new object();
-        //    ADODB.Recordset rs = mainProvider.Execute(query);
-
-        //    DataTable dt = new DataTable();
-
-        //    var keyCol = dt.Columns.Add("SizeId", typeof(int));
-        //    keyCol.ColumnName = "Tamanho";
-        //    dt.PrimaryKey = new DataColumn[] { keyCol };
-
-        //    var colSizeDesc = dt.Columns.Add("Desc.", typeof(string));
-
-        //    var warehouseList = dsoCache.WarehouseProvider.GetWarehouseList();
-        //    foreach (Warehouse ware in warehouseList) {
-        //        dt.Columns.Add(ware.WarehouseID.ToString(), typeof(double));
-        //    }
-
-        //    while (!rs.EOF) {
-        //        var sizeId = (int)rs.Fields["SizeId"].Value;
-        //        var warehouseId = (int)rs.Fields["WarehouseId"].Value;
-        //        DataColumn col = dt.Columns[warehouseId.ToString()];
-
-        //        var row = dt.Rows.Find(sizeId);
-        //        if (row == null) {
-        //            row = dt.NewRow();
-        //            row[keyCol] = sizeId;
-        //            row[colSizeDesc] = rs.Fields["SizeDescription"].Value.ToString();
-        //            dt.Rows.Add(row);
-        //        }
-        //        row[col] = Math.Round((double)rs.Fields["PhysicalQty"].Value, 5);
-
-        //        rs.MoveNext();
-        //    }
-        //    rs.Close();
-        //    rs = null;
-
-        //    return dt;
-        //}
-
-        //private void cmbItemSize_SelectedIndexChanged(object sender, EventArgs e) {
-        //    cmbItemColor.ResetText();
-        //    dataGridView1.Columns.Clear();
-        //    dataGridView1.RowHeadersVisible = false;
-        //    dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-        //    dataGridView1.DataSource = GetGridDataSize();
-        //    dataGridView1.Columns[0].Visible = false;
-        //    dataGridView1.AutoSize = true;
-        //    dataGridView1.Refresh();
-        //}
-
-        //private DataTable GetGridDataSize() {
-        //    var mainProvider = APIEngine.DataManager.MainProvider;
-        //    ItemSize size = (ItemSize)cmbItemSize.SelectedItem;
-        //    string query = "SELECT Stock.ItemID, Stock.ColorID, Stock.SizeID, ItemColor.SequenceNumber, Stock.WarehouseID, Stock.PhysicalQty, Color.Description AS ColorDescription" +
-        //                   " FROM ((Stock " +
-        //                   " inner join Color on Stock.ColorID = Color.ColorID) " +
-        //                   " inner join ItemColor on Stock.ColorID = ItemColor.ColorID AND Stock.ItemID = ItemColor.ItemID) " +
-        //                   " WHERE Stock.ItemID = '" + mainProvider.SQLFormatter.SQLString(txtItemId.Text) + "' AND " +
-        //                   " Stock.SizeID = " + mainProvider.SQLFormatter.SQLNumber(size.SizeID) +
-        //                   " ORDER BY SequenceNumber, WarehouseID";
-
-
-
-        //    var rs = mainProvider.Execute(query);
-
-        //    DataTable dt = new DataTable();
-
-        //    var keyCol = dt.Columns.Add("ColorId", typeof(int));
-        //    keyCol.ColumnName = "Cor";
-        //    dt.PrimaryKey = new DataColumn[] { keyCol };
-
-        //    var colColorDesc = dt.Columns.Add("Desc.", typeof(string));
-
-        //    var warehouseList = dsoCache.WarehouseProvider.GetWarehouseList();
-        //    foreach (Warehouse ware in warehouseList) {
-        //        dt.Columns.Add(ware.WarehouseID.ToString(), typeof(double));
-        //    }
-
-        //    while (!rs.EOF) {
-        //        var colorId = (int)rs.Fields["ColorId"].Value;
-        //        var warehouseId = (int)rs.Fields["WarehouseId"].Value;
-        //        DataColumn col = dt.Columns[warehouseId.ToString()];
-
-        //        var row = dt.Rows.Find(colorId);
-        //        if (row == null) {
-        //            row = dt.NewRow();
-        //            row[keyCol] = colorId;
-        //            row[colColorDesc] = rs.Fields["ColorDescription"].Value.ToString();
-        //            dt.Rows.Add(row);
-        //        }
-        //        row[col] = Math.Round((double)rs.Fields["PhysicalQty"].Value, 5);
-
-        //        rs.MoveNext();
-        //    }
-        //    rs.Close();
-        //    rs = null;
-
-        //    return dt;
-        //}
-
         private ItemTransactionDetailList GetItemComponentList(int LineID) {
             var itemDetails = new ItemTransactionDetailList();
             string itemID = string.Empty;
@@ -3880,8 +3759,8 @@ namespace Sage50c.API.Sample {
 
                 var isDuplicate = false;
                 foreach (DataGridViewRow colorRow in dgvColor.Rows) {
-                    var colorRowID = (short)colorRow.Cells[0].Value;
 
+                    var colorRowID = (short)colorRow.Cells[0].Value;
                     if (colorRowID == colorToAdd.ColorID) {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         isDuplicate = true;
@@ -4027,6 +3906,7 @@ namespace Sage50c.API.Sample {
                     ColorID = color.ColorID,
                     ColorName = color.Description,
                     ColorCode = (int)color.ColorCode,
+                    SequenceNumber = (short)(colorRow.Index + 1)
                 };
 
                 item.Colors.Add(newItemColor);
@@ -4035,14 +3915,16 @@ namespace Sage50c.API.Sample {
 
         private void btnCreateColor_Click(object sender, EventArgs e) {
             fColor colorForm = new fColor();
-            colorForm.Show();
+            colorForm.ShowDialog();
         }
 
         private void AddSizesToItem(Item item) {
 
+            // Limpar os tamanhos anteriores
             item.Sizes.Clear();
+            // Adicionar os tamanhos atualizados
             foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
-                var sizeID = (short)(sizeRow.Cells[0].Value);
+                var sizeID = (short)sizeRow.Cells[0].Value;
                 var size = APIEngine.DSOCache.SizeProvider.GetSize(sizeID);
 
                 var newItemSize = new ItemSize() {
@@ -4050,6 +3932,7 @@ namespace Sage50c.API.Sample {
                     SizeName = size.Description,
                     Quantity = 1,
                     Units = 1,
+                    SequenceNumber = (short)(sizeRow.Index + 1)
                 };
 
                 item.Sizes.Add(newItemSize);
