@@ -56,12 +56,6 @@ namespace Sage50c.API.Sample.Controllers {
             } else {
                 myCustomer.SalesmanId = _customer.SalesmanId;
             }
-            //If currency doesn't exist use base currency
-            if(!dsoCache.CurrencyProvider.CurrencyExists(_customer.CurrencyID)) {
-                myCustomer.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
-            } else {
-                myCustomer.CurrencyID = _customer.CurrencyID;
-            }
             //If country doesn't exist use default country
             if(!dsoCache.CountryProvider.CountryExists(_customer.CountryID)) {
                 myCustomer.CountryID = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;

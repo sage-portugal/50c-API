@@ -238,14 +238,12 @@ namespace Sage50c.API.Sample {
             this.txtCustomerName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbCustomerTax = new System.Windows.Forms.ComboBox();
-            this.cmbCustomerCurrency = new System.Windows.Forms.ComboBox();
             this.numCustomerSalesmanId = new System.Windows.Forms.NumericUpDown();
             this.numCustomerZoneId = new System.Windows.Forms.NumericUpDown();
             this.numCustomerId = new System.Windows.Forms.NumericUpDown();
             this.Label12 = new System.Windows.Forms.Label();
             this.Label11 = new System.Windows.Forms.Label();
             this._Label15_1 = new System.Windows.Forms.Label();
-            this.Label9 = new System.Windows.Forms.Label();
             this.Label8 = new System.Windows.Forms.Label();
             this.Label7 = new System.Windows.Forms.Label();
             this.Label6 = new System.Windows.Forms.Label();
@@ -3027,14 +3025,12 @@ namespace Sage50c.API.Sample {
             this.tabCustomer.Controls.Add(this.txtCustomerName);
             this.tabCustomer.Controls.Add(this.label2);
             this.tabCustomer.Controls.Add(this.cmbCustomerTax);
-            this.tabCustomer.Controls.Add(this.cmbCustomerCurrency);
             this.tabCustomer.Controls.Add(this.numCustomerSalesmanId);
             this.tabCustomer.Controls.Add(this.numCustomerZoneId);
             this.tabCustomer.Controls.Add(this.numCustomerId);
             this.tabCustomer.Controls.Add(this.Label12);
             this.tabCustomer.Controls.Add(this.Label11);
             this.tabCustomer.Controls.Add(this._Label15_1);
-            this.tabCustomer.Controls.Add(this.Label9);
             this.tabCustomer.Controls.Add(this.Label8);
             this.tabCustomer.Controls.Add(this.Label7);
             this.tabCustomer.Controls.Add(this.Label6);
@@ -3061,7 +3057,7 @@ namespace Sage50c.API.Sample {
             // 
             this.cmbCustomerCountry.DisplayMember = "CountryID";
             this.cmbCustomerCountry.FormattingEnabled = true;
-            this.cmbCustomerCountry.Location = new System.Drawing.Point(149, 260);
+            this.cmbCustomerCountry.Location = new System.Drawing.Point(149, 229);
             this.cmbCustomerCountry.Name = "cmbCustomerCountry";
             this.cmbCustomerCountry.Size = new System.Drawing.Size(346, 28);
             this.cmbCustomerCountry.TabIndex = 16;
@@ -3086,7 +3082,7 @@ namespace Sage50c.API.Sample {
             this.txtCustomerComments.BackColor = System.Drawing.SystemColors.Window;
             this.txtCustomerComments.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtCustomerComments.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtCustomerComments.Location = new System.Drawing.Point(149, 292);
+            this.txtCustomerComments.Location = new System.Drawing.Point(149, 261);
             this.txtCustomerComments.MaxLength = 0;
             this.txtCustomerComments.Name = "txtCustomerComments";
             this.txtCustomerComments.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -3130,16 +3126,6 @@ namespace Sage50c.API.Sample {
             this.cmbCustomerTax.TabIndex = 8;
             this.cmbCustomerTax.ValueMember = "EntityFiscalStatusID";
             // 
-            // cmbCustomerCurrency
-            // 
-            this.cmbCustomerCurrency.DisplayMember = "CurrencyID";
-            this.cmbCustomerCurrency.FormattingEnabled = true;
-            this.cmbCustomerCurrency.Location = new System.Drawing.Point(149, 195);
-            this.cmbCustomerCurrency.Name = "cmbCustomerCurrency";
-            this.cmbCustomerCurrency.Size = new System.Drawing.Size(346, 28);
-            this.cmbCustomerCurrency.TabIndex = 12;
-            this.cmbCustomerCurrency.ValueMember = "CurrencyID";
-            // 
             // numCustomerSalesmanId
             // 
             this.numCustomerSalesmanId.Location = new System.Drawing.Point(149, 163);
@@ -3156,7 +3142,7 @@ namespace Sage50c.API.Sample {
             // 
             // numCustomerZoneId
             // 
-            this.numCustomerZoneId.Location = new System.Drawing.Point(149, 227);
+            this.numCustomerZoneId.Location = new System.Drawing.Point(149, 196);
             this.numCustomerZoneId.Maximum = new decimal(new int[] {
             999999999,
             0,
@@ -3189,7 +3175,7 @@ namespace Sage50c.API.Sample {
             this.Label12.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label12.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label12.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label12.Location = new System.Drawing.Point(42, 263);
+            this.Label12.Location = new System.Drawing.Point(42, 232);
             this.Label12.Name = "Label12";
             this.Label12.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label12.Size = new System.Drawing.Size(41, 20);
@@ -3203,7 +3189,7 @@ namespace Sage50c.API.Sample {
             this.Label11.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label11.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label11.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label11.Location = new System.Drawing.Point(42, 295);
+            this.Label11.Location = new System.Drawing.Point(42, 264);
             this.Label11.Name = "Label11";
             this.Label11.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label11.Size = new System.Drawing.Size(102, 20);
@@ -3217,26 +3203,12 @@ namespace Sage50c.API.Sample {
             this._Label15_1.Cursor = System.Windows.Forms.Cursors.Default;
             this._Label15_1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._Label15_1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._Label15_1.Location = new System.Drawing.Point(42, 230);
+            this._Label15_1.Location = new System.Drawing.Point(42, 199);
             this._Label15_1.Name = "_Label15_1";
             this._Label15_1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._Label15_1.Size = new System.Drawing.Size(48, 20);
             this._Label15_1.TabIndex = 55;
             this._Label15_1.Text = "Zona:";
-            // 
-            // Label9
-            // 
-            this.Label9.AutoSize = true;
-            this.Label9.BackColor = System.Drawing.Color.Transparent;
-            this.Label9.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label9.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label9.Location = new System.Drawing.Point(42, 198);
-            this.Label9.Name = "Label9";
-            this.Label9.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label9.Size = new System.Drawing.Size(61, 20);
-            this.Label9.TabIndex = 54;
-            this.Label9.Text = "Moeda:";
             // 
             // Label8
             // 
@@ -3819,14 +3791,12 @@ namespace Sage50c.API.Sample {
         public System.Windows.Forms.TextBox txtCustomerName;
         public System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbCustomerTax;
-        private System.Windows.Forms.ComboBox cmbCustomerCurrency;
         private System.Windows.Forms.NumericUpDown numCustomerSalesmanId;
         private System.Windows.Forms.NumericUpDown numCustomerZoneId;
         private System.Windows.Forms.NumericUpDown numCustomerId;
         public System.Windows.Forms.Label Label12;
         public System.Windows.Forms.Label Label11;
         private System.Windows.Forms.Label _Label15_1;
-        public System.Windows.Forms.Label Label9;
         public System.Windows.Forms.Label Label8;
         public System.Windows.Forms.Label Label7;
         public System.Windows.Forms.Label Label6;

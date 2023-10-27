@@ -680,7 +680,6 @@ namespace Sage50c.API.Sample {
                 FederalTaxId = txtCustomerTaxId.Text,
                 EntityFiscalStatusID = ((EntityFiscalStatus)cmbCustomerTax.SelectedItem).EntityFiscalStatusID,
                 SalesmanId = (int)numCustomerSalesmanId.Value,
-                CurrencyID = ((CurrencyDefinition)cmbCustomerCurrency.SelectedItem).CurrencyID,
                 ZoneID = (short)numCustomerZoneId.Value,
                 CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID,
                 Comments = txtCustomerComments.Text,
@@ -712,11 +711,6 @@ namespace Sage50c.API.Sample {
                                             .FirstOrDefault(x => x.CountryID.Equals(systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, StringComparison.CurrentCultureIgnoreCase));
             cmbCustomerCountry.SelectedItem = country;
             //
-            UIUtils.FillCurrencyCombo(cmbCustomerCurrency);
-            var currency = cmbCustomerCurrency.Items.Cast<CurrencyDefinition>()
-                                              .FirstOrDefault(x => x.CurrencyID.Equals(systemSettings.BaseCurrency.CurrencyID, StringComparison.CurrentCultureIgnoreCase));
-            cmbCustomerCurrency.SelectedItem = currency;
-            //
             UIUtils.FillEntityFiscalStatusCombo(cmbCustomerTax);
             cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.PartySettings.SystemFiscalStatusID);
             if (cmbCustomerTax.SelectedItem == null && cmbCustomerTax.Items.Count > 0) {
@@ -731,7 +725,6 @@ namespace Sage50c.API.Sample {
                 numCustomerZoneId.Value = customer.ZoneID;
 
                 cmbCustomerCountry.SelectedItem = cmbCustomerCountry.Items.Cast<CountryCode>().FirstOrDefault(x => x.CountryID == customer.CountryID);
-                cmbCustomerCurrency.SelectedItem = cmbCustomerCurrency.Items.Cast<CurrencyDefinition>().FirstOrDefault(x => x.CurrencyID == customer.CurrencyID);
                 cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == customer.EntityFiscalStatusID);
 
                 txtCustomerComments.Text = customer.Comments;
