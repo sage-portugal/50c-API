@@ -292,6 +292,7 @@
     </Compile>
     <Compile Include="ItemTransactionHelper.cs" />
     <Compile Include="GenericTransaction.cs" />
+    <Compile Include="Month.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -373,6 +374,7 @@
     <None Include="Resources\Search.ico" />
     <None Include="Resources\caretDoubleLeft.ico" />
     <None Include="Resources\caretDoubleRight.ico" />
+    <None Include="Resources\FileFolder.ico" />
     <Content Include="S_ico_Black.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

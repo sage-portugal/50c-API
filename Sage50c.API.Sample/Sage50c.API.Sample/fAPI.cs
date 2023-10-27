@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ using S50cBL22;
 using S50cBO22;
 using S50cDL22;
 using S50cPrint22;
+using S50cSAFTX22;
 using S50cSys22;
 using S50cUtil22;
 
@@ -26,7 +28,6 @@ namespace Sage50c.API.Sample {
         /// Cache dos motores de acesso a dados mais comuns
         /// </summary>
         private DSOFactory dsoCache { get { return APIEngine.DSOCache; } }
-        //
         /// <summary>
         /// Inidica que houve um erro na transação e não foi gravada
         /// </summary>
@@ -133,6 +134,36 @@ namespace Sage50c.API.Sample {
             SupplierClear();
             TransactionClear();
             AccountTransactionClear();
+
+            UIUtils.FillMonthCombo(cmbSAFTMonth);
+
+            var dateToday = DateTime.Today.AddMonths(-1);
+            var startDate = dateToday.FirstDayOfMonth();
+            var endDate = dateToday.LastDayOfLastMonth();
+
+            dtpStart.Value = startDate;
+            dtpEnd.Value = endDate;
+
+            cmbSAFTMonth.SelectedIndex = startDate.Month - 1;
+            nudSAFTYear.Value = startDate.Year;
+
+            var saftPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                APIEngine.SystemSettings.Application.LongName,
+                APIEngine.SystemSettings.Company.CompanyID,
+                "SAFT");
+
+            if (!Directory.Exists(saftPath)) {
+                Directory.CreateDirectory(saftPath);
+            }
+
+            txtSAFTPath0.Text = saftPath;
+            txtSAFTPath1.Text = saftPath;
+
+            txtSAFTPath0.SelectionStart = txtSAFTPath0.TextLength;
+            txtSAFTPath0.ScrollToCaret();
+
+            txtSAFTPath1.SelectionStart = txtSAFTPath1.TextLength;
+            txtSAFTPath1.ScrollToCaret();
 
             //txtTransDoc.Text = "FAC";
             //txtTransSerial.Text = "1";
@@ -2466,10 +2497,6 @@ namespace Sage50c.API.Sample {
             pnlTransModuleSizeColor.Enabled = chkTransModuleSizeColor.Checked;
         }
 
-        private void tabEntities_SelectedIndexChanged(object sender, EventArgs e) {
-            //TODO: Perguntar ao jorge
-        }
-
         #region Account documents
 
         private TransactionID AccountTransactionRemove() {
@@ -3857,8 +3884,8 @@ namespace Sage50c.API.Sample {
             dgv.RowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
             dgv.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TabBackColor);
 
-            dgv.Columns.Clear();
             dgv.Rows.Clear();
+            dgv.Columns.Clear();
             dgv.Columns.AddRange(columns);
         }
 
@@ -3911,6 +3938,112 @@ namespace Sage50c.API.Sample {
         private void btnCreateSize_Click(object sender, EventArgs e) {
             FormSizes formSizes = new FormSizes();
             formSizes.ShowDialog();
+        }
+
+        private void btnSAFTPath0_Click(object sender, EventArgs e) {
+            saveFileDialog.FileName = string.Empty;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                txtSAFTPath0.Text = saveFileDialog.FileName;
+            }
+        }
+
+        private void btnSAFTPath1_Click(object sender, EventArgs e) {
+            saveFileDialog.FileName = string.Empty;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                txtSAFTPath1.Text = saveFileDialog.FileName;
+            }
+        }
+
+        private void cmbSAFTMonth_SelectedIndexChanged(object sender, EventArgs e) {
+
+            nudSAFTStartDay.Value = 1;
+            nudSAFTEndDay.Value = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
+        }
+
+        private void nudSAFTYear_ValueChanged(object sender, EventArgs e) {
+
+            nudSAFTStartDay.Value = 1;
+            nudSAFTEndDay.Value = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
+        }
+
+        private void nudSAFTStartDay_ValueChanged(object sender, EventArgs e) {
+
+            int daysInMonth = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
+            if (nudSAFTStartDay.Value < 1) {
+                nudSAFTStartDay.Value = daysInMonth;
+            }
+            else if (nudSAFTStartDay.Value > daysInMonth) {
+                nudSAFTStartDay.Value = 1;
+            }
+        }
+
+        private void nudSAFTEndDay_ValueChanged(object sender, EventArgs e) {
+
+            int daysInMonth = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
+            if (nudSAFTEndDay.Value < 1) {
+                nudSAFTEndDay.Value = daysInMonth;
+            }
+            else if (nudSAFTEndDay.Value > daysInMonth) {
+                nudSAFTEndDay.Value = 1;
+            }
+        }
+
+        // Global SAF-T
+        private void btnSAFTExport0_Click(object sender, EventArgs e) {
+
+            var fileName = $"Global-{APIEngine.SystemSettings.Company.CompanyID}-{dtpStart.Value.Date.ToString("yyyyMMdd")}-{dtpEnd.Value.Date.ToString("yyyyMMdd")}-{new Random().Next(1, 1001)}.xml";
+            var filePath = Path.Combine(txtSAFTPath0.Text, fileName);
+            ExportSAFT(dtpStart.Value, dtpEnd.Value, filePath, false);
+        }
+
+        // Simplified SAF-T
+        private void btnSAFTExport1_Click(object sender, EventArgs e) {
+
+            var year = (int)nudSAFTYear.Value;
+            var month = ((Month)cmbSAFTMonth.SelectedItem).Value;
+
+            DateTime startDate = new DateTime(year, month, (int)nudSAFTStartDay.Value);
+            DateTime endDate = new DateTime(year, month, (int)nudSAFTEndDay.Value);
+
+            var fileName = $"Simplified-{APIEngine.SystemSettings.Company.CompanyID}-{startDate.Date.ToString("yyyyMMdd")}-{endDate.Date.ToString("yyyyMMdd")}-{new Random().Next(1, 1001)}.xml";
+            var filePath = Path.Combine(txtSAFTPath1.Text, fileName);
+            ExportSAFT(startDate, endDate, filePath, true);
+        }
+
+        private void ExportSAFT(DateTime startDate, DateTime endDate, string filePath, bool bIsSimplified) {
+
+            SAFTExportFactory factory = new SAFTExportFactory {
+                SaftSimplified = false,
+                SAFTSelfBilling = false,
+                SaftType = SaftTypeEnum.SaftTypeInvoice,
+                TransmissionStatus = (short)TransmissionStatusEnum.TransmissionStatusExportedForTesting,
+                Version = "1.04",
+
+                AuditFileName = filePath,
+                InitialDate = startDate,
+                FinalDate = endDate
+            };
+
+            var exporter = factory.GetSAFTExporter();
+            if (exporter.ValidateDates()) {
+
+                //TODO: Disable UI
+                Enabled = false;
+
+                var bExported = exporter.Export(filePath);
+                if (bExported) {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Exportado com sucesso. Ficheiro disponível em:{Environment.NewLine}{Environment.NewLine}{filePath}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+                else {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice("Não foi possível exportar o ficheiro.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice($"As datas indicadas não são válidas.{Environment.NewLine}Data de início: {dtpStart.Value.ToShortDateString()}{Environment.NewLine}Data de fim: {dtpEnd.Value.ToShortDateString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+
+            //TODO: Enable UI
+            Enabled = true;
         }
     }
 }
