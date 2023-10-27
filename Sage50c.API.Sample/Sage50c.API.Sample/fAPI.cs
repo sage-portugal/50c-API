@@ -10,6 +10,8 @@ using S50cDL22;
 using S50cPrint22;
 using S50cSys22;
 using S50cUtil22;
+using Sage50c.API.Sample.Controllers;
+using SageCoreSaft60;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
@@ -51,6 +53,8 @@ namespace Sage50c.API.Sample {
         /// Motor dos armazens
         /// </summary>
         private DSOWarehouse dSOWarehouse = new DSOWarehouse();
+
+        private CustomerController customerController = new CustomerController();
 
         public fApi() {
 
@@ -320,7 +324,12 @@ namespace Sage50c.API.Sample {
 
                 switch (tabEntities.SelectedIndex) {
                     case 0: ItemInsert(); break;
-                    case 1: CustomerUpdate((double)numCustomerId.Value, true); break;
+                    case 1:
+                        CustomerFill();
+                        customerController.CustomerUpdate(true);
+                        CustomerClear();
+                        break;
+                    //case 1: CustomerUpdate((double)numCustomerId.Value, true); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), true); break;
                     case 3: transId = TransactionInsert(false); break;
                     case 4: transId = AccountTransactionUpdate(true); break;
@@ -357,7 +366,12 @@ namespace Sage50c.API.Sample {
 
                     switch (tabEntities.SelectedIndex) {
                         case 0: ItemRemove(); break;                                        //Artigos
-                        case 1: CustomerRemove((double)numCustomerId.Value); break;         //Clientes
+                        //case 1: CustomerRemove((double)numCustomerId.Value); break;         //Clientes
+                        case 1:
+                            CustomerFill();
+                            customerController.CustomerRemove();
+                            CustomerClear();
+                            break;
                         case 2: SupplierRemove(double.Parse(txtSupplierId.Text)); break;  //Fornecedores
                         case 3: transId = TransactionRemove(); break;                                 //Compras e Vendas
                         case 4: transId = AccountTransactionRemove(); break;                          //Pagamentos e recebimentos
@@ -395,7 +409,12 @@ namespace Sage50c.API.Sample {
 
                 switch (tabEntities.SelectedIndex) {
                     case 0: ItemUpdate(txtItemId.Text); break;
-                    case 1: CustomerUpdate((double)numCustomerId.Value, false); break;
+                    case 1:
+                        CustomerFill();
+                        customerController.CustomerUpdate(false);
+                        CustomerClear();
+                        break;
+                    //case 1: CustomerUpdate((double)numCustomerId.Value, false); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), false); break;
                     case 3: transId = TransactionEdit(false); break;
                     case 4: transId = AccountTransactionUpdate(false); break;
@@ -424,7 +443,7 @@ namespace Sage50c.API.Sample {
             try {
                 switch (tabEntities.SelectedIndex) {
                     case 0: ItemGet(txtItemId.Text.Trim()); break;
-                    case 1: CustomerGet((double)numCustomerId.Value); break;
+                    case 1: CustomerSearch((double)numCustomerId.Value); break;
                     case 2: SupplierGet(double.Parse(txtSupplierId.Text)); break;
                     case 3: TransactionGet(false); break;
                     case 4: AccountTransactionGet(); break;
@@ -654,115 +673,30 @@ namespace Sage50c.API.Sample {
 
         #region CUSTOMER
 
-        /// <summary>
-        /// Gravar (inserir ou alterar) um cliente
-        /// </summary>
-        /// <param name="customerId"></param>
-        private void CustomerUpdate(double customerId, bool isNew) {
-            S50cBO22.Customer myCustomer = null;
-
-            //Ler da BD se não for novo
-            myCustomer = dsoCache.CustomerProvider.GetCustomer(customerId);
-            if (myCustomer == null && !isNew) {
-                throw new Exception(string.Format("O cliente [{0}] não existe.", customerId));
-            }
-            else if (myCustomer != null && isNew) {
-                throw new Exception(string.Format("O cliente [{0}] já existe.", customerId));
-            }
-
-            if (myCustomer == null) {
-                // Cliente NOVO
-                // Obter um novo Id
-                myCustomer = new S50cBO22.Customer();
-                myCustomer.CustomerID = (double)numCustomerId.Value;
-                // Colocar credito por limite de valor para não bloquear o cliente
-                myCustomer.LimitType = CustomerLimitType.ltValue;
-            }
-
-            myCustomer.OrganizationName = txtCustomerName.Text;
-            myCustomer.FederalTaxId = txtCustomerTaxId.Text;
-            myCustomer.Comments = txtCustomerComments.Text;
-            //
-            if (cmbCustomerTax.SelectedItem != null) {
-                var entityFiscalStatus = (EntityFiscalStatus)cmbCustomerTax.SelectedItem;
-                myCustomer.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
-            }
-            myCustomer.SalesmanId = (int)numCustomerSalesmanId.Value;
-            if (cmbCustomerCurrency.SelectedValue != null) {
-                myCustomer.CurrencyID = (string)cmbCustomerCurrency.SelectedValue;
-            }
-            myCustomer.ZoneID = (short)numCustomerZoneId.Value;
-            if (cmbCustomerCountry.SelectedItem != null) {
-                myCustomer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
-            }
-            //
-            // Outros campos obrigatórios
-            myCustomer.CarrierID = dsoCache.CarrierProvider.GetFirstCarrierID();
-            myCustomer.TenderID = dsoCache.TenderProvider.GetFirstTenderCash();
-            myCustomer.CurrencyID = cmbCustomerCurrency.Text;
-
-            // Se a zone estiver vazia, considerar a primeira zona nacional
-            if (myCustomer.ZoneID == 0) {
-                myCustomer.ZoneID = dsoCache.ZoneProvider.FindZone(ZoneTypeEnum.ztNational);
-            }
-            // Se o modo de pagamento estiver vazio, obter o primeiro disponivel
-            if (myCustomer.PaymentID == 0) {
-                myCustomer.PaymentID = dsoCache.PaymentProvider.GetFirstID();
-            }
-            // Se o vendedor não existir, utilizar o primeiro disponivel
-            if (!dsoCache.SalesmanProvider.SalesmanExists(myCustomer.SalesmanId)) {
-                myCustomer.SalesmanId = (int)dsoCache.SalesmanProvider.GetFirstSalesmanID();
-            }
-            // Se o pais não existir, rectificar
-            if (!dsoCache.CountryProvider.CountryExists(myCustomer.CountryID)) {
-                myCustomer.CountryID = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
-            }
-            // Se a moeda não existir, guar a moeda base
-            if (!dsoCache.CurrencyProvider.CurrencyExists(myCustomer.CurrencyID)) {
-                myCustomer.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
-            }
-
-            // Gravar. Se for novo NewRec = true;
-            dsoCache.CustomerProvider.Save(myCustomer, myCustomer.CustomerID, isNew);
-            //
-            CustomerClear();
+        private void CustomerFill() {
+            var customer = new S50cBO22.Customer() {
+                CustomerID = (short)numCustomerId.Value,
+                OrganizationName = txtCustomerName.Text,
+                FederalTaxId = txtCustomerTaxId.Text,
+                EntityFiscalStatusID = ((EntityFiscalStatus)cmbCustomerTax.SelectedItem).EntityFiscalStatusID,
+                SalesmanId = (int)numCustomerSalesmanId.Value,
+                CurrencyID = ((CurrencyDefinition)cmbCustomerCurrency.SelectedItem).CurrencyID,
+                ZoneID = (short)numCustomerZoneId.Value,
+                CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID,
+                Comments = txtCustomerComments.Text,
+            };
+            customerController._customer = customer;
         }
-
-        /// <summary>
-        /// Ler um cliente da base de dados e apresentá-lo no ecran
-        /// </summary>
-        /// <param name="customerId"></param>
-        private void CustomerGet(double customerId) {
+        
+        private void CustomerSearch(double customerId) {
+            //var customer = dsoCache.CustomerProvider.GetCustomer(customerId);
+            var customer = customerController.CustomerGet(customerId);
+            //Clear form
             CustomerClear();
-            var customer = dsoCache.CustomerProvider.GetCustomer(customerId);
-            if (customer != null) {
-                numCustomerId.Value = (decimal)customerId;
-                numCustomerSalesmanId.Value = customer.SalesmanId;
-                numCustomerZoneId.Value = customer.ZoneID;
-
-                cmbCustomerCountry.SelectedItem = cmbCustomerCountry.Items.Cast<CountryCode>().FirstOrDefault(x => x.CountryID == customer.CountryID);
-                cmbCustomerCurrency.SelectedItem = cmbCustomerCurrency.Items.Cast<CurrencyDefinition>().FirstOrDefault(x => x.CurrencyID == customer.CurrencyID);
-                cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == customer.EntityFiscalStatusID);
-
-                txtCustomerComments.Text = customer.Comments;
-                txtCustomerName.Text = customer.OrganizationName;
-                txtCustomerTaxId.Text = customer.FederalTaxId;
-            }
-            else {
-                //O cliente não existe!
-                throw new Exception(string.Format("O Cliente {0} não foi encontrado!", customerId));
-            }
+            //Update form
+            CustomerUpdate(customer);
         }
-
-        /// <summary>
-        /// Apagar um cliente
-        /// </summary>
-        /// <param name="customerId"></param>
-        private void CustomerRemove(double customerId) {
-            dsoCache.CustomerProvider.Delete(customerId);
-            CustomerClear();
-        }
-
+   
         private void CustomerClear() {
             // Obter um novo ID (para um novo cliente)
             numCustomerId.Value = (decimal)dsoCache.CustomerProvider.GetNewID();
@@ -771,6 +705,7 @@ namespace Sage50c.API.Sample {
             txtCustomerName.Text = string.Empty;
             txtCustomerTaxId.Text = string.Empty;
             numCustomerSalesmanId.Value = 0;
+            numCustomerZoneId.Value = 0;
 
             UIUtils.FillCountryCombo(cmbCustomerCountry);
             var country = cmbCustomerCountry.Items.Cast<CountryCode>()
@@ -786,6 +721,26 @@ namespace Sage50c.API.Sample {
             cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.PartySettings.SystemFiscalStatusID);
             if (cmbCustomerTax.SelectedItem == null && cmbCustomerTax.Items.Count > 0) {
                 cmbCustomerTax.SelectedIndex = 0;
+            }
+        }
+
+        private void CustomerUpdate(S50cBO22.Customer customer) {
+            if (customer != null) {
+                numCustomerId.Value = (decimal)customer.CustomerID;
+                numCustomerSalesmanId.Value = customer.SalesmanId;
+                numCustomerZoneId.Value = customer.ZoneID;
+
+                cmbCustomerCountry.SelectedItem = cmbCustomerCountry.Items.Cast<CountryCode>().FirstOrDefault(x => x.CountryID == customer.CountryID);
+                cmbCustomerCurrency.SelectedItem = cmbCustomerCurrency.Items.Cast<CurrencyDefinition>().FirstOrDefault(x => x.CurrencyID == customer.CurrencyID);
+                cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == customer.EntityFiscalStatusID);
+
+                txtCustomerComments.Text = customer.Comments;
+                txtCustomerName.Text = customer.OrganizationName;
+                txtCustomerTaxId.Text = customer.FederalTaxId;
+            }
+            else {
+                //O cliente não existe!
+                throw new Exception(string.Format("O Cliente {0} não foi encontrado!", numCustomerId.Value));
             }
         }
 
@@ -2970,7 +2925,7 @@ namespace Sage50c.API.Sample {
             var customerId = QuickSearchHelper.CustomerFind();
             if (customerId > 0) {
                 numCustomerId.Value = (decimal)customerId;
-                CustomerGet(customerId);
+                CustomerSearch(customerId);
             }
         }
 

@@ -1,4 +1,6 @@
-﻿namespace Sage50c.API.Sample {
+﻿using System.Windows.Forms;
+
+namespace Sage50c.API.Sample {
     partial class fApi {
         /// <summary>
         /// Required designer variable.
