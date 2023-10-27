@@ -134,43 +134,11 @@ namespace Sage50c.API.Sample {
             SupplierClear();
             TransactionClear();
             AccountTransactionClear();
+            SAFTClear();
 
-            UIUtils.FillMonthCombo(cmbSAFTMonth);
+            ApplyStyles();
 
-            var dateToday = DateTime.Today.AddMonths(-1);
-            var startDate = dateToday.FirstDayOfMonth();
-            var endDate = dateToday.LastDayOfLastMonth();
-
-            dtpStart.Value = startDate;
-            dtpEnd.Value = endDate;
-
-            cmbSAFTMonth.SelectedIndex = startDate.Month - 1;
-            nudSAFTYear.Value = startDate.Year;
-
-            var saftPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                APIEngine.SystemSettings.Application.LongName,
-                APIEngine.SystemSettings.Company.CompanyID,
-                "SAFT");
-
-            if (!Directory.Exists(saftPath)) {
-                Directory.CreateDirectory(saftPath);
-            }
-
-            txtSAFTPath0.Text = saftPath;
-            txtSAFTPath1.Text = saftPath;
-
-            txtSAFTPath0.SelectionStart = txtSAFTPath0.TextLength;
-            txtSAFTPath0.ScrollToCaret();
-
-            txtSAFTPath1.SelectionStart = txtSAFTPath1.TextLength;
-            txtSAFTPath1.ScrollToCaret();
-
-            //txtTransDoc.Text = "FAC";
-            //txtTransSerial.Text = "1";
-            //txtTransDocNumber.Text = "2";
-            //chkPrintPreview.Checked = false;
-
-            this.Cursor = Cursors.Default;
+            Cursor = Cursors.Default;
         }
 
         /// <summary>
@@ -3940,20 +3908,6 @@ namespace Sage50c.API.Sample {
             formSizes.ShowDialog();
         }
 
-        private void btnSAFTPath0_Click(object sender, EventArgs e) {
-            saveFileDialog.FileName = string.Empty;
-            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
-                txtSAFTPath0.Text = saveFileDialog.FileName;
-            }
-        }
-
-        private void btnSAFTPath1_Click(object sender, EventArgs e) {
-            saveFileDialog.FileName = string.Empty;
-            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
-                txtSAFTPath1.Text = saveFileDialog.FileName;
-            }
-        }
-
         private void cmbSAFTMonth_SelectedIndexChanged(object sender, EventArgs e) {
 
             nudSAFTStartDay.Value = 1;
@@ -4044,6 +3998,48 @@ namespace Sage50c.API.Sample {
 
             //TODO: Enable UI
             Enabled = true;
+        }
+
+        private void SAFTClear() {
+            UIUtils.FillMonthCombo(cmbSAFTMonth);
+
+            var dateToday = DateTime.Today.AddMonths(-1);
+            var startDate = dateToday.FirstDayOfMonth();
+            var endDate = dateToday.LastDayOfLastMonth();
+
+            dtpStart.Value = startDate;
+            dtpEnd.Value = endDate;
+
+            cmbSAFTMonth.SelectedIndex = startDate.Month - 1;
+            nudSAFTYear.Value = startDate.Year;
+
+            var saftPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                APIEngine.SystemSettings.Application.LongName,
+                APIEngine.SystemSettings.Company.CompanyID,
+                "SAFT");
+
+            if (!Directory.Exists(saftPath)) {
+                Directory.CreateDirectory(saftPath);
+            }
+
+            txtSAFTPath0.Text = saftPath;
+            txtSAFTPath1.Text = saftPath;
+
+            txtSAFTPath0.SelectionStart = txtSAFTPath0.TextLength;
+            txtSAFTPath0.ScrollToCaret();
+
+            txtSAFTPath1.SelectionStart = txtSAFTPath1.TextLength;
+            txtSAFTPath1.ScrollToCaret();
+        }
+
+        private void ApplyStyles() {
+            btnSAFTExport0.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
+            btnSAFTExport0.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
+            btnSAFTExport0.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
+
+            btnSAFTExport1.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
+            btnSAFTExport1.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
+            btnSAFTExport1.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
         }
     }
 }

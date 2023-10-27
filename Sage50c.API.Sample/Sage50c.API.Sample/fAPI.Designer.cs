@@ -274,7 +274,6 @@
             this.tabSAFT = new System.Windows.Forms.TabPage();
             this.gbSimplified = new System.Windows.Forms.GroupBox();
             this.btnSAFTExport1 = new System.Windows.Forms.Button();
-            this.btnSAFTPath1 = new System.Windows.Forms.Button();
             this.nudSAFTYear = new System.Windows.Forms.NumericUpDown();
             this.txtSAFTPath1 = new System.Windows.Forms.TextBox();
             this.lblExportTo1 = new System.Windows.Forms.Label();
@@ -286,13 +285,11 @@
             this.gbGlobal = new System.Windows.Forms.GroupBox();
             this.btnSAFTExport0 = new System.Windows.Forms.Button();
             this.lblInitialDate = new System.Windows.Forms.Label();
-            this.btnSAFTPath0 = new System.Windows.Forms.Button();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.txtSAFTPath0 = new System.Windows.Forms.TextBox();
             this.lblEndDate = new System.Windows.Forms.Label();
             this.lblExportTo0 = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
-            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -3610,7 +3607,6 @@
             // gbSimplified
             // 
             this.gbSimplified.Controls.Add(this.btnSAFTExport1);
-            this.gbSimplified.Controls.Add(this.btnSAFTPath1);
             this.gbSimplified.Controls.Add(this.nudSAFTYear);
             this.gbSimplified.Controls.Add(this.txtSAFTPath1);
             this.gbSimplified.Controls.Add(this.lblExportTo1);
@@ -3635,17 +3631,6 @@
             this.btnSAFTExport1.Text = "Exportar";
             this.btnSAFTExport1.UseVisualStyleBackColor = true;
             this.btnSAFTExport1.Click += new System.EventHandler(this.btnSAFTExport1_Click);
-            // 
-            // btnSAFTPath1
-            // 
-            this.btnSAFTPath1.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.FileFolder;
-            this.btnSAFTPath1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSAFTPath1.Location = new System.Drawing.Point(395, 92);
-            this.btnSAFTPath1.Name = "btnSAFTPath1";
-            this.btnSAFTPath1.Size = new System.Drawing.Size(25, 25);
-            this.btnSAFTPath1.TabIndex = 15;
-            this.btnSAFTPath1.UseVisualStyleBackColor = true;
-            this.btnSAFTPath1.Click += new System.EventHandler(this.btnSAFTPath1_Click);
             // 
             // nudSAFTYear
             // 
@@ -3676,7 +3661,7 @@
             this.txtSAFTPath1.Name = "txtSAFTPath1";
             this.txtSAFTPath1.ReadOnly = true;
             this.txtSAFTPath1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSAFTPath1.Size = new System.Drawing.Size(273, 23);
+            this.txtSAFTPath1.Size = new System.Drawing.Size(304, 23);
             this.txtSAFTPath1.TabIndex = 14;
             // 
             // lblExportTo1
@@ -3758,7 +3743,6 @@
             // 
             this.gbGlobal.Controls.Add(this.btnSAFTExport0);
             this.gbGlobal.Controls.Add(this.lblInitialDate);
-            this.gbGlobal.Controls.Add(this.btnSAFTPath0);
             this.gbGlobal.Controls.Add(this.dtpStart);
             this.gbGlobal.Controls.Add(this.txtSAFTPath0);
             this.gbGlobal.Controls.Add(this.lblEndDate);
@@ -3773,6 +3757,7 @@
             // 
             // btnSAFTExport0
             // 
+            this.btnSAFTExport0.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSAFTExport0.Location = new System.Drawing.Point(328, 175);
             this.btnSAFTExport0.Name = "btnSAFTExport0";
             this.btnSAFTExport0.Size = new System.Drawing.Size(92, 27);
@@ -3790,17 +3775,6 @@
             this.lblInitialDate.Size = new System.Drawing.Size(70, 15);
             this.lblInitialDate.TabIndex = 6;
             this.lblInitialDate.Text = "Data inicial:";
-            // 
-            // btnSAFTPath0
-            // 
-            this.btnSAFTPath0.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.FileFolder;
-            this.btnSAFTPath0.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSAFTPath0.Location = new System.Drawing.Point(395, 92);
-            this.btnSAFTPath0.Name = "btnSAFTPath0";
-            this.btnSAFTPath0.Size = new System.Drawing.Size(25, 25);
-            this.btnSAFTPath0.TabIndex = 12;
-            this.btnSAFTPath0.UseVisualStyleBackColor = true;
-            this.btnSAFTPath0.Click += new System.EventHandler(this.btnSAFTPath0_Click);
             // 
             // dtpStart
             // 
@@ -3822,7 +3796,7 @@
             this.txtSAFTPath0.Name = "txtSAFTPath0";
             this.txtSAFTPath0.ReadOnly = true;
             this.txtSAFTPath0.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSAFTPath0.Size = new System.Drawing.Size(273, 23);
+            this.txtSAFTPath0.Size = new System.Drawing.Size(304, 23);
             this.txtSAFTPath0.TabIndex = 11;
             // 
             // lblEndDate
@@ -3853,11 +3827,6 @@
             this.dtpEnd.Size = new System.Drawing.Size(110, 23);
             this.dtpEnd.TabIndex = 9;
             this.dtpEnd.Value = new System.DateTime(1945, 7, 16, 0, 0, 0, 0);
-            // 
-            // saveFileDialog
-            // 
-            this.saveFileDialog.DefaultExt = "xml";
-            this.saveFileDialog.Filter = "XML Files (*.xml)|*.xml|All Files (*.*)|*.*";
             // 
             // fApi
             // 
@@ -4190,10 +4159,8 @@
         private System.Windows.Forms.TabPage tabSAFT;
         private System.Windows.Forms.Label lblInitialDate;
         private System.Windows.Forms.DateTimePicker dtpStart;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.DateTimePicker dtpEnd;
         private System.Windows.Forms.Label lblEndDate;
-        private System.Windows.Forms.Button btnSAFTPath0;
         public System.Windows.Forms.TextBox txtSAFTPath0;
         private System.Windows.Forms.Label lblExportTo0;
         private System.Windows.Forms.GroupBox gbGlobal;
@@ -4204,7 +4171,6 @@
         private System.Windows.Forms.NumericUpDown nudSAFTEndDay;
         private System.Windows.Forms.NumericUpDown nudSAFTStartDay;
         private System.Windows.Forms.NumericUpDown nudSAFTYear;
-        private System.Windows.Forms.Button btnSAFTPath1;
         public System.Windows.Forms.TextBox txtSAFTPath1;
         private System.Windows.Forms.Label lblExportTo1;
         private System.Windows.Forms.Button btnSAFTExport1;
