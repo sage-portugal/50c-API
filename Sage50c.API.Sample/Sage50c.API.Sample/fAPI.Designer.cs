@@ -266,7 +266,7 @@
             this.txtItemComments = new System.Windows.Forms.TextBox();
             this.txtItemShortDescription = new System.Windows.Forms.TextBox();
             this.txtItemDescription = new System.Windows.Forms.TextBox();
-            this.txtItemId = new System.Windows.Forms.TextBox();
+            this.txtItemID = new System.Windows.Forms.TextBox();
             this.lblItemObs = new System.Windows.Forms.Label();
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -290,6 +290,7 @@
             this.lblEndDate = new System.Windows.Forms.Label();
             this.lblExportTo0 = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.btnUnitOfMeasureBrow = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -594,6 +595,7 @@
             // 
             // tabUnitOfMeasure
             // 
+            this.tabUnitOfMeasure.Controls.Add(this.btnUnitOfMeasureBrow);
             this.tabUnitOfMeasure.Controls.Add(this.txtUnitOfMeasureName);
             this.tabUnitOfMeasure.Controls.Add(this.txtUnitOfMeasureId);
             this.tabUnitOfMeasure.Controls.Add(this.Label63);
@@ -611,11 +613,11 @@
             this.txtUnitOfMeasureName.BackColor = System.Drawing.SystemColors.Window;
             this.txtUnitOfMeasureName.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtUnitOfMeasureName.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtUnitOfMeasureName.Location = new System.Drawing.Point(153, 70);
+            this.txtUnitOfMeasureName.Location = new System.Drawing.Point(153, 67);
             this.txtUnitOfMeasureName.MaxLength = 0;
             this.txtUnitOfMeasureName.Name = "txtUnitOfMeasureName";
             this.txtUnitOfMeasureName.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUnitOfMeasureName.Size = new System.Drawing.Size(293, 23);
+            this.txtUnitOfMeasureName.Size = new System.Drawing.Size(292, 23);
             this.txtUnitOfMeasureName.TabIndex = 20;
             // 
             // txtUnitOfMeasureId
@@ -624,11 +626,11 @@
             this.txtUnitOfMeasureId.BackColor = System.Drawing.SystemColors.Window;
             this.txtUnitOfMeasureId.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtUnitOfMeasureId.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtUnitOfMeasureId.Location = new System.Drawing.Point(153, 38);
+            this.txtUnitOfMeasureId.Location = new System.Drawing.Point(154, 39);
             this.txtUnitOfMeasureId.MaxLength = 0;
             this.txtUnitOfMeasureId.Name = "txtUnitOfMeasureId";
             this.txtUnitOfMeasureId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUnitOfMeasureId.Size = new System.Drawing.Size(94, 23);
+            this.txtUnitOfMeasureId.Size = new System.Drawing.Size(255, 23);
             this.txtUnitOfMeasureId.TabIndex = 10;
             // 
             // Label63
@@ -638,7 +640,7 @@
             this.Label63.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label63.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label63.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label63.Location = new System.Drawing.Point(43, 74);
+            this.Label63.Location = new System.Drawing.Point(28, 67);
             this.Label63.Name = "Label63";
             this.Label63.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label63.Size = new System.Drawing.Size(64, 15);
@@ -652,7 +654,7 @@
             this.Label62.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label62.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label62.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label62.Location = new System.Drawing.Point(43, 42);
+            this.Label62.Location = new System.Drawing.Point(28, 39);
             this.Label62.Name = "Label62";
             this.Label62.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label62.Size = new System.Drawing.Size(48, 15);
@@ -3329,7 +3331,7 @@
             this.tabItem.Controls.Add(this.txtItemComments);
             this.tabItem.Controls.Add(this.txtItemShortDescription);
             this.tabItem.Controls.Add(this.txtItemDescription);
-            this.tabItem.Controls.Add(this.txtItemId);
+            this.tabItem.Controls.Add(this.txtItemID);
             this.tabItem.Controls.Add(this.lblItemObs);
             this.tabItem.Controls.Add(this.lblItemDescription);
             this.tabItem.Controls.Add(this.label1);
@@ -3538,13 +3540,13 @@
             this.txtItemDescription.Size = new System.Drawing.Size(292, 23);
             this.txtItemDescription.TabIndex = 6;
             // 
-            // txtItemId
+            // txtItemID
             // 
-            this.txtItemId.Location = new System.Drawing.Point(154, 39);
-            this.txtItemId.Name = "txtItemId";
-            this.txtItemId.Size = new System.Drawing.Size(255, 23);
-            this.txtItemId.TabIndex = 4;
-            this.txtItemId.Click += new System.EventHandler(this.txtItemId_Click);
+            this.txtItemID.Location = new System.Drawing.Point(154, 39);
+            this.txtItemID.Name = "txtItemID";
+            this.txtItemID.Size = new System.Drawing.Size(255, 23);
+            this.txtItemID.TabIndex = 4;
+            this.txtItemID.Click += new System.EventHandler(this.txtItemId_Click);
             // 
             // lblItemObs
             // 
@@ -3828,6 +3830,15 @@
             this.dtpEnd.TabIndex = 9;
             this.dtpEnd.Value = new System.DateTime(1945, 7, 16, 0, 0, 0, 0);
             // 
+            // btnUnitOfMeasureBrow
+            // 
+            this.btnUnitOfMeasureBrow.Location = new System.Drawing.Point(413, 38);
+            this.btnUnitOfMeasureBrow.Name = "btnUnitOfMeasureBrow";
+            this.btnUnitOfMeasureBrow.Size = new System.Drawing.Size(33, 25);
+            this.btnUnitOfMeasureBrow.TabIndex = 180;
+            this.btnUnitOfMeasureBrow.Text = "...";
+            this.btnUnitOfMeasureBrow.UseVisualStyleBackColor = true;
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -4105,7 +4116,7 @@
         private System.Windows.Forms.TextBox txtItemComments;
         private System.Windows.Forms.TextBox txtItemShortDescription;
         private System.Windows.Forms.TextBox txtItemDescription;
-        private System.Windows.Forms.TextBox txtItemId;
+        private System.Windows.Forms.TextBox txtItemID;
         private System.Windows.Forms.Label lblItemObs;
         private System.Windows.Forms.Label lblItemDescription;
         private System.Windows.Forms.Label label1;
@@ -4175,6 +4186,7 @@
         private System.Windows.Forms.Label lblExportTo1;
         private System.Windows.Forms.Button btnSAFTExport1;
         private System.Windows.Forms.Button btnSAFTExport0;
+        private System.Windows.Forms.Button btnUnitOfMeasureBrow;
     }
 }
 

@@ -12,6 +12,7 @@ using S50cPrint22;
 using S50cSAFTX22;
 using S50cSys22;
 using S50cUtil22;
+using Sage50c.API.Sample.Controllers;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
@@ -48,6 +49,8 @@ namespace Sage50c.API.Sample {
         /// Printing MANAGER
         /// </summary>
         private PrintingManager printingManager { get { return APIEngine.PrintingManager; } }
+
+        private ItemController itemController = new ItemController();
 
         public fApi() {
 
@@ -304,22 +307,158 @@ namespace Sage50c.API.Sample {
         #region ITEM
 
         /// <summary>
+        /// Loads and item with the quicksearch result
+        /// </summary>
+        private void btnItemBrow_Click(object sender, EventArgs e) {
+            var itemID = QuickSearchHelper.ItemFind();
+            if (!string.IsNullOrEmpty(itemID)) {
+                NewItemGet(itemID);
+            }
+        }
+
+        /// <summary>
+        /// Fills the item with data from the UI
+        /// </summary>
+        private void ItemFill(bool isNew) {
+
+            if (isNew) {
+                itemController.Create();
+                itemController.Item.ItemID = txtItemID.Text;
+            }
+
+            itemController.Item.Description = txtItemDescription.Text;
+            itemController.Item.ShortDescription = txtItemShortDescription.Text;
+            itemController.Item.Comments = txtItemComments.Text;
+
+            var dsoPriceLine = new DSOPriceLine();
+            // Initialize the price lines
+            itemController.Item.InitPriceList(dsoPriceLine.GetPriceLineRS());
+            // Price of the item (1st line)
+            Price myPrice = itemController.Item.SalePrice[1, 0, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit];
+            // Set the price (tax included)
+            myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value;
+            // Get the unit price without taxes
+            myPrice.UnitPrice = APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
+                myPrice.TaxIncludedPrice,
+                itemController.Item.TaxableGroupID,
+                systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
+                systemSettings.SystemInfo.TaxRegionID);
+
+
+            // Clear the previous colors
+            itemController.Item.Colors.Clear();
+            // Add the new colors
+            foreach (DataGridViewRow colorRow in dgvColor.Rows) {
+                var colorID = (short)colorRow.Cells[0].Value;
+                itemController.AddColor(colorID);
+            }
+
+
+            // Clear the previous sizes
+            itemController.Item.Sizes.Clear();
+            // Add the new sizes
+            foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
+                var sizeID = (short)sizeRow.Cells[0].Value;
+                itemController.AddSize(sizeID);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new item
+        /// </summary>
+        void NewItemInsert() {
+
+            ItemFill(true);
+            itemController.Update();
+        }
+
+        /// <summary>
+        /// Loads an item
+        /// </summary>
+        void NewItemGet(string itemID) {
+
+            ItemClear(false);
+            itemController.Load(itemID);
+
+            var item = itemController.Item;
+            if (item != null) {
+                txtItemID.Text = item.ItemID;
+                txtItemDescription.Text = item.Description;
+                txtItemShortDescription.Text = item.ShortDescription;
+                numItemPriceTaxIncluded.Value = (decimal)item.SalePrice[1, 0, string.Empty, 0, item.UnitOfSaleID].TaxIncludedPrice;
+                txtItemComments.Text = item.Comments;
+
+                foreach (ItemColor value in item.Colors) {
+                    var newRowIndex = dgvColor.Rows.Add();
+                    var newRow = dgvColor.Rows[newRowIndex];
+
+                    newRow.Cells[0].Value = value.ColorID;
+                    newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle(value.ColorCode);
+                    newRow.Cells[2].Value = value.ColorName;
+                }
+
+                foreach (ItemSize value in item.Sizes) {
+                    var newRowIndex = dgvSize.Rows.Add();
+                    var newRow = dgvSize.Rows[newRowIndex];
+
+                    newRow.Cells[0].Value = value.SizeID;
+                    newRow.Cells[1].Value = value.SizeName;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates an item
+        /// </summary>
+        void NewItemUpdate() {
+
+            ItemFill(false);
+            itemController.Update();
+        }
+
+        /// <summary>
+        /// Removes an item
+        /// </summary>
+        void NewItemRemove() {
+
+            itemController.Remove(txtItemID.Text.Trim());
+            ItemClear(false);
+        }
+
+        /// <summary>
+        /// Clears the UI
+        /// </summary>
+        private void ItemClear(bool clearItemId) {
+            //Limpar
+            if (clearItemId) {
+                txtItemID.Text = string.Empty;
+            }
+
+            dgvColor.Rows.Clear();
+            dgvSize.Rows.Clear();
+
+            txtItemDescription.Text = string.Empty;
+            txtItemShortDescription.Text = string.Empty;
+            numItemPriceTaxIncluded.Value = 0;
+            txtItemComments.Text = string.Empty;
+        }
+
+        #endregion
+
+        /// <summary>
         /// Insere um novo artigo
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void btnInsert_Click(object sender, EventArgs e) {
             try {
                 transactionError = false;
                 TransactionID transId = null;
 
                 switch (tabEntities.SelectedIndex) {
-                    case 0: ItemInsert(); break;
+                    case 0: NewItemInsert(); break;
                     case 1: CustomerUpdate((double)numCustomerId.Value, true); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), true); break;
                     case 3: transId = TransactionInsert(false); break;
                     case 4: transId = AccountTransactionUpdate(true); break;
-
                     case 5: UnitOfMeasureUpdate(txtUnitOfMeasureId.Text, true); break;
                 }
                 if (!transactionError) {
@@ -331,11 +470,11 @@ namespace Sage50c.API.Sample {
                         msg = "Registo inserido.";
                     }
 
-                    MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
 
@@ -351,7 +490,7 @@ namespace Sage50c.API.Sample {
                     transactionError = false;
 
                     switch (tabEntities.SelectedIndex) {
-                        case 0: ItemRemove(); break;                                        //Artigos
+                        case 0: NewItemRemove(); break;                                        //Artigos
                         case 1: CustomerRemove((double)numCustomerId.Value); break;         //Clientes
                         case 2: SupplierRemove(double.Parse(txtSupplierId.Text)); break;  //Fornecedores
                         case 3: transId = TransactionRemove(); break;                                 //Compras e Vendas
@@ -368,12 +507,13 @@ namespace Sage50c.API.Sample {
                         else {
                             msg = "Registo anulado.";
                         }
-                        MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
 
@@ -389,7 +529,7 @@ namespace Sage50c.API.Sample {
                 transactionError = false;
 
                 switch (tabEntities.SelectedIndex) {
-                    case 0: ItemUpdate(txtItemId.Text); break;
+                    case 0: NewItemUpdate(); break;
                     case 1: CustomerUpdate((double)numCustomerId.Value, false); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), false); break;
                     case 3: transId = TransactionEdit(false); break;
@@ -406,11 +546,12 @@ namespace Sage50c.API.Sample {
                     else {
                         msg = "Registo alterado.";
                     }
-                    MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
 
         }
@@ -418,7 +559,7 @@ namespace Sage50c.API.Sample {
         private void btnItemLoad_Click(object sender, EventArgs e) {
             try {
                 switch (tabEntities.SelectedIndex) {
-                    case 0: ItemGet(txtItemId.Text.Trim()); break;
+                    case 0: NewItemGet(txtItemID.Text.Trim()); break;
                     case 1: CustomerGet((double)numCustomerId.Value); break;
                     case 2: SupplierGet(double.Parse(txtSupplierId.Text)); break;
                     case 3: TransactionGet(false); break;
@@ -428,7 +569,7 @@ namespace Sage50c.API.Sample {
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
 
@@ -437,7 +578,7 @@ namespace Sage50c.API.Sample {
         /// * = Campos obrigatórios
         /// </summary>
         private void ItemInsert() {
-            string itemId = txtItemId.Text.Trim();
+            string itemId = txtItemID.Text.Trim();
             if (string.IsNullOrEmpty(itemId)) {
                 MessageBox.Show("O código do artigo está vazio!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -544,7 +685,7 @@ namespace Sage50c.API.Sample {
         /// </summary>
         /// <param name="itemId"></param>
         private void ItemRemove() {
-            string itemId = txtItemId.Text.Trim();
+            string itemId = txtItemID.Text.Trim();
             itemProvider.Delete(itemId);
             //
             ItemClear(false);
@@ -599,7 +740,7 @@ namespace Sage50c.API.Sample {
                 var item = itemProvider.GetItem(itemId, systemSettings.BaseCurrency);
 
                 if (item != null) {
-                    txtItemId.Text = item.ItemID;
+                    txtItemID.Text = item.ItemID;
                     txtItemDescription.Text = item.Description;
                     txtItemShortDescription.Text = item.ShortDescription;
                     numItemPriceTaxIncluded.Value = (decimal)item.SalePrice[1, 0, string.Empty, 0, item.UnitOfSaleID].TaxIncludedPrice;
@@ -627,25 +768,6 @@ namespace Sage50c.API.Sample {
                 }
             }
         }
-
-        /// <summary>
-        /// Limpar o form
-        /// </summary>
-        private void ItemClear(bool clearItemId) {
-            //Limpar
-            if (clearItemId) {
-                txtItemId.Text = string.Empty;
-            }
-
-            dgvColor.Rows.Clear();
-            dgvSize.Rows.Clear();
-
-            txtItemDescription.Text = string.Empty;
-            txtItemShortDescription.Text = string.Empty;
-            numItemPriceTaxIncluded.Value = 0;
-            txtItemComments.Text = string.Empty;
-        }
-        #endregion
 
         #region CUSTOMER
 
@@ -1222,7 +1344,7 @@ namespace Sage50c.API.Sample {
                 //-------------------------------------------------------------------------
                 // DOCUMENT DETAILS
                 //-------------------------------------------------------------------------
-                string itemId = txtItemId.Text;
+                string itemId = txtItemID.Text;
                 //
                 //Adicionar a primeira linha ao documento
                 double qty = 0; double.TryParse(txtTransQuantityL1.Text, out qty);
@@ -2923,12 +3045,12 @@ namespace Sage50c.API.Sample {
 
         #region QuickSearch
 
-        private void btnItemBrow_Click(object sender, EventArgs e) {
-            var item = QuickSearchHelper.ItemFind();
-            if (!string.IsNullOrEmpty(item)) {
-                ItemGet(item);
-            }
-        }
+        //private void btnItemBrow_Click(object sender, EventArgs e) {
+        //    var item = QuickSearchHelper.ItemFind();
+        //    if (!string.IsNullOrEmpty(item)) {
+        //        ItemGet(item);
+        //    }
+        //}
 
         private void btnCustomerBrow_Click(object sender, EventArgs e) {
             var customerId = QuickSearchHelper.CustomerFind();
@@ -3383,7 +3505,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void txtItemId_Click(object sender, EventArgs e) {
-            APIEngine.CoreGlobals.ShowKeyPadInContext(txtItemId, "Text", VBA.VbCallType.VbLet);
+            APIEngine.CoreGlobals.ShowKeyPadInContext(txtItemID, "Text", VBA.VbCallType.VbLet);
         }
 
         private void btnClearRep1_Click(object sender, EventArgs e) {

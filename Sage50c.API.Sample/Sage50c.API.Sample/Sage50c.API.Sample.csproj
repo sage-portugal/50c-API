@@ -259,6 +259,8 @@
     <Compile Include="..\..\Sage50c.Common\APIQuickSearch.cs">
       <Link>50cAPI\APIQuickSearch.cs</Link>
     </Compile>
+    <Compile Include="Controllers\EditState.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="fAPI.cs">
       <SubType>Form</SubType>
