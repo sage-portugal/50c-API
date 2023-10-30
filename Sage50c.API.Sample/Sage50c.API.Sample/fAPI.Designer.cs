@@ -213,20 +213,18 @@ namespace Sage50c.API.Sample {
             this.lblTransDocNumber = new System.Windows.Forms.Label();
             this.Label25 = new System.Windows.Forms.Label();
             this.tabSupplier = new System.Windows.Forms.TabPage();
+            this.cmbSupplierCountry = new System.Windows.Forms.ComboBox();
             this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
             this.btnSupplierBrow = new System.Windows.Forms.Button();
             this.txtSupplierId = new System.Windows.Forms.TextBox();
             this.txtSupplierName = new System.Windows.Forms.TextBox();
             this.txtSupplierTaxId = new System.Windows.Forms.TextBox();
-            this.txtSupplierCurrency = new System.Windows.Forms.TextBox();
             this.txtSupplierZone = new System.Windows.Forms.TextBox();
             this.txtSupplierComments = new System.Windows.Forms.TextBox();
-            this.txtSupplierCountry = new System.Windows.Forms.TextBox();
             this.Label22 = new System.Windows.Forms.Label();
             this.Label21 = new System.Windows.Forms.Label();
             this.Label19 = new System.Windows.Forms.Label();
             this.Label18 = new System.Windows.Forms.Label();
-            this.Label17 = new System.Windows.Forms.Label();
             this._Label15_2 = new System.Windows.Forms.Label();
             this.Label16 = new System.Windows.Forms.Label();
             this.Label13 = new System.Windows.Forms.Label();
@@ -271,6 +269,8 @@ namespace Sage50c.API.Sample {
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
+            this.btnSearchSalesman = new System.Windows.Forms.Button();
+            this.btnSearchZone = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -2769,20 +2769,18 @@ namespace Sage50c.API.Sample {
             // 
             // tabSupplier
             // 
+            this.tabSupplier.Controls.Add(this.cmbSupplierCountry);
             this.tabSupplier.Controls.Add(this.cmbSupplierTax);
             this.tabSupplier.Controls.Add(this.btnSupplierBrow);
             this.tabSupplier.Controls.Add(this.txtSupplierId);
             this.tabSupplier.Controls.Add(this.txtSupplierName);
             this.tabSupplier.Controls.Add(this.txtSupplierTaxId);
-            this.tabSupplier.Controls.Add(this.txtSupplierCurrency);
             this.tabSupplier.Controls.Add(this.txtSupplierZone);
             this.tabSupplier.Controls.Add(this.txtSupplierComments);
-            this.tabSupplier.Controls.Add(this.txtSupplierCountry);
             this.tabSupplier.Controls.Add(this.Label22);
             this.tabSupplier.Controls.Add(this.Label21);
             this.tabSupplier.Controls.Add(this.Label19);
             this.tabSupplier.Controls.Add(this.Label18);
-            this.tabSupplier.Controls.Add(this.Label17);
             this.tabSupplier.Controls.Add(this._Label15_2);
             this.tabSupplier.Controls.Add(this.Label16);
             this.tabSupplier.Controls.Add(this.Label13);
@@ -2792,6 +2790,14 @@ namespace Sage50c.API.Sample {
             this.tabSupplier.TabIndex = 2;
             this.tabSupplier.Text = "Fornecedor";
             this.tabSupplier.UseVisualStyleBackColor = true;
+            // 
+            // cmbSupplierCountry
+            // 
+            this.cmbSupplierCountry.FormattingEnabled = true;
+            this.cmbSupplierCountry.Location = new System.Drawing.Point(150, 200);
+            this.cmbSupplierCountry.Name = "cmbSupplierCountry";
+            this.cmbSupplierCountry.Size = new System.Drawing.Size(346, 28);
+            this.cmbSupplierCountry.TabIndex = 77;
             // 
             // cmbSupplierTax
             // 
@@ -2852,26 +2858,13 @@ namespace Sage50c.API.Sample {
             this.txtSupplierTaxId.Size = new System.Drawing.Size(346, 27);
             this.txtSupplierTaxId.TabIndex = 8;
             // 
-            // txtSupplierCurrency
-            // 
-            this.txtSupplierCurrency.AcceptsReturn = true;
-            this.txtSupplierCurrency.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSupplierCurrency.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSupplierCurrency.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierCurrency.Location = new System.Drawing.Point(150, 167);
-            this.txtSupplierCurrency.MaxLength = 0;
-            this.txtSupplierCurrency.Name = "txtSupplierCurrency";
-            this.txtSupplierCurrency.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierCurrency.Size = new System.Drawing.Size(346, 27);
-            this.txtSupplierCurrency.TabIndex = 10;
-            // 
             // txtSupplierZone
             // 
             this.txtSupplierZone.AcceptsReturn = true;
             this.txtSupplierZone.BackColor = System.Drawing.SystemColors.Window;
             this.txtSupplierZone.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSupplierZone.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierZone.Location = new System.Drawing.Point(150, 200);
+            this.txtSupplierZone.Location = new System.Drawing.Point(150, 168);
             this.txtSupplierZone.MaxLength = 0;
             this.txtSupplierZone.Name = "txtSupplierZone";
             this.txtSupplierZone.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -2884,25 +2877,12 @@ namespace Sage50c.API.Sample {
             this.txtSupplierComments.BackColor = System.Drawing.SystemColors.Window;
             this.txtSupplierComments.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSupplierComments.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierComments.Location = new System.Drawing.Point(150, 264);
+            this.txtSupplierComments.Location = new System.Drawing.Point(150, 232);
             this.txtSupplierComments.MaxLength = 0;
             this.txtSupplierComments.Name = "txtSupplierComments";
             this.txtSupplierComments.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtSupplierComments.Size = new System.Drawing.Size(346, 27);
             this.txtSupplierComments.TabIndex = 16;
-            // 
-            // txtSupplierCountry
-            // 
-            this.txtSupplierCountry.AcceptsReturn = true;
-            this.txtSupplierCountry.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSupplierCountry.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSupplierCountry.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierCountry.Location = new System.Drawing.Point(150, 232);
-            this.txtSupplierCountry.MaxLength = 0;
-            this.txtSupplierCountry.Name = "txtSupplierCountry";
-            this.txtSupplierCountry.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierCountry.Size = new System.Drawing.Size(346, 27);
-            this.txtSupplierCountry.TabIndex = 14;
             // 
             // Label22
             // 
@@ -2960,20 +2940,6 @@ namespace Sage50c.API.Sample {
             this.Label18.TabIndex = 71;
             this.Label18.Text = "NIF:";
             // 
-            // Label17
-            // 
-            this.Label17.AutoSize = true;
-            this.Label17.BackColor = System.Drawing.Color.Transparent;
-            this.Label17.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label17.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label17.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label17.Location = new System.Drawing.Point(43, 172);
-            this.Label17.Name = "Label17";
-            this.Label17.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label17.Size = new System.Drawing.Size(61, 20);
-            this.Label17.TabIndex = 70;
-            this.Label17.Text = "Moeda:";
-            // 
             // _Label15_2
             // 
             this._Label15_2.AutoSize = true;
@@ -2981,7 +2947,7 @@ namespace Sage50c.API.Sample {
             this._Label15_2.Cursor = System.Windows.Forms.Cursors.Default;
             this._Label15_2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._Label15_2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._Label15_2.Location = new System.Drawing.Point(43, 204);
+            this._Label15_2.Location = new System.Drawing.Point(43, 172);
             this._Label15_2.Name = "_Label15_2";
             this._Label15_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._Label15_2.Size = new System.Drawing.Size(48, 20);
@@ -2995,7 +2961,7 @@ namespace Sage50c.API.Sample {
             this.Label16.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label16.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label16.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label16.Location = new System.Drawing.Point(43, 269);
+            this.Label16.Location = new System.Drawing.Point(43, 237);
             this.Label16.Name = "Label16";
             this.Label16.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label16.Size = new System.Drawing.Size(102, 20);
@@ -3009,7 +2975,7 @@ namespace Sage50c.API.Sample {
             this.Label13.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label13.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label13.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label13.Location = new System.Drawing.Point(43, 237);
+            this.Label13.Location = new System.Drawing.Point(43, 205);
             this.Label13.Name = "Label13";
             this.Label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label13.Size = new System.Drawing.Size(41, 20);
@@ -3018,6 +2984,8 @@ namespace Sage50c.API.Sample {
             // 
             // tabCustomer
             // 
+            this.tabCustomer.Controls.Add(this.btnSearchZone);
+            this.tabCustomer.Controls.Add(this.btnSearchSalesman);
             this.tabCustomer.Controls.Add(this.btnCustomerBrow);
             this.tabCustomer.Controls.Add(this.cmbCustomerCountry);
             this.tabCustomer.Controls.Add(this.txtCustomerTaxId);
@@ -3542,6 +3510,36 @@ namespace Sage50c.API.Sample {
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
             // 
+            // btnSearchSalesman
+            // 
+            this.btnSearchSalesman.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchSalesman.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchSalesman.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchSalesman.FlatAppearance.BorderSize = 0;
+            this.btnSearchSalesman.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchSalesman.Location = new System.Drawing.Point(254, 163);
+            this.btnSearchSalesman.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchSalesman.Name = "btnSearchSalesman";
+            this.btnSearchSalesman.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchSalesman.TabIndex = 66;
+            this.btnSearchSalesman.UseVisualStyleBackColor = false;
+            this.btnSearchSalesman.Click += new System.EventHandler(this.btnSearchSalesman_Click);
+            // 
+            // btnSearchZone
+            // 
+            this.btnSearchZone.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchZone.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchZone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchZone.FlatAppearance.BorderSize = 0;
+            this.btnSearchZone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchZone.Location = new System.Drawing.Point(254, 196);
+            this.btnSearchZone.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchZone.Name = "btnSearchZone";
+            this.btnSearchZone.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchZone.TabIndex = 67;
+            this.btnSearchZone.UseVisualStyleBackColor = false;
+            this.btnSearchZone.Click += new System.EventHandler(this.btnSearchZone_Click);
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -3771,15 +3769,12 @@ namespace Sage50c.API.Sample {
         public System.Windows.Forms.TextBox txtSupplierId;
         public System.Windows.Forms.TextBox txtSupplierName;
         public System.Windows.Forms.TextBox txtSupplierTaxId;
-        public System.Windows.Forms.TextBox txtSupplierCurrency;
         public System.Windows.Forms.TextBox txtSupplierZone;
         public System.Windows.Forms.TextBox txtSupplierComments;
-        public System.Windows.Forms.TextBox txtSupplierCountry;
         public System.Windows.Forms.Label Label22;
         public System.Windows.Forms.Label Label21;
         public System.Windows.Forms.Label Label19;
         public System.Windows.Forms.Label Label18;
-        public System.Windows.Forms.Label Label17;
         private System.Windows.Forms.Label _Label15_2;
         public System.Windows.Forms.Label Label16;
         public System.Windows.Forms.Label Label13;
@@ -3860,6 +3855,9 @@ namespace Sage50c.API.Sample {
         private System.Windows.Forms.Button btnAddColor;
         private System.Windows.Forms.DataGridView dgvColor;
         private System.Windows.Forms.GroupBox gbSize;
+        private ComboBox cmbSupplierCountry;
+        private Button btnSearchZone;
+        private Button btnSearchSalesman;
     }
 }
 
