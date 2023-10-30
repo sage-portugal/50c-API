@@ -11,21 +11,16 @@ using System.Threading.Tasks;
 
 namespace Sage50c.API.Sample.Controllers {
     internal class CustomerController {
-        public enum EditState {
-            None = 0,
-            New = 1,
-            Editing = 2,
-        }
 
-        private SystemSettings systemSettings { get { return APIEngine.SystemSettings; } }
+        private SystemSettings _systemSettings { get { return APIEngine.SystemSettings; } }
 
         private DSOFactory _dsoCache { get { return APIEngine.DSOCache; } }
 
         private S50cBO22.Customer _customer = null;
 
-        private EditState _editState = EditState.None;
-
         public S50cBO22.Customer Customer { get { return _customer; } }
+
+        private EditState _editState = EditState.None;
 
         /// <summary>
         /// Create a new customer
@@ -36,7 +31,7 @@ namespace Sage50c.API.Sample.Controllers {
             //state
             _editState = EditState.New;
             // Suggest values for required fields
-            FillSuggestValues();
+            FillSuggestedValues();
             return _customer;
         }
 
@@ -53,24 +48,26 @@ namespace Sage50c.API.Sample.Controllers {
                     return _customer;
                 }
                 else {
-                    throw new Exception($"O cliente [{_customer.CustomerID}] não existe.");
+                    throw new Exception($"O Cliente [{customerId}] não existe.");
                 }
             }
             else {
-                throw new Exception("O código do cliente não está preenchido.");
+                throw new Exception("O código do Cliente não está preenchido.");
             }
         }
 
         /// <summary>
         /// Save (insert or update) customer
         /// </summary>
-        /// <param name="isNew"></param>
-        /// <exception cref="Exception"></exception>
-        public void Save() {
+        public bool Save() {
             if (Validate()) {
                 //Save customer 
                 _dsoCache.CustomerProvider.Save(_customer, _customer.CustomerID, _editState == EditState.New);
                 _editState = EditState.Editing;
+                return true;
+            }
+            else {
+                return false;
             }
         }
 
@@ -84,7 +81,7 @@ namespace Sage50c.API.Sample.Controllers {
                 return true;
             }
             else {
-                throw new Exception(string.Format("O cliente [{0}] não existe.", _customer.CustomerID));
+                throw new Exception($"O Cliente [{_customer.CustomerID}] não existe.");
             }
 
         }
@@ -102,46 +99,46 @@ namespace Sage50c.API.Sample.Controllers {
             var customerExist = _dsoCache.CustomerProvider.CustomerExists(_customer.CustomerID);
             //
             if (!customerExist && _editState == EditState.Editing) {
-                throw new Exception($"O cliente [{_customer.CustomerID}] não existe.");
+                throw new Exception($"O Cliente [{_customer.CustomerID}] não existe.");
             }
             else if (customerExist && _editState == EditState.New) {
-                throw new Exception($"O cliente [{_customer.CustomerID}] já existe.");
+                throw new Exception($"O Cliente [{_customer.CustomerID}] já existe.");
             }
             else {
                 //ID
                 if (_customer.CustomerID <= 0 && customerExist) {
-                    error.AppendLine("Tem que preencher o código do cliente!");
+                    error.AppendLine("Tem que preencher o código do Cliente!");
                 }
                 else if (_editState == EditState.New) {
                     _customer.CustomerID = _dsoCache.CustomerProvider.GetNewID();
                 }
                 //Name
                 if (string.IsNullOrEmpty(_customer.OrganizationName)) {
-                    error.AppendLine("Tem que preencher o nome do cliente!");
+                    error.AppendLine("Tem que preencher o nome do Cliente!");
                 }
                 if (_customer.EntityFiscalStatusID <= 0) {
-                    error.AppendLine("Tem que preencher o imposto do cliente!");
+                    error.AppendLine("Tem que preencher o imposto do Cliente!");
                 }
                 //Salesman
                 if (_customer.SalesmanId <= 0) {
-                    error.AppendLine("Tem que preencher o código do vendedor!");
+                    error.AppendLine("Tem que preencher o código do Vendedor!");
                 }
                 else if (_dsoCache.SalesmanProvider.SalesmanExists(_customer.SalesmanId) == false) {
-                    error.AppendLine($"O vendedor [{_customer.SalesmanId}] não existe!");
+                    error.AppendLine($"O Vendedor [{_customer.SalesmanId}] não existe!");
                 }
                 //Zone
                 if (_customer.ZoneID <= 0) {
-                    error.AppendLine("Tem que preencher o código da zona!");
+                    error.AppendLine("Tem que preencher o código da Zona!");
                 }
                 else if (_dsoCache.ZoneProvider.ZoneExists(_customer.ZoneID) == false) {
-                    error.AppendLine($"A zona [{_customer.ZoneID}] não existe!");
+                    error.AppendLine($"A Zona [{_customer.ZoneID}] não existe!");
                 }
                 //Country
                 if (string.IsNullOrEmpty(_customer.CountryID)) {
-                    error.AppendLine("Tem que preencher o país");
+                    error.AppendLine("Tem que preencher o País");
                 }
                 else if (_dsoCache.CountryProvider.CountryExists(_customer.CountryID) == false) {
-                    error.AppendLine($"O país [{_customer.CountryID}] não existe!");
+                    error.AppendLine($"O País [{_customer.CountryID}] não existe!");
                 }
                 //Error message
                 if (error.Length > 0) {
@@ -153,14 +150,14 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public bool FillSuggestValues() {
+        public bool FillSuggestedValues() {
             if (_customer != null) {
                 _customer.CarrierID = _dsoCache.CarrierProvider.GetFirstCarrierID();
                 _customer.TenderID = _dsoCache.TenderProvider.GetFirstTenderCash();
                 _customer.PaymentID = _dsoCache.PaymentProvider.GetFirstID();
                 _customer.SalesmanId = (int)_dsoCache.SalesmanProvider.GetFirstSalesmanID();
                 _customer.ZoneID = _dsoCache.ZoneProvider.FindZone(ZoneTypeEnum.ztNational);
-                _customer.CountryID = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
+                _customer.CountryID = _systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
                 return true;
             }
             else {

@@ -332,10 +332,10 @@ namespace Sage50c.API.Sample {
                         _customerController.Save();
                         CustomerClear();
                         break;
-                    //case 1: CustomerUpdate((double)numCustomerId.Value, true); break;
                     case 2:
+                        _supplierController.Create();
                         SupplierFill();
-                        //supplierController.SupplierUpdate(true);
+                        _supplierController.Save();
                         SupplierClear();
                         break;
                     case 3: transId = TransactionInsert(false); break;
@@ -352,12 +352,10 @@ namespace Sage50c.API.Sample {
                         msg = "Registo inserido.";
                     }
                     APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                    //MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                //MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -374,15 +372,14 @@ namespace Sage50c.API.Sample {
 
                     switch (tabEntities.SelectedIndex) {
                         case 0: ItemRemove(); break;                                        //Artigos
-                        //case 1: CustomerRemove((double)numCustomerId.Value); break;         //Clientes
                         case 1:
                             CustomerFill();
                             _customerController.Remove();
                             CustomerClear();
-                            break;
+                            break;  //Clientes
                         case 2:
                             SupplierFill();
-                            _supplierController.SupplierRemove();
+                            _supplierController.Remove();
                             SupplierClear();
                             break;  //Fornecedores
                         case 3: transId = TransactionRemove(); break;                                 //Compras e Vendas
@@ -415,22 +412,19 @@ namespace Sage50c.API.Sample {
         /// <param name="e"></param>
         private void btnAlterar_Click(object sender, EventArgs e) {
             try {
-
                 TransactionID transId = null;
                 transactionError = false;
 
                 switch (tabEntities.SelectedIndex) {
                     case 0: ItemUpdate(txtItemId.Text); break;
                     case 1:
-                        //_customerController.Load((short)numCustomerId.Value);
                         CustomerFill();
                         _customerController.Save();
                         CustomerClear();
                         break;
-                    //case 1: CustomerUpdate((double)numCustomerId.Value, false); break;
                     case 2:
                         SupplierFill();
-                        //supplierController.SupplierUpdate(false);
+                        _supplierController.Save();
                         SupplierClear();
                         break;
                     case 3: transId = TransactionEdit(false); break;
@@ -691,7 +685,6 @@ namespace Sage50c.API.Sample {
         #region CUSTOMER
 
         private void CustomerFill() {
-            //Create new customer 
             _customerController.Customer.CustomerID = (short)numCustomerId.Value;
             _customerController.Customer.OrganizationName = txtCustomerName.Text;
             _customerController.Customer.FederalTaxId = txtCustomerTaxId.Text;
@@ -704,14 +697,12 @@ namespace Sage50c.API.Sample {
 
         private void CustomerSearch(double customerId) { 
             var customer = _customerController.Load(customerId);
-            //Clear form
-            CustomerClear();
             //Update form
             CustomerUpdate(customer);
         }
 
         private void CustomerClear() {
-            // Obter um novo ID (para um novo cliente)
+            // Get new id
             numCustomerId.Value = (decimal)dsoCache.CustomerProvider.GetNewID();
             //
             txtCustomerComments.Text = string.Empty;
@@ -748,7 +739,7 @@ namespace Sage50c.API.Sample {
             else {
                 //O cliente não existe!
                 CustomerClear();
-                throw new Exception(string.Format("O Cliente {0} não foi encontrado!", numCustomerId.Value));
+                throw new Exception($"O Cliente [{numCustomerId.Value}] não foi encontrado!");
             }
         }
 
@@ -757,21 +748,18 @@ namespace Sage50c.API.Sample {
         #region SUPPLIER
 
         private void SupplierFill() {
-            var supplier = new S50cBO22.Supplier() {
-                SupplierID = txtSupplierId.Text.ToShort(),
-                OrganizationName = txtSupplierName.Text,
-                EntityFiscalStatusID = ((EntityFiscalStatus)cmbSupplierTax.SelectedItem).EntityFiscalStatusID,
-                FederalTaxId = txtSupplierTaxId.Text,
-                ZoneID = txtSupplierZone.Text.ToShort(),
-                CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID,
-                Comments = txtSupplierComments.Text,
-            };
-            //_supplierController._supplier = supplier;
+            _supplierController.Supplier.SupplierID = txtSupplierId.Text.ToShort();
+            _supplierController.Supplier.OrganizationName = txtSupplierName.Text;
+            _supplierController.Supplier.EntityFiscalStatusID = ((EntityFiscalStatus)cmbSupplierTax.SelectedItem).EntityFiscalStatusID;
+            _supplierController.Supplier.FederalTaxId = txtSupplierTaxId.Text;
+            _supplierController.Supplier.ZoneID = txtSupplierZone.Text.ToShort();
+            _supplierController.Supplier.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
+            _supplierController.Supplier.Comments = txtSupplierComments.Text;
         }
 
         private void SupplierSearch(double supplierId) {
-            SupplierClear();
-            var supplier = _supplierController.SupplierGet(supplierId);
+            var supplier = _supplierController.Load(supplierId);
+            //Update form
             SupplierUpdate(supplier);
         }
 
@@ -780,16 +768,20 @@ namespace Sage50c.API.Sample {
             txtSupplierId.Text = dsoCache.SupplierProvider.GetNewID().ToString();
             //
             txtSupplierName.Text = string.Empty;
+
             UIUtils.FillEntityFiscalStatusCombo(cmbSupplierTax);
             cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.PartySettings.SystemFiscalStatusID);
             if (cmbSupplierTax.SelectedItem == null && cmbSupplierTax.Items.Count > 0) {
                 cmbSupplierTax.SelectedIndex = 0;
             }
+
             txtSupplierTaxId.Text = string.Empty;
             txtSupplierZone.Text = dsoCache.ZoneProvider.GetFirstID().ToString();
+
             UIUtils.FillCountryCombo(cmbSupplierCountry);
             var country = cmbCustomerCountry.Items.Cast<CountryCode>()
                                             .FirstOrDefault(x => x.CountryID.Equals(systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, StringComparison.CurrentCultureIgnoreCase));
+            
             cmbCustomerCountry.SelectedItem = country;
             txtSupplierComments.Text = string.Empty;
         }
@@ -806,9 +798,10 @@ namespace Sage50c.API.Sample {
             }
             else {
                 SupplierClear();
-                throw new Exception(string.Format("O Fornecedor {0} não foi encontrado!", txtSupplierId.Text));
+                throw new Exception($"O Fornecedor [{txtSupplierId.Text}] não foi encontrado!"); ;
             }
         }
+
         #endregion
 
         #region Unit of measure
@@ -3890,6 +3883,13 @@ namespace Sage50c.API.Sample {
             var ZoneId = QuickSearchHelper.ZoneFind();
             if(ZoneId > 0) {
                 numCustomerZoneId.Value = (short)ZoneId;
+            }
+        }
+
+        private void btnSearchZoneSupplier_Click(object sender, EventArgs e) {
+            var zoneId = QuickSearchHelper.ZoneFind();
+            if (zoneId > 0) {
+                txtSupplierZone.Text = zoneId.ToString();
             }
         }
     }

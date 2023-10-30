@@ -271,6 +271,7 @@ namespace Sage50c.API.Sample {
             this.tabEntities = new System.Windows.Forms.TabControl();
             this.btnSearchSalesman = new System.Windows.Forms.Button();
             this.btnSearchZone = new System.Windows.Forms.Button();
+            this.btnSearchZoneSupplier = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -2769,6 +2770,7 @@ namespace Sage50c.API.Sample {
             // 
             // tabSupplier
             // 
+            this.tabSupplier.Controls.Add(this.btnSearchZoneSupplier);
             this.tabSupplier.Controls.Add(this.cmbSupplierCountry);
             this.tabSupplier.Controls.Add(this.cmbSupplierTax);
             this.tabSupplier.Controls.Add(this.btnSupplierBrow);
@@ -2868,7 +2870,7 @@ namespace Sage50c.API.Sample {
             this.txtSupplierZone.MaxLength = 0;
             this.txtSupplierZone.Name = "txtSupplierZone";
             this.txtSupplierZone.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierZone.Size = new System.Drawing.Size(346, 27);
+            this.txtSupplierZone.Size = new System.Drawing.Size(315, 27);
             this.txtSupplierZone.TabIndex = 12;
             // 
             // txtSupplierComments
@@ -3540,6 +3542,21 @@ namespace Sage50c.API.Sample {
             this.btnSearchZone.UseVisualStyleBackColor = false;
             this.btnSearchZone.Click += new System.EventHandler(this.btnSearchZone_Click);
             // 
+            // btnSearchZoneSupplier
+            // 
+            this.btnSearchZoneSupplier.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchZoneSupplier.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchZoneSupplier.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchZoneSupplier.FlatAppearance.BorderSize = 0;
+            this.btnSearchZoneSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchZoneSupplier.Location = new System.Drawing.Point(470, 169);
+            this.btnSearchZoneSupplier.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchZoneSupplier.Name = "btnSearchZoneSupplier";
+            this.btnSearchZoneSupplier.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchZoneSupplier.TabIndex = 78;
+            this.btnSearchZoneSupplier.UseVisualStyleBackColor = false;
+            this.btnSearchZoneSupplier.Click += new System.EventHandler(this.btnSearchZoneSupplier_Click);
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -3858,6 +3875,7 @@ namespace Sage50c.API.Sample {
         private ComboBox cmbSupplierCountry;
         private Button btnSearchZone;
         private Button btnSearchSalesman;
+        private Button btnSearchZoneSupplier;
     }
 }
 
