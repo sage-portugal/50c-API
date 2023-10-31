@@ -3838,6 +3838,7 @@
             this.btnUnitOfMeasureBrow.TabIndex = 180;
             this.btnUnitOfMeasureBrow.Text = "...";
             this.btnUnitOfMeasureBrow.UseVisualStyleBackColor = true;
+            this.btnUnitOfMeasureBrow.Click += new System.EventHandler(this.btnUnitOfMeasureBrow_Click);
             // 
             // fApi
             // 

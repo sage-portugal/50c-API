@@ -52,6 +52,8 @@ namespace Sage50c.API.Sample {
 
         private ItemController itemController = new ItemController();
 
+        private UnitOfMeasureController unitOfMeasureController = new UnitOfMeasureController();
+
         public fApi() {
 
             InitializeComponent();
@@ -307,12 +309,13 @@ namespace Sage50c.API.Sample {
         #region ITEM
 
         /// <summary>
-        /// Loads and item with the quicksearch result
+        /// Loads an item with the quicksearch result
         /// </summary>
         private void btnItemBrow_Click(object sender, EventArgs e) {
+
             var itemID = QuickSearchHelper.ItemFind();
             if (!string.IsNullOrEmpty(itemID)) {
-                NewItemGet(itemID);
+                ItemGet(itemID);
             }
         }
 
@@ -324,6 +327,9 @@ namespace Sage50c.API.Sample {
             if (isNew) {
                 itemController.Create();
                 itemController.Item.ItemID = txtItemID.Text;
+            }
+            else if (itemController.Item == null) {
+                throw new Exception("Carregue um artigo antes de fazer alterações.");
             }
 
             itemController.Item.Description = txtItemDescription.Text;
@@ -366,16 +372,16 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Creates a new item
         /// </summary>
-        void NewItemInsert() {
+        void ItemInsert() {
 
             ItemFill(true);
-            itemController.Update();
+            itemController.Save();
         }
 
         /// <summary>
         /// Loads an item
         /// </summary>
-        void NewItemGet(string itemID) {
+        void ItemGet(string itemID) {
 
             ItemClear(false);
             itemController.Load(itemID);
@@ -410,16 +416,16 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Updates an item
         /// </summary>
-        void NewItemUpdate() {
+        void ItemUpdate() {
 
             ItemFill(false);
-            itemController.Update();
+            itemController.Save();
         }
 
         /// <summary>
         /// Removes an item
         /// </summary>
-        void NewItemRemove() {
+        void ItemRemove() {
 
             itemController.Remove(txtItemID.Text.Trim());
             ItemClear(false);
@@ -429,7 +435,7 @@ namespace Sage50c.API.Sample {
         /// Clears the UI
         /// </summary>
         private void ItemClear(bool clearItemId) {
-            //Limpar
+
             if (clearItemId) {
                 txtItemID.Text = string.Empty;
             }
@@ -454,12 +460,12 @@ namespace Sage50c.API.Sample {
                 TransactionID transId = null;
 
                 switch (tabEntities.SelectedIndex) {
-                    case 0: NewItemInsert(); break;
+                    case 0: ItemInsert(); break;
                     case 1: CustomerUpdate((double)numCustomerId.Value, true); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), true); break;
                     case 3: transId = TransactionInsert(false); break;
                     case 4: transId = AccountTransactionUpdate(true); break;
-                    case 5: UnitOfMeasureUpdate(txtUnitOfMeasureId.Text, true); break;
+                    case 5: UnitOfMeasureInsert(); break;
                 }
                 if (!transactionError) {
                     string msg = null;
@@ -490,13 +496,12 @@ namespace Sage50c.API.Sample {
                     transactionError = false;
 
                     switch (tabEntities.SelectedIndex) {
-                        case 0: NewItemRemove(); break;                                        //Artigos
+                        case 0: ItemRemove(); break;                                        //Artigos
                         case 1: CustomerRemove((double)numCustomerId.Value); break;         //Clientes
                         case 2: SupplierRemove(double.Parse(txtSupplierId.Text)); break;  //Fornecedores
                         case 3: transId = TransactionRemove(); break;                                 //Compras e Vendas
                         case 4: transId = AccountTransactionRemove(); break;                          //Pagamentos e recebimentos
-
-                        case 5: UnitOfMeasureRemove(txtUnitOfMeasureId.Text); break;        //Unidades de medida
+                        case 5: UnitOfMeasureRemove(); break;        //Unidades de medida
                     }
 
                     if (!transactionError) {
@@ -529,13 +534,12 @@ namespace Sage50c.API.Sample {
                 transactionError = false;
 
                 switch (tabEntities.SelectedIndex) {
-                    case 0: NewItemUpdate(); break;
+                    case 0: ItemUpdate(); break;
                     case 1: CustomerUpdate((double)numCustomerId.Value, false); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), false); break;
                     case 3: transId = TransactionEdit(false); break;
                     case 4: transId = AccountTransactionUpdate(false); break;
-
-                    case 5: UnitOfMeasureUpdate(txtUnitOfMeasureId.Text, false); break;
+                    case 5: UnitOfMeasureUpdate(); break;
                 }
 
                 if (!transactionError) {
@@ -553,219 +557,21 @@ namespace Sage50c.API.Sample {
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
-
         }
 
         private void btnItemLoad_Click(object sender, EventArgs e) {
             try {
                 switch (tabEntities.SelectedIndex) {
-                    case 0: NewItemGet(txtItemID.Text.Trim()); break;
+                    case 0: ItemGet(txtItemID.Text.Trim()); break;
                     case 1: CustomerGet((double)numCustomerId.Value); break;
                     case 2: SupplierGet(double.Parse(txtSupplierId.Text)); break;
                     case 3: TransactionGet(false); break;
                     case 4: AccountTransactionGet(); break;
-
                     case 5: UnitOfMeasureGet(txtUnitOfMeasureId.Text); break;
                 }
             }
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-            }
-        }
-
-        /// <summary>
-        /// Cria um artigo novo
-        /// * = Campos obrigatórios
-        /// </summary>
-        private void ItemInsert() {
-            string itemId = txtItemID.Text.Trim();
-            if (string.IsNullOrEmpty(itemId)) {
-                MessageBox.Show("O código do artigo está vazio!", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            else {
-                if (dsoCache.ItemProvider.ItemExist(itemId)) {
-                    throw new Exception(string.Format("O artigo [{0}] já existe.", itemId));
-                }
-
-                var newItem = new Item();
-                var dsoPriceLine = new DSOPriceLine();
-                //*
-                newItem.ItemID = itemId;
-                newItem.Description = txtItemDescription.Text;
-                newItem.ShortDescription = txtItemShortDescription.Text;
-                newItem.Comments = txtItemComments.Text;
-                // IVA/Imposto por omissão do sistema
-                newItem.TaxableGroupID = systemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
-                //
-                newItem.SupplierID = APIEngine.DSOCache.SupplierProvider.GetFirstSupplierEx();
-                //
-                //Inicializar as linhas de preço do artigo
-                newItem.InitPriceList(dsoPriceLine.GetPriceLineRS());
-                // Preço do artigo (linha de preço=1)
-                Price myPrice = newItem.SalePrice[1, 0, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit];
-                //
-                // Definir o preços (neste caso, com imposto (IVA) incluido)
-                myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value;
-                // Obter preço unitário sem impostos
-                myPrice.UnitPrice = APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
-                                                    myPrice.TaxIncludedPrice,
-                                                    newItem.TaxableGroupID,
-                                                    systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
-                                                    systemSettings.SystemInfo.TaxRegionID);
-                //
-                // *Familia: Obter a primeira disponivel
-                double familyId = APIEngine.DSOCache.FamilyProvider.GetFirstLeafFamilyID();
-                newItem.Family = APIEngine.DSOCache.FamilyProvider.GetFamily(familyId);
-
-                //// Descomentar para criar COR e adicionar ao artigo
-                //// Criar nova côr na base de dados.
-                //var newColorId = dsoCache.ColorProvider.GetNewID();
-                //var colorCode = System.Drawing.Color.Blue.B << 32 + System.Drawing.Color.Blue.G << 16 + System.Drawing.Color.Blue.R;
-                //var newColor = new S50cBO22.Color() {
-                //    ColorCode = colorCode,
-                //    ColorID = newColorId,
-                //    Description = "Cor " + newColorId.ToString()
-                //};
-                //dsoCache.ColorProvider.Save(newColor, newColor.ColorID, true);
-                ////
-                //// Adicionar ao artigo
-                //var newItemColor = new ItemColor() {
-                //    ColorID = newColor.ColorID,
-                //    ColorName = newColor.Description,
-                //    ColorCode = (int)newColor.ColorCode,
-                //    //ColorKey = NÃO USAR
-                //};
-
-                // Adicionar cores ao artigo
-
-                // Definir as cores do artigo
-                AddColorsToItem(newItem);
-
-                //Definir os tamanhos do artigo
-                AddSizesToItem(newItem);
-
-                //newItem.Colors.Add(newItemColor);
-
-                //// Descomentar para criar um novo tamanho e adicionar ao artigo
-                //// Criar um tamanho nov
-                //var newSizeID = dsoCache.SizeProvider.GetNewID();
-                //var newSize = new S50cBO22.Size() {
-                //    Description = "Size " + newSizeID.ToString(),
-                //    SizeID = newSizeID,
-                //    //SizeKey = NÃO USAR
-                //};
-                //dsoCache.SizeProvider.Save(newSize, newSize.SizeID, true);
-                //var newItemSize = new ItemSize() {
-                //    SizeID = newSize.SizeID,
-                //    SizeName = newSize.Description,
-                //    Quantity = 1,
-                //    Units = 1
-                //};
-                //newItem.Sizes.Add(newItemSize);
-                ////
-                //// Adicionar um preço ao tamanho
-                //myPrice = newItem.SalePrice[1, newSizeID, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultUnit];
-                //// Para ser diferente, vamos colocar este preço com mais 10%
-                //myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value * 1.10;
-                //myPrice.UnitPrice = S50cAPIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
-                //                                    myPrice.TaxIncludedPrice,
-                //                                    newItem.TaxableGroupID,
-                //                                    systemSettings.SystemInfo.DefaultCountryID,
-                //                                    systemSettings.SystemInfo.TaxRegionID);
-                ////NOTA: A linha seguinte só é necessário se for um novo preço. Se já existe, não adicionar o preço à coleção. Neste exemplo criamos um tamanho novo por isso o preço também é novo
-                //newItem.SalePrice.Add(myPrice);
-                //
-                // Gravar
-                dsoCache.ItemProvider.Save(newItem, newItem.ItemID, true);
-            }
-        }
-
-        /// <summary>
-        /// Elimina um Artigo
-        /// </summary>
-        /// <param name="itemId"></param>
-        private void ItemRemove() {
-            string itemId = txtItemID.Text.Trim();
-            itemProvider.Delete(itemId);
-            //
-            ItemClear(false);
-        }
-
-        /// <summary>
-        /// Altera um Artigo
-        /// </summary>
-        /// <param name="itemId"></param>
-        private void ItemUpdate(string itemId) {
-            var myItem = APIEngine.DSOCache.ItemProvider.GetItem(itemId, systemSettings.BaseCurrency);
-            if (myItem != null) {
-                myItem.Description = txtItemDescription.Text;
-                myItem.ShortDescription = txtItemShortDescription.Text;
-                myItem.Comments = txtItemComments.Text;
-                //
-                // Preços - PVP1
-                Price myPrice = myItem.SalePrice[1, 0, string.Empty, 0, myItem.UnitOfSaleID];
-                // Definir o preço (neste caso, com imposto (IVA) incluido)
-                myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value;
-                // Obter preço unitário sem impostos
-                myPrice.UnitPrice = APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
-                                                    myPrice.TaxIncludedPrice,
-                                                    myItem.TaxableGroupID,
-                                                    systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
-                                                    systemSettings.SystemInfo.TaxRegionID);
-
-                // Definir as cores do artigo
-                AddColorsToItem(myItem);
-
-                //Definir os tamanhos do artigo
-                AddSizesToItem(myItem);
-
-                // Guardar as alterações
-                APIEngine.DSOCache.ItemProvider.Save(myItem, myItem.ItemID, false);
-            }
-            else {
-                throw new Exception(string.Format("Artigo [{0}] não encontrado.", itemId));
-            }
-        }
-
-        /// <summary>
-        /// Ler e apresenta a informação de um artigo
-        /// </summary>
-        private void ItemGet(string itemId) {
-            if (string.IsNullOrEmpty(itemId)) {
-                throw new Exception("O código do artigo está vazio!");
-            }
-            else {
-                ItemClear(false);
-                //Ler o artigo da BD na moeda base
-                var item = itemProvider.GetItem(itemId, systemSettings.BaseCurrency);
-
-                if (item != null) {
-                    txtItemID.Text = item.ItemID;
-                    txtItemDescription.Text = item.Description;
-                    txtItemShortDescription.Text = item.ShortDescription;
-                    numItemPriceTaxIncluded.Value = (decimal)item.SalePrice[1, 0, string.Empty, 0, item.UnitOfSaleID].TaxIncludedPrice;
-                    txtItemComments.Text = item.Comments;
-
-                    foreach (ItemColor value in item.Colors) {
-                        var newRowIndex = dgvColor.Rows.Add();
-                        var newRow = dgvColor.Rows[newRowIndex];
-
-                        newRow.Cells[0].Value = value.ColorID;
-                        newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)value.ColorCode);
-                        newRow.Cells[2].Value = value.ColorName;
-                    }
-
-                    foreach (ItemSize value in item.Sizes) {
-                        var newRowIndex = dgvSize.Rows.Add();
-                        var newRow = dgvSize.Rows[newRowIndex];
-
-                        newRow.Cells[0].Value = value.SizeID;
-                        newRow.Cells[1].Value = value.SizeName;
-                    }
-                }
-                else {
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice(string.Format("O Artigo {0} não foi encontrado!", itemId), VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-                }
             }
         }
 
@@ -994,42 +800,79 @@ namespace Sage50c.API.Sample {
 
         #region Unit of measure
 
-        private void UnitOfMeasureGet(string unitOfMeasureId) {
-            UnitOfMeasureClear();
-            var unit = dsoCache.UnitOfMeasureProvider.GetUnitOfMeasure(unitOfMeasureId);
-            if (unit != null) {
-                txtUnitOfMeasureId.Text = unitOfMeasureId;
-                txtUnitOfMeasureName.Text = unit.Description;
-            }
+        /// <summary>
+        /// Loads a unit of measure with the quicksearch result
+        /// </summary>
+        private void btnUnitOfMeasureBrow_Click(object sender, EventArgs e) {
 
+            var unitOfMeasureID = QuickSearchHelper.UnitOfMeasureFind();
+            if (!string.IsNullOrEmpty(unitOfMeasureID)) {
+                UnitOfMeasureGet(unitOfMeasureID);
+            }
         }
 
-        private void UnitOfMeasureUpdate(string unitOfMeasureId, bool isNew) {
-            UnitOfMeasure myUnit = null;
-            if (!isNew) {
-                myUnit = dsoCache.UnitOfMeasureProvider.GetUnitOfMeasure(unitOfMeasureId);
-            }
-            if (myUnit == null && !isNew) {
-                throw new Exception(string.Format("A unidade de medida [{0}] não existe.", unitOfMeasureId));
-            }
-            if (myUnit == null) {
-                myUnit = new UnitOfMeasure();
-                myUnit.UnitOfMeasureID = unitOfMeasureId;
-            }
-            myUnit.Description = txtUnitOfMeasureName.Text;
-            dsoCache.UnitOfMeasureProvider.Save(myUnit, myUnit.UnitOfMeasureID, isNew);
+        /// <summary>
+        /// Fills the unit of measure with data from the UI
+        /// </summary>
+        private void UnitOfMeasureFill(bool isNew) {
 
+            if (isNew) {
+                unitOfMeasureController.Create();
+                unitOfMeasureController.UnitOfMeasure.UnitOfMeasureID = txtUnitOfMeasureId.Text;
+            }
+            else if (unitOfMeasureController.UnitOfMeasure == null) {
+                throw new Exception("Carregue uma unidade de medição antes de fazer alterações.");
+            }
+            unitOfMeasureController.UnitOfMeasure.Description = txtUnitOfMeasureName.Text;
+        }
+
+        /// <summary>
+        /// Creates a new unit of measure
+        /// </summary>
+        private void UnitOfMeasureInsert() {
+
+            UnitOfMeasureFill(true);
+            unitOfMeasureController.Save();
+        }
+
+        /// <summary>
+        /// Loads a unit of measure
+        /// </summary>
+        private void UnitOfMeasureGet(string unitOfMeasureID) {
+
+            UnitOfMeasureClear();
+            unitOfMeasureController.Load(unitOfMeasureID);
+
+            var unitOfMeasure = unitOfMeasureController.UnitOfMeasure;
+            if (unitOfMeasure != null) {
+                txtUnitOfMeasureId.Text = unitOfMeasure.UnitOfMeasureID;
+                txtUnitOfMeasureName.Text = unitOfMeasure.Description;
+            }
+        }
+
+        /// <summary>
+        /// Updates a unit of measure
+        /// </summary>
+        private void UnitOfMeasureUpdate() {
+
+            UnitOfMeasureFill(false);
+            unitOfMeasureController.Save();
+        }
+
+        /// <summary>
+        /// Removes a unit of measure
+        /// </summary>
+        private void UnitOfMeasureRemove() {
+
+            unitOfMeasureController.Remove(txtUnitOfMeasureId.Text.Trim());
             UnitOfMeasureClear();
         }
 
-
-        private void UnitOfMeasureRemove(string unitOfMeasureId) {
-            dsoCache.UnitOfMeasureProvider.Delete(unitOfMeasureId);
-            UnitOfMeasureClear();
-        }
-
+        /// <summary>
+        /// Clears the UI
+        /// </summary>
         private void UnitOfMeasureClear() {
-            // Obter o próximo ID
+
             txtUnitOfMeasureId.Text = string.Empty;
             txtUnitOfMeasureName.Text = string.Empty;
         }
@@ -2574,7 +2417,6 @@ namespace Sage50c.API.Sample {
                 case 2: SupplierClear(); break;
                 case 3: TransactionClear(); break;
                 case 4: AccountTransactionClear(); break;
-
                 case 5: UnitOfMeasureClear(); break;
             }
         }
@@ -3044,13 +2886,6 @@ namespace Sage50c.API.Sample {
         }
 
         #region QuickSearch
-
-        //private void btnItemBrow_Click(object sender, EventArgs e) {
-        //    var item = QuickSearchHelper.ItemFind();
-        //    if (!string.IsNullOrEmpty(item)) {
-        //        ItemGet(item);
-        //    }
-        //}
 
         private void btnCustomerBrow_Click(object sender, EventArgs e) {
             var customerId = QuickSearchHelper.CustomerFind();

@@ -2,61 +2,55 @@
 using System.Text;
 
 using S50cBO22;
-using S50cDL22;
 using S50cSys22;
 
 namespace Sage50c.API.Sample.Controllers {
-    internal class ItemController {
+    internal class ItemController : ControllerBase {
 
-        /// <summary>
-        /// State of the item
-        /// </summary>
-        private EditState _editState = EditState.None;
         /// <summary>
         /// System parameters
         /// </summary>
         private SystemSettings _systemSettings { get { return APIEngine.SystemSettings; } }
-        /// <summary>
-        /// Cache for data engines for all common data
-        /// </summary>
-        private DSOFactory _dsoCache { get { return APIEngine.DSOCache; } }
         /// <summary>
         /// Current item data
         /// </summary>
         private Item _item = null;
         public Item Item { get { return _item; } }
 
-        public void Create() {
+        public Item Create() {
 
             _item = new Item();
 
-            // Set default taxable group
-            _item.TaxableGroupID = _systemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
-            // Get the first available supplier
-            _item.SupplierID = APIEngine.DSOCache.SupplierProvider.GetFirstSupplierEx();
-            // Get the first available family
-            double familyId = APIEngine.DSOCache.FamilyProvider.GetFirstLeafFamilyID();
-            _item.Family = APIEngine.DSOCache.FamilyProvider.GetFamily(familyId);
+            FillDefaultValues();
 
-            _editState = EditState.New;
+            editState = EditState.New;
+            return _item;
         }
 
-        public void Load(string itemID) {
+        public Item Load(string itemID) {
 
             if (string.IsNullOrEmpty(itemID)) {
                 throw new Exception("O código do artigo não está preenchido.");
             }
 
-            _item = _dsoCache.ItemProvider.GetItem(itemID, _systemSettings.BaseCurrency);
-            _editState = _item != null ? EditState.Editing : _editState;
+            _item = dsoCache.ItemProvider.GetItem(itemID, _systemSettings.BaseCurrency);
+            editState = _item != null ? EditState.Editing : editState;
+            return _item;
         }
 
-        public void Update() {
+        public bool Save() {
 
-            DataValidation();
+            string errorMessage = null;
 
-            _dsoCache.ItemProvider.Save(_item, _item.ItemID, _editState == EditState.New);
-            _editState = EditState.Editing;
+            if (Validate(out errorMessage)) {
+                dsoCache.ItemProvider.Save(_item, _item.ItemID, editState == EditState.New);
+                editState = EditState.Editing;
+            }
+            else {
+                throw new Exception(errorMessage);
+            }
+
+            return true;
         }
 
         public void Remove(string itemID) {
@@ -65,42 +59,58 @@ namespace Sage50c.API.Sample.Controllers {
                 throw new Exception("O código do artigo não está preenchido.");
             }
 
-            _dsoCache.ItemProvider.Delete(itemID);
-            _editState = EditState.None;
+            dsoCache.ItemProvider.Delete(itemID);
+            editState = EditState.None;
         }
 
-        public void DataValidation() {
+        public bool Validate(out string ErrorMessage) {
 
-            if (string.IsNullOrEmpty(_item.ItemID)) {
-                throw new Exception("O código do artigo não está preenchido.");
-            }
-
-            var bItemExists = _dsoCache.ItemProvider.ItemExist(_item.ItemID);
-
-            if (_editState == EditState.New && bItemExists) {
-                throw new Exception($"O artigo [{_item.ItemID}] já existe.");
-            }
-            if (_editState == EditState.Editing && !bItemExists) {
-                throw new Exception($"O artigo [{_item.ItemID}] não existe.");
-            }
-
+            bool result = true;
             StringBuilder errorMessage = new StringBuilder();
 
+            if (string.IsNullOrEmpty(_item.ItemID)) {
+                errorMessage.AppendLine("O código do artigo não está preenchido.");
+            }
+            else {
+                var bItemExists = dsoCache.ItemProvider.ItemExist(_item.ItemID);
+                if (editState == EditState.New && bItemExists) {
+                    errorMessage.AppendLine($"O artigo [{_item.ItemID}] já existe.");
+                }
+                if (editState == EditState.Editing && !bItemExists) {
+                    errorMessage.AppendLine($"O artigo [{_item.ItemID}] não existe.");
+                }
+            }
+
             if (string.IsNullOrEmpty(_item.Description)) {
-                errorMessage.Append($"Tem de preencher a descrição do artigo.{Environment.NewLine}");
+                errorMessage.AppendLine("Tem de preencher a descrição do artigo.");
             }
             if (string.IsNullOrEmpty(_item.ShortDescription)) {
-                errorMessage.Append($"Tem de preencher a descrição abreviada do artigo.{Environment.NewLine}");
+                errorMessage.AppendLine("Tem de preencher a descrição abreviada do artigo.");
             }
 
             if (errorMessage.Length != 0) {
-                throw new Exception(errorMessage.ToString());
+                result = false;
             }
+
+            ErrorMessage = errorMessage.ToString();
+            return result;
+        }
+
+        public bool FillDefaultValues() {
+            // Set default taxable group
+            _item.TaxableGroupID = _systemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
+            // Get the first available supplier
+            _item.SupplierID = dsoCache.SupplierProvider.GetFirstSupplierEx();
+            // Get the first available family
+            double familyId = dsoCache.FamilyProvider.GetFirstLeafFamilyID();
+            _item.Family = dsoCache.FamilyProvider.GetFamily(familyId);
+
+            return true;
         }
 
         public int AddColor(int ColorID) {
 
-            var color = APIEngine.DSOCache.ColorProvider.GetColor((short)ColorID);
+            var color = dsoCache.ColorProvider.GetColor((short)ColorID);
             var newItemColor = new ItemColor() {
                 ColorID = color.ColorID,
                 ColorName = color.Description,
@@ -114,7 +124,7 @@ namespace Sage50c.API.Sample.Controllers {
 
         public int AddSize(int SizeID) {
 
-            var size = APIEngine.DSOCache.SizeProvider.GetSize((short)SizeID);
+            var size = dsoCache.SizeProvider.GetSize((short)SizeID);
             var newItemSize = new ItemSize() {
                 SizeID = size.SizeID,
                 SizeName = size.Description,

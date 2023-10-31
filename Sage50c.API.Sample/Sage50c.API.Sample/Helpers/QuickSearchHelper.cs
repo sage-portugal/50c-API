@@ -323,5 +323,36 @@ namespace Sage50c.API.Sample {
 
             return result;
         }
+
+        private static bool _unitOfMeasureIsFindind = false;
+        /// <summary>
+        /// Creates a quick search and returns the id of a unit of measure selected by the user
+        /// </summary>
+        /// <returns>The id of a unit of measure or 0 if cancelled</returns>
+        internal static string UnitOfMeasureFind() {
+            QuickSearch quickSearch = null;
+            string result = null;
+
+            try {
+                if (!_unitOfMeasureIsFindind) {
+                    _unitOfMeasureIsFindind = true;
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_UnitOfMeasure, false);
+
+                    if (quickSearch.SelectValue()) {
+                        result = quickSearch.ValueSelectedString();
+                    }
+                    _unitOfMeasureIsFindind = false;
+                }
+            }
+            catch (Exception ex) {
+                _unitOfMeasureIsFindind = false;
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+            finally {
+            }
+            quickSearch = null;
+
+            return result;
+        }
     }
 }
