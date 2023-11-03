@@ -7,7 +7,7 @@ namespace Sage50c.API.Sample.Controllers {
     internal class ItemController : ControllerBase {
 
         /// <summary>
-        /// Current item data
+        /// Item data
         /// </summary>
         private Item _item = null;
         public Item Item { get { return _item; } }

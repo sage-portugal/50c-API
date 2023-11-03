@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System;
+﻿using System;
+using System.Linq;
+using System.Text;
 
 using S50cBL22;
 using S50cBO22;
 using S50cSys22;
-using System.Text;
 
 namespace Sage50c.API.Sample.Controllers {
     internal class AccountTransactionController : ControllerBase {
@@ -15,13 +15,10 @@ namespace Sage50c.API.Sample.Controllers {
         private AccountTransactionManager _accountTransManager = new AccountTransactionManager();
         public AccountTransactionManager AccountTransManager { get { return _accountTransManager; } }
 
-        public void Initialize(AccountUsedEnum accountUsed) {
+        public bool Create(AccountUsedEnum accountUsed, string transSerial, string transDoc, double transDocNumber) {
 
             // Initialize the account transaction manager
             _accountTransManager.InitManager(accountUsed);
-        }
-
-        public bool Create(string transSerial, string transDoc, double transDocNumber) {
 
             // Create a new transaction
             _accountTransManager.InitNewTransaction(transSerial, transDoc, transDocNumber);
@@ -87,7 +84,7 @@ namespace Sage50c.API.Sample.Controllers {
             bool result = true;
             StringBuilder errorMessage = new StringBuilder();
 
-            //if()
+            result = _accountTransManager.ValidateForSave();
 
             ErrorMessage = errorMessage.ToString();
             return result;
@@ -109,7 +106,7 @@ namespace Sage50c.API.Sample.Controllers {
             return _accountTransManager.SetPartyID(partyId);
         }
 
-        public bool SetLedgerAccounts(string accountID, double partyId) {
+        public bool SetLedgerAccount(string accountID, double partyId) {
 
             var transaction = _accountTransManager.Transaction;
 
@@ -121,7 +118,9 @@ namespace Sage50c.API.Sample.Controllers {
             return true;
         }
 
-        public void AccountTransAddDetail(string transDoc, string transSerial, double transDocNumber, short transInstallment, double paymentValue) {
+        public AccountTransactionDetail AddDetail(string transDoc, string transSerial, double transDocNumber, short transInstallment, double paymentValue) {
+
+            AccountTransactionDetail detail = null;
 
             if (paymentValue > 0) {
                 AccountTransaction accountTrans = _accountTransManager.Transaction;
@@ -136,7 +135,7 @@ namespace Sage50c.API.Sample.Controllers {
                             throw new Exception($"O valor a pagar é superior ao valor em divida no documento: {transDoc} {transSerial}/{transDocNumber}");
                         }
 
-                        AccountTransactionDetail detail = accountTrans.Details.Find(transSerial, transDoc, transDocNumber, transInstallment);
+                        detail = accountTrans.Details.Find(transSerial, transDoc, transDocNumber, transInstallment);
                         if (detail == null) {
                             detail = new AccountTransactionDetail();
                         }
@@ -179,12 +178,14 @@ namespace Sage50c.API.Sample.Controllers {
                     }
                 }
             }
+
+            return detail;
         }
 
         /// <summary>
         /// Fill the types of payment used when receiving/paying 
         /// </summary>
-        public TenderLineItemList AccountTransGetTenderLineItems(string accountTransPaymentId) {
+        public TenderLineItemList GetTenderLineItems(string accountTransPaymentId) {
 
             var accountTrans = _accountTransManager.Transaction;
             var TenderLines = new TenderLineItemList();

@@ -7,7 +7,7 @@ namespace Sage50c.API.Sample.Controllers {
     internal class UnitOfMeasureController : ControllerBase {
 
         /// <summary>
-        /// Current unit of measure data
+        /// Unit of measure data
         /// </summary>
         private UnitOfMeasure _unitOfMeasure = null;
         public UnitOfMeasure UnitOfMeasure { get { return _unitOfMeasure; } }
