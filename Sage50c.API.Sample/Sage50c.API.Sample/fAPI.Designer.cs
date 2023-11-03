@@ -46,6 +46,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabUnitOfMeasure = new System.Windows.Forms.TabPage();
+            this.btnUnitOfMeasureBrow = new System.Windows.Forms.Button();
             this.txtUnitOfMeasureName = new System.Windows.Forms.TextBox();
             this.txtUnitOfMeasureId = new System.Windows.Forms.TextBox();
             this.Label63 = new System.Windows.Forms.Label();
@@ -290,7 +291,6 @@
             this.lblEndDate = new System.Windows.Forms.Label();
             this.lblExportTo0 = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
-            this.btnUnitOfMeasureBrow = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -606,6 +606,16 @@
             this.tabUnitOfMeasure.TabIndex = 5;
             this.tabUnitOfMeasure.Text = "Unidades";
             this.tabUnitOfMeasure.UseVisualStyleBackColor = true;
+            // 
+            // btnUnitOfMeasureBrow
+            // 
+            this.btnUnitOfMeasureBrow.Location = new System.Drawing.Point(413, 38);
+            this.btnUnitOfMeasureBrow.Name = "btnUnitOfMeasureBrow";
+            this.btnUnitOfMeasureBrow.Size = new System.Drawing.Size(33, 25);
+            this.btnUnitOfMeasureBrow.TabIndex = 180;
+            this.btnUnitOfMeasureBrow.Text = "...";
+            this.btnUnitOfMeasureBrow.UseVisualStyleBackColor = true;
+            this.btnUnitOfMeasureBrow.Click += new System.EventHandler(this.btnUnitOfMeasureBrow_Click);
             // 
             // txtUnitOfMeasureName
             // 
@@ -3341,7 +3351,6 @@
             this.tabItem.Size = new System.Drawing.Size(943, 481);
             this.tabItem.TabIndex = 0;
             this.tabItem.Text = "Artigo";
-            this.tabItem.Click += new System.EventHandler(this.tabItem_Click);
             // 
             // gbSize
             // 
@@ -3829,16 +3838,6 @@
             this.dtpEnd.Size = new System.Drawing.Size(110, 23);
             this.dtpEnd.TabIndex = 9;
             this.dtpEnd.Value = new System.DateTime(1945, 7, 16, 0, 0, 0, 0);
-            // 
-            // btnUnitOfMeasureBrow
-            // 
-            this.btnUnitOfMeasureBrow.Location = new System.Drawing.Point(413, 38);
-            this.btnUnitOfMeasureBrow.Name = "btnUnitOfMeasureBrow";
-            this.btnUnitOfMeasureBrow.Size = new System.Drawing.Size(33, 25);
-            this.btnUnitOfMeasureBrow.TabIndex = 180;
-            this.btnUnitOfMeasureBrow.Text = "...";
-            this.btnUnitOfMeasureBrow.UseVisualStyleBackColor = true;
-            this.btnUnitOfMeasureBrow.Click += new System.EventHandler(this.btnUnitOfMeasureBrow_Click);
             // 
             // fApi
             // 

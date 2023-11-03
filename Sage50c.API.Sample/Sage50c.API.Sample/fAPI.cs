@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -50,9 +51,9 @@ namespace Sage50c.API.Sample {
         /// </summary>
         private PrintingManager printingManager { get { return APIEngine.PrintingManager; } }
 
-        private ItemController itemController = new ItemController();
-
-        private UnitOfMeasureController unitOfMeasureController = new UnitOfMeasureController();
+        private ItemController itemController = null;
+        private UnitOfMeasureController unitOfMeasureController = null;
+        private AccountTransactionController accountTransactionController = null;
 
         public fApi() {
 
@@ -131,6 +132,12 @@ namespace Sage50c.API.Sample {
             //
             // Inicilizar o motor dos recibos e pagamentos
             accountTransManager = new AccountTransactionManager();
+
+            // Initialize controllers
+            itemController = new ItemController();
+            unitOfMeasureController = new UnitOfMeasureController();
+            accountTransactionController = new AccountTransactionController();
+
             //
             // Load combos
             // Customer -- Load combos data and clear
@@ -217,10 +224,6 @@ namespace Sage50c.API.Sample {
             if (!string.IsNullOrEmpty(strMessage)) {
                 MessageBox.Show(strMessage, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
-
-        void accountTransManager_FunctionExecuted(string FunctionName, string FunctionParam) {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -464,7 +467,8 @@ namespace Sage50c.API.Sample {
                     case 1: CustomerUpdate((double)numCustomerId.Value, true); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), true); break;
                     case 3: transId = TransactionInsert(false); break;
-                    case 4: transId = AccountTransactionUpdate(true); break;
+                    case 4: transId = NewAccountTransactionInsert(); break;
+                    //case 4: transId = AccountTransactionUpdate(true); break;
                     case 5: UnitOfMeasureInsert(); break;
                 }
                 if (!transactionError) {
@@ -500,7 +504,8 @@ namespace Sage50c.API.Sample {
                         case 1: CustomerRemove((double)numCustomerId.Value); break;         //Clientes
                         case 2: SupplierRemove(double.Parse(txtSupplierId.Text)); break;  //Fornecedores
                         case 3: transId = TransactionRemove(); break;                                 //Compras e Vendas
-                        case 4: transId = AccountTransactionRemove(); break;                          //Pagamentos e recebimentos
+                        case 4: transId = NewAccountTransactionRemove(); break;                          //Pagamentos e recebimentos
+                        //case 4: transId = AccountTransactionRemove(); break;                          //Pagamentos e recebimentos
                         case 5: UnitOfMeasureRemove(); break;        //Unidades de medida
                     }
 
@@ -538,7 +543,8 @@ namespace Sage50c.API.Sample {
                     case 1: CustomerUpdate((double)numCustomerId.Value, false); break;
                     case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), false); break;
                     case 3: transId = TransactionEdit(false); break;
-                    case 4: transId = AccountTransactionUpdate(false); break;
+                    case 4: transId = NewAccountTransactionUpdate(); break;
+                    //case 4: transId = AccountTransactionUpdate(false); break;
                     case 5: UnitOfMeasureUpdate(); break;
                 }
 
@@ -566,7 +572,8 @@ namespace Sage50c.API.Sample {
                     case 1: CustomerGet((double)numCustomerId.Value); break;
                     case 2: SupplierGet(double.Parse(txtSupplierId.Text)); break;
                     case 3: TransactionGet(false); break;
-                    case 4: AccountTransactionGet(); break;
+                    case 4: NewAccountTransactionGet(); break;
+                    //case 4: AccountTransactionGet(); break;
                     case 5: UnitOfMeasureGet(txtUnitOfMeasureId.Text); break;
                 }
             }
@@ -2514,6 +2521,281 @@ namespace Sage50c.API.Sample {
             }
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Collects the data from the UI
+        /// </summary>
+        private void AccountTransFill(bool isNew) {
+
+            const string ACCOUNT_ID = "CC";
+
+            string transSerial = txtAccountTransSerial.Text.ToUpper();
+            string transDoc = txtAccountTransDoc.Text.ToUpper();
+            double transDocNumber = 0;
+            double.TryParse(txtAccountTransDocNumber.Text, out transDocNumber);
+            double partyId = 0;
+            double.TryParse(txtAccountTransPartyId.Text, out partyId);
+
+            DateTime createDate = DateTime.Today;
+            DateTime.TryParse(txtAccountTransDocDate.Text, out createDate);
+
+            var accountUsed = cmbRecPeg.SelectedIndex == 0 ? AccountUsedEnum.auCustomerLedgerAccount : AccountUsedEnum.auSupplierLedgerAccount;
+            accountTransactionController.Initialize(accountUsed);
+
+            if (isNew) {
+                accountTransactionController.Create(transSerial, transDoc, transDocNumber);
+                accountTransactionController.SetPartyID(partyId);
+            }
+            else {
+                accountTransactionController.Load(transSerial, transDoc, transDocNumber);
+            }
+
+            accountTransactionController.SetLedgerAccounts(ACCOUNT_ID, partyId);
+
+            // Remove all the transaction details if updating
+            while (accountTransactionController.AccountTransManager.Transaction.Details.Count > 0) {
+                accountTransactionController.AccountTransManager.Transaction.Details.Remove(1);
+            }
+
+            accountTransactionController.SetAccountID(ACCOUNT_ID);
+            accountTransactionController.SetBaseCurrencyID(txtAccountTransDocCurrency.Text);
+            accountTransactionController.SetCreateDate(createDate);
+
+
+
+            // Transaction detail line 1
+            string docId = txtAccountTransDocL1.Text;
+            string docSeries = txtAccountTransSeriesL1.Text;
+            double docNumber = 0;
+            double.TryParse(txtAccountTransDocNumberL1.Text, out docNumber);
+            double paymentValue = 0;
+            double.TryParse(txtAccountTransDocValueL1.Text, out paymentValue);
+            if (paymentValue > 0) {
+                accountTransactionController.AccountTransAddDetail(docId, docSeries, docNumber, 0, paymentValue);
+            }
+
+            // Transaction detail line 2
+            docId = txtAccountTransDocL2.Text;
+            docSeries = txtAccountTransSeriesL2.Text;
+            docNumber = 0;
+            double.TryParse(txtAccountTransDocNumberL2.Text, out docNumber);
+            paymentValue = 0;
+            double.TryParse(txtAccountTransDocValueL2.Text, out paymentValue);
+            if (paymentValue > 0) {
+                accountTransactionController.AccountTransAddDetail(docId, docSeries, docNumber, 0, paymentValue);
+            }
+
+            var transaction = accountTransactionController.AccountTransManager.Transaction;
+
+            // Abort if the document doesn't have any lines
+            if (transaction.Details.Count == 0) {
+                throw new Exception("O documento não tem linhas.");
+            }
+
+            transaction.TenderLineItems = accountTransactionController.AccountTransGetTenderLineItems(txtAccountTransPaymentId.Text);
+
+            // Ensure the till is open
+            accountTransactionController.AccountTransManager.EnsureOpenTill(transaction.Till.TillID);
+        }
+
+        /// <summary>
+        /// Creates a new account transaction
+        /// </summary>
+        private TransactionID NewAccountTransactionInsert() {
+
+            AccountTransFill(true);
+            var transactionID = accountTransactionController.Save();
+            return transactionID;
+        }
+
+        /// <summary>
+        /// Loads an account transaction
+        /// </summary>
+        private void NewAccountTransactionGet() {
+
+            string transSerial = txtAccountTransSerial.Text.ToUpper();
+            string transDoc = txtAccountTransDoc.Text.ToUpper();
+            double.TryParse(txtAccountTransDocNumber.Text, out double transDocNumber);
+
+            // Clear the UI
+            AccountTransactionClear();
+
+            // Load the transaction
+            accountTransactionController.Load(transSerial, transDoc, transDocNumber);
+
+            var accountTrans = accountTransactionController.AccountTransManager.Transaction;
+            txtAccountTransDoc.Text = accountTrans.TransDocument;
+            txtAccountTransDocCurrency.Text = accountTrans.BaseCurrency.CurrencyID;
+            txtAccountTransDocNumber.Text = accountTrans.TransDocNumber.ToString();
+            txtAccountTransPartyId.Text = accountTrans.Entity.PartyID.ToString();
+            txtAccountTransDocDate.Text = accountTrans.CreateDate.ToShortDateString();
+            txtAccountTransSerial.Text = accountTrans.TransSerial;
+
+            if (accountTrans.TenderLineItems.Count > 0) {
+                var tenderLine = accountTrans.TenderLineItems[1];
+                txtAccountTransPaymentId.Text = tenderLine.Tender.TenderID.ToString();
+            }
+
+            // Line 1
+            if (accountTrans.Details.Count > 0) {
+                int i = 1;
+                var detail = accountTrans.Details[ref i];
+                txtAccountTransDocL1.Text = detail.DocID;
+                txtAccountTransDocNumberL1.Text = detail.DocNumber.ToString();
+                txtAccountTransDocValueL1.Text = detail.TotalPayedAmount.ToString();
+                txtAccountTransSeriesL1.Text = detail.DocSerial;
+
+                // Line 2
+                if (accountTrans.Details.Count > 1) {
+                    i = 2;
+                    detail = accountTrans.Details[ref i];
+                    txtAccountTransDocL2.Text = detail.DocID;
+                    txtAccountTransDocNumberL2.Text = detail.DocNumber.ToString();
+                    txtAccountTransDocValueL2.Text = detail.TotalPayedAmount.ToString();
+                    txtAccountTransSeriesL2.Text = detail.DocSerial;
+                }
+            }
+
+            if (accountTrans.TransStatus == TransStatusEnum.stVoid) {
+                tabAccount.BackgroundImage = Properties.Resources.stamp_Void;
+            }
+            else {
+                tabAccount.BackgroundImage = null;
+            }
+        }
+
+        /// <summary>
+        /// Updates an account transaction
+        /// </summary>
+        private TransactionID NewAccountTransactionUpdate() {
+
+            AccountTransFill(false);
+            var transactionID = accountTransactionController.Save();
+            return transactionID;
+        }
+
+        /// <summary>
+        /// Removes an account transaction
+        /// </summary>
+        private TransactionID NewAccountTransactionRemove() {
+
+            string transSerial = txtAccountTransSerial.Text.ToUpper();
+            string transDoc = txtAccountTransDoc.Text.ToUpper();
+            double.TryParse(txtAccountTransDocNumber.Text, out double transDocNumber);
+
+            accountTransactionController.Load(transSerial, transDoc, transDocNumber);
+            var transactionID = accountTransactionController.Remove(transSerial, transDoc, transDocNumber, Application.ProductName);
+            return transactionID;
+        }
+
+        /// <summary>
+        /// Clears the UI
+        /// </summary>
+        private void AccountTransactionClear() {
+
+            if (cmbRecPeg.SelectedIndex < 0) {
+                cmbRecPeg.SelectedIndex = 0;
+            }
+
+            var accountDoc = AccountTransGetDocument();
+            if (accountDoc != null) {
+                txtAccountTransDoc.Text = accountDoc.DocumentID;
+            }
+            else {
+                txtAccountTransDoc.Text = string.Empty;
+            }
+
+            var externalSeries = systemSettings.DocumentSeries.OfType<DocumentsSeries>().FirstOrDefault(x => x.SeriesType == SeriesTypeEnum.SeriesExternal);
+            if (externalSeries != null) {
+                txtAccountTransSerial.Text = externalSeries.Series;
+            }
+            else {
+                txtAccountTransSerial.Text = string.Empty;
+            }
+
+            txtAccountTransDocNumber.Text = "0";
+            txtAccountTransDocCurrency.Text = systemSettings.BaseCurrency.CurrencyID;
+            txtAccountTransPartyId.Text = string.Empty;
+            txtAccountTransDocDate.Text = DateTime.Today.ToShortDateString();
+
+            var tender = dsoCache.TenderProvider.GetFirstMoneyTender(TenderUseEnum.tndUsedOnBoth);
+            if (tender != null) {
+                txtAccountTransPaymentId.Text = tender.TenderID.ToString();
+            }
+            else {
+                txtAccountTransPaymentId.Text = string.Empty;
+            }
+
+            txtAccountTransPaymentId.Text = dsoCache.PaymentProvider.GetFirstID().ToString();
+
+            AccountTransClearL1();
+            AccountTransClearL2();
+
+            tabAccount.BackgroundImage = null;
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        private void AccountTransClearL1() {
+            txtAccountTransSeriesL1.Text = string.Empty;
+            txtAccountTransDocL1.Text = string.Empty;
+            txtAccountTransDocNumberL1.Text = "0";
+            txtAccountTransDocValueL1.Text = "0";
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        private void AccountTransClearL2() {
+            txtAccountTransSeriesL2.Text = string.Empty;
+            txtAccountTransDocL2.Text = string.Empty;
+            txtAccountTransDocNumberL2.Text = "0";
+            txtAccountTransDocValueL2.Text = "0";
+        }
+
+        /// <summary>
+        /// Obtain the first available document of a given type
+        /// </summary>
+        private Document AccountTransGetDocument() {
+
+            Document accountDoc = null;
+
+            if (cmbRecPeg.SelectedIndex == 0) {
+                // Get the first avaialable receipt document
+                accountDoc = systemSettings.WorkstationInfo.Document.OfType<Document>().FirstOrDefault(x => x.TransDocType == DocumentTypeEnum.dcTypeAccount && x.UpdateTenderReport && x.AccountBehavior == AccountBehaviorEnum.abAccountSettlement && x.SignTenderReport == "+");
+            }
+            else {
+                // Get the first avaialable payment document
+                accountDoc = systemSettings.WorkstationInfo.Document.OfType<Document>().FirstOrDefault(x => x.TransDocType == DocumentTypeEnum.dcTypeAccount && x.UpdateTenderReport && x.AccountBehavior == AccountBehaviorEnum.abAccountSettlement && x.SignTenderReport == "-");
+            }
+
+            return accountDoc;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Insere ou altera um pagamento ou recibo
         /// 
@@ -2712,80 +2994,6 @@ namespace Sage50c.API.Sample {
             accountTrans = null;
         }
 
-
-        /// <summary>
-        /// Obtêm o documento por omissão para receibo ou pagamento
-        /// </summary>
-        /// <returns>O primeiro documetno encontrado para o tipo descrito</returns>
-        private Document AccountTransGetDocument() {
-            Document accountDoc = null;
-            if (cmbRecPeg.SelectedIndex == 0) {
-                // Primeiro documento disponivel para recebimento
-                accountDoc = systemSettings.WorkstationInfo.Document.OfType<Document>().FirstOrDefault(x => x.TransDocType == DocumentTypeEnum.dcTypeAccount && x.UpdateTenderReport && x.AccountBehavior == AccountBehaviorEnum.abAccountSettlement && x.SignTenderReport == "+");
-            }
-            else {
-                // Primeiro documento disponivel para pagamento
-                accountDoc = systemSettings.WorkstationInfo.Document.OfType<Document>().FirstOrDefault(x => x.TransDocType == DocumentTypeEnum.dcTypeAccount && x.UpdateTenderReport && x.AccountBehavior == AccountBehaviorEnum.abAccountSettlement && x.SignTenderReport == "-");
-            }
-            return accountDoc;
-        }
-
-        /// <summary>
-        /// Limpa a transação (recibo ou pagamento) do ecran e preenche alguns valores por omissão
-        /// </summary>
-        private void AccountTransactionClear() {
-            if (cmbRecPeg.SelectedIndex < 0) {
-                cmbRecPeg.SelectedIndex = 0;
-            }
-
-            var accountDoc = AccountTransGetDocument();
-            if (accountDoc != null) {
-                txtAccountTransDoc.Text = accountDoc.DocumentID;
-            }
-            else {
-                txtAccountTransDoc.Text = string.Empty;
-            }
-            var externalSeries = systemSettings.DocumentSeries.OfType<DocumentsSeries>().FirstOrDefault(x => x.SeriesType == SeriesTypeEnum.SeriesExternal);
-            if (externalSeries != null) {
-                txtAccountTransSerial.Text = externalSeries.Series;
-            }
-            else {
-                txtAccountTransSerial.Text = string.Empty;
-            }
-            txtAccountTransDocNumber.Text = "0";
-            txtAccountTransDocCurrency.Text = systemSettings.BaseCurrency.CurrencyID;
-            txtAccountTransPartyId.Text = string.Empty;
-            txtAccountTransDocDate.Text = DateTime.Today.ToShortDateString();
-            var tender = dsoCache.TenderProvider.GetFirstMoneyTender(TenderUseEnum.tndUsedOnBoth);
-            if (tender != null) {
-                txtAccountTransPaymentId.Text = tender.TenderID.ToString();
-            }
-            else {
-                txtAccountTransPaymentId.Text = string.Empty;
-            }
-            txtAccountTransPaymentId.Text = dsoCache.PaymentProvider.GetFirstID().ToString();
-            //
-            AccountTransClearL1();
-            AccountTransClearL2();
-            RepClear();
-            //
-            tabAccount.BackgroundImage = null;
-        }
-
-        private void AccountTransClearL1() {
-            txtAccountTransSeriesL1.Text = string.Empty;
-            txtAccountTransDocL1.Text = string.Empty;
-            txtAccountTransDocNumberL1.Text = "0";
-            txtAccountTransDocValueL1.Text = "0";
-        }
-
-        private void AccountTransClearL2() {
-            txtAccountTransSeriesL2.Text = string.Empty;
-            txtAccountTransDocL2.Text = string.Empty;
-            txtAccountTransDocNumberL2.Text = "0";
-            txtAccountTransDocValueL2.Text = "0";
-        }
-
         private void btnAccountClearL1_Click(object sender, EventArgs e) {
             AccountTransClearL1();
         }
@@ -2806,11 +3014,14 @@ namespace Sage50c.API.Sample {
                     tabAccount.Text = "Pagamento";
                     break;
             }
+
             var accountDoc = AccountTransGetDocument();
-            if (accountDoc != null)
+            if (accountDoc != null) {
                 txtAccountTransDoc.Text = accountDoc.DocumentID;
-            else
+            }
+            else {
                 txtAccountTransDoc.Text = string.Empty;
+            }
         }
 
         #endregion
@@ -2879,10 +3090,6 @@ namespace Sage50c.API.Sample {
             else {
                 bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPrint, 1);
             }
-        }
-
-        private void tabItem_Click(object sender, EventArgs e) {
-            //TODO: Perguntar ao Jorge
         }
 
         #region QuickSearch
@@ -3938,7 +4145,6 @@ namespace Sage50c.API.Sample {
             var exporter = factory.GetSAFTExporter();
             if (exporter.ValidateDates()) {
 
-                //TODO: Disable UI
                 Enabled = false;
 
                 var bExported = exporter.Export(filePath);
@@ -3953,7 +4159,6 @@ namespace Sage50c.API.Sample {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice($"As datas indicadas não são válidas.{Environment.NewLine}Data de início: {dtpStart.Value.ToShortDateString()}{Environment.NewLine}Data de fim: {dtpEnd.Value.ToShortDateString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
 
-            //TODO: Enable UI
             Enabled = true;
         }
 

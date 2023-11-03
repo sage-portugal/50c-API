@@ -259,6 +259,7 @@
     <Compile Include="..\..\Sage50c.Common\APIQuickSearch.cs">
       <Link>50cAPI\APIQuickSearch.cs</Link>
     </Compile>
+    <Compile Include="Controllers\AccountTransactionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\UnitOfMeasureController.cs" />

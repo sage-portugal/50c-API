@@ -1,4 +1,5 @@
 ﻿using S50cDL22;
+using S50cSys22;
 
 namespace Sage50c.API.Sample.Controllers {
 
@@ -18,6 +19,10 @@ namespace Sage50c.API.Sample.Controllers {
         /// Cache for data engines for all common data
         /// </summary>
         protected DSOFactory dsoCache { get { return APIEngine.DSOCache; } }
+        /// <summary>
+        /// System parameters
+        /// </summary>
+        protected SystemSettings systemSettings { get { return APIEngine.SystemSettings; } }
 
         protected int GetMaxFieldSize(string TableName, string FieldName) {
 

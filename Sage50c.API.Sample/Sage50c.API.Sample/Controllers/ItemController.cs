@@ -2,15 +2,10 @@
 using System.Text;
 
 using S50cBO22;
-using S50cSys22;
 
 namespace Sage50c.API.Sample.Controllers {
     internal class ItemController : ControllerBase {
 
-        /// <summary>
-        /// System parameters
-        /// </summary>
-        private SystemSettings _systemSettings { get { return APIEngine.SystemSettings; } }
         /// <summary>
         /// Current item data
         /// </summary>
@@ -33,7 +28,7 @@ namespace Sage50c.API.Sample.Controllers {
                 throw new Exception("O código do artigo não está preenchido.");
             }
 
-            _item = dsoCache.ItemProvider.GetItem(itemID, _systemSettings.BaseCurrency);
+            _item = dsoCache.ItemProvider.GetItem(itemID, systemSettings.BaseCurrency);
             editState = _item != null ? EditState.Editing : editState;
             return _item;
         }
@@ -98,7 +93,7 @@ namespace Sage50c.API.Sample.Controllers {
 
         public bool FillDefaultValues() {
             // Set default taxable group
-            _item.TaxableGroupID = _systemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
+            _item.TaxableGroupID = systemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
             // Get the first available supplier
             _item.SupplierID = dsoCache.SupplierProvider.GetFirstSupplierEx();
             // Get the first available family
