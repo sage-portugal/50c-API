@@ -83,32 +83,50 @@ namespace Sage50c.API.Sample.Controllers {
 
         public bool Validate() {
             StringBuilder error = new StringBuilder();
-            if (!_systemSettings.WorkstationInfo.Document.IsInCollection(_bsoStockTransaction.Transaction.TransDocument)) {
-                error.Append($"O documento [{_bsoStockTransaction.Transaction.TransDocument}] não existe ou não se encontra preenchido.");
+
+            if(_editState !=  EditState.New && !_dsoCache.ItemTransactionProvider.ItemTransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
+                throw new Exception($"O documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber} não existe para ser alterado. Deve criar um novo.");
+            } else if (_editState == EditState.New && _dsoCache.ItemTransactionProvider.ItemTransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
+                throw new Exception($"O documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber} já existe para ser alterado. Deve criar um novo.");
             }
-            var transType = ItemTransactionHelper.TransGetType(_bsoStockTransaction.Transaction.TransDocument);
-            if (transType != DocumentTypeEnum.dcTypeStock) {
-                error.Append($"O documento indicado [{_bsoStockTransaction.Transaction.TransDocument}] não é um documento de stock");
-            }
-            DocumentsSeries serie = null;
-            if (_systemSettings.DocumentSeries.IsInCollection(_bsoStockTransaction.Transaction.TransSerial)) {
-                serie = _systemSettings.DocumentSeries[_bsoStockTransaction.Transaction.TransSerial];
-                if (serie.SeriesType != SeriesTypeEnum.SeriesExternal) {
-                    error.Append("Apenas são permitidas séries externas.");
+
+            if (_bsoStockTransaction.Transaction == null) {
+                if (_editState == EditState.New) {
+                    throw new Exception($"Não foi possível inicializar o documento [{_bsoStockTransaction.Transaction.TransDocument}] da série [{_bsoStockTransaction.Transaction.TransSerial}]");
+                }
+                else {
+                    throw new Exception($"Não foi possível carregar o documento [{_bsoStockTransaction.Transaction.TransDocument}] da série [{_bsoStockTransaction.Transaction.TransSerial}] número [{_bsoStockTransaction.Transaction.TransDocNumber}]");
                 }
             }
-            if (serie == null) {
-                error.Append("A série indicada não existe");
-            }
-            if(_bsoStockTransaction.Transaction.Details.Count <= 0) {
-                error.Append("O Documento não tem linhas");
-            }
-            // Error message
-            if (error.Length > 0) {
-                throw new Exception(error.ToString());
-            }
             else {
-                return true;
+                if (!_systemSettings.WorkstationInfo.Document.IsInCollection(_bsoStockTransaction.Transaction.TransDocument)) {
+                    error.Append($"O documento [{_bsoStockTransaction.Transaction.TransDocument}] não existe ou não se encontra preenchido.");
+                }
+                var transType = ItemTransactionHelper.TransGetType(_bsoStockTransaction.Transaction.TransDocument);
+                if (transType != DocumentTypeEnum.dcTypeStock) {
+                    error.Append($"O documento indicado [{_bsoStockTransaction.Transaction.TransDocument}] não é um documento de stock");
+                }
+                DocumentsSeries serie = null;
+                if (_systemSettings.DocumentSeries.IsInCollection(_bsoStockTransaction.Transaction.TransSerial)) {
+                    serie = _systemSettings.DocumentSeries[_bsoStockTransaction.Transaction.TransSerial];
+                    if (serie.SeriesType != SeriesTypeEnum.SeriesExternal) {
+                        error.Append("Apenas são permitidas séries externas.");
+                    }
+                }
+                if (serie == null) {
+                    error.Append("A série indicada não existe");
+                }
+                if (_bsoStockTransaction.Transaction.Details.Count <= 0) {
+                    error.Append("O Documento não tem linhas");
+                }
+
+                // Error message
+                if (error.Length > 0) {
+                    throw new Exception(error.ToString());
+                }
+                else {
+                    return true;
+                }
             }
         }
 
