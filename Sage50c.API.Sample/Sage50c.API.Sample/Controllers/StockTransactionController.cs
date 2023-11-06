@@ -84,9 +84,9 @@ namespace Sage50c.API.Sample.Controllers {
         public bool Validate() {
             StringBuilder error = new StringBuilder();
 
-            if(_editState !=  EditState.New && !_dsoCache.ItemTransactionProvider.ItemTransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
+            if(_editState !=  EditState.New && !_dsoCache.StockTransactionProvider.TransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
                 throw new Exception($"O documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber} não existe para ser alterado. Deve criar um novo.");
-            } else if (_editState == EditState.New && _dsoCache.ItemTransactionProvider.ItemTransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
+            } else if (_editState == EditState.New && _dsoCache.StockTransactionProvider.TransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
                 throw new Exception($"O documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber} já existe para ser alterado. Deve criar um novo.");
             }
 
