@@ -167,6 +167,7 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public bool Validate(bool suspended) {
+            StringBuilder  error = new StringBuilder();
 
             if (_editState != EditState.New && !suspended) {
                 if (!_dsoCache.ItemTransactionProvider.ItemTransactionExists(_bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument, _bsoItemTransaction.Transaction.TransDocNumber)) {
@@ -187,14 +188,14 @@ namespace Sage50c.API.Sample.Controllers {
             }
             else {
                 if (!_systemSettings.WorkstationInfo.Document.IsInCollection(_bsoItemTransaction.Transaction.TransDocument)) {
-                    throw new Exception("O Documento não se encontra preenchido ou não existe");
+                    error.AppendLine("O Documento não se encontra preenchido ou não existe");
                 }
 
                 if (_bsoItemTransaction.Transaction.TransDocType != DocumentTypeEnum.dcTypeSale && _bsoItemTransaction.Transaction.TransDocType != DocumentTypeEnum.dcTypePurchase) {
-                    throw new Exception($"O documento indicado [{_bsoItemTransaction.Transaction.TransDocument}] não é um documento de venda/compra");
+                    error.AppendLine($"O documento indicado [{_bsoItemTransaction.Transaction.TransDocument}] não é um documento de venda/compra");
                 }
                 if (!_systemSettings.DocumentSeries.IsInCollection(_bsoItemTransaction.Transaction.TransSerial)) {
-                    throw new Exception("A Série não se encontra preenchida ou não existe");
+                    error.AppendLine("A Série não se encontra preenchida ou não existe");
                 }
                 if (string.IsNullOrEmpty(_bsoItemTransaction.Transaction.BaseCurrency.CurrencyID)) {
                     _bsoItemTransaction.Transaction.BaseCurrency = _systemSettings.BaseCurrency;
@@ -218,7 +219,7 @@ namespace Sage50c.API.Sample.Controllers {
                         _bsoItemTransaction.Transaction.Payment = payment;
                     }
                     else {
-                        throw new Exception($"O pagamento não existe");
+                        error.AppendLine($"O pagamento não existe");
                     }
                 }
                 if (_bsoItemTransaction.Transaction.Tender.TenderID == 0) {
@@ -231,11 +232,16 @@ namespace Sage50c.API.Sample.Controllers {
                         _bsoItemTransaction.Transaction.Tender = tender;
                     }
                     else {
-                        throw new Exception($"O método de pagamento não existe");
+                        error.AppendLine($"O método de pagamento não existe");
                     }
                 }
-                
-                return true;
+                // Error message
+                if (error.Length > 0) {
+                    throw new Exception(error.ToString());
+                }
+                else {
+                    return true;
+                }
             }
         }
 
