@@ -143,9 +143,9 @@ namespace Sage50c.API.Sample {
             // Load combos
             // Customer -- Load combos data and clear
             ItemClear(true);
-            CustomerClear();
-            SupplierClear();
-            TransactionClear();
+            CustomerClearUI();
+            SupplierClearUI();
+            TransactionClearUI();
             AccountTransactionClear();
 
             //txtTransDoc.Text = "FAC";
@@ -432,9 +432,9 @@ namespace Sage50c.API.Sample {
             try {
                 switch (tabEntities.SelectedIndex) {
                     case 0: ItemGet(txtItemId.Text.Trim()); break;
-                    case 1: CustomerSearch((short)numCustomerId.Value); break;
-                    case 2: SupplierSearch(double.Parse(txtSupplierId.Text)); break;
-                    case 3: TransactionSearch(); break;
+                    case 1: CustomerGet((short)numCustomerId.Value); break;
+                    case 2: SupplierGet(double.Parse(txtSupplierId.Text)); break;
+                    case 3: TransactionGet(false); break;
                     case 4: AccountTransactionGet(); break;
 
                     case 5: UnitOfMeasureGet(txtUnitOfMeasureId.Text); break;
@@ -666,7 +666,7 @@ namespace Sage50c.API.Sample {
             var customer = _customerController.Create();
             CustomerFill();
             _customerController.Save();
-            CustomerClear();
+            CustomerClearUI();
             return customer;
         }
 
@@ -674,14 +674,22 @@ namespace Sage50c.API.Sample {
             var result = false;
             CustomerFill();
             result = _customerController.Remove();
-            CustomerClear();
+            CustomerClearUI();
             return result;
         }
 
-        private void CustomerUpdate() {
+        private bool CustomerUpdate() {
+            var result = false;
             CustomerFill();
-            _customerController.Save();
-            CustomerClear();
+            result = _customerController.Save();
+            CustomerClearUI();
+            return result;
+        }
+
+        private void CustomerGet(double customerId) {
+            var customer = _customerController.Load(customerId);
+            //Update form
+            CustomerUpdateUI(customer);
         }
 
         private void CustomerFill() {
@@ -693,15 +701,9 @@ namespace Sage50c.API.Sample {
             _customerController.Customer.ZoneID = (short)numCustomerZoneId.Value;
             _customerController.Customer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
             _customerController.Customer.Comments = txtCustomerComments.Text;
-        }
+        }    
 
-        private void CustomerSearch(double customerId) {
-            var customer = _customerController.Load(customerId);
-            //Update form
-            CustomerUpdate(customer);
-        }
-
-        private void CustomerClear() {
+        private void CustomerClearUI() {
             // Get new id
             numCustomerId.Value = (decimal)dsoCache.CustomerProvider.GetNewID();
             //
@@ -723,7 +725,7 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void CustomerUpdate(S50cBO22.Customer customer) {
+        private void CustomerUpdateUI(S50cBO22.Customer customer) {
             if (customer != null) {
                 numCustomerId.Value = (decimal)customer.CustomerID;
                 numCustomerSalesmanId.Value = customer.SalesmanId;
@@ -738,7 +740,7 @@ namespace Sage50c.API.Sample {
             }
             else {
                 //O cliente não existe!
-                CustomerClear();
+                CustomerClearUI();
                 throw new Exception($"O Cliente [{numCustomerId.Value}] não foi encontrado!");
             }
         }
@@ -751,22 +753,30 @@ namespace Sage50c.API.Sample {
             var supplier = _supplierController.Create();
             SupplierFill();
             _supplierController.Save();
-            SupplierClear();
+            SupplierClearUI();
             return supplier;
         }
 
         private bool SupplierRemove() {
             var result = false;
             SupplierFill();
-            _supplierController.Remove();
-            SupplierClear();
+            result = _supplierController.Remove();
+            SupplierClearUI();
             return result;
         }
 
-        private void SupplierUpdate() {
+        private bool SupplierUpdate() {
+            var result = false;
             SupplierFill();
-            _supplierController.Save();
-            SupplierClear();
+            result = _supplierController.Save();
+            SupplierClearUI();
+            return result;
+        }
+
+        private void SupplierGet(double supplierId) {
+            var supplier = _supplierController.Load(supplierId);
+            //Update form
+            SupplierUpdateUI(supplier);
         }
 
         private void SupplierFill() {
@@ -779,13 +789,7 @@ namespace Sage50c.API.Sample {
             _supplierController.Supplier.Comments = txtSupplierComments.Text;
         }
 
-        private void SupplierSearch(double supplierId) {
-            var supplier = _supplierController.Load(supplierId);
-            //Update form
-            SupplierUpdate(supplier);
-        }
-
-        private void SupplierClear() {
+        private void SupplierClearUI() {
             //Get new id 
             txtSupplierId.Text = dsoCache.SupplierProvider.GetNewID().ToString();
             //
@@ -808,7 +812,7 @@ namespace Sage50c.API.Sample {
             txtSupplierComments.Text = string.Empty;
         }
 
-        private void SupplierUpdate(S50cBO22.Supplier supplier) {
+        private void SupplierUpdateUI(S50cBO22.Supplier supplier) {
             if (supplier != null) {
                 txtSupplierId.Text = supplier.SupplierID.ToString();
                 txtSupplierName.Text = supplier.OrganizationName;
@@ -819,7 +823,7 @@ namespace Sage50c.API.Sample {
                 txtSupplierComments.Text = supplier.Comments;
             }
             else {
-                SupplierClear();
+                SupplierClearUI();
                 throw new Exception($"O Fornecedor [{txtSupplierId.Text}] não foi encontrado!"); ;
             }
         }
@@ -872,39 +876,51 @@ namespace Sage50c.API.Sample {
 
         #region TRANSACTION
 
+        private TransactionID TransactionInsert(bool suspendTransaction) {
+            TransactionID result = null;
+            if (rbTransBuySell.Checked) {
+                _buySaleTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
+                TransactionBuySaleUpdate(suspendTransaction);
+            }
+            else {
+                _stockTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
+                TransactionStockUpdate();
+            }
+
+            return result;
+        }
+
         private bool TransactionRemove() {
             bool result = false;
             if (rbTransBuySell.Checked) {
                 TransactionFill();
                 result = _buySaleTransactionController.Remove();
-                TransactionClear();
+                TransactionClearUI();
             }
             else {
                 TransactionStockFill();
                 result = _stockTransactionController.Remove();
-                TransactionClear();
+                TransactionClearUI();
             }
             return result;
         }
 
-        private TransactionID TransactionInsert(bool suspendTransaction) {
-            TransactionID result = null;
+        private bool TransactionUpdate(bool suspendedTransaction) {
+            var result = false;
             if (rbTransBuySell.Checked) {
-                _buySaleTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
-                TransactionEdit(suspendTransaction);
+                result = TransactionBuySaleUpdate(suspendedTransaction);
             }
             else {
-                _stockTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
-                TransactionStockEdit();
+                result = TransactionStockUpdate();
             }
-
+            TransactionClearUI();
             return result;
         }
 
-        private void TransactionSearch() {
+        private void TransactionGet(bool suspendedTransaction) {
 
             if (rbTransBuySell.Checked) {
-                var trans = _buySaleTransactionController.Load(false, txtTransDoc.Text, txtTransSerial.Text, txtTransDocNumber.Text.ToShort());
+                var trans = _buySaleTransactionController.Load(suspendedTransaction, txtTransDoc.Text, txtTransSerial.Text, txtTransDocNumber.Text.ToShort());
                 var Transaction = new GenericTransaction(trans);
                 TransactionShow(Transaction);
             }
@@ -915,17 +931,7 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void TransactionUpdate(bool suspendedTransaction) {
-
-            if (rbTransBuySell.Checked) {
-                TransactionEdit(suspendedTransaction);
-            }
-            else {
-                TransactionStockEdit();
-            }
-        }
-
-        private void TransactionClear() {
+        private void TransactionClearUI() {
             RepClear();
             chkTransModuleProps.Checked = false;
             chkTransModuleSizeColor.Checked = false;
@@ -1227,7 +1233,8 @@ namespace Sage50c.API.Sample {
 
         }
 
-        private void TransactionEdit(bool suspended) {
+        private bool TransactionBuySaleUpdate(bool suspended) {
+            var result = false;
             transactionError = false;
             TransactionFill();
 
@@ -1265,7 +1272,7 @@ namespace Sage50c.API.Sample {
                         MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                _buySaleTransactionController.Save(suspended);
+                result = _buySaleTransactionController.Save(suspended);
                 // Definir a assinatura de um sistema externo
             }
 
@@ -1275,7 +1282,8 @@ namespace Sage50c.API.Sample {
             btnPrint.Enabled = false;
             _buySaleTransactionController.Print(chkPrintPreview.Checked, optPrintOptions1.Checked);
             btnPrint.Enabled = true;
-            TransactionClear();
+            TransactionClearUI();
+            return result;
         }
 
         void bsoItemTransaction_TenderIDChanged(ref short value) {
@@ -1342,7 +1350,8 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void TransactionStockEdit() {
+        private bool TransactionStockUpdate() {
+            var result = false;
             transactionError = false;
             TransactionStockFill();
 
@@ -1394,8 +1403,9 @@ namespace Sage50c.API.Sample {
                 }
             }
 
-            _stockTransactionController.Save();
-            TransactionClear();
+            result = _stockTransactionController.Save();
+            TransactionClearUI();
+            return result;
         }
 
         #endregion
@@ -1403,9 +1413,9 @@ namespace Sage50c.API.Sample {
         private void btnClear_Click(object sender, EventArgs e) {
             switch (tabEntities.SelectedIndex) {
                 case 0: ItemClear(false); break;
-                case 1: CustomerClear(); break;
-                case 2: SupplierClear(); break;
-                case 3: TransactionClear(); break;
+                case 1: CustomerClearUI(); break;
+                case 2: SupplierClearUI(); break;
+                case 3: TransactionClearUI(); break;
                 case 4: AccountTransactionClear(); break;
 
                 case 5: UnitOfMeasureClear(); break;
@@ -1818,7 +1828,7 @@ namespace Sage50c.API.Sample {
             btnRefreshGridLines.Visible = false;
 
             if (rbTransStock.Checked) {
-                TransactionClear();
+                TransactionClearUI();
             }
         }
 
@@ -1830,12 +1840,12 @@ namespace Sage50c.API.Sample {
             btnRefreshGridLines.Visible = false;
 
             if (rbTransBuySell.Checked) {
-                TransactionClear();
+                TransactionClearUI();
             }
         }
 
         private void cmbTransPartyType_SelectedIndexChanged(object sender, EventArgs e) {
-            TransactionClear();
+            TransactionClearUI();
         }
 
         private void btnPrint_Click(object sender, EventArgs e) {
@@ -1844,7 +1854,7 @@ namespace Sage50c.API.Sample {
 
             try {
                 // Mostrar no ecran
-                //TransactionGet(false);
+                TransactionGet(false);
                 //
                 if (optPrintOptions0.Checked) {
                     //Imprimir com as regras default da 50c e caixa de diálogo
@@ -1892,7 +1902,7 @@ namespace Sage50c.API.Sample {
         private void btnCustomerBrow_Click(object sender, EventArgs e) {
             var customerId = QuickSearchHelper.CustomerFind();
             if (customerId > 0) {
-                CustomerSearch(customerId);
+                CustomerGet(customerId);
             }
         }
 
@@ -1900,7 +1910,7 @@ namespace Sage50c.API.Sample {
         private void btnSupplierBrow_Click(object sender, EventArgs e) {
             var supplierId = QuickSearchHelper.SupplierFind();
             if (supplierId > 0) {
-                SupplierSearch(supplierId);
+                SupplierGet(supplierId);
             }
         }
 
@@ -1908,10 +1918,10 @@ namespace Sage50c.API.Sample {
 
         private void btnTransGetPrep_Click(object sender, EventArgs e) {
             try {
-                //TransactionGet(true);
+                TransactionGet(true);
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
 
@@ -1920,23 +1930,23 @@ namespace Sage50c.API.Sample {
             try {
                 if (bsoItemTransaction.Transaction.TempTransIndex != 0) {
                     // Atualizar
-                    TransactionEdit(true);
+                    TransactionUpdate(true);
                 }
                 else {
                     TransactionInsert(true);
                 }
                 if (result != null) {
-                    TransactionClear();
-                    MessageBox.Show(string.Format("Colocado em preparação: {0}", result.ToString()), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    TransactionClearUI();
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Colocado em preparação: {result.ToString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                 }
                 else {
-                    MessageBox.Show(string.Format("Não foi possível colocar em preparação: {0} {1}/{2}",
-                                                   txtTransSerial.Text, txtTransDoc.Text, txtTransDocNumber.Text),
-                                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Não foi possível colocar em preparação: {txtTransSerial.Text} {txtTransDoc.Text}/{txtTransDocNumber.Text}", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+
             }
         }
 
@@ -1983,21 +1993,18 @@ namespace Sage50c.API.Sample {
 
                 if (double.TryParse(txtTransDocNumber.Text, out transdocNumber)) {
                     if (bsoItemTransaction.FinalizeSuspendedTransaction(transSerial, transDoc, transdocNumber)) {
-                        MessageBox.Show(string.Format("Documento finalizado: {0}", bsoItemTransaction.Transaction.TransactionID.ToString()),
-                                         Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Documento finalizado: {bsoItemTransaction.Transaction.TransactionID.ToString()}.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
                     else {
-                        MessageBox.Show(string.Format("Não foi possível finalizar o documento suspenso: {0} {1}/{2}.", transDoc, transSerial, transdocNumber),
-                                        Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Não foi possível finalizar o documento suspenso: {transDoc} {transSerial}/{transdocNumber}.", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
                     }
                 }
                 else {
-                    MessageBox.Show(string.Format("O número do documento ({0}) não é válido.", txtTransDocNumber.Text),
-                                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"O número do documento [{transdocNumber}] não é válido.", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
 
@@ -2179,7 +2186,7 @@ namespace Sage50c.API.Sample {
             dataGridItemLines.Rows.Clear();
 
             if (rbTransStockCompose.Checked) {
-                TransactionClear();
+                TransactionClearUI();
             }
         }
 
@@ -2192,7 +2199,7 @@ namespace Sage50c.API.Sample {
             dataGridItemLines.Rows.Clear();
 
             if (rbTransStockDecompose.Checked) {
-                TransactionClear();
+                TransactionClearUI();
             }
         }
 
@@ -2204,8 +2211,10 @@ namespace Sage50c.API.Sample {
             }
             Document doc = systemSettings.WorkstationInfo.Document[transDoc];
 
-            if (doc.TransDocType != DocumentTypeEnum.dcTypeStock) {
-                throw new Exception(string.Format("O documento indicado não é um documento de stock", transDoc));
+            if (rbTransStock.Checked && doc.TransDocType != DocumentTypeEnum.dcTypeStock) {
+                throw new Exception($"O documento indicado [{transDoc}] não é um documento de stock");
+            } else if (rbTransBuySell.Checked && (doc.TransDocType != DocumentTypeEnum.dcTypePurchase || doc.TransDocType != DocumentTypeEnum.dcTypeSale)) {
+                throw new Exception($"O documento indicado [{transDoc}] não é um documento de Compra/Venda");
             }
 
             if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose || doc.StockBehavior == StockBehaviorEnum.sbStockDecompose) {
@@ -2218,7 +2227,7 @@ namespace Sage50c.API.Sample {
                 addComponentListToGrid(itemDetails);
             }
             else {
-                throw new Exception(string.Format("O documento indicado não é um documento de fabricação/transformação", transDoc));
+                throw new Exception($"O documento indicado [{transDoc}] não é um documento de fabricação/transformação");
             }
         }
 
@@ -2297,7 +2306,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnExternalSignature_Click(object sender, EventArgs e) {
-            MessageBox.Show("NOTA: Só é possível definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            APIEngine.CoreGlobals.MsgBoxFrontOffice("NOTA: Só é possível definir a assinatura sem séries externas.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
 
             using (var frm = new FormExternalSignature()) {
                 frm.Signature = bsoItemTransaction.Transaction.Signature;
@@ -2421,26 +2430,26 @@ namespace Sage50c.API.Sample {
                     var Transaction = new GenericTransaction(bsoItemTransaction.Transaction);
                     TransactionShow(Transaction);
 
-                    if (DialogResult.Yes ==
-                        MessageBox.Show("Guardar o documento temporário recuperado?", Application.ProductName,
-                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+                    if (VBA.VbMsgBoxResult.vbYes ==
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Guardar o documento temporário recuperado?",
+                                        VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName)) {
                         //Após importar, se pretender, será gravado automaticamente o documento.
                         if (bsoItemTransaction.Transaction.Tender.TenderID == 0) {
                             // Set the first TenderId, just in case...
                             bsoItemTransaction.TenderID = APIEngine.DSOCache.TenderProvider.GetFirstID();
                         }
                         bsoItemTransaction.SaveDocument(false, false);
-                        MessageBox.Show($"Documento gravado: {bsoItemTransaction.Transaction.TransactionID.ToString()}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        TransactionClear();
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Documento gravado: {bsoItemTransaction.Transaction.TransactionID.ToString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        TransactionClearUI();
                     }
                 }
                 else {
-                    MessageBox.Show($"O temporário indicado '{txtTransDocNumber.Text}' não existe ou não existem mais temporários.",
-                                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"O temporário indicado '{txtTransDocNumber.Text}' não existe ou não existem mais temporários.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+      
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
         }
 
@@ -2448,7 +2457,7 @@ namespace Sage50c.API.Sample {
             if (trans != null) {
                 var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
-                TransactionClear();
+                TransactionClearUI();
                 //txtTransColor1.Text = 
                 txtTransCurrency.Text = trans.BaseCurrency.CurrencyID;
                 txtTransDate.Text = trans.CreateDate.ToShortDateString();
@@ -2630,6 +2639,7 @@ namespace Sage50c.API.Sample {
                     // Load the document
                     //TransactionGet(false);
                     txtTransDocNumber.Focus();
+                    TransactionGet(false);
                 }
             }
             catch (Exception ex) {

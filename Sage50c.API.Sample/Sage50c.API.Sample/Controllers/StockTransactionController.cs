@@ -24,6 +24,12 @@ namespace Sage50c.API.Sample.Controllers {
 
         private EditState _editState = EditState.None;
 
+        /// <summary>
+        /// Create a new sotck transaction
+        /// </summary>
+        /// <param name="transDoc"></param>
+        /// <param name="transSerial"></param>
+        /// <returns></returns>
         public StockTransaction Create(string transDoc, string transSerial) {
             Initialize(transDoc);
             _bsoStockTransaction.InitNewTransaction(transDoc, transSerial);
@@ -32,19 +38,15 @@ namespace Sage50c.API.Sample.Controllers {
             return _bsoStockTransaction.Transaction;
 
         }
-
-        public void Initialize(string transDoc) {
-            _bsoStockTransaction = new BSOStockTransaction();
-
-            _bsoStockTransaction.BSOStockTransactionDetail = new BSOItemTransactionDetail() {
-                UserPermissions = _systemSettings.User,
-                PermissionsType = FrontOfficePermissionEnum.foPermByUser,
-                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
-            };
-           
-            _bsoStockTransaction.Transaction = new StockTransaction();
-        }
-
+  
+        /// <summary>
+        /// Get transaction from database
+        /// </summary>
+        /// <param name="transDoc"></param>
+        /// <param name="transSerial"></param>
+        /// <param name="transDocNum"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public StockTransaction Load(string transDoc, string transSerial, double transDocNum) {
             S50cSys22.Document doc = null;
             dynamic trans = null;
@@ -69,7 +71,11 @@ namespace Sage50c.API.Sample.Controllers {
 
         }
 
-        public void Save() {
+        /// <summary>
+        /// Save (insert or update) transaction
+        /// </summary>
+        /// <returns></returns>
+        public bool Save() {
 
             if (Validate()) {
 
@@ -78,15 +84,71 @@ namespace Sage50c.API.Sample.Controllers {
                 _bsoStockTransaction.SaveDocumentEx(true,false);
 
                 _editState = EditState.Editing;
+                return true;
+            }
+            else {
+                return false;
             }
         }
 
+        /// <summary>
+        /// Delete transaction
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public bool Remove() {
+            var transType = ItemTransactionHelper.TransGetType(_bsoStockTransaction.Transaction.TransDocument);
+            if (transType != DocumentTypeEnum.dcTypeStock) {
+                throw new Exception($"O documento indicado [{_bsoStockTransaction.Transaction.TransDocument}] não é um documento de stock.");
+            }
+            else {
+                if (_bsoStockTransaction.LoadStockTransaction(transType, _bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
+                    // O motivo de anulação deve ser sempre preenchido.
+                    // Se for obrigatório, o documento não é anulado sem que esteja preenchido
+                    _bsoStockTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
+                    //
+                    if (_bsoStockTransaction.DeleteStockTransaction()) {
+                        return true;
+                    }
+                    else {
+                        throw new Exception($"Não foi possível anular o Documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber}");
+                    }
+                }
+                else {
+                    throw new Exception($"Não foi possível carregar o Documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber}");
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Initialize new Transaction
+        /// </summary>
+        /// <param name="transDoc"></param>
+        public void Initialize(string transDoc) {
+            _bsoStockTransaction = new BSOStockTransaction();
+
+            _bsoStockTransaction.BSOStockTransactionDetail = new BSOItemTransactionDetail() {
+                UserPermissions = _systemSettings.User,
+                PermissionsType = FrontOfficePermissionEnum.foPermByUser,
+                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
+            };
+
+            _bsoStockTransaction.Transaction = new StockTransaction();
+        }
+
+        /// <summary>
+        /// Validate Transaction
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool Validate() {
             StringBuilder error = new StringBuilder();
 
-            if(_editState !=  EditState.New && !_dsoCache.StockTransactionProvider.TransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
+            if (_editState != EditState.New && !_dsoCache.StockTransactionProvider.TransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
                 throw new Exception($"O documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber} não existe para ser alterado. Deve criar um novo.");
-            } else if (_editState == EditState.New && _dsoCache.StockTransactionProvider.TransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
+            }
+            else if (_editState == EditState.New && _dsoCache.StockTransactionProvider.TransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
                 throw new Exception($"O documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber} já existe para ser alterado. Deve criar um novo.");
             }
 
@@ -130,31 +192,13 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public bool Remove() {
-            var transType = ItemTransactionHelper.TransGetType(_bsoStockTransaction.Transaction.TransDocument);
-            if (transType != DocumentTypeEnum.dcTypeStock) {
-                throw new Exception($"O documento indicado [{_bsoStockTransaction.Transaction.TransDocument}] não é um documento de stock.");
-            }
-            else {
-                if (_bsoStockTransaction.LoadStockTransaction(transType, _bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
-                    // O motivo de anulação deve ser sempre preenchido.
-                    // Se for obrigatório, o documento não é anulado sem que esteja preenchido
-                    _bsoStockTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
-                    //
-                    if (_bsoStockTransaction.DeleteStockTransaction()) {
-                        return true;
-                    }
-                    else {
-                        throw new Exception($"Não foi possível anular o Documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber}");
-                    }
-                }
-                else {
-                    throw new Exception($"Não foi possível carregar o Documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber}");
-                }
-            }
-
-        }
-
+        /// <summary>
+        /// Add stock details 
+        /// </summary>
+        /// <param name="taxRate"></param>
+        /// <param name="StockQtyRule"></param>
+        /// <param name="details"></param>
+        /// <exception cref="Exception"></exception>
         public void AddDetailsStock(double taxRate, StockQtyRuleEnum StockQtyRule, ItemTransactionDetail details) {
             StockTransaction stockTransaction = _bsoStockTransaction.Transaction;
 

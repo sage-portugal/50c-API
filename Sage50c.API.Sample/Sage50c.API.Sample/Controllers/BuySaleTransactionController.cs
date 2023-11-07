@@ -27,6 +27,12 @@ namespace Sage50c.API.Sample.Controllers {
 
         private EditState _editState = EditState.None;
 
+        /// <summary>
+        /// Create a new buy/sale transaction
+        /// </summary>
+        /// <param name="transDoc"></param>
+        /// <param name="transSerial"></param>
+        /// <returns></returns>
         public ItemTransaction Create(string transDoc, string transSerial) {
             Initialize(transDoc);
             _bsoItemTransaction.InitNewTransaction(transDoc, transSerial);
@@ -37,22 +43,15 @@ namespace Sage50c.API.Sample.Controllers {
             return _bsoItemTransaction.Transaction;
         }
 
-        public void Initialize(string transDoc) {
-            //ResetDetails();
-            _bsoItemTransaction = new BSOItemTransaction() {
-                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
-            };
-
-            _bsoItemTransaction.BSOItemTransactionDetail = new BSOItemTransactionDetail() {
-                UserPermissions = _systemSettings.User,
-                PermissionsType = FrontOfficePermissionEnum.foPermByUser,
-                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
-            };
-
-            //_itemTransactionDetail = _bsoItemTransaction.BSOItemTransactionDetail.TransactionDetail;
-            _bsoItemTransaction.Transaction = new ItemTransaction();
-        }
-
+        /// <summary>
+        /// Get transaction from database
+        /// </summary>
+        /// <param name="suspended"></param>
+        /// <param name="transDoc"></param>
+        /// <param name="transSerial"></param>
+        /// <param name="transDocNum"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public ItemTransaction Load(bool suspended, string transDoc, string transSerial, double transDocNum) {
             S50cSys22.Document doc = null;
             dynamic trans = null;
@@ -71,7 +70,7 @@ namespace Sage50c.API.Sample.Controllers {
                     return trans;
                 }
                 else {
-                    throw new Exception($"O documento {transDoc} {transSerial}/{transDocNum}");
+                    throw new Exception($"O documento {transDoc} {transSerial}/{transDocNum} não existe para ser alterado. Deve criar um novo");
                 }
             }
             else {
@@ -89,7 +88,12 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public void Save(bool suspended) {
+        /// <summary>
+        /// Save (insert or update) transaction
+        /// </summary>
+        /// <param name="suspended"></param>
+        /// <returns></returns>
+        public bool Save(bool suspended) {
 
             if (Validate(suspended)) {
 
@@ -100,9 +104,18 @@ namespace Sage50c.API.Sample.Controllers {
                 _bsoItemTransaction.SaveDocument(false, false);
 
                 _editState = EditState.Editing;
+                return true;
+            }
+            else {
+                return false;
             }
         }
 
+        /// <summary>
+        /// Delete transaction 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool Remove() {
             var transType = ItemTransactionHelper.TransGetType(_bsoItemTransaction.Transaction.TransDocument);
 
@@ -125,7 +138,32 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public void Print(bool printReview, bool printOpt) {
+        /// <summary>
+        /// Initialize new transaction
+        /// </summary>
+        /// <param name="transDoc"></param>
+        public void Initialize(string transDoc) {
+            
+            _bsoItemTransaction = new BSOItemTransaction() {
+                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
+            };
+
+            _bsoItemTransaction.BSOItemTransactionDetail = new BSOItemTransactionDetail() {
+                UserPermissions = _systemSettings.User,
+                PermissionsType = FrontOfficePermissionEnum.foPermByUser,
+                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
+            };
+
+            //_itemTransactionDetail = _bsoItemTransaction.BSOItemTransactionDetail.TransactionDetail;
+            _bsoItemTransaction.Transaction = new ItemTransaction();
+        }
+
+        /// <summary>
+        /// Print transaction document 
+        /// </summary>
+        /// <param name="printReview"></param>
+        /// <param name="printOpt"></param>
+        public bool Print(bool printReview, bool printOpt) {
             clsLArrayObject objListPrintSettings;
             PrintSettings oPrintSettings = null;
             S50cSys22.Document oDocument = null;
@@ -156,9 +194,11 @@ namespace Sage50c.API.Sample.Controllers {
                     }
                 }
                 APIEngine.CoreGlobals.MsgBoxFrontOffice("Concluído", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                return true;
             }
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+                return false;
             }
             finally {
                 oDocument = null;
@@ -166,6 +206,12 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
+        /// <summary>
+        /// Validate Transaction 
+        /// </summary>
+        /// <param name="suspended"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool Validate(bool suspended) {
             StringBuilder  error = new StringBuilder();
 
@@ -245,22 +291,13 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public void FillSuggestedValues() {
-
-            _bsoItemTransaction.Transaction.WorkstationStamp.SessionID = APIEngine.SystemSettings.TillSession.SessionID;
-            _bsoItemTransaction.Transaction.Comments = "Gerado por: " + Application.ProductName;
-
-            _bsoItemTransaction.Transaction.CreateDate = DateTime.Today;
-            _bsoItemTransaction.Transaction.CreateTime = DateTime.Today;
-            _bsoItemTransaction.Transaction.ActualDeliveryDate = DateTime.Today;
-        }
-
-        public void FillDefaultDetails(ItemTransactionDetail details) {
-            details.CreateDate = DateTime.Today;
-            details.CreateTime = DateTime.Today;
-            details.ActualDeliveryDate = DateTime.Today;
-        }
-
+        /// <summary>
+        /// Add item details 
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="taxPercent"></param>
+        /// <param name="details"></param>
+        /// <exception cref="Exception"></exception>
         public void AddDetailsItem(S50cSys22.Document document, double taxPercent, ItemTransactionDetail details) {
 
             //ItemTransactionDetail itemTransactionDetail = new ItemTransactionDetail();
@@ -288,8 +325,8 @@ namespace Sage50c.API.Sample.Controllers {
             }
             details.TaxableGroupID = TaxGroupId;
             details.LineItemID = _bsoItemTransaction.Transaction.Details.Count + 1;
-            
-            if(!string.IsNullOrEmpty(details.UnitOfSaleID)) {
+
+            if (!string.IsNullOrEmpty(details.UnitOfSaleID)) {
                 details.SetUnitOfSaleID(details.UnitOfSaleID.ToUpper());
             }
 
@@ -334,7 +371,7 @@ namespace Sage50c.API.Sample.Controllers {
             if (!string.IsNullOrEmpty(details.ItemProperties.PropertyValue1)) {
                 if (item.PropertyEnabled) {
                     if (item.PropertyID1.Equals("NS", StringComparison.CurrentCultureIgnoreCase) || item.PropertyID1.Equals("LOT", StringComparison.CurrentCultureIgnoreCase)) {
-                        details .ItemProperties.ResetValues();
+                        details.ItemProperties.ResetValues();
                         details.ItemProperties.PropertyID1 = item.PropertyID1;
                         details.ItemProperties.PropertyID2 = item.PropertyID2;
                         details.ItemProperties.PropertyID3 = item.PropertyID3;
@@ -357,7 +394,33 @@ namespace Sage50c.API.Sample.Controllers {
             item = null;
             _bsoItemTransaction.Transaction.Details.Add(details);
             details = null;
-            
+
         }
+
+        public bool FillSuggestedValues() {
+            if (_bsoItemTransaction.Transaction != null) {
+                _bsoItemTransaction.Transaction.WorkstationStamp.SessionID = APIEngine.SystemSettings.TillSession.SessionID;
+                _bsoItemTransaction.Transaction.Comments = "Gerado por: " + Application.ProductName;
+
+                _bsoItemTransaction.Transaction.CreateDate = DateTime.Today;
+                _bsoItemTransaction.Transaction.CreateTime = DateTime.Today;
+                _bsoItemTransaction.Transaction.ActualDeliveryDate = DateTime.Today;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public bool FillDefaultDetails(ItemTransactionDetail details) {
+            if (details != null) {
+                details.CreateDate = DateTime.Today;
+                details.CreateTime = DateTime.Today;
+                details.ActualDeliveryDate = DateTime.Today;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
     }
 }
