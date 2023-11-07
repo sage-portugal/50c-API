@@ -1,15 +1,11 @@
-﻿using DAO;
-using S50cBL22;
+﻿using S50cBL22;
 using S50cBO22;
 using S50cDL22;
 using S50cPrint22;
 using S50cSys22;
 using S50cUtil22;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sage50c.API.Sample.Controllers {
@@ -279,6 +275,17 @@ namespace Sage50c.API.Sample.Controllers {
                     }
                     else {
                         error.AppendLine($"O método de pagamento não existe");
+                    }
+                }
+                if(_bsoItemTransaction.Transaction.Salesman.SalesmanID == 0) {
+                    var salesman = _dsoCache.SalesmanProvider.GetFirstSalesmanID();
+                    _bsoItemTransaction.Transaction.Salesman = _dsoCache.SalesmanProvider.GetSalesman(salesman);
+                } else {
+                    var salesman = _dsoCache.SalesmanProvider.GetSalesman(_bsoItemTransaction.Transaction.Salesman.SalesmanID);
+                    if(salesman != null) {
+                        _bsoItemTransaction.Transaction.Salesman = salesman;
+                    } else {
+                        error.AppendLine($"O vendedor não existe ou necessita de password");
                     }
                 }
                 // Error message
