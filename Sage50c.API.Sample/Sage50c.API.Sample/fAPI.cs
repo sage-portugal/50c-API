@@ -16,11 +16,7 @@ using Sage50c.API.Sample.Controllers;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
-        /// <summary>
-        /// Motor de dados para os artigos.
-        /// NOTA: Api tem de estar inicializada antes de usar!
-        /// </summary>
-        private DSOItem itemProvider { get { return APIEngine.DSOCache.ItemProvider; } }
+
         /// <summary>
         /// Parâmetros do sistema
         /// </summary>
@@ -50,9 +46,13 @@ namespace Sage50c.API.Sample {
         /// </summary>
         private PrintingManager printingManager { get { return APIEngine.PrintingManager; } }
 
-        private ItemController itemController = null;
-        private UnitOfMeasureController unitOfMeasureController = null;
-        private AccountTransactionController accountTransactionController = null;
+        private ItemController _itemController = null;
+        private CustomerController _customerController = null;
+        private SupplierController _supplierController = null;
+        private BuySaleTransactionController _buySaleTransactionController = null;
+        private StockTransactionController _stockTransactionController = null;
+        private UnitOfMeasureController _unitOfMeasureController = null;
+        private AccountTransactionController _accountTransactionController = null;
 
         public fApi() {
 
@@ -72,6 +72,7 @@ namespace Sage50c.API.Sample {
         #region Eventos da RTLAPI
 
         void S50cAPIEngine_APIStopped(object sender, EventArgs e) {
+
             accountTransManager = null;
             bsoItemTransaction = null;
             bsoStockTransaction = null;
@@ -88,10 +89,10 @@ namespace Sage50c.API.Sample {
 
             gbShareCost_1.Enabled = false;
             gbShareCost_2.Enabled = false;
-            //
+
             cmbAPI.Enabled = true;
 
-            this.Cursor = Cursors.Default;
+            Cursor = Cursors.Default;
         }
 
         void S50cAPIEngine_APIStarted(object sender, EventArgs e) {
@@ -133,17 +134,19 @@ namespace Sage50c.API.Sample {
             accountTransManager = new AccountTransactionManager();
 
             // Initialize controllers
-            itemController = new ItemController();
-            unitOfMeasureController = new UnitOfMeasureController();
-            accountTransactionController = new AccountTransactionController();
+            _itemController = new ItemController();
+            _customerController = new CustomerController();
+            _supplierController = new SupplierController();
+            _buySaleTransactionController = new BuySaleTransactionController();
+            _stockTransactionController = new StockTransactionController();
+            _unitOfMeasureController = new UnitOfMeasureController();
+            _accountTransactionController = new AccountTransactionController();
 
-            //
             // Load combos
-            // Customer -- Load combos data and clear
             ItemClear(true);
-            CustomerClear();
-            SupplierClear();
-            TransactionClear();
+            CustomerClearUI();
+            SupplierClearUI();
+            TransactionClearUI();
             AccountTransactionClear();
             SAFTClear();
 
@@ -308,6 +311,141 @@ namespace Sage50c.API.Sample {
 
         #endregion
 
+        /// <summary>
+        /// Creates data
+        /// </summary>
+        private void btnInsert_Click(object sender, EventArgs e) {
+            try {
+                transactionError = false;
+                TransactionID transId = null;
+
+                switch (tabEntities.SelectedIndex) {
+                    case 0: ItemInsert(); break;
+                    case 1: CustomerInsert(); break;
+                    case 2: SupplierInsert(); break;
+                    case 3: TransactionInsert(false); break;
+                    case 4: transId = AccountTransactionInsert(); break;
+                    case 5: UnitOfMeasureInsert(); break;
+                }
+                if (!transactionError) {
+                    string msg = null;
+                    if (transId != null) {
+                        msg = string.Format("Registo inserido: {0}", transId.ToString());
+                    }
+                    else {
+                        msg = "Registo inserido.";
+                    }
+
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        /// <summary>
+        /// Loads data
+        /// </summary>
+        private void btnItemLoad_Click(object sender, EventArgs e) {
+            try {
+                switch (tabEntities.SelectedIndex) {
+                    case 0: ItemGet(txtItemID.Text.Trim()); break;
+                    case 1: CustomerGet((double)numCustomerId.Value); break;
+                    case 2: SupplierGet(double.Parse(txtSupplierId.Text)); break;
+                    case 3: TransactionGet(false); break;
+                    case 4: AccountTransactionGet(); break;
+                    case 5: UnitOfMeasureGet(txtUnitOfMeasureId.Text); break;
+                }
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        /// <summary>
+        /// Update data
+        /// </summary>
+        private void btnAlterar_Click(object sender, EventArgs e) {
+            try {
+                TransactionID transId = null;
+                transactionError = false;
+
+                switch (tabEntities.SelectedIndex) {
+                    case 0: ItemUpdate(); break;
+                    case 1: CustomerUpdate(); break;
+                    case 2: SupplierUpdate(); break;
+                    case 3: TransactionUpdate(false); break;
+                    case 4: transId = AccountTransactionUpdate(); break;
+                    case 5: UnitOfMeasureUpdate(); break;
+                }
+
+                if (!transactionError) {
+                    string msg = null;
+                    if (transId != null) {
+                        msg = string.Format("Registo alterado: {0}", transId.ToString());
+                    }
+                    else {
+                        msg = "Registo alterado.";
+                    }
+
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        /// <summary>
+        /// Removes data
+        /// </summary>
+        private void btnRemove_Click(object sender, EventArgs e) {
+            try {
+                if (VBA.VbMsgBoxResult.vbYes == APIEngine.CoreGlobals.MsgBoxFrontOffice("Confirma a anulação deste registo?", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName)) {
+                    TransactionID transId = null;
+                    transactionError = false;
+
+                    switch (tabEntities.SelectedIndex) {
+                        case 0: ItemRemove(); break;
+                        case 1: CustomerRemove(); break;
+                        case 2: SupplierRemove(); break;
+                        case 3: TransactionRemove(); break;
+                        case 4: transId = AccountTransactionRemove(); break;
+                        case 5: UnitOfMeasureRemove(); break;
+                    }
+
+                    if (!transactionError) {
+                        string msg = null;
+                        if (transId != null) {
+                            msg = string.Format("Registo anulado: {0}", transId.ToString());
+                        }
+                        else {
+                            msg = "Registo anulado.";
+                        }
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        /// <summary>
+        /// Clears the UI
+        /// </summary>
+        private void btnClear_Click(object sender, EventArgs e) {
+            switch (tabEntities.SelectedIndex) {
+                case 0: ItemClear(false); break;
+                case 1: CustomerClearUI(); break;
+                case 2: SupplierClearUI(); break;
+                case 3: TransactionClearUI(); break;
+                case 4: AccountTransactionClear(); break;
+                case 5: UnitOfMeasureClear(); break;
+            }
+        }
+
         #region ITEM
 
         /// <summary>
@@ -327,47 +465,47 @@ namespace Sage50c.API.Sample {
         private void ItemFill(bool isNew) {
 
             if (isNew) {
-                itemController.Create();
-                itemController.Item.ItemID = txtItemID.Text;
+                _itemController.Create();
+                _itemController.Item.ItemID = txtItemID.Text;
             }
-            else if (itemController.Item == null) {
+            else if (_itemController.Item == null) {
                 throw new Exception("Carregue um artigo antes de fazer alterações.");
             }
 
-            itemController.Item.Description = txtItemDescription.Text;
-            itemController.Item.ShortDescription = txtItemShortDescription.Text;
-            itemController.Item.Comments = txtItemComments.Text;
+            _itemController.Item.Description = txtItemDescription.Text;
+            _itemController.Item.ShortDescription = txtItemShortDescription.Text;
+            _itemController.Item.Comments = txtItemComments.Text;
 
             var dsoPriceLine = new DSOPriceLine();
             // Initialize the price lines
-            itemController.Item.InitPriceList(dsoPriceLine.GetPriceLineRS());
+            _itemController.Item.InitPriceList(dsoPriceLine.GetPriceLineRS());
             // Price of the item (1st line)
-            Price myPrice = itemController.Item.SalePrice[1, 0, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit];
+            Price myPrice = _itemController.Item.SalePrice[1, 0, string.Empty, 0, APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit];
             // Set the price (tax included)
             myPrice.TaxIncludedPrice = (double)numItemPriceTaxIncluded.Value;
             // Get the unit price without taxes
             myPrice.UnitPrice = APIEngine.DSOCache.TaxesProvider.GetItemNetPrice(
                 myPrice.TaxIncludedPrice,
-                itemController.Item.TaxableGroupID,
+                _itemController.Item.TaxableGroupID,
                 systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
                 systemSettings.SystemInfo.TaxRegionID);
 
 
             // Clear the previous colors
-            itemController.Item.Colors.Clear();
+            _itemController.Item.Colors.Clear();
             // Add the new colors
             foreach (DataGridViewRow colorRow in dgvColor.Rows) {
                 var colorID = (short)colorRow.Cells[0].Value;
-                itemController.AddColor(colorID);
+                _itemController.AddColor(colorID);
             }
 
 
             // Clear the previous sizes
-            itemController.Item.Sizes.Clear();
+            _itemController.Item.Sizes.Clear();
             // Add the new sizes
             foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
                 var sizeID = (short)sizeRow.Cells[0].Value;
-                itemController.AddSize(sizeID);
+                _itemController.AddSize(sizeID);
             }
         }
 
@@ -377,7 +515,7 @@ namespace Sage50c.API.Sample {
         void ItemInsert() {
 
             ItemFill(true);
-            itemController.Save();
+            _itemController.Save();
         }
 
         /// <summary>
@@ -386,9 +524,9 @@ namespace Sage50c.API.Sample {
         void ItemGet(string itemID) {
 
             ItemClear(false);
-            itemController.Load(itemID);
+            _itemController.Load(itemID);
 
-            var item = itemController.Item;
+            var item = _itemController.Item;
             if (item != null) {
                 txtItemID.Text = item.ItemID;
                 txtItemDescription.Text = item.Description;
@@ -421,7 +559,7 @@ namespace Sage50c.API.Sample {
         void ItemUpdate() {
 
             ItemFill(false);
-            itemController.Save();
+            _itemController.Save();
         }
 
         /// <summary>
@@ -429,7 +567,7 @@ namespace Sage50c.API.Sample {
         /// </summary>
         void ItemRemove() {
 
-            itemController.Remove(txtItemID.Text.Trim());
+            _itemController.Remove(txtItemID.Text.Trim());
             ItemClear(false);
         }
 
@@ -451,261 +589,219 @@ namespace Sage50c.API.Sample {
             txtItemComments.Text = string.Empty;
         }
 
+        private void btnAddColor_Click(object sender, EventArgs e) {
+
+            var colorID = QuickSearchHelper.ColorFind();
+            if (colorID > 0) {
+                var colorToAdd = APIEngine.DSOCache.ColorProvider.GetColor((short)colorID);
+
+                var isDuplicate = false;
+                foreach (DataGridViewRow colorRow in dgvColor.Rows) {
+
+                    var colorRowID = (short)colorRow.Cells[0].Value;
+                    if (colorRowID == colorToAdd.ColorID) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicate) {
+                    var newRowIndex = dgvColor.Rows.Add();
+                    var newRow = dgvColor.Rows[newRowIndex];
+
+                    newRow.Cells[0].Value = colorToAdd.ColorID;
+                    newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)colorToAdd.ColorCode);
+                    newRow.Cells[2].Value = colorToAdd.Description;
+                }
+            }
+        }
+
+        private void btnRemoveColor_Click(object sender, EventArgs e) {
+
+            if (dgvColor.CurrentCell != null) {
+                dgvColor.Rows.RemoveAt(dgvColor.CurrentCell.RowIndex);
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione uma cor para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void btnAddSize_Click(object sender, EventArgs e) {
+
+            var size = QuickSearchHelper.SizeFind();
+            if (size > 0) {
+                var sizeToAdd = APIEngine.DSOCache.SizeProvider.GetSize((short)size);
+
+                var isDuplicate = false;
+                foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
+                    var sizeId = (short)sizeRow.Cells[0].Value;
+
+                    if (sizeId == sizeToAdd.SizeID) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicate) {
+                    var newRowIndex = dgvSize.Rows.Add();
+                    var newRow = dgvSize.Rows[newRowIndex];
+
+                    newRow.Cells[0].Value = sizeToAdd.SizeID;
+                    newRow.Cells[1].Value = sizeToAdd.Description;
+                }
+            }
+        }
+
+        private void btnRemoveSize_Click(object sender, EventArgs e) {
+
+            if (dgvSize.CurrentCell != null) {
+                dgvSize.Rows.RemoveAt(dgvSize.CurrentCell.RowIndex);
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione um tamanho para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+        }
+
+        private void FormatColorGrid() {
+
+            var ColorID = new DataGridViewTextBoxColumn {
+                HeaderText = "Cód.",
+                Name = "ColorID",
+                ReadOnly = true,
+                Width = 50
+            };
+
+            var ColorUI = new DataGridViewTextBoxColumn {
+                HeaderText = "Cor",
+                Name = "ColorUI",
+                ReadOnly = true,
+                Width = 50
+            };
+
+            var ColorDescription = new DataGridViewTextBoxColumn {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                HeaderText = "Descrição",
+                Name = "Description",
+                ReadOnly = true
+            };
+
+            ApplyGridStyle(dgvColor, new DataGridViewColumn[] {
+                ColorID,
+                ColorUI,
+                ColorDescription
+            });
+        }
+
+        private void FormatSizeGrid() {
+
+            var SizeID = new DataGridViewTextBoxColumn {
+                HeaderText = "Cód.",
+                Name = "SizeID",
+                ReadOnly = true,
+                Width = 50
+            };
+
+            var SizeDescription = new DataGridViewTextBoxColumn {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                HeaderText = "Tamanho",
+                Name = "Description",
+                ReadOnly = true
+            };
+
+            ApplyGridStyle(dgvSize, new DataGridViewColumn[] {
+                SizeID,
+                SizeDescription
+            });
+        }
+
+        private void ApplyGridStyle(DataGridView dgv, DataGridViewColumn[] columns) {
+
+            dgv.BackgroundColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.AppHeaderBackColor);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TextNoFocus);
+            dgv.GridColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.LightGray);
+
+            dgv.RowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TabBackColor);
+
+            dgv.Rows.Clear();
+            dgv.Columns.Clear();
+            dgv.Columns.AddRange(columns);
+        }
+
+        private void btnCreateColor_Click(object sender, EventArgs e) {
+
+            fColor colorForm = new fColor();
+            colorForm.ShowDialog();
+        }
+
+        private void btnCreateSize_Click(object sender, EventArgs e) {
+
+            FormSizes formSizes = new FormSizes();
+            formSizes.ShowDialog();
+        }
+
         #endregion
-
-        /// <summary>
-        /// Insere um novo artigo
-        /// </summary>
-        private void btnInsert_Click(object sender, EventArgs e) {
-            try {
-                transactionError = false;
-                TransactionID transId = null;
-
-                switch (tabEntities.SelectedIndex) {
-                    case 0: ItemInsert(); break;
-                    case 1: CustomerUpdate((double)numCustomerId.Value, true); break;
-                    case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), true); break;
-                    case 3: transId = TransactionInsert(false); break;
-                    case 4: transId = AccountTransactionInsert(); break;
-                    case 5: UnitOfMeasureInsert(); break;
-                }
-                if (!transactionError) {
-                    string msg = null;
-                    if (transId != null) {
-                        msg = string.Format("Registo inserido: {0}", transId.ToString());
-                    }
-                    else {
-                        msg = "Registo inserido.";
-                    }
-
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                }
-            }
-            catch (Exception ex) {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-            }
-        }
-
-        /// <summary>
-        /// Remove um artigo da BD
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnRemove_Click(object sender, EventArgs e) {
-            try {
-                if (DialogResult.Yes == MessageBox.Show("Anular este registo da base de dados?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
-                    TransactionID transId = null;
-                    transactionError = false;
-
-                    switch (tabEntities.SelectedIndex) {
-                        case 0: ItemRemove(); break;                                        //Artigos
-                        case 1: CustomerRemove((double)numCustomerId.Value); break;         //Clientes
-                        case 2: SupplierRemove(double.Parse(txtSupplierId.Text)); break;  //Fornecedores
-                        case 3: transId = TransactionRemove(); break;                                 //Compras e Vendas
-                        case 4: transId = AccountTransactionRemove(); break;                          //Pagamentos e recebimentos
-                        case 5: UnitOfMeasureRemove(); break;        //Unidades de medida
-                    }
-
-                    if (!transactionError) {
-                        string msg = null;
-                        if (transId != null) {
-                            msg = string.Format("Registo anulado: {0}", transId.ToString());
-                        }
-                        else {
-                            msg = "Registo anulado.";
-                        }
-
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                    }
-                }
-            }
-            catch (Exception ex) {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-            }
-        }
-
-        /// <summary>
-        /// Altera um artigo
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnAlterar_Click(object sender, EventArgs e) {
-            try {
-
-                TransactionID transId = null;
-                transactionError = false;
-
-                switch (tabEntities.SelectedIndex) {
-                    case 0: ItemUpdate(); break;
-                    case 1: CustomerUpdate((double)numCustomerId.Value, false); break;
-                    case 2: SupplierUpdate(double.Parse(txtSupplierId.Text), false); break;
-                    case 3: transId = TransactionEdit(false); break;
-                    case 4: transId = AccountTransactionUpdate(); break;
-                    case 5: UnitOfMeasureUpdate(); break;
-                }
-
-                if (!transactionError) {
-                    string msg = null;
-                    if (transId != null) {
-                        msg = string.Format("Registo alterado: {0}", transId.ToString());
-                    }
-                    else {
-                        msg = "Registo alterado.";
-                    }
-
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                }
-            }
-            catch (Exception ex) {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-            }
-        }
-
-        private void btnItemLoad_Click(object sender, EventArgs e) {
-            try {
-                switch (tabEntities.SelectedIndex) {
-                    case 0: ItemGet(txtItemID.Text.Trim()); break;
-                    case 1: CustomerGet((double)numCustomerId.Value); break;
-                    case 2: SupplierGet(double.Parse(txtSupplierId.Text)); break;
-                    case 3: TransactionGet(false); break;
-                    case 4: AccountTransactionGet(); break;
-                    case 5: UnitOfMeasureGet(txtUnitOfMeasureId.Text); break;
-                }
-            }
-            catch (Exception ex) {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-            }
-        }
 
         #region CUSTOMER
 
-        /// <summary>
-        /// Gravar (inserir ou alterar) um cliente
-        /// </summary>
-        /// <param name="customerId"></param>
-        private void CustomerUpdate(double customerId, bool isNew) {
-            S50cBO22.Customer myCustomer = null;
-
-            //Ler da BD se não for novo
-            myCustomer = dsoCache.CustomerProvider.GetCustomer(customerId);
-            if (myCustomer == null && !isNew) {
-                throw new Exception(string.Format("O cliente [{0}] não existe.", customerId));
-            }
-            else if (myCustomer != null && isNew) {
-                throw new Exception(string.Format("O cliente [{0}] já existe.", customerId));
-            }
-
-            if (myCustomer == null) {
-                // Cliente NOVO
-                // Obter um novo Id
-                myCustomer = new S50cBO22.Customer();
-                myCustomer.CustomerID = (double)numCustomerId.Value;
-                // Colocar credito por limite de valor para não bloquear o cliente
-                myCustomer.LimitType = CustomerLimitType.ltValue;
-            }
-
-            myCustomer.OrganizationName = txtCustomerName.Text;
-            myCustomer.FederalTaxId = txtCustomerTaxId.Text;
-            myCustomer.Comments = txtCustomerComments.Text;
-            //
-            if (cmbCustomerTax.SelectedItem != null) {
-                var entityFiscalStatus = (EntityFiscalStatus)cmbCustomerTax.SelectedItem;
-                myCustomer.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
-            }
-            myCustomer.SalesmanId = (int)numCustomerSalesmanId.Value;
-            if (cmbCustomerCurrency.SelectedValue != null) {
-                myCustomer.CurrencyID = (string)cmbCustomerCurrency.SelectedValue;
-            }
-            myCustomer.ZoneID = (short)numCustomerZoneId.Value;
-            if (cmbCustomerCountry.SelectedItem != null) {
-                myCustomer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
-            }
-            //
-            // Outros campos obrigatórios
-            myCustomer.CarrierID = dsoCache.CarrierProvider.GetFirstCarrierID();
-            myCustomer.TenderID = dsoCache.TenderProvider.GetFirstTenderCash();
-            myCustomer.CurrencyID = cmbCustomerCurrency.Text;
-
-            // Se a zone estiver vazia, considerar a primeira zona nacional
-            if (myCustomer.ZoneID == 0) {
-                myCustomer.ZoneID = dsoCache.ZoneProvider.FindZone(ZoneTypeEnum.ztNational);
-            }
-            // Se o modo de pagamento estiver vazio, obter o primeiro disponivel
-            if (myCustomer.PaymentID == 0) {
-                myCustomer.PaymentID = dsoCache.PaymentProvider.GetFirstID();
-            }
-            // Se o vendedor não existir, utilizar o primeiro disponivel
-            if (!dsoCache.SalesmanProvider.SalesmanExists(myCustomer.SalesmanId)) {
-                myCustomer.SalesmanId = (int)dsoCache.SalesmanProvider.GetFirstSalesmanID();
-            }
-            // Se o pais não existir, rectificar
-            if (!dsoCache.CountryProvider.CountryExists(myCustomer.CountryID)) {
-                myCustomer.CountryID = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
-            }
-            // Se a moeda não existir, guar a moeda base
-            if (!dsoCache.CurrencyProvider.CurrencyExists(myCustomer.CurrencyID)) {
-                myCustomer.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
-            }
-
-            // Gravar. Se for novo NewRec = true;
-            dsoCache.CustomerProvider.Save(myCustomer, myCustomer.CustomerID, isNew);
-            //
-            CustomerClear();
+        private Customer CustomerInsert() {
+            var customer = _customerController.Create();
+            CustomerFill();
+            _customerController.Save();
+            CustomerClearUI();
+            return customer;
         }
 
-        /// <summary>
-        /// Ler um cliente da base de dados e apresentá-lo no ecran
-        /// </summary>
-        /// <param name="customerId"></param>
+        private bool CustomerRemove() {
+            var result = false;
+            CustomerFill();
+            result = _customerController.Remove();
+            CustomerClearUI();
+            return result;
+        }
+
+        private bool CustomerUpdate() {
+            var result = false;
+            CustomerFill();
+            result = _customerController.Save();
+            CustomerClearUI();
+            return result;
+        }
+
         private void CustomerGet(double customerId) {
-            CustomerClear();
-            var customer = dsoCache.CustomerProvider.GetCustomer(customerId);
-            if (customer != null) {
-                numCustomerId.Value = (decimal)customerId;
-                numCustomerSalesmanId.Value = customer.SalesmanId;
-                numCustomerZoneId.Value = customer.ZoneID;
-
-                cmbCustomerCountry.SelectedItem = cmbCustomerCountry.Items.Cast<CountryCode>().FirstOrDefault(x => x.CountryID == customer.CountryID);
-                cmbCustomerCurrency.SelectedItem = cmbCustomerCurrency.Items.Cast<CurrencyDefinition>().FirstOrDefault(x => x.CurrencyID == customer.CurrencyID);
-                cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == customer.EntityFiscalStatusID);
-
-                txtCustomerComments.Text = customer.Comments;
-                txtCustomerName.Text = customer.OrganizationName;
-                txtCustomerTaxId.Text = customer.FederalTaxId;
-            }
-            else {
-                //O cliente não existe!
-                throw new Exception(string.Format("O Cliente {0} não foi encontrado!", customerId));
-            }
+            var customer = _customerController.Load(customerId);
+            //Update form
+            CustomerUpdateUI(customer);
         }
 
-        /// <summary>
-        /// Apagar um cliente
-        /// </summary>
-        /// <param name="customerId"></param>
-        private void CustomerRemove(double customerId) {
-            dsoCache.CustomerProvider.Delete(customerId);
-            CustomerClear();
+        private void CustomerFill() {
+            _customerController.Customer.CustomerID = (short)numCustomerId.Value;
+            _customerController.Customer.OrganizationName = txtCustomerName.Text;
+            _customerController.Customer.FederalTaxId = txtCustomerTaxId.Text;
+            _customerController.Customer.EntityFiscalStatusID = ((EntityFiscalStatus)cmbCustomerTax.SelectedItem).EntityFiscalStatusID;
+            _customerController.Customer.SalesmanId = (int)numCustomerSalesmanId.Value;
+            _customerController.Customer.ZoneID = (short)numCustomerZoneId.Value;
+            _customerController.Customer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
+            _customerController.Customer.Comments = txtCustomerComments.Text;
         }
 
-        private void CustomerClear() {
-            // Obter um novo ID (para um novo cliente)
+        private void CustomerClearUI() {
+            // Get new id
             numCustomerId.Value = (decimal)dsoCache.CustomerProvider.GetNewID();
             //
             txtCustomerComments.Text = string.Empty;
             txtCustomerName.Text = string.Empty;
             txtCustomerTaxId.Text = string.Empty;
             numCustomerSalesmanId.Value = 0;
+            numCustomerZoneId.Value = 0;
 
             UIUtils.FillCountryCombo(cmbCustomerCountry);
             var country = cmbCustomerCountry.Items.Cast<CountryCode>()
                                             .FirstOrDefault(x => x.CountryID.Equals(systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, StringComparison.CurrentCultureIgnoreCase));
             cmbCustomerCountry.SelectedItem = country;
-            //
-            UIUtils.FillCurrencyCombo(cmbCustomerCurrency);
-            var currency = cmbCustomerCurrency.Items.Cast<CurrencyDefinition>()
-                                              .FirstOrDefault(x => x.CurrencyID.Equals(systemSettings.BaseCurrency.CurrencyID, StringComparison.CurrentCultureIgnoreCase));
-            cmbCustomerCurrency.SelectedItem = currency;
             //
             UIUtils.FillEntityFiscalStatusCombo(cmbCustomerTax);
             cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.PartySettings.SystemFiscalStatusID);
@@ -714,1076 +810,169 @@ namespace Sage50c.API.Sample {
             }
         }
 
+        private void CustomerUpdateUI(Customer customer) {
+            if (customer != null) {
+                numCustomerId.Value = (decimal)customer.CustomerID;
+                numCustomerSalesmanId.Value = customer.SalesmanId;
+                numCustomerZoneId.Value = customer.ZoneID;
+
+                cmbCustomerCountry.SelectedItem = cmbCustomerCountry.Items.Cast<CountryCode>().FirstOrDefault(x => x.CountryID == customer.CountryID);
+                cmbCustomerTax.SelectedItem = cmbCustomerTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == customer.EntityFiscalStatusID);
+
+                txtCustomerComments.Text = customer.Comments;
+                txtCustomerName.Text = customer.OrganizationName;
+                txtCustomerTaxId.Text = customer.FederalTaxId;
+            }
+            else {
+                //O cliente não existe!
+                CustomerClearUI();
+                throw new Exception($"O Cliente [{numCustomerId.Value}] não foi encontrado!");
+            }
+        }
+
         #endregion
 
         #region SUPPLIER
 
+        private Supplier SupplierInsert() {
+            var supplier = _supplierController.Create();
+            SupplierFill();
+            _supplierController.Save();
+            SupplierClearUI();
+            return supplier;
+        }
+
+        private bool SupplierRemove() {
+            var result = false;
+            SupplierFill();
+            result = _supplierController.Remove();
+            SupplierClearUI();
+            return result;
+        }
+
+        private bool SupplierUpdate() {
+            var result = false;
+            SupplierFill();
+            result = _supplierController.Save();
+            SupplierClearUI();
+            return result;
+        }
+
         private void SupplierGet(double supplierId) {
-            var supplier = dsoCache.SupplierProvider.GetSupplier(supplierId);
-            if (supplier != null) {
-                txtSupplierComments.Text = supplier.Comments;
-                txtSupplierCountry.Text = supplier.CountryID;
-                txtSupplierCurrency.Text = supplier.CurrencyID;
-                txtSupplierId.Text = supplier.SupplierID.ToString();
-                txtSupplierName.Text = supplier.OrganizationName;
-                txtSupplierTaxId.Text = supplier.FederalTaxId;
-
-                cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == supplier.EntityFiscalStatusID);
-                txtSupplierZone.Text = supplier.ZoneID.ToString();
-            }
-            else {
-                SupplierClear();
-            }
+            var supplier = _supplierController.Load(supplierId);
+            //Update form
+            SupplierUpdateUI(supplier);
         }
 
-        private void SupplierUpdate(double supplierId, bool isNew) {
-            S50cBO22.Supplier supplier = null;
-
-            if (isNew && dsoCache.SupplierProvider.SupplierExists(supplierId)) {
-                throw new Exception(string.Format("O fornecedor [{0}] já existe.", supplierId));
-            }
-            if (!isNew) {
-                supplier = dsoCache.SupplierProvider.GetSupplier(supplierId);
-                if (supplier == null && !isNew) {
-                    throw new Exception(string.Format("O fornecedor [{0}] não existe.", supplierId));
-                }
-            }
-            //
-            if (supplier == null) {
-                // Como o fornecedor não existe na base de dados, vamos criar um novo
-                supplier = new S50cBO22.Supplier();
-                supplier.SupplierID = supplierId;
-            }
-            supplier.Comments = txtSupplierComments.Text;
-            supplier.CountryID = txtSupplierCountry.Text;
-            supplier.CurrencyID = txtSupplierCurrency.Text;
-            supplier.OrganizationName = txtSupplierName.Text;
-            supplier.FederalTaxId = txtSupplierTaxId.Text;
-
-            if (cmbSupplierTax.SelectedIndex >= 0) {
-                var entityFiscalStatus = (EntityFiscalStatus)cmbSupplierTax.SelectedItem;
-                supplier.EntityFiscalStatusID = entityFiscalStatus.EntityFiscalStatusID;
-            }
-
-            supplier.ZoneID = short.Parse(txtSupplierZone.Text);
-            //
-            //  A forma de pagamento é obrigatória. Vamos usar a primeira disponivel.
-            supplier.PaymentID = dsoCache.PaymentProvider.GetFirstID();
-            //  O meio de pagamento é obrigatório. VAmos usar o primeiro disponivel em numerário.
-            supplier.TenderID = dsoCache.TenderProvider.GetFirstTenderCash();
-
-            dsoCache.SupplierProvider.Save(supplier, supplier.SupplierID, isNew);
-
-            SupplierClear();
+        private void SupplierFill() {
+            _supplierController.Supplier.SupplierID = txtSupplierId.Text.ToShort();
+            _supplierController.Supplier.OrganizationName = txtSupplierName.Text;
+            _supplierController.Supplier.EntityFiscalStatusID = ((EntityFiscalStatus)cmbSupplierTax.SelectedItem).EntityFiscalStatusID;
+            _supplierController.Supplier.FederalTaxId = txtSupplierTaxId.Text;
+            _supplierController.Supplier.ZoneID = txtSupplierZone.Text.ToShort();
+            _supplierController.Supplier.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
+            _supplierController.Supplier.Comments = txtSupplierComments.Text;
         }
 
-        private void SupplierRemove(double supplierId) {
-            dsoCache.SupplierProvider.Delete(supplierId);
-            SupplierClear();
-        }
-
-        private void SupplierClear() {
-            txtSupplierComments.Text = string.Empty;
-            txtSupplierCountry.Text = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
-            txtSupplierCurrency.Text = systemSettings.BaseCurrency.CurrencyID;
+        private void SupplierClearUI() {
+            //Get new id 
             txtSupplierId.Text = dsoCache.SupplierProvider.GetNewID().ToString();
+            //
             txtSupplierName.Text = string.Empty;
-            txtSupplierTaxId.Text = "0";
-            txtSupplierZone.Text = dsoCache.ZoneProvider.GetFirstID().ToString();
 
             UIUtils.FillEntityFiscalStatusCombo(cmbSupplierTax);
             cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == APIEngine.SystemSettings.SystemInfo.PartySettings.SystemFiscalStatusID);
             if (cmbSupplierTax.SelectedItem == null && cmbSupplierTax.Items.Count > 0) {
                 cmbSupplierTax.SelectedIndex = 0;
             }
+
+            txtSupplierTaxId.Text = string.Empty;
+            txtSupplierZone.Text = dsoCache.ZoneProvider.GetFirstID().ToString();
+
+            UIUtils.FillCountryCombo(cmbSupplierCountry);
+            var country = cmbCustomerCountry.Items.Cast<CountryCode>()
+                                            .FirstOrDefault(x => x.CountryID.Equals(systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID, StringComparison.CurrentCultureIgnoreCase));
+
+            cmbCustomerCountry.SelectedItem = country;
+            txtSupplierComments.Text = string.Empty;
         }
 
-        #endregion
-
-        #region Unit of measure
-
-        /// <summary>
-        /// Loads a unit of measure with the quicksearch result
-        /// </summary>
-        private void btnUnitOfMeasureBrow_Click(object sender, EventArgs e) {
-
-            var unitOfMeasureID = QuickSearchHelper.UnitOfMeasureFind();
-            if (!string.IsNullOrEmpty(unitOfMeasureID)) {
-                UnitOfMeasureGet(unitOfMeasureID);
-            }
-        }
-
-        /// <summary>
-        /// Fills the unit of measure with data from the UI
-        /// </summary>
-        private void UnitOfMeasureFill(bool isNew) {
-
-            if (isNew) {
-                unitOfMeasureController.Create();
-                unitOfMeasureController.UnitOfMeasure.UnitOfMeasureID = txtUnitOfMeasureId.Text;
-            }
-            else if (unitOfMeasureController.UnitOfMeasure == null) {
-                throw new Exception("Carregue uma unidade de medição antes de fazer alterações.");
-            }
-            unitOfMeasureController.UnitOfMeasure.Description = txtUnitOfMeasureName.Text;
-        }
-
-        /// <summary>
-        /// Creates a new unit of measure
-        /// </summary>
-        private void UnitOfMeasureInsert() {
-
-            UnitOfMeasureFill(true);
-            unitOfMeasureController.Save();
-        }
-
-        /// <summary>
-        /// Loads a unit of measure
-        /// </summary>
-        private void UnitOfMeasureGet(string unitOfMeasureID) {
-
-            UnitOfMeasureClear();
-            unitOfMeasureController.Load(unitOfMeasureID);
-
-            var unitOfMeasure = unitOfMeasureController.UnitOfMeasure;
-            if (unitOfMeasure != null) {
-                txtUnitOfMeasureId.Text = unitOfMeasure.UnitOfMeasureID;
-                txtUnitOfMeasureName.Text = unitOfMeasure.Description;
-            }
-        }
-
-        /// <summary>
-        /// Updates a unit of measure
-        /// </summary>
-        private void UnitOfMeasureUpdate() {
-
-            UnitOfMeasureFill(false);
-            unitOfMeasureController.Save();
-        }
-
-        /// <summary>
-        /// Removes a unit of measure
-        /// </summary>
-        private void UnitOfMeasureRemove() {
-
-            unitOfMeasureController.Remove(txtUnitOfMeasureId.Text.Trim());
-            UnitOfMeasureClear();
-        }
-
-        /// <summary>
-        /// Clears the UI
-        /// </summary>
-        private void UnitOfMeasureClear() {
-
-            txtUnitOfMeasureId.Text = string.Empty;
-            txtUnitOfMeasureName.Text = string.Empty;
-        }
-
-        #endregion
-
-        #region Buy/Sale TRANSACTION
-
-        private TransactionID TransactionRemove() {
-            TransactionID transId = null;
-            string transDoc = txtTransDoc.Text;
-            string transSerial = txtTransSerial.Text;
-            double transDocNumber = 0;
-            double.TryParse(txtTransDocNumber.Text, out transDocNumber);
-            bool result = false;
-
-            var transType = ItemTransactionHelper.TransGetType(transDoc);
-
-            if (rbTransBuySell.Checked) {
-                if (transType != DocumentTypeEnum.dcTypeSale && transType != DocumentTypeEnum.dcTypePurchase) {
-                    throw new Exception("O documento indicado não é um documento de compra ou venda.");
-                }
-                if (bsoItemTransaction.LoadItemTransaction(transType, transSerial, transDoc, transDocNumber)) {
-                    // O motivo de anulação deve ser sempre preenchido.
-                    // Se for obrigatório, o documento não é anulado sem que esteja preenchido
-                    bsoItemTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
-                    //
-                    result = bsoItemTransaction.DeleteItemTransaction(false);
-                    if (result) {
-                        transId = bsoItemTransaction.Transaction.TransactionID;
-                    }
-                    else {
-                        throw new Exception(string.Format("Não foi possível anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
-                    }
-                }
-                else {
-                    throw new Exception(string.Format("Não foi possível carregar o documento {0} {1}/{2}.", transDoc, transSerial, transDocNumber));
-                }
+        private void SupplierUpdateUI(S50cBO22.Supplier supplier) {
+            if (supplier != null) {
+                txtSupplierId.Text = supplier.SupplierID.ToString();
+                txtSupplierName.Text = supplier.OrganizationName;
+                cmbSupplierTax.SelectedItem = cmbSupplierTax.Items.Cast<EntityFiscalStatus>().FirstOrDefault(x => x.EntityFiscalStatusID == supplier.EntityFiscalStatusID);
+                txtSupplierTaxId.Text = supplier.FederalTaxId;
+                txtSupplierZone.Text = supplier.ZoneID.ToString();
+                cmbSupplierCountry.SelectedItem = cmbSupplierCountry.Items.Cast<CountryCode>().FirstOrDefault(x => x.CountryID == supplier.CountryID);
+                txtSupplierComments.Text = supplier.Comments;
             }
             else {
-                if (transType != DocumentTypeEnum.dcTypeStock) {
-                    throw new Exception("O documento indicado não é um documento de stock.");
-                }
-                var loaded = bsoStockTransaction.LoadStockTransaction(transType, transSerial, transDoc, transDocNumber);
-                if (loaded) {
-                    // O motivo de anulação deve ser sempre preenchido.
-                    // Se for obrigatório, o documento não é anulado sem que esteja preenchido
-                    bsoStockTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
-                    //
-                    result = bsoStockTransaction.DeleteStockTransaction();
-                    if (result) {
-                        transId = new TransactionID();
-                        transId.TransSerial = transSerial;
-                        transId.TransDocument = transDoc;
-                        transId.TransDocNumber = transDocNumber;
-                    }
-                    else {
-                        throw new Exception(string.Format("Não foi possível anular o documento {0} {1}/{2}", transDoc, transSerial, transDocNumber));
-                    }
-                }
-                else {
-                    throw new Exception("O documento indicado não existe.");
-                }
+                SupplierClearUI();
+                throw new Exception($"O Fornecedor [{txtSupplierId.Text}] não foi encontrado!"); ;
             }
-            return transId;
         }
 
-        /// <summary>
-        /// Inserir ou Actualizar uma transação na base dados
-        /// </summary>
-        /// <returns></returns>
+        #endregion
+
+        #region TRANSACTION
+
         private TransactionID TransactionInsert(bool suspendTransaction) {
-            string transDoc = txtTransDoc.Text;
-            string transSerial = txtTransSerial.Text;
-            double transDocNumber = 0;
-            double.TryParse(txtTransDocNumber.Text, out transDocNumber);
-
             TransactionID result = null;
             if (rbTransBuySell.Checked) {
-                result = TransactionUpdate(transSerial, transDoc, transDocNumber, true, suspendTransaction);
+                _buySaleTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
+                TransactionBuySaleUpdate(suspendTransaction);
             }
             else {
-                result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, true);
+                _stockTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
+                TransactionStockUpdate();
             }
 
             return result;
         }
 
-        private TransactionID TransactionEdit(bool suspendedTransaction) {
-            string transDoc = txtTransDoc.Text;
-            string transSerial = txtTransSerial.Text;
-            double transDocNumber = 0;
-            double.TryParse(txtTransDocNumber.Text, out transDocNumber);
-
-            TransactionID result = null;
+        private bool TransactionRemove() {
+            bool result = false;
             if (rbTransBuySell.Checked) {
-                result = TransactionUpdate(transSerial, transDoc, transDocNumber, false, suspendedTransaction);
+                TransactionFill();
+                result = _buySaleTransactionController.Remove();
+                TransactionClearUI();
             }
             else {
-                result = TransactionStockUpdate(transSerial, transDoc, transDocNumber, false);
+                TransactionStockFill();
+                result = _stockTransactionController.Remove();
+                TransactionClearUI();
             }
             return result;
         }
 
-        /// <summary>
-        /// Insere ou altera uma transação (compra/venda)
-        /// </summary>
-        /// <param name="transSerial">Série</param>
-        /// <param name="transDoc">Documento</param>
-        /// <param name="transDocNumber">Número do documento</param>
-        /// <param name="newTransaction">true: Nova transação (inserir); false: transação existente (alterar)</param>
-        /// <returns>TransactionId da transação inserida/alterada</returns>
-        /// 
-        private TransactionID TransactionUpdate(string transSerial, string transDoc, double transDocNumber, bool newTransaction, bool suspendTransaction) {
-
-            TransactionID insertedTrans = null;
-            transactionError = false;
-
-            try {
-                BSOItemTransactionDetail BSOItemTransDetail = null;
-
-                //'-------------------------------------------------------------------------
-                //' DOCUMENT HEADER and initialization
-                //'-------------------------------------------------------------------------
-                //'*** Total source document amount. Save to verify at the end if an adjustment is necessary
-                //'OriginalDocTotalAmount = 10
-                //'
-                // Documento
-                if (!systemSettings.WorkstationInfo.Document.IsInCollection(transDoc)) {
-                    throw new Exception("O documento não se encontra preenchido ou não existe");
-                }
-                Document doc = systemSettings.WorkstationInfo.Document[transDoc];
-                // Série
-                if (!systemSettings.DocumentSeries.IsInCollection(transSerial)) {
-                    throw new Exception("A série não se encontra preenchida ou não existe");
-                }
-                DocumentsSeries series = systemSettings.DocumentSeries[transSerial];
-                //if (series.SeriesType != SeriesTypeEnum.SeriesExternal) {
-                //    throw new Exception("Para lançamentos de documentos externos à aplicação apenas são permitidas séries externas.");
-                //}
-                //
-                var transType = ItemTransactionHelper.TransGetType(transDoc);
-                if (transType != DocumentTypeEnum.dcTypeSale && transType != DocumentTypeEnum.dcTypePurchase) {
-                    throw new Exception(string.Format("O documento indicado [{0}] não é um documento de venda/compra", transDoc));
-                }
-                //
-                if (!newTransaction && !suspendTransaction) {
-                    //Exemplo: Verificar se uma transação existe:
-                    if (!dsoCache.ItemTransactionProvider.ItemTransactionExists(transSerial, transDoc, transDocNumber)) {
-                        throw new Exception(string.Format("O documento {0} {1}/{2} não existe para ser alterado. Deve criar um novo.", transDoc, transSerial, transDocNumber));
-                    }
-                }
-                //
-                // Motor do documento
-                bsoItemTransaction.TransactionType = transType;
-                // Motor dos detalhes (linhas)
-                BSOItemTransDetail = new BSOItemTransactionDetail();
-                BSOItemTransDetail.TransactionType = transType;
-                // Utilizador e permissões
-                BSOItemTransDetail.UserPermissions = systemSettings.User;
-                BSOItemTransDetail.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
-                //
-                bsoItemTransaction.BSOItemTransactionDetail = BSOItemTransDetail;
-                BSOItemTransDetail = null;
-                //
-                // Terceiro
-                double partyId = 0;
-                double.TryParse(txtTransPartyId.Text, out partyId);
-                //
-                //Inicializar uma transação
-                bsoItemTransaction.Transaction = new ItemTransaction();
-                if (newTransaction) {
-                    bsoItemTransaction.InitNewTransaction(transDoc, transSerial);
-                    if (transDocNumber > 0) {
-                        // Tentar numeração indicada
-                        bsoItemTransaction.Transaction.TransDocNumber = transDocNumber;
-                    }
-                }
-                else {
-                    if (suspendTransaction) {
-                        //NOTA:
-                        // transDocNumber=número da transação suspensa. Não número final
-                        if (!bsoItemTransaction.LoadSuspendedTransaction(transSerial, transDoc, transDocNumber)) {
-                            throw new Exception(string.Format("O documento {0} {1}/{2} não existe para ser alterado. Deve criar um novo.", transDoc, transSerial, transDocNumber));
-                        }
-                    }
-                    else {
-                        bsoItemTransaction.LoadItemTransaction(transType, transSerial, transDoc, transDocNumber);
-                    }
-                }
-                bsoItemTransaction.UserPermissions = systemSettings.User;
-
-                ItemTransaction trans = bsoItemTransaction.Transaction;
-                if (trans == null) {
-                    if (newTransaction) {
-                        throw new Exception(string.Format("Não foi possível inicializar o documento [{0}] da série [{1}]", transDoc, transSerial));
-                    }
-                    else {
-                        throw new Exception(string.Format("Não foi possível carregar o documento [{0}] da série [{1}] número [{2}]", transDoc, transSerial, transDocNumber));
-                    }
-                }
-                //
-                // Limpar todas as linhas
-                int i = 1;
-                while (trans.Details.Count > 0) {
-                    trans.Details.Remove(ref i);
-                }
-                //
-                //// Definir o terceiro (cliente ou fornecedor)
-                bsoItemTransaction.PartyID = partyId;
-                //
-                //To use an EXISTING party address:
-                //bsoItemTransaction.PartyAddressByKey = 33 // Specify Address ID; Address Id 33 must exists
-                //bsoItemTransaction.PartyAddressID=33      // Specify the Index of: trans.Party.PartyInfo.AddressList; Index 33 must exist
-                //
-                // To manually specify an address:
-                //bsoItemTransaction.PartyFederalTaxID = "123456789";
-                //bsoItemTransaction.PartyAddressLine1 = "Rua 1";
-                //bsoItemTransaction.PartyPostalCode = "4000 Porto";
-                //                
-                //
-                //Descomentar para indicar uma referência externa ao documento:
-                //trans.ContractReferenceNumber = ExternalDocId;
-                //
-                //Set Create date and deliverydate
-                var createDate = DateTime.Today;
-                var createTime = DateTime.Today;
-                DateTime.TryParse(txtTransDate.Text, out createDate);
-                DateTime.TryParse(txtTransTime.Text, out createTime);
-
-                trans.CreateDate = createDate;
-                trans.CreateTime = createTime;
-
-                trans.ActualDeliveryDate = createDate;
-
-                //
-                // Definir se o imposto é incluido
-                trans.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-                //
-                // Definir o pagamento. Neste caso optou-se por utilizar o primeiro pagamento disponivel na base de dados
-
-                short PaymentId = 0;
-                short.TryParse(txtPaymentID.Text, out PaymentId);
-                if (PaymentId == 0) {
-                    PaymentId = dsoCache.PaymentProvider.GetFirstID();
-                }
-                trans.Payment = dsoCache.PaymentProvider.GetPayment(PaymentId);
-
-                trans.ATCUD = txtAtcud.Text;
-                trans.QRCode = txtQrCode.Text;
-                //
-                //*** Locais de carga e descarga
-                //// Descomentar o seguinte para carregar um local de descarga "livre"
-                //var placeId = S50cAPIEngine.DSOCache.LoadUnloadPlaceProvider.FindForAddressType(LoadUnloadAddressTypes.luatFree);
-                //if( placeId == 0) {
-                //    // Não existe nenhum local de carga/descar com endereços livres, por isso vamos criar um
-                //    var freePlace = new LoadUnloadPlace() {
-                //        AddressType = LoadUnloadAddressTypes.luatFree,
-                //        Description = "Livre",
-                //        LoadUnloadPlaceID = S50cAPIEngine.DSOCache.LoadUnloadPlaceProvider.GetNewID()
-                //    };
-                //    S50cAPIEngine.DSOCache.LoadUnloadPlaceProvider.Save(freePlace, freePlace.LoadUnloadPlaceID, true);
-                //    placeId = freePlace.LoadUnloadPlaceID;
-                //}
-                ////
-                //// Vamos definir o local de descarga
-                //bsoItemTransaction.UnloadPlaceID = placeId;
-                //bsoItemTransaction.Transaction.UnloadPlaceAddress.AddressLine1 = "Edifício Olympus II ";
-                //bsoItemTransaction.Transaction.UnloadPlaceAddress.AddressLine2 = "Avenida D. Afonso Henriques, 1462 - 2º";
-                //bsoItemTransaction.Transaction.UnloadPlaceAddress.PostalCode = "4450-013 Matosinhos";
-                ////// Para local de carga, usar
-                ////bsoItemTransaction.LoadPlaceID = placeId;
-                ////bsoItemTransaction.Transaction.LoadPlaceAddress.AddressLine1 = "Edifício Olympus II ";
-                ////bsoItemTransaction.Transaction.LoadPlaceAddress.AddressLine2 = "Avenida D. Afonso Henriques, 1462 - 2º";
-                ////bsoItemTransaction.Transaction.LoadPlaceAddress.PostalCode = "4450-013 Matosinhos";
-                //
-                //Modo de Pagamento
-                //se não preencheu nem tem cliente sugere o primeiro TenderID
-                short tenderID = 0;
-                short.TryParse(txtTenderID.Text, out tenderID);
-                if (partyId == 0) {
-                    if (tenderID == 0) {
-                        tenderID = dsoCache.TenderProvider.GetFirstID();
-                    }
-                    trans.Tender.TenderID = tenderID;
-                }
-
-                //
-                //ID da  Session
-                short sessionID = APIEngine.SystemSettings.TillSession.SessionID;
-
-                trans.WorkstationStamp.SessionID = sessionID;
-                //
-
-                if (string.IsNullOrEmpty(txtTransCurrency.Text)) {
-                    trans.BaseCurrency = systemSettings.BaseCurrency;
-                }
-                else {
-                    CurrencyDefinition currency = new CurrencyDefinition();
-                    currency = dsoCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
-                    if (currency == null) {
-                        throw new Exception(string.Format("A moeda[{0}] não existe.", txtTransCurrency.Text));
-                    }
-                    else {
-                        trans.BaseCurrency = dsoCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
-                    }
-                }
-                //
-                // Comentários / Observações
-                trans.Comments = "Gerado por " + Application.ProductName;
-                //
-                //-------------------------------------------------------------------------
-                // DOCUMENT DETAILS
-                //-------------------------------------------------------------------------
-                string itemId = txtItemID.Text;
-                //
-                //Adicionar a primeira linha ao documento
-                double qty = 0; double.TryParse(txtTransQuantityL1.Text, out qty);
-                double unitPrice = 0; double.TryParse(txtTransUnitPriceL1.Text, out unitPrice);
-                double taxPercent = 0; double.TryParse(txtTransTaxRateL1.Text, out taxPercent);
-                short wareHouseId = 0; short.TryParse(txtTransWarehouseL1.Text, out wareHouseId);
-                Item item = TransGetCreateItem(txtTransItemL1.Text, string.Empty, string.Empty, txtTransUnL1.Text, string.Empty, 1, false, false, 0, 0, taxPercent);
-                //Alterar Eco taxa aqui
-                //item.ItemTax = 1.3;
-                //item.ItemTax2 = 0;
-                //item.ItemTax3 = 0;
-                short colorId = 0;
-                short.TryParse(txtTransColor1.Text, out colorId);
-                short sizeId = 0;
-                short.TryParse(txtTransSize1.Text, out sizeId);
-                string serialNumber = txtTransPropValueL1.Text;
-                var currentDate = DateTime.Today;
-                //
-                TransAddDetail(trans, item, qty, txtTransUnL1.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL1.Text, serialNumber);
-                //
-                //Adicionar a segunda linha ao documento
-                if (!string.IsNullOrEmpty(txtTransItemL2.Text)) {
-                    qty = 0; double.TryParse(txtTransQuantityL2.Text, out qty);
-                    unitPrice = 0; double.TryParse(txtTransUnitPriceL2.Text, out unitPrice);
-                    taxPercent = 0; double.TryParse(txtTransTaxRateL2.Text, out taxPercent);
-                    wareHouseId = 0; short.TryParse(txtTransWarehouseL2.Text, out wareHouseId);
-                    item = TransGetCreateItem(txtTransItemL2.Text, string.Empty, string.Empty, txtTransUnL2.Text, string.Empty, 1, false, false, 0, 0, taxPercent);
-                    //Alterar Eco taxa aqui
-                    //item.ItemTax = 1.3;
-                    //item.ItemTax2 = 0;
-                    //item.ItemTax3 = 0;
-                    colorId = 0;
-                    short.TryParse(txtTransColor1.Text, out colorId);
-                    sizeId = 0;
-                    short.TryParse(txtTransSize1.Text, out sizeId);
-                    serialNumber = txtTransPropValueL2.Text;
-                    currentDate = DateTime.Today;
-                    //
-                    TransAddDetail(trans, item, qty, txtTransUnL2.Text, unitPrice, taxPercent, wareHouseId, colorId, sizeId, lblTransPropNameL2.Text, serialNumber);
-                }
-                //*** Descomentar a linha seguinte para definir automaticamente as origens (conversão de um documento)
-                //bsoItemTransaction.FillTransactionOrigins()
-
-                // Desconto Global -- Atribuir só no fim do documento depois de adicionadas todas as linhas
-                double globalDiscount = 0;
-                double.TryParse(txtTransGlobalDiscount.Text, out globalDiscount);
-                bsoItemTransaction.PaymentDiscountPercent1 = globalDiscount;
-
-                //Calcular todo o documento
-                bsoItemTransaction.Calculate(true, true);
-                //
-                //*** Descomentar o seguinte para ajustar o total do documento (arredondamentos)
-                //double OriginalDocTotalAmount = 9999; //Ajustar para o valor do documento original
-                //if( OriginalDocTotalAmount != 0 ){
-                //    double TotalDiff = OriginalDocTotalAmount - bsoItemTransaction.Transaction.TotalAmount;
-                //    if( TotalDiff != 0 ){
-                //        bsoItemTransaction.Transaction.TotalAdjustmentAmount = TotalDiff;
-                //        bsoItemTransaction.Transaction.TotalAmount = bsoItemTransaction.Transaction.TotalAmount + TotalDiff;
-                //        bsoItemTransaction.Transaction.TotalTransactionAmount = bsoItemTransaction.Transaction.TotalTransactionAmount + TotalDiff;
-                //    }
-                //}
-                //
-                //// Exemplo de pagamento por cheque...
-                //// Gerar a linha do pagamento
-                //var tenderCheck = dsoCache.TenderProvider.GetFirstTenderType(TenderTypeEnum.tndCheck);
-                //if ( tenderCheck != null ) {
-                //    // Preencher o cheque
-                //    TenderCheck tCheck = new TenderCheck() {
-                //        BankID = "AAA",                             // Código do banco! TempItemTransaction decimal existir
-                //        CheckAmount = trans.TotalTransactionAmount, // Pagar na totalidade
-                //        CheckDeferredDate = trans.CreateDate,       // Data do cheque
-                //        CheckSequenceNumber = "987654321",          // Númerom do cheque
-                //        TillID = trans.Till.TillID,                 // Caixa
-                //        Guid = Guid.NewGuid().ToString()            // Guid identificador do registo
-                //    };
-                //    // Preencher a linha do pagamento
-                //    var tenderLine = new TenderLineItem();
-                //    tenderLine.Amount = trans.TotalTransactionAmount;
-                //    tenderLine.CreateDate = trans.CreateDate;
-                //    tenderLine.PartyID = trans.PartyID;
-                //    tenderLine.PartyTypeCode = trans.PartyTypeCode;
-                //    tenderLine.Tender = tenderCheck;
-                //    tenderLine.TenderCheck = tCheck;
-
-                //    trans.TenderLineItem.Add(tenderLine);
-                //}
-                //
-
-                //// Exemplo para registar a origem nas Notas de crédito e Notas de débito:
-                //if (doc.Nature.NatureID == TransactionNatureEnum.Sale_CreditNote || doc.Nature.NatureID == TransactionNatureEnum.Sale_DebitNote) {
-                //    var originTransId = new TransactionID();
-                //    originTransId.Init("1","FAC",1);
-                //    trans.OriginatingON = originTransId.ToString();
-                //}
-
-                // Definir a assinatura de um sistema externo
-                if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
-                    if (!SetExternalSignature(trans)) {
-                        MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-
-                if (suspendTransaction) {
-                    insertedTrans = bsoItemTransaction.SuspendCurrentTransaction();
-                }
-                else {
-                    //Exemplo da Repartição de Custos
-                    //INICIO
-                    if (APIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
-
-                        bsoItemTransaction.Transaction.BuyShareOtherCostList = null;
-                        SimpleDocument objDocument;
-                        SimpleDocumentList objDocumentList = new SimpleDocumentList();
-                        SimpleItemDetail objDocumentDetailsList;
-
-                        double Convert_Double = 0;
-
-
-                        //Begin manual Share amount 
-                        if (txtShareTransDocNumber_R1.Text.Length > 0) {
-                            objDocument = new SimpleDocument();
-                            objDocument.TransSerial = txtShareTransSerial_R1.Text;
-                            objDocument.TransDocument = txtShareTransDocument_R1.Text;
-                            double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
-                            objDocument.TransDocNumber = Convert_Double;
-                            double.TryParse(txtShareAmount_R1.Text, out Convert_Double);
-                            objDocument.TotalTransactionAmount = Convert_Double;
-                            objDocument.CurrencyID = txtTransCurrency.Text;
-                            objDocument.CurrencyExchange = 1;
-                            objDocument.CurrencyFactor = 1;
-
-
-                            //ADD Line 1
-                            if (txtAmout_R1_L1.Text.Length > 0) {
-                                objDocumentDetailsList = new SimpleItemDetail();
-                                objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
-                                objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
-                                double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
-                                objDocumentDetailsList.DestinationTransDocNumber = Convert_Double;
-                                objDocumentDetailsList.DestinationLineItemID = 1;
-                                objDocumentDetailsList.ItemID = LblL1.Text;
-                                double.TryParse(txtAmout_R1_L1.Text, out Convert_Double);
-                                objDocumentDetailsList.UnitPrice = Convert_Double;
-                                objDocumentDetailsList.Quantity = 1;
-                                //Line KEY
-                                objDocumentDetailsList.ItemSearchKey = objDocumentDetailsList.DestinationTransSerial + "|" + objDocumentDetailsList.DestinationTransDocument + "|" + objDocumentDetailsList.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(objDocumentDetailsList.DestinationLineItemID) + "|" + objDocumentDetailsList.ItemID + "|" + objDocumentDetailsList.Color.ColorID + "|" + objDocumentDetailsList.Size.SizeID;
-                                //Add Line 1 to document detail
-                                objDocument.Details.Add(objDocumentDetailsList);
-                            }
-
-                            //ADD Line 2
-                            if (txtAmout_R1_L2.Text.Length > 0) {
-                                objDocumentDetailsList = new SimpleItemDetail();
-                                objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
-                                objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
-                                double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
-                                objDocumentDetailsList.DestinationTransDocNumber = Convert_Double;
-                                objDocumentDetailsList.DestinationLineItemID = 2;
-                                objDocumentDetailsList.ItemID = LblL2.Text;
-                                double.TryParse(txtAmout_R1_L2.Text, out Convert_Double);
-                                objDocumentDetailsList.UnitPrice = Convert_Double;
-                                objDocumentDetailsList.Quantity = 1;
-                                //Line KEY
-                                objDocumentDetailsList.ItemSearchKey = objDocumentDetailsList.DestinationTransSerial + "|" + objDocumentDetailsList.DestinationTransDocument + "|" + objDocumentDetailsList.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(objDocumentDetailsList.DestinationLineItemID) + "|" + objDocumentDetailsList.ItemID + "|" + objDocumentDetailsList.Color.ColorID + "|" + objDocumentDetailsList.Size.SizeID;
-                                //Add Line 2 to document detail
-                                objDocument.Details.Add(objDocumentDetailsList);
-
-                                //Add Document to list of Documento to Share amount 
-                            }
-
-                            objDocumentList.Add(objDocument);
-
-                        }
-                        //End manual Share amount 
-
-                        //Begin Automatic Share amount 
-                        //if it does not have details, divide the value in proportion to the value of the line
-                        if (txtShareTransDocNumber_R2.Text.Length > 0) {
-                            objDocument = new SimpleDocument();
-                            objDocument.TransSerial = txtShareTransSerial_R2.Text;
-                            objDocument.TransDocument = txtShareTransDocument_R2.Text;
-                            double.TryParse(txtShareTransDocNumber_R2.Text, out Convert_Double);
-                            objDocument.TransDocNumber = Convert_Double;
-                            double.TryParse(txtShareAmount_R2.Text, out Convert_Double);
-                            objDocument.TotalTransactionAmount = Convert_Double;
-                            objDocument.CurrencyID = txtTransCurrency.Text;
-
-                            //Add Document to list of Documento to Share amount 
-                            objDocumentList.Add(objDocument);
-
-                        }
-                        //End Automatic Share amount 
-
-                        // Add Shares amount cost to  Transaction , BuyShareOtherCostList 
-                        bsoItemTransaction.Transaction.BuyShareOtherCostList = objDocumentList;
-
-                    }
-                    //FIM
-
-                    // Abrir automaticamente o caixa, se estiver fechar
-                    bsoItemTransaction.EnsureOpenTill(bsoItemTransaction.Transaction.Till.TillID);
-                    //
-                    bsoItemTransaction.SaveDocument(false, false);
-                    //
-                    if (!transactionError) {
-                        insertedTrans = bsoItemTransaction.Transaction.TransactionID;
-                    }
-                }
-                //
-                BSOItemTransDetail = null;
-            }
-            catch (Exception ex) {
-                throw ex;
-            }
-            finally {
-                //Unsubscribe from event
-                bsoItemTransaction.TenderIDChanged -= bsoItemTransaction_TenderIDChanged;
-            }
-
-            TransactionPrint2(bsoItemTransaction.Transaction.TransSerial, bsoItemTransaction.Transaction.TransDocument, bsoItemTransaction.Transaction.TransDocNumber);
-
-            return insertedTrans;
-        }
-
-        void bsoItemTransaction_TenderIDChanged(ref short value) {
-            MessageBox.Show("bsoItemTransaction_TenderIDChanged");
-        }
-
-        /// <summary>
-        /// Obtém ou cria um artigo novo e devolve-o
-        /// </summary>
-        /// <param name="itemId">Código do artigo</param>
-        /// <param name="EANBarcode">Código de barras do artigo para a criação pode ser vazio.</param>
-        /// <param name="itemDescription">Descrição do artigo para a criação. Pode ser vazio.</param>
-        /// <param name="unitId">Unidade para a criação pode ser vazio.</param>
-        /// <param name="packUnitId">Unidade de grupo (pack) para a crição. Se fornecida, deve também ser indicado o fator (unitsPerPack)</param>
-        /// <param name="unitsPerPack">Factor de agrupamento ou número de unidades por pack. Se não fornecido, indicar 1</param>
-        /// <param name="isKg">Indica se é uma unidade de peso (Kg)</param>
-        /// <param name="isPack">Indica se é um pack</param>
-        /// <param name="supplierId">Identificado do fornecedor para a criação. Obrigatório para criar um artigo novo.</param>
-        /// <param name="unitCostPrice">Custo por unidade do artigo</param>
-        /// <param name="itemTaxPercent">Taxa de imposto do artigo</param>
-        /// <returns></returns>
-        private Item TransGetCreateItem(string itemId, string EANBarcode, string itemDescription,
-                                   string unitId, string packUnitId, int unitsPerPack,
-                                   bool isKg, bool isPack,
-                                   double supplierId, double unitCostPrice,
-                                   double itemTaxPercent) {
-            //Descomentar para fazer a pesquisa por código de barras, código do artigo e código do fornecedor
-            //string strItemID = dsoCache.ItemProvider.ItemSearch(itemId, 0, 0);
-            //if( string.IsNullOrEmpty(strItemID) ) {
-            //    //Search by supplier code
-            //    object objSupplierId = supplierId;
-            //    strItemID = dsoCache.ItemProvider.GetItemBySuplierReorderID(itemId, ref objSupplierId );
-            //}
-            //
-            // senão, pesquisar o artigo por referência
-            Item oItem = dsoCache.ItemProvider.GetItem(itemId, systemSettings.BaseCurrency);
-            //
-            // Se o artigo não existir devolver uma exceção
-            if (oItem == null) {
-                throw new Exception(string.Format("O Artigo[{0}] não existe.", itemId));
-            }
-            //
-            // OU
-            // Descomentar o seguinte para criar automaticamente um artigo novo
-            //// Unidades de volume e fator
-            ////
-            //bool bSaveItem = false;
-            ////
-            ////Conversion processing
-            //if (!isKg) {
-            //    bool bHasPosIdentity = false;
-            //    foreach (POSIdentity posIdentity in oItem.POSIdentity) {
-            //        if (string.Compare(posIdentity.UnitOfMeasure, unitId, true) == 0) {
-            //            bHasPosIdentity = true;
-            //            break;
-            //        }
-            //    }
-            //    //
-            //    //POS Identity por unidade (Sem código de barras)
-            //    if (!bHasPosIdentity && isPack) {
-            //        POSIdentity posIdentity = new POSIdentity();
-            //        posIdentity.UnitOfMeasure = unitId;
-            //        posIdentity.Quantity = unitsPerPack;
-            //        posIdentity.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
-            //        posIdentity.CurrencyExchange = systemSettings.BaseCurrency.BuyExchange;
-            //        posIdentity.CurrencyFactor = systemSettings.BaseCurrency.EuroConversionRate;
-            //        posIdentity.Description = oItem.Description;    //Or "Product custom description"
-            //        oItem.POSIdentity.Add(posIdentity);
-            //        posIdentity = null;
-            //        bSaveItem = true;
-            //    }
-            //    //
-            //    if (string.IsNullOrEmpty(oItem.BarCode)) {
-            //        // código de barras EAN do artigo
-            //        // Descomentar as linhas seguintes para atribuir um código de barras ao artigo:
-            //        //oItem.BarCode = "12345678980123";
-            //        //bSaveItem = true;
-            //    }
-            //    else if (!string.IsNullOrEmpty(EANBarcode)) {
-            //        //Add new barcode, if not on present item
-            //        if (!oItem.POSIdentity.IsInCollection(EANBarcode, oItem.UnitOfSaleID) && string.Compare(oItem.BarCode, EANBarcode, true) != 0) {
-            //            POSIdentity oPOSIdentity = new POSIdentity();
-            //            oPOSIdentity.UnitOfMeasure = oItem.UnitOfSaleID;
-            //            oPOSIdentity.Quantity = 1;
-            //            oPOSIdentity.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
-            //            oPOSIdentity.CurrencyExchange = systemSettings.BaseCurrency.BuyExchange;
-            //            oPOSIdentity.CurrencyFactor = systemSettings.BaseCurrency.EuroConversionRate;
-            //            oPOSIdentity.Description = itemDescription;    //Or custom description
-            //            oPOSIdentity.POSItemID = EANBarcode;
-            //            oItem.POSIdentity.Add(oPOSIdentity);
-            //            oPOSIdentity = null;
-            //            bSaveItem = true;
-            //        }
-            //    }
-            //}
-            ////
-            //bool bHasItemSupplier = false;
-            //foreach (ItemSupplier itemSupplier in oItem.SupplierList) {
-            //    if (itemSupplier.SupplierID == supplierId && string.Compare(itemSupplier.ReorderID, itemId, true) == 0) {
-            //        bHasItemSupplier = true;
-            //        break;
-            //    }
-            //}
-            ////
-            //if (!bHasItemSupplier) {
-            //    ItemSupplier itemSupplier = new ItemSupplier();
-            //    itemSupplier.SupplierID = supplierId;
-            //    itemSupplier.SupplierName = dsoCache.SupplierProvider.GetSupplierName(supplierId);
-            //    //
-            //    itemSupplier.UnitOfMeasure = unitId;
-            //    itemSupplier.ReorderID = itemId;     //Supplier Reference
-            //    itemSupplier.CurrencyID = systemSettings.BaseCurrency.CurrencyID;
-            //    itemSupplier.CurrencyExchange = systemSettings.BaseCurrency.BuyExchange;
-            //    itemSupplier.CurrencyFactor = systemSettings.BaseCurrency.EuroConversionRate;
-            //    //Definir aqui o preço de custo:
-            //    itemSupplier.CostPrice = unitCostPrice;
-
-            //    oItem.SupplierList.Add(itemSupplier);
-            //    itemSupplier = null;
-
-            //    bSaveItem = true;
-            //}
-            ////Definir a taxa de imposto
-            //short TaxGroupId = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(itemTaxPercent, systemSettings.SystemInfo.DefaultCountryID, systemSettings.SystemInfo.TaxRegionID);
-            //if (oItem.TaxableGroupID != TaxGroupId) {
-            //    oItem.TaxableGroupID = TaxGroupId;
-            //    bSaveItem = true;
-            //}
-            ////
-            ////Gravar o artigo
-            //if (bSaveItem)
-            //    dsoCache.ItemProvider.Save(oItem, oItem.ItemID, false);
-
-            return oItem;
-        }
-
-        /// <summary>
-        /// Adiciona um detalhe (linha) à transação
-        /// </summary>
-        /// <param name="trans"></param>
-        /// <param name="itemId"></param>
-        /// <param name="qty"></param>
-        /// <param name="unitOfMeasureId"></param>
-        /// <param name="unitPrice"></param>
-        /// <param name="taxPercent"></param>
-        /// <param name="whareHouseId"></param>
-        private void TransAddDetail(ItemTransaction trans, Item item, double qty, string unitOfMeasureId, double unitPrice, double taxPercent, short whareHouseId,
-                                     short colorId, short sizeId,
-                                     string serialNumberPropId, string serialNumberPropValue) {
-
-
-            var doc = systemSettings.WorkstationInfo.Document[trans.TransDocument];
-
-            ItemTransactionDetail transDetail = new ItemTransactionDetail();
-
-            //Moeda dos detalhes de  documento
-            if (string.IsNullOrEmpty(txtTransCurrency.Text)) {
-                transDetail.BaseCurrency = systemSettings.BaseCurrency;
+        private bool TransactionUpdate(bool suspendedTransaction) {
+            var result = false;
+            if (rbTransBuySell.Checked) {
+                result = TransactionBuySaleUpdate(suspendedTransaction);
             }
             else {
-                CurrencyDefinition currency = new CurrencyDefinition();
-                currency = dsoCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
-                if (currency == null) {
-                    throw new Exception(string.Format("A moeda[{0}] não existe.", txtTransCurrency.Text));
-                }
-                else {
-                    transDetail.BaseCurrency = dsoCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
-                }
+                result = TransactionStockUpdate();
             }
-            //
-
-            transDetail.ItemID = item.ItemID;
-            transDetail.CreateDate = trans.CreateDate;
-            transDetail.CreateTime = trans.CreateTime;
-            transDetail.ActualDeliveryDate = trans.CreateDate;
-            //Utilizar a descrição do artigo, ou uma descrição personalizada
-            transDetail.Description = item.Description;
-            // definir a quantidade
-            transDetail.Quantity = qty;
-            // Preço unitário. NOTA: Ver a diferença se o documento for com impostos incluidos!
-            if (trans.TransactionTaxIncluded) {
-                transDetail.TaxIncludedPrice = unitPrice;
-            }
-            else {
-                transDetail.UnitPrice = unitPrice;
-            }
-            // Definir a lista de unidades
-            transDetail.UnitList = item.UnitList;
-            // Definir a unidade de venda/compra
-            transDetail.SetUnitOfSaleID(unitOfMeasureId);
-            //Definir os impostos
-            short TaxGroupId = 0;
-            if (taxPercent == 0 && item.TaxableGroupID != 0) {
-                //se não preencher a taxa, carrega o imposto do artigo
-                TaxGroupId = item.TaxableGroupID;
-            }
-            else {
-                // Carrega o imposto pela ZONA
-                // IMPORTANTE OSS: A transação já deve ter neste ponto a ZONA correta carregada
-                TaxGroupId = bsoItemTransaction.BSOTaxes.GetTaxableGroupIDFromTaxRate(taxPercent, trans.Zone.CountryID, trans.Zone.TaxRegionID);
-            }
-            transDetail.TaxableGroupID = TaxGroupId;
-            //*** Uncomment for discout
-            //transDetail.DiscountPercent = 10
-            //
-            // Se o Armazém não existir, utilizar o default que se encontra no documento.
-            if (dsoCache.WarehouseProvider.WarehouseExists(whareHouseId)) {
-                transDetail.WarehouseID = whareHouseId;
-            }
-            else {
-                transDetail.WarehouseID = doc.Defaults.Warehouse;
-            }
-            // Identificador da linha
-            transDetail.LineItemID = trans.Details.Count + 1;
-            //
-            //*** Uncomment to provide line totals
-            //.TotalGrossAmount =        'Line Gross amount
-            //.TotalNetAmount =          'Net Gross amount
-            //
-            //Definir o último preço de compra
-            if (doc.TransDocType == DocumentTypeEnum.dcTypePurchase) {
-                transDetail.ItemExtraInfo.ItemLastCostTaxIncludedPrice = item.SalePrice[0, transDetail.Size.SizeID, string.Empty, 0, item.UnitOfSaleID].TaxIncludedPrice;
-                transDetail.ItemExtraInfo.ItemLastCostUnitPrice = item.SalePrice[0, transDetail.Size.SizeID, string.Empty, 0, item.UnitOfSaleID].UnitPrice;
-            }
-            // Cores e tamanhos
-            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
-                // Cores
-                if (item.Colors.Count > 0) {
-                    ItemColor color = null;
-                    if (colorId > 0 && item.Colors.IsInCollection(colorId)) {
-                        color = item.Colors[ref colorId];
-                    }
-                    if (color == null) {
-                        throw new Exception(string.Format("A cor indicada [{0}] não existe.", colorId));
-                    }
-                    transDetail.Color.ColorID = colorId;
-                    transDetail.Color.Description = color.ColorName;
-                    transDetail.Color.ColorKey = color.ColorKey;
-                    transDetail.Color.ColorCode = color.ColorCode;
-                }
-                //Tamanhos
-                if (item.Sizes.Count > 0 && chkTransModuleSizeColor.Checked) {
-                    ItemSize size = null;
-                    if (sizeId > 0 && item.Sizes.IsInCollection(sizeId)) {
-                        size = item.Sizes[sizeId];
-                    }
-                    if (size == null) {
-                        throw new Exception(string.Format("O tamanho indicado [{0}] não existe.", sizeId));
-                    }
-                    transDetail.Size.Description = size.SizeName;
-                    transDetail.Size.SizeID = size.SizeID;
-                    transDetail.Size.SizeKey = size.SizeKey;
-                }
-            }
-            //
-            // Propriedades (números de série e lotes)
-            // ATENÇÃO: As regras de verificação das propriedades não estão implementadas na API. Deve ser a aplicação a fazer todas as validações necessárias
-            //          Como por exemplo a movimentação duplicada de números de série
-            // Verificar se estão ativadas no sistema e se foram marcadas no documento
-            if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
-                // O Artigo tem propriedades ?
-                if (item.PropertyEnabled) {
-                    // NOTA: Para o exemplo atual apenas queremos uma propriedade definida no artigo com o ID1 = "NS".
-                    //       Para outras propriedades e combinações, o código deve ser alterado em conformidade.
-                    if (item.PropertyID1.Equals("NS", StringComparison.CurrentCultureIgnoreCase)) {
-                        transDetail.ItemProperties.ResetValues();
-                        transDetail.ItemProperties.PropertyID1 = item.PropertyID1;
-                        transDetail.ItemProperties.PropertyID2 = item.PropertyID2;
-                        transDetail.ItemProperties.PropertyID3 = item.PropertyID3;
-                        transDetail.ItemProperties.ControlMode = item.PropertyControlMode;
-                        transDetail.ItemProperties.ControlType = item.PropertyControlType;
-                        transDetail.ItemProperties.UseExpirationDate = item.PropertyUseExpirationDate;
-                        transDetail.ItemProperties.UseProductionDate = item.PropertyUseProductionDate;
-                        transDetail.ItemProperties.ExpirationDateControl = item.PropertyExpirationDateControl;
-                        transDetail.ItemProperties.MaximumQuantity = item.PropertyMaximumQuantity;
-                        transDetail.ItemProperties.UsePriceOnProp1 = item.UsePriceOnProp1;
-                        transDetail.ItemProperties.UsePriceOnProp2 = item.UsePriceOnProp2;
-                        transDetail.ItemProperties.UsePriceOnProp3 = item.UsePriceOnProp3;
-                        //
-                        transDetail.ItemProperties.PropertyValue1 = serialNumberPropValue;
-                    }
-                }
-            }
-
-            transDetail.Graduation = item.Graduation;
-            transDetail.ItemTax = item.ItemTax;
-            transDetail.ItemTax2 = item.ItemTax2;
-            transDetail.ItemTax3 = item.ItemTax3;
-            //.WeightUnitOfMeasure = item.WeightUnitOfMeasure;
-            //.WeightMeasure = item.WeightMeasure;
-
-            transDetail.ItemType = item.ItemType;
-
-            if (item.ItemType == ItemTypeEnum.itmService || item.ItemType == ItemTypeEnum.itmInterestRate || item.ItemType == ItemTypeEnum.itmOtherProductOrService) {
-                transDetail.RetentionTax = item.WithholdingTaxRate;
-            }
-
-            item = null;
-            //
-            trans.Details.Add(transDetail);
+            TransactionClearUI();
+            return result;
         }
 
-        /// <summary>
-        /// Carrega um documento da base de dados e apresenta-o no ecran
-        /// </summary>
         private void TransactionGet(bool suspendedTransaction) {
-            Document doc = null;
-            string transDoc = txtTransDoc.Text;
-            string transSerial = txtTransSerial.Text;
-            double transDocNumber = 0;
-            double.TryParse(txtTransDocNumber.Text, out transDocNumber);
 
-            // trans pode ser SaleTransaction ou BuyTransaction
-            // dynamic permite utilizar as propriedades como num 'object' do VB6, sem que o compilador valide propriedades e métodos no momento da compilação
-            dynamic trans = null;
-
-            if (systemSettings.WorkstationInfo.Document.IsInCollection(transDoc)) {
-                doc = systemSettings.WorkstationInfo.Document[transDoc];
-            }
-            if (doc == null) {
-                throw new Exception(string.Format(" O documento [{0}] não existe.", transDoc));
-            }
-
-            if (suspendedTransaction) {
-                if (bsoItemTransaction.LoadSuspendedTransaction(transSerial, transDoc, transDocNumber)) {
-                    trans = bsoItemTransaction.Transaction;
-                }
-                else {
-                    MessageBox.Show(string.Format("Não foi encontrada a transação em preparação: {0} {1}/{2}", transDoc, transSerial, transDocNumber),
-                                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+            if (rbTransBuySell.Checked) {
+                var trans = _buySaleTransactionController.Load(suspendedTransaction, txtTransDoc.Text, txtTransSerial.Text, txtTransDocNumber.Text.ToShort());
+                var Transaction = new GenericTransaction(trans);
+                TransactionShow(Transaction);
             }
             else {
-                switch (doc.TransDocType) {
-                    case DocumentTypeEnum.dcTypeSale:
-                    case DocumentTypeEnum.dcTypePurchase:
-                        if (!bsoItemTransaction.LoadItemTransaction(doc.TransDocType, transSerial, transDoc, transDocNumber)) {
-                            throw new Exception(string.Format("Não foi possível ler o documento [{0} {1}/{2}]", transDoc, transSerial, transDocNumber));
-                        }
-                        trans = bsoItemTransaction.Transaction;
-                        rbTransBuySell.Checked = true;
-                        break;
-
-                    case DocumentTypeEnum.dcTypeStock:
-                        if (!bsoStockTransaction.LoadStockTransaction(doc.TransDocType, transSerial, transDoc, transDocNumber)) {
-                            throw new Exception(string.Format("Não foi possível ler o documento [{0} {1}/{2}]", transDoc, transSerial, transDocNumber));
-                        }
-                        trans = bsoStockTransaction.Transaction;
-
-                        if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose) {
-                            rbTransStockCompose.Checked = true;
-                        }
-                        else {
-                            if (doc.StockBehavior == StockBehaviorEnum.sbStockDecompose) {
-                                rbTransStockDecompose.Checked = true;
-                            }
-                            else {
-                                rbTransStock.Checked = true;
-                            }
-                        }
-                        break;
-
-                    default:
-                        throw new Exception(string.Format(" O documento [{0}] é de um tipo não suportado por este exemplo: {1}.", transDoc, doc.TransDocType));
-                }
+                var trans = _stockTransactionController.Load(txtTransDoc.Text, txtTransSerial.Text, txtTransDocNumber.Text.ToShort());
+                var Transaction = new GenericTransaction(trans);
+                TransactionShow(Transaction);
             }
-
-            var Transaction = new GenericTransaction(trans);
-            TransactionShow(Transaction);
         }
 
-        private void TransactionClear() {
+        private void TransactionClearUI() {
             RepClear();
             chkTransModuleProps.Checked = false;
             chkTransModuleSizeColor.Checked = false;
@@ -1932,506 +1121,337 @@ namespace Sage50c.API.Sample {
             TransClearL2();
         }
 
-        private short GetWeekOfYear(DateTime currentDate) {
-            short lotRetWeek = (short)System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(currentDate,
-                                                                                                             System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule,
-                                                                                                            System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
-            if (lotRetWeek < 52) {
-                lotRetWeek++;
+        #endregion
+
+        #region BUY/SALE TRANSACTION
+
+        private void TransactionFill() {
+            _buySaleTransactionController.BsoItemTransaction.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.TransDocType = ItemTransactionHelper.TransGetType(txtTransDoc.Text);
+            _buySaleTransactionController.BsoItemTransaction.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+            _buySaleTransactionController.BsoItemTransaction.Transaction.CreateDate = txtTransDate.Text.ToDateTime();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.CreateTime = txtTransTime.Text.ToDateTime();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.ATCUD = txtAtcud.Text;
+            _buySaleTransactionController.BsoItemTransaction.Transaction.QRCode = txtQrCode.Text;
+            _buySaleTransactionController.BsoItemTransaction.PartyID = txtTransPartyId.Text.ToShort();
+            _buySaleTransactionController.BsoItemTransaction.Transaction.Comments = "Gerado por " + Application.ProductName;
+            _buySaleTransactionController.BsoItemTransaction.Transaction.WorkstationStamp.SessionID = APIEngine.SystemSettings.TillSession.SessionID;
+            _buySaleTransactionController.BsoItemTransaction.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
+            _buySaleTransactionController.BsoItemTransaction.PaymentDiscountPercent1 = txtTransGlobalDiscount.Text.ToShort();
+            _buySaleTransactionController.BsoItemTransaction.UserPermissions = systemSettings.User;
+        }
+
+        private ItemTransactionDetail TransactionDetailFill() {
+            ItemTransactionDetail details = new ItemTransactionDetail();
+            details.ItemID = txtTransItemL1.Text;
+            details.Quantity = txtTransQuantityL1.Text.ToShort();
+            if (_buySaleTransactionController.BsoItemTransaction.Transaction.TransactionTaxIncluded) {
+                details.TaxIncludedPrice = txtTransUnitPriceL1.Text.ToDouble();
             }
-            return lotRetWeek;
+            details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
+            details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
+            details.UnitOfSaleID = txtTransUnL1.Text;
+            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
+                details.Color.ColorID = txtTransColor1.Text.ToShort();
+                details.Size.SizeID = txtTransColor1.Text.ToShort();
+            }
+            if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
+                details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
+                details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+            }
+            return details;
+        }
+
+        private ItemTransactionDetail TransactionDetailFillL2() {
+            ItemTransactionDetail details = new ItemTransactionDetail();
+            details.ItemID = txtTransItemL2.Text;
+            details.Quantity = txtTransQuantityL2.Text.ToShort();
+            if (_buySaleTransactionController.BsoItemTransaction.Transaction.TransactionTaxIncluded) {
+                details.TaxIncludedPrice = txtTransUnitPriceL2.Text.ToDouble();
+            }
+            details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
+            details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
+            details.UnitOfSaleID = txtTransUnL1.Text;
+            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
+                details.Color.ColorID = txtTransColor1.Text.ToShort();
+                details.Size.SizeID = txtTransColor1.Text.ToShort();
+            }
+            if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
+                details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
+                details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+            }
+            return details;
+        }
+
+        private SimpleDocumentList TransactionCreateObjDocument() {
+            SimpleDocument objDocument;
+            SimpleDocumentList objDocumentList = new SimpleDocumentList();
+            SimpleItemDetail objDocumentDetailsList;
+
+            double Convert_Double = 0;
+
+            //Begin manual Share amount 
+            if (txtShareTransDocNumber_R1.Text.Length > 0) {
+                objDocument = new SimpleDocument();
+                objDocument.TransSerial = txtShareTransSerial_R1.Text;
+                objDocument.TransDocument = txtShareTransDocument_R1.Text;
+                double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
+                objDocument.TransDocNumber = Convert_Double;
+                double.TryParse(txtShareAmount_R1.Text, out Convert_Double);
+                objDocument.TotalTransactionAmount = Convert_Double;
+                objDocument.CurrencyID = txtTransCurrency.Text;
+                objDocument.CurrencyExchange = 1;
+                objDocument.CurrencyFactor = 1;
+
+
+                //ADD Line 1
+                if (txtAmout_R1_L1.Text.Length > 0) {
+                    objDocumentDetailsList = new SimpleItemDetail();
+                    objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
+                    objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
+                    double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
+                    objDocumentDetailsList.DestinationTransDocNumber = Convert_Double;
+                    objDocumentDetailsList.DestinationLineItemID = 1;
+                    objDocumentDetailsList.ItemID = LblL1.Text;
+                    double.TryParse(txtAmout_R1_L1.Text, out Convert_Double);
+                    objDocumentDetailsList.UnitPrice = Convert_Double;
+                    objDocumentDetailsList.Quantity = 1;
+                    //Line KEY
+                    objDocumentDetailsList.ItemSearchKey = objDocumentDetailsList.DestinationTransSerial + "|" + objDocumentDetailsList.DestinationTransDocument + "|" + objDocumentDetailsList.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(objDocumentDetailsList.DestinationLineItemID) + "|" + objDocumentDetailsList.ItemID + "|" + objDocumentDetailsList.Color.ColorID + "|" + objDocumentDetailsList.Size.SizeID;
+                    //Add Line 1 to document detail
+                    objDocument.Details.Add(objDocumentDetailsList);
+                }
+
+                //ADD Line 2
+                if (txtAmout_R1_L2.Text.Length > 0) {
+                    objDocumentDetailsList = new SimpleItemDetail();
+                    objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
+                    objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
+                    double.TryParse(txtShareTransDocNumber_R1.Text, out Convert_Double);
+                    objDocumentDetailsList.DestinationTransDocNumber = Convert_Double;
+                    objDocumentDetailsList.DestinationLineItemID = 2;
+                    objDocumentDetailsList.ItemID = LblL2.Text;
+                    double.TryParse(txtAmout_R1_L2.Text, out Convert_Double);
+                    objDocumentDetailsList.UnitPrice = Convert_Double;
+                    objDocumentDetailsList.Quantity = 1;
+                    //Line KEY
+                    objDocumentDetailsList.ItemSearchKey = objDocumentDetailsList.DestinationTransSerial + "|" + objDocumentDetailsList.DestinationTransDocument + "|" + objDocumentDetailsList.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(objDocumentDetailsList.DestinationLineItemID) + "|" + objDocumentDetailsList.ItemID + "|" + objDocumentDetailsList.Color.ColorID + "|" + objDocumentDetailsList.Size.SizeID;
+                    //Add Line 2 to document detail
+                    objDocument.Details.Add(objDocumentDetailsList);
+
+                    //Add Document to list of Documento to Share amount 
+                }
+
+                objDocumentList.Add(objDocument);
+
+            }
+            //End manual Share amount 
+
+            //Begin Automatic Share amount 
+            //if it does not have details, divide the value in proportion to the value of the line
+            if (txtShareTransDocNumber_R2.Text.Length > 0) {
+                objDocument = new SimpleDocument();
+                objDocument.TransSerial = txtShareTransSerial_R2.Text;
+                objDocument.TransDocument = txtShareTransDocument_R2.Text;
+                double.TryParse(txtShareTransDocNumber_R2.Text, out Convert_Double);
+                objDocument.TransDocNumber = Convert_Double;
+                double.TryParse(txtShareAmount_R2.Text, out Convert_Double);
+                objDocument.TotalTransactionAmount = Convert_Double;
+                objDocument.CurrencyID = txtTransCurrency.Text;
+
+                //Add Document to list of Documento to Share amount 
+                objDocumentList.Add(objDocument);
+
+            }
+            //End Automatic Share amount
+
+            return objDocumentList;
+
+        }
+
+        private bool TransactionBuySaleUpdate(bool suspended) {
+            var result = false;
+            transactionError = false;
+            TransactionFill();
+
+            S50cSys22.Document document = systemSettings.WorkstationInfo.Document[_buySaleTransactionController.BsoItemTransaction.Transaction.TransDocument];
+            DocumentsSeries series = systemSettings.DocumentSeries[_buySaleTransactionController.BsoItemTransaction.Transaction.TransSerial];
+
+            //Clear lines
+            int i = 1;
+            while (_buySaleTransactionController.BsoItemTransaction.Transaction.Details.Count > 0) {
+                _buySaleTransactionController.BsoItemTransaction.Transaction.Details.Remove(ref i);
+            }
+
+            _buySaleTransactionController.BsoItemTransaction.UserPermissions = systemSettings.User;
+            _buySaleTransactionController.AddDetailsItem(document, txtTransTaxRateL1.Text.ToDouble(), TransactionDetailFill());
+            //If exist 2 items add second
+            if (!string.IsNullOrEmpty(txtTransItemL2.Text)) {
+                _buySaleTransactionController.AddDetailsItem(document, txtTransTaxRateL2.Text.ToDouble(), TransactionDetailFillL2());
+            }
+
+            if (suspended) {
+                _buySaleTransactionController.BsoItemTransaction.SuspendCurrentTransaction();
+            }
+            else {
+                //Exemplo da Repartição de Custos
+                //INICIO
+                if (APIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
+                    _buySaleTransactionController.BsoItemTransaction.Transaction.BuyShareOtherCostList = null;
+                    // Add Shares amount cost to  Transaction , BuyShareOtherCostList 
+                    _buySaleTransactionController.BsoItemTransaction.Transaction.BuyShareOtherCostList = TransactionCreateObjDocument();
+
+                }
+                //FIM
+                if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
+                    if (!SetExternalSignature(_buySaleTransactionController.BsoItemTransaction.Transaction)) {
+                        MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                result = _buySaleTransactionController.Save(suspended);
+                // Definir a assinatura de um sistema externo
+            }
+
+            //Unsubscribe from event
+            _buySaleTransactionController.BsoItemTransaction.TenderIDChanged -= bsoItemTransaction_TenderIDChanged;
+
+            btnPrint.Enabled = false;
+            _buySaleTransactionController.Print(chkPrintPreview.Checked, optPrintOptions1.Checked);
+            btnPrint.Enabled = true;
+            TransactionClearUI();
+            return result;
+        }
+
+        void bsoItemTransaction_TenderIDChanged(ref short value) {
+            MessageBox.Show("bsoItemTransaction_TenderIDChanged");
         }
 
         #endregion
 
-        #region Stock
+        #region STOCK TRANSACTION
 
-        internal TransactionID TransactionStockUpdate(string transSerial, string transDocument, double transDocNumber, bool isNew) {
-            bool blnSaved = false;
-            TransactionID resultTransId = null;
+        private void TransactionStockFill() {
+            _stockTransactionController.BsoStockTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
+            _stockTransactionController.BsoStockTransaction.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
+            _stockTransactionController.BsoStockTransaction.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
+            _stockTransactionController.BsoStockTransaction.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+            _stockTransactionController.BsoStockTransaction.Transaction.TransDocType = ItemTransactionHelper.TransGetType(txtTransDoc.Text);
+            _stockTransactionController.BsoStockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
+            _stockTransactionController.BsoStockTransaction.Transaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
+            _stockTransactionController.BsoStockTransaction.Transaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
+            _stockTransactionController.BsoStockTransaction.Transaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime(DateTime.Now);
+            _stockTransactionController.BsoStockTransaction.PartyType = (short)ItemTransactionHelper.TransGetPartyType(cmbTransPartyType.SelectedIndex);
+            _stockTransactionController.BsoStockTransaction.BaseCurrency = txtTransCurrency.Text;
+            _stockTransactionController.BsoStockTransaction.Transaction.Comments = "Gerado por: " + Application.ProductName;
+            _stockTransactionController.BsoStockTransaction.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+        }
 
-            if (!APIEngine.SystemSettings.WorkstationInfo.Document.IsInCollection(transDocument)) {
-                throw new Exception(string.Format("O documento [{0}] não existe ou não se encontra preenchido.", transDocument));
-            }
-
-            DocumentsSeries transSeries = null;
-            if (APIEngine.SystemSettings.DocumentSeries.IsInCollection(transSerial)) {
-                transSeries = APIEngine.SystemSettings.DocumentSeries[transSerial];
-                if (transSeries.SeriesType != SeriesTypeEnum.SeriesExternal) {
-                    throw new Exception("Apenas são permitidas séries externas.");
+        private ItemTransactionDetail TransactionStockDetailsFill() {
+            ItemTransactionDetail details = new ItemTransactionDetail();
+            details.ItemID = txtTransItemL1.Text;
+            if (dsoCache.ItemProvider.ItemExist(txtTransItemL1.Text)) {
+                if (dsoCache.WarehouseProvider.WarehouseExists(txtTransWarehouseL1.Text.ToShort())) {
+                    details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
+                    details.UnitOfSaleID = txtTransUnL1.Text;
+                    details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
+                    details.Quantity = txtTransQuantityL1.Text.ToDouble();
+                    return details;
                 }
-            }
-            if (transSeries == null) {
-                throw new Exception("A série indicada não existe");
-            }
-            //
-            var transType = ItemTransactionHelper.TransGetType(transDocument);
-            if (transType != DocumentTypeEnum.dcTypeStock) {
-                throw new Exception(string.Format("O documento indicado [{0}] não é um documento de stock", transDocument));
-            }
-
-            var objDSOStockTransaction = new DSOStockTransaction();
-
-            //var DocTransStatus = TransStatusEnum.stNormal;
-            blnSaved = false;
-
-            bsoStockTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
-            if (isNew) {
-                bsoStockTransaction.InitNewTransaction(transDocument, transSerial);
-                if (transDocNumber > 0) {
-                    bsoStockTransaction.Transaction.TransDocNumber = transDocNumber;
+                else {
+                    throw new Exception($"O Armazém [{txtTransWarehouseL1.Text}] não foi entrado.");
                 }
             }
             else {
-                var loadResult = bsoStockTransaction.LoadStockTransaction(transType, transSerial, transDocument, transDocNumber);
-                if (!loadResult) {
-                    throw new Exception(string.Format("Não foi possível carregar o documento {0} {1}/{2}.", transDocument, transSerial, transDocNumber));
+                throw new Exception($"O Artigo [{txtTransItemL1.Text}] não foi entrado.");
+            }
+        }
+
+        private ItemTransactionDetail TransactionStockDetailsFillL2() {
+            ItemTransactionDetail details = new ItemTransactionDetail();
+            details.ItemID = txtTransItemL2.Text;
+            if (dsoCache.ItemProvider.ItemExist(txtTransItemL2.Text)) {
+                if (dsoCache.WarehouseProvider.WarehouseExists(txtTransWarehouseL2.Text.ToShort())) {
+                    details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
+                    details.UnitOfSaleID = txtTransUnL2.Text;
+                    details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
+                    details.Quantity = txtTransQuantityL2.Text.ToDouble();
+                    return details;
+                }
+                else {
+                    throw new Exception($"O Armazém [{txtTransWarehouseL2.Text}] não foi entrado.");
                 }
             }
-            var bsoCommonTransaction = bsoStockTransaction.BSOCommonTransaction;
-
-            //Taxes included?
-            bool transTaxIncluded = chkTransTaxIncluded.Checked;
-            bsoStockTransaction.TransactionTaxIncluded = transTaxIncluded;
-            bsoCommonTransaction.TransactionTaxIncluded = transTaxIncluded;
-            //
-            bsoCommonTransaction.TransactionType = DocumentTypeEnum.dcTypeStock;
-            bsoStockTransaction.Transaction.TransDocType = DocumentTypeEnum.dcTypeStock;
-            //
-            DateTime createDate = txtTransDate.Text.ToDateTime(DateTime.Now);
-            bsoStockTransaction.createDate = createDate;
-            //bsoStockTransaction.CheckCreateDate = createDate;
-            bsoStockTransaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
-            bsoStockTransaction.ActualDeliveryDate = createDate;
-            //
-            // Descomentar a linha seguiinte para indicar uma referência livre
-            //bsoStockTransaction.ContractReferenceNumber = "External REF"
-
-            //Party RELATED INFO (can be ignored)
-            PartyTypeEnum partyType = ItemTransactionHelper.TransGetPartyType(cmbTransPartyType.SelectedIndex);
-            bsoStockTransaction.PartyType = (short)partyType;
-            double partyId = txtTransPartyId.Text.ToDouble();
-            if (bsoStockTransaction.CheckPartyID(partyId)) {
-                bsoStockTransaction.PartyID = partyId;
+            else {
+                throw new Exception($"O Artigo [{txtTransItemL2.Text}] não foi entrado.");
             }
-            //TODO: Verify
-            //bsoCommonTransaction.CountryID = APIEngine.SystemSettings.SystemInfo.DefaultCountryID;
-            //bsoCommonTransaction.TaxRegionID = APIEngine.SystemSettings.SystemInfo.TaxRegionID;
-            bsoCommonTransaction.EntityFiscalStatusID = bsoStockTransaction.Transaction.PartyFiscalStatus;
-            //------------> ZONA
-            //------------> MOEDA
-            var currency = APIEngine.DSOCache.CurrencyProvider.GetCurrency(txtTransCurrency.Text);
-            if (currency == null) {
-                currency = APIEngine.SystemSettings.BaseCurrency;
-            }
-            bsoStockTransaction.BaseCurrency = currency.CurrencyID;
-            bsoStockTransaction.BaseCurrencyExchange = currency.BuyExchange;
+        }
 
-            // Observações
-            // Modificar para acrescentar ou retirar observações livres
-            bsoStockTransaction.Transaction.Comments = "Gerado por: " + Application.ProductName;
+        private bool TransactionStockUpdate() {
+            var result = false;
+            transactionError = false;
+            TransactionStockFill();
 
-            var transStock = bsoStockTransaction.Transaction;
-
-            //-------------------------------------------------------------
-            // *** DETALHES
-            //-------------------------------------------------------------
             // Remover todas as linhas (caso da alteração)
             int i = 1;
-            while (transStock.Details.Count > 0) {
-                transStock.Details.Remove(ref i);
+            while (_stockTransactionController.BsoStockTransaction.Transaction.Details.Count > 0) {
+                _stockTransactionController.BsoStockTransaction.Transaction.Details.Remove(ref i);
             }
+
             StockQtyRuleEnum StockQtyRule = StockQtyRuleEnum.stkQtyNone;
-            if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose) {
+            if (_stockTransactionController.BsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose) {
                 StockQtyRule = StockQtyRuleEnum.stkQtyReceipt;
             }
             else {
-                if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                if (_stockTransactionController.BsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     StockQtyRule = StockQtyRuleEnum.stkQtyOutgoing;
                 }
             }
-            //
-            //Linha 1
-            string itemId = txtTransItemL1.Text;
-            if (!string.IsNullOrEmpty(itemId)) {
-                short wareHouseId = txtTransWarehouseL1.Text.ToShort();
-                string unitOfMovId = txtTransUnL1.Text;
-                double taxRate = txtTransTaxRateL1.Text.ToDouble();
-                double qty = txtTransQuantityL1.Text.ToDouble();
-                double unitPrice = txtTransUnitPriceL1.Text.ToDouble();
-                TransStockAddDetail(wareHouseId, itemId, unitOfMovId, taxRate, qty, unitPrice, StockQtyRule);
+
+            _stockTransactionController.BsoStockTransaction.UserPermissions = systemSettings.User;
+            _stockTransactionController.BsoStockTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
+
+            if (!string.IsNullOrEmpty(txtTransItemL1.Text)) {
+                //Add details
+                _stockTransactionController.AddDetailsStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, TransactionStockDetailsFill());
 
                 if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     var itemDetails = GetItemComponentList(1);
                     if (itemDetails != null) {
-
                         foreach (ItemTransactionDetail value in itemDetails) {
-                            TransStockAddDetail(wareHouseId, value.ItemID, value.UnitOfSaleID, taxRate, value.Quantity, value.UnitPrice, value.PhysicalQtyRule);
+                            _stockTransactionController.AddDetailsStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, TransactionStockDetailsFill());
+                            //TransStockAddDetail(taxRate, value.PhysicalQtyRule);
                         }
                     }
                 }
-
-
             }
-            //
-            // Linha 2
-            itemId = txtTransItemL2.Text.Trim();
-            if (!string.IsNullOrEmpty(itemId)) {
-                short wareHouseId = txtTransWarehouseL2.Text.ToShort();
-                string unitOfMovId = txtTransUnL2.Text;
-                double taxRate = txtTransTaxRateL2.Text.ToDouble();
-                double qty = txtTransQuantityL2.Text.ToDouble();
-                double unitPrice = txtTransUnitPriceL2.Text.ToDouble();
-                TransStockAddDetail(wareHouseId, itemId, unitOfMovId, taxRate, qty, unitPrice, StockQtyRule);
+            if (!string.IsNullOrEmpty(txtTransItemL2.Text)) {
+                //Add details
+                _stockTransactionController.AddDetailsStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, TransactionStockDetailsFillL2());
 
-                if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
-                    var itemDetails = GetItemComponentList(2);
+                if (_stockTransactionController.BsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                    var itemDetails = GetItemComponentList(1);
                     if (itemDetails != null) {
-
                         foreach (ItemTransactionDetail value in itemDetails) {
-                            TransStockAddDetail(wareHouseId, value.ItemID, value.UnitOfSaleID, taxRate, value.Quantity, value.UnitPrice, value.PhysicalQtyRule);
+                            _stockTransactionController.AddDetailsStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, TransactionStockDetailsFillL2());
+                            //TransStockAddDetail(taxRate, value.PhysicalQtyRule);
                         }
                     }
                 }
-
-            }
-            //
-            if (bsoStockTransaction.Transaction.Details.Count == 0) {
-                throw new Exception("O documento não tem linhas.");
-            }
-            //
-            //*** SAVE
-            if (!blnSaved) {
-                if (bsoStockTransaction.Transaction.Details.Count > 0) {
-                    // Colocar a false para não imprimir.
-                    // A Impressão não é atualmente suportada em .NET
-                    bool printDoc = false;
-
-                    //CalculateOutgoingQuantities (Documentos de Fabrico, Composição e Decomposição determinar o preço da materia prima entrada)
-                    bsoStockTransaction.Calculate(true, true, true);
-                    bsoStockTransaction.SaveDocumentEx(true, ref printDoc);
-
-                    resultTransId = new TransactionID();
-                    resultTransId.TransSerial = transStock.TransSerial;
-                    resultTransId.TransDocument = transStock.TransDocument;
-                    resultTransId.TransDocNumber = transStock.TransDocNumber;
-                }
-                else {
-                    throw new Exception("O documento não tem linhas");
-                }
-
-                ////Documento anulado -- Descomentar
-                //if (DocTransStatus == TransStatusEnum.stVoid) {
-                //    if (bsoStockTransaction.LoadStockTransaction(DocumentTypeEnum.dcTypeStock, transSerial, transDocument, transDocNumber)) {
-                //        objDSOStockTransaction.Delete(transStock);
-                //        blnSaved = true;
-                //    }
-                //    else
-                //        bsoStockTransaction.Transaction.TransStatus = TransStatusEnum.stVoid;
-                //}
-            }
-            bsoCommonTransaction = null;
-            objDSOStockTransaction = null;
-
-            return resultTransId;
-        }
-
-        internal void TransStockAddDetail(short warehouseId, string itemId, string unitOfSaleId, double itemTaxRate, double Quantity, double unitPrice, StockQtyRuleEnum StockQtyRule) {
-            StockTransaction stockTrans = bsoStockTransaction.Transaction;
-            BSOItemTransactionDetail BSOItemTransDetail = null;
-            // Motor dos detalhes (linhas)
-            BSOItemTransDetail = new BSOItemTransactionDetail();
-            BSOItemTransDetail.TransactionType = stockTrans.TransDocType;
-            // Utilizador e permissões
-            BSOItemTransDetail.UserPermissions = systemSettings.User;
-            BSOItemTransDetail.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
-            //
-            bsoStockTransaction.BSOStockTransactionDetail = BSOItemTransDetail;
-            BSOItemTransDetail = null;
-
-            double lngLineItemID = stockTrans.Details.Count + 1;
-
-            bool blnCanAddDetail = true;
-            var transDetail = new ItemTransactionDetail();
-            transDetail.BaseCurrency = stockTrans.BaseCurrency;
-            transDetail.CreateDate = stockTrans.CreateDate;
-            transDetail.ActualDeliveryDate = stockTrans.ActualDeliveryDate;
-            transDetail.PartyTypeCode = stockTrans.PartyTypeCode;
-            transDetail.PartyID = stockTrans.PartyID;
-            //
-            //*** WAREHOUSE
-            if (warehouseId > 0)
-                if (APIEngine.DSOCache.WarehouseProvider.WarehouseExists(warehouseId)) {
-                    transDetail.WarehouseID = warehouseId;
-                }
-                else {
-                    transDetail.WarehouseID = warehouseId;
-                }
-            else {
-                transDetail.WarehouseID = warehouseId;
-            }
-            //
-            transDetail.WarehouseOutgoing = transDetail.WarehouseID;
-            transDetail.WarehouseReceipt = transDetail.WarehouseID;
-            transDetail.PhysicalQtyRule = StockQtyRule;
-
-            ////***STOCK TRANSFER ONLY -- uncomment to set
-            //if (systemSettings.WorkstationInfo.Document[stockTrans.TransDocument].StockBehavior == StockBehaviorEnum.sbStockTransfer)
-            //    transDetail.WarehouseReceipt = bsoStockTrans.WarehouseReceipt;
-
-            ////    *** DESTINATION WAREHOUSE -- uncomment to set
-            //short warehouseReceiptId=2;
-            //if( dsoCache.WarehouseProvider.WarehouseExists(warehouseReceiptId) ){
-            //    transDetail.WarehouseReceipt = warehouseReceiptId;
-
-            //    if( transDetail.ComponentList !=null ){
-            //        foreach( ItemTransactionDetail transDetailSave in transDetail.ComponentList )
-            //            transDetailSave.WarehouseID = warehouseReceiptId;
-            //    }
-            //}
-
-            ////*** SOURCE WAREHOUSE -- uncomment to set
-            //short warehouseOutgoingId = 1;
-            //if( dsoCache.WarehouseProvider.WarehouseExists(warehouseOutgoingId) ){
-            //    transDetail.WarehouseOutgoing = warehouseOutgoingId;
-
-            //    if( systemSettings.WorkstationInfo.Document[stockTrans.TransDocument].StockBehavior == StockBehaviorEnum.sbStockTransfer ){
-            //        if( warehouseOutgoingId != transDetail.WarehouseID )
-            //            transDetail.WarehouseID = warehouseReceiptId;
-            //    }
-
-            //    if( transDetail.ComponentList!=null){
-            //        foreach( ItemTransactionDetail transDetailSave in transDetail.ComponentList )
-            //            transDetailSave.WarehouseID = warehouseOutgoingId;
-            //    }
-            //}
-
-            //LineItemId
-            transDetail.LineItemID = lngLineItemID;
-            //
-            //-----> INFORMAÇÕES DO PRODUTO
-            var item = APIEngine.DSOCache.ItemProvider.GetItemForTransactionDetail(itemId, transDetail.BaseCurrency);
-
-            if (item != null) {
-                transDetail.ItemID = item.ItemID;
-                transDetail.Description = item.Description;
-                transDetail.TaxableGroupID = item.TaxableGroupID;
-                transDetail.ItemType = item.ItemType;
-                transDetail.FamilyID = item.Family.FamilyID;
-                transDetail.UnitList = item.UnitList.Clone();
-
-                transDetail.WeightUnitOfMeasure = item.WeightUnitOfMeasure;
-                transDetail.WeightMeasure = item.WeightMeasure;
-                transDetail.Graduation = item.Graduation;
-                transDetail.ItemTax = item.ItemTax;
-                transDetail.ItemTax2 = item.ItemTax2;
-                transDetail.ItemTax3 = item.ItemTax3;
-                transDetail.ItemExtraInfo.ItemQuantityCalcFormula = item.ItemQuantityCalcFormula;
-
-                if (item.UnitList.IsInCollection(unitOfSaleId)) {
-                    transDetail.UnitOfSaleID = unitOfSaleId;
-                }
-                else {
-                    transDetail.UnitOfSaleID = item.GetDefaultUnitForTransaction(DocumentTypeEnum.dcTypeStock);
-                }
-
-                //*** PROPERTIES -- Uncomment to use
-                //if(item.PropertyEnabled){
-                //    transDetail.ItemProperties.PropertyID1 = item.PropertyID1;
-                //    transDetail.ItemProperties.PropertyID2 = item.PropertyID2;
-                //    transDetail.ItemProperties.PropertyID3 = item.PropertyID3;
-                //    transDetail.ItemProperties.UsePriceOnProp1 = item.UsePriceOnProp1;
-                //    transDetail.ItemProperties.UsePriceOnProp2 = item.UsePriceOnProp2;
-                //    transDetail.ItemProperties.UsePriceOnProp3 = item.UsePriceOnProp3;
-                //    transDetail.ItemProperties.ControlType = item.PropertyControlType;
-                //    transDetail.ItemProperties.ControlMode = item.PropertyControlMode;
-                //    transDetail.ItemProperties.UseExpirationDate = item.PropertyUseExpirationDate;
-                //    transDetail.ItemProperties.UseProductionDate = item.PropertyUseProductionDate;
-                //    transDetail.ItemProperties.ExpirationDateControl = item.PropertyExpirationDateControl;
-                //    transDetail.ItemProperties.MaximumQuantity = item.PropertyMaximumQuantity;
-                //    transDetail.ItemProperties.ResetValues();
-
-                //    transDetail.ItemProperties.PropertyValue1 = ... value 1
-                //    transDetail.ItemProperties.PropertyValue1_Key2 = ... key 2
-                //    transDetail.ItemProperties.PropertyValue1_Key3 = ... key 3
-                //    transDetail.ItemProperties.PropertyValue2 = ... value 2
-                //    transDetail.ItemProperties.PropertyValue2_Key2 = ... key 2
-                //    transDetail.ItemProperties.PropertyValue2_Key3 = ... key 3
-                //    transDetail.ItemProperties.PropertyValue3 = ... value 3
-                //    transDetail.ItemProperties.PropertyValue3_Key2 = ... key 2
-                //    transDetail.ItemProperties.PropertyValue3_Key3 = ... key 3
-                //}
-            }
-            else if (itemId == "=") {
-                //*** COMMENT LINE
-                item = new Item();
-                //ItemId: //=// represents comment line
-                item.ItemID = "=";
-                item.Description = "Só descrição";
-                item.ItemType = ItemTypeEnum.itmComments;
-                item.UnitOfSaleID = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
-                item.AlternativeUnitOfStock = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
-                item.DefaultStockUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
-                item.DefaultBuyUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
-                item.DefaultSellingUnit = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit;
-                item.TaxableGroupID = APIEngine.SystemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
-                item.CurrencyID = APIEngine.SystemSettings.BaseCurrency.CurrencyID;
-                item.CurrencyExchange = APIEngine.SystemSettings.BaseCurrency.SaleExchange;
-                item.CurrencyFactor = APIEngine.SystemSettings.BaseCurrency.EuroConversionRate;
-            }
-            else {
-                throw new Exception(string.Format("O Artigo [{0}] não foi entrado.", itemId));
             }
 
-            //-----> Taxa de IVA
-            transDetail.TaxableGroupID = APIEngine.DSOCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(itemTaxRate,
-                                                                                                           APIEngine.SystemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
-                                                                                                           APIEngine.SystemSettings.SystemInfo.TaxRegionID);
-
-            //-----> Cores e Tamanhos. Uncomment to SET
-            //short ColorId = 3;
-            //short SizeId = 4;
-            //if( item != null ){
-            //    if( item.Colors.Count > 0 && item.Sizes.Count > 0 ){
-            //        var color = dsoCache.ColorProvider.GetColor(ColorId);
-            //        if( color !=null )
-            //            transDetail.Color = color;
-
-            //        var size = dsoCache.SizeProvider.GetSize(SizeId);
-            //        if( size != null )
-            //            transDetail.Size = size;
-
-            //        if( transDetail.Color.ColorID == 0 ){
-            //            foreach( ItemColor itemColor in item.Colors ){
-            //                color = dsoCache.ColorProvider.GetColor(itemColor.ColorID);
-            //                if( color !=null )
-            //                    transDetail.Color = color;
-            //                break;
-            //            }
-            //        }
-
-            //        if( transDetail.Size.SizeID == 0){
-            //            foreach( ItemSize itemSize in item.Sizes ){
-            //                size = dsoCache.SizeProvider.GetSize(itemSize.SizeId);
-            //                if( size !=null )
-            //                    transDetail.Size = size;
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
-            //
-            transDetail.SetUnitOfSaleID(transDetail.UnitOfSaleID);
-
-            //Formulas
-            double Quantity1 = 0;
-            double Quantity2 = 0;
-            double Quantity3 = 0;
-            double Quantity4 = 0;
-
-            ////*** Packs -- Uncomment to set
-            //double packQuantity=10;
-            //if( transDetail.UnitConversion != 0 && packQuantity != 0)
-            //    transDetail.PackQuantity = packQuantity;
-
-            bool blnHaveSetUnits = false;
-            ////*** Units -- uncomment to set
-            //double units = 10;
-            //if( units != 0){
-            //    transDetail.SetUnits(units);
-            //    blnHaveSetUnits = true;
-            //}
-
-            transDetail.Quantity1 = Quantity1;
-            transDetail.Quantity2 = Quantity2;
-            transDetail.Quantity3 = Quantity3;
-            transDetail.Quantity4 = Quantity4;
-            if (!blnHaveSetUnits) {
-                if (!string.IsNullOrEmpty(transDetail.ItemExtraInfo.ItemQuantityCalcFormula) && APIEngine.SystemSettings.SystemInfo.UseUnitWithFormulaItems) {
-                    transDetail.SetQuantity(StockHelper.CalculateQuantity(transDetail.ItemExtraInfo.ItemQuantityCalcFormula, transDetail, true));
-                }
-                else {
-                    transDetail.SetQuantity(StockHelper.CalculateQuantity(null, transDetail, true));
-                }
-            }
-            //    
-            if (!blnHaveSetUnits) {
-                transDetail.SetQuantity(Quantity);
-            }
-            transDetail.Description = item.Description;     // OR "Custom description"
-            transDetail.Comments = "Observações de linha: Gerada por" + Application.ProductName;
-
-            //*** UnitPrice
-            if (bsoStockTransaction.TransactionTaxIncluded) {
-                transDetail.TaxIncludedPrice = unitPrice;
-            }
-            else {
-                transDetail.UnitPrice = unitPrice;
-            }
-            //
-            // Descomentar para indicar desconto na linha
-            //transDetail.DiscountPercent = 10;
-            //
-            ////Desconto cumulativo - Descomentar para indicar
-            //transDetail.CumulativeDiscountPercent1 = 1
-            //transDetail.CumulativeDiscountPercent2 = 2
-            //transDetail.CumulativeDiscountPercent3 = 3
-
-            S50cUtil22.MathFunctions mathUtil = new MathFunctions();
-
-            if (transDetail.DiscountPercent == 0 && (transDetail.CumulativeDiscountPercent1 != 0 || transDetail.CumulativeDiscountPercent2 != 0 || transDetail.CumulativeDiscountPercent3 != 0)) {
-                transDetail.DiscountPercent = mathUtil.GetCumulativeDiscount(transDetail.CumulativeDiscountPercent1, transDetail.CumulativeDiscountPercent2, transDetail.CumulativeDiscountPercent3);
-            }
-
-            if (transDetail.DiscountPercent != 0 && (transDetail.CumulativeDiscountPercent1 == 0 && transDetail.CumulativeDiscountPercent2 == 0 && transDetail.CumulativeDiscountPercent3 == 0)) {
-                transDetail.CumulativeDiscountPercent1 = transDetail.DiscountPercent;
-            }
-
-            ////*** Kit ITEMS -- Uncomment to use
-            //if( item != null ){
-            //    if( item.ItemType == ItemTypeEnum.itmKit){
-            //        transDetail.ComponentList = bsoStockTrans.BSOCommonTransaction.GetComponentList(transDetail, item.ItemCollection, transDetail.Quantity, item.NeededComponents, item.UseComponentPrices, "PCUP", 0);
-            //    }
-            //}
-            //transDetail.ItemExtraInfo.DoNotGroup = true;
-
-            //*** PROPERTIES
-            if (transDetail.ItemProperties.HasPropertyValues) {
-                APIEngine.DSOCache.ItemPropertyProvider.GetItemPropertyStock(transDetail.ItemID, transDetail.WarehouseID, transDetail.ItemProperties);
-            }
-
-            //*** Delivery time -- Uncomment to set
-            //transDetail.RequiredDeliveryDateTime = DateTime.Now.AddDays(10);  // Hoje + 10 dias
-
-            if (blnCanAddDetail) {
-                bool calculate = true;
-                bsoStockTransaction.AddDetail(transDetail, ref calculate);
-            }
-            item = null;
+            result = _stockTransactionController.Save();
+            TransactionClearUI();
+            return result;
         }
 
         #endregion
 
-        private void btnClear_Click(object sender, EventArgs e) {
-            switch (tabEntities.SelectedIndex) {
-                case 0: ItemClear(false); break;
-                case 1: CustomerClear(); break;
-                case 2: SupplierClear(); break;
-                case 3: TransactionClear(); break;
-                case 4: AccountTransactionClear(); break;
-                case 5: UnitOfMeasureClear(); break;
-            }
-        }
-
-        private void chkTransModuleProps_CheckedChanged(object sender, EventArgs e) {
-            pnlTransModuleProp.Enabled = chkTransModuleProps.Checked;
-        }
-
-        private void chkTransModuleSizeColor_CheckedChanged(object sender, EventArgs e) {
-            pnlTransModuleSizeColor.Enabled = chkTransModuleSizeColor.Checked;
-        }
-
-        #region Account documents
+        #region ACCOUNT TRANSACTION
 
         /// <summary>
         /// Collects the data from the UI
@@ -2451,23 +1471,23 @@ namespace Sage50c.API.Sample {
 
                 var accountUsed = cmbRecPeg.SelectedIndex == 0 ? AccountUsedEnum.auCustomerLedgerAccount : AccountUsedEnum.auSupplierLedgerAccount;
 
-                accountTransactionController.Create(accountUsed, transSerial, transDoc, transDocNumber);
-                accountTransactionController.SetPartyID(partyId);
+                _accountTransactionController.Create(accountUsed, transSerial, transDoc, transDocNumber);
+                _accountTransactionController.SetPartyID(partyId);
             }
             else {
-                accountTransactionController.Load(transSerial, transDoc, transDocNumber);
+                _accountTransactionController.Load(transSerial, transDoc, transDocNumber);
             }
 
-            accountTransactionController.SetLedgerAccount(ACCOUNT_ID, partyId);
+            _accountTransactionController.SetLedgerAccount(ACCOUNT_ID, partyId);
 
             // Remove all the transaction details if updating
-            while (accountTransactionController.AccountTransManager.Transaction.Details.Count > 0) {
-                accountTransactionController.AccountTransManager.Transaction.Details.Remove(1);
+            while (_accountTransactionController.AccountTransManager.Transaction.Details.Count > 0) {
+                _accountTransactionController.AccountTransManager.Transaction.Details.Remove(1);
             }
 
-            accountTransactionController.SetAccountID(ACCOUNT_ID);
-            accountTransactionController.SetBaseCurrencyID(txtAccountTransDocCurrency.Text);
-            accountTransactionController.SetCreateDate(createDate);
+            _accountTransactionController.SetAccountID(ACCOUNT_ID);
+            _accountTransactionController.SetBaseCurrencyID(txtAccountTransDocCurrency.Text);
+            _accountTransactionController.SetCreateDate(createDate);
 
             // Transaction detail line 1
             string docId = txtAccountTransDocL1.Text;
@@ -2475,7 +1495,7 @@ namespace Sage50c.API.Sample {
             double docNumber = txtAccountTransDocNumberL1.Text.ToDouble();
             double paymentValue = txtAccountTransDocValueL1.Text.ToDouble();
             if (paymentValue > 0) {
-                accountTransactionController.AddDetail(docId, docSeries, docNumber, 0, paymentValue);
+                _accountTransactionController.AddDetail(docId, docSeries, docNumber, 0, paymentValue);
             }
 
             // Transaction detail line 2
@@ -2484,20 +1504,20 @@ namespace Sage50c.API.Sample {
             docNumber = txtAccountTransDocNumberL2.Text.ToDouble();
             paymentValue = txtAccountTransDocValueL2.Text.ToDouble();
             if (paymentValue > 0) {
-                accountTransactionController.AddDetail(docId, docSeries, docNumber, 0, paymentValue);
+                _accountTransactionController.AddDetail(docId, docSeries, docNumber, 0, paymentValue);
             }
 
-            var transaction = accountTransactionController.AccountTransManager.Transaction;
+            var transaction = _accountTransactionController.AccountTransManager.Transaction;
 
             // Abort if the document doesn't have any lines
             if (transaction.Details.Count == 0) {
                 throw new Exception("O documento não tem linhas.");
             }
 
-            transaction.TenderLineItems = accountTransactionController.GetTenderLineItems(txtAccountTransPaymentId.Text);
+            transaction.TenderLineItems = _accountTransactionController.GetTenderLineItems(txtAccountTransPaymentId.Text);
 
             // Ensure the till is open
-            accountTransactionController.AccountTransManager.EnsureOpenTill(transaction.Till.TillID);
+            _accountTransactionController.AccountTransManager.EnsureOpenTill(transaction.Till.TillID);
         }
 
         /// <summary>
@@ -2506,7 +1526,7 @@ namespace Sage50c.API.Sample {
         private TransactionID AccountTransactionInsert() {
 
             AccountTransFill(true);
-            var transactionID = accountTransactionController.Save();
+            var transactionID = _accountTransactionController.Save();
             return transactionID;
         }
 
@@ -2523,9 +1543,9 @@ namespace Sage50c.API.Sample {
             AccountTransactionClear();
 
             // Load the transaction
-            accountTransactionController.Load(transSerial, transDoc, transDocNumber);
+            _accountTransactionController.Load(transSerial, transDoc, transDocNumber);
 
-            var accountTrans = accountTransactionController.AccountTransManager.Transaction;
+            var accountTrans = _accountTransactionController.AccountTransManager.Transaction;
             txtAccountTransDoc.Text = accountTrans.TransDocument;
             txtAccountTransDocCurrency.Text = accountTrans.BaseCurrency.CurrencyID;
             txtAccountTransDocNumber.Text = accountTrans.TransDocNumber.ToString();
@@ -2572,7 +1592,7 @@ namespace Sage50c.API.Sample {
         private TransactionID AccountTransactionUpdate() {
 
             AccountTransFill(false);
-            var transactionID = accountTransactionController.Save();
+            var transactionID = _accountTransactionController.Save();
             return transactionID;
         }
 
@@ -2585,8 +1605,8 @@ namespace Sage50c.API.Sample {
             string transDoc = txtAccountTransDoc.Text.ToUpper();
             double transDocNumber = txtAccountTransDocNumber.Text.ToDouble();
 
-            accountTransactionController.Load(transSerial, transDoc, transDocNumber);
-            var transactionID = accountTransactionController.Remove(transSerial, transDoc, transDocNumber, Application.ProductName);
+            _accountTransactionController.Load(transSerial, transDoc, transDocNumber);
+            var transactionID = _accountTransactionController.Remove(transSerial, transDoc, transDocNumber, Application.ProductName);
             return transactionID;
         }
 
@@ -2707,6 +1727,237 @@ namespace Sage50c.API.Sample {
 
         #endregion
 
+        #region UNIT OF MEASURE
+
+        /// <summary>
+        /// Loads a unit of measure with the quicksearch result
+        /// </summary>
+        private void btnUnitOfMeasureBrow_Click(object sender, EventArgs e) {
+
+            var unitOfMeasureID = QuickSearchHelper.UnitOfMeasureFind();
+            if (!string.IsNullOrEmpty(unitOfMeasureID)) {
+                UnitOfMeasureGet(unitOfMeasureID);
+            }
+        }
+
+        /// <summary>
+        /// Fills the unit of measure with data from the UI
+        /// </summary>
+        private void UnitOfMeasureFill(bool isNew) {
+
+            if (isNew) {
+                _unitOfMeasureController.Create();
+                _unitOfMeasureController.UnitOfMeasure.UnitOfMeasureID = txtUnitOfMeasureId.Text;
+            }
+            else if (_unitOfMeasureController.UnitOfMeasure == null) {
+                throw new Exception("Carregue uma unidade de medição antes de fazer alterações.");
+            }
+            _unitOfMeasureController.UnitOfMeasure.Description = txtUnitOfMeasureName.Text;
+        }
+
+        /// <summary>
+        /// Creates a new unit of measure
+        /// </summary>
+        private void UnitOfMeasureInsert() {
+
+            UnitOfMeasureFill(true);
+            _unitOfMeasureController.Save();
+        }
+
+        /// <summary>
+        /// Loads a unit of measure
+        /// </summary>
+        private void UnitOfMeasureGet(string unitOfMeasureID) {
+
+            UnitOfMeasureClear();
+            _unitOfMeasureController.Load(unitOfMeasureID);
+
+            var unitOfMeasure = _unitOfMeasureController.UnitOfMeasure;
+            if (unitOfMeasure != null) {
+                txtUnitOfMeasureId.Text = unitOfMeasure.UnitOfMeasureID;
+                txtUnitOfMeasureName.Text = unitOfMeasure.Description;
+            }
+        }
+
+        /// <summary>
+        /// Updates a unit of measure
+        /// </summary>
+        private void UnitOfMeasureUpdate() {
+
+            UnitOfMeasureFill(false);
+            _unitOfMeasureController.Save();
+        }
+
+        /// <summary>
+        /// Removes a unit of measure
+        /// </summary>
+        private void UnitOfMeasureRemove() {
+
+            _unitOfMeasureController.Remove(txtUnitOfMeasureId.Text.Trim());
+            UnitOfMeasureClear();
+        }
+
+        /// <summary>
+        /// Clears the UI
+        /// </summary>
+        private void UnitOfMeasureClear() {
+
+            txtUnitOfMeasureId.Text = string.Empty;
+            txtUnitOfMeasureName.Text = string.Empty;
+        }
+
+        #endregion
+
+        #region SAF-T
+
+        private void cmbSAFTMonth_SelectedIndexChanged(object sender, EventArgs e) {
+
+            nudSAFTStartDay.Value = 1;
+            nudSAFTEndDay.Value = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
+        }
+
+        private void nudSAFTYear_ValueChanged(object sender, EventArgs e) {
+
+            nudSAFTStartDay.Value = 1;
+            nudSAFTEndDay.Value = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
+        }
+
+        private void nudSAFTStartDay_ValueChanged(object sender, EventArgs e) {
+
+            int daysInMonth = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
+            if (nudSAFTStartDay.Value < 1) {
+                nudSAFTStartDay.Value = daysInMonth;
+            }
+            else if (nudSAFTStartDay.Value > daysInMonth) {
+                nudSAFTStartDay.Value = 1;
+            }
+        }
+
+        private void nudSAFTEndDay_ValueChanged(object sender, EventArgs e) {
+
+            int daysInMonth = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
+            if (nudSAFTEndDay.Value < 1) {
+                nudSAFTEndDay.Value = daysInMonth;
+            }
+            else if (nudSAFTEndDay.Value > daysInMonth) {
+                nudSAFTEndDay.Value = 1;
+            }
+        }
+
+        /// <summary>
+        /// Exports a global SAF-T
+        /// </summary>
+        private void btnSAFTExport0_Click(object sender, EventArgs e) {
+
+            var fileName = $"Global-{APIEngine.SystemSettings.Company.CompanyID}-{dtpStart.Value.Date:yyyyMMdd}-{dtpEnd.Value.Date:yyyyMMdd}-{new Random().Next(1, 1001)}.xml";
+            var filePath = Path.Combine(txtSAFTPath0.Text, fileName);
+            ExportSAFT(dtpStart.Value, dtpEnd.Value, filePath, false);
+        }
+
+        /// <summary>
+        /// Exports a simplified SAF-T
+        /// </summary>
+        private void btnSAFTExport1_Click(object sender, EventArgs e) {
+
+            var year = (int)nudSAFTYear.Value;
+            var month = ((Month)cmbSAFTMonth.SelectedItem).Value;
+
+            DateTime startDate = new DateTime(year, month, (int)nudSAFTStartDay.Value);
+            DateTime endDate = new DateTime(year, month, (int)nudSAFTEndDay.Value);
+
+            var fileName = $"Simplified-{APIEngine.SystemSettings.Company.CompanyID}-{startDate.Date:yyyyMMdd}-{endDate.Date:yyyyMMdd}-{new Random().Next(1, 1001)}.xml";
+            var filePath = Path.Combine(txtSAFTPath1.Text, fileName);
+            ExportSAFT(startDate, endDate, filePath, true);
+        }
+
+        private void ExportSAFT(DateTime startDate, DateTime endDate, string filePath, bool bIsSimplified) {
+
+            SAFTExportFactory factory = new SAFTExportFactory {
+                SaftSimplified = bIsSimplified,
+                SAFTSelfBilling = false,
+                SaftType = SaftTypeEnum.SaftTypeInvoice,
+                TransmissionStatus = (short)TransmissionStatusEnum.TransmissionStatusExportedForTesting,
+                Version = "1.04",
+
+                AuditFileName = filePath,
+                InitialDate = startDate,
+                FinalDate = endDate
+            };
+
+            var exporter = factory.GetSAFTExporter();
+            if (exporter.ValidateDates()) {
+
+                Enabled = false;
+
+                var bExported = exporter.Export(filePath);
+                if (bExported) {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Exportado com sucesso. Ficheiro disponível em:{Environment.NewLine}{Environment.NewLine}{filePath}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+                else {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice("Não foi possível exportar o ficheiro.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+            }
+            else {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice($"As datas indicadas não são válidas.{Environment.NewLine}Data de início: {dtpStart.Value.ToShortDateString()}{Environment.NewLine}Data de fim: {dtpEnd.Value.ToShortDateString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+            }
+
+            Enabled = true;
+        }
+
+        private void SAFTClear() {
+
+            UIUtils.FillMonthCombo(cmbSAFTMonth);
+
+            var dateToday = DateTime.Today.AddMonths(-1);
+            var startDate = dateToday.FirstDayOfMonth();
+            var endDate = dateToday.LastDayOfLastMonth();
+
+            dtpStart.Value = startDate;
+            dtpEnd.Value = endDate;
+
+            cmbSAFTMonth.SelectedIndex = startDate.Month - 1;
+            nudSAFTYear.Value = startDate.Year;
+
+            var saftPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                APIEngine.SystemSettings.Application.LongName,
+                APIEngine.SystemSettings.Company.CompanyID,
+                "SAFT");
+
+            if (!Directory.Exists(saftPath)) {
+                Directory.CreateDirectory(saftPath);
+            }
+
+            txtSAFTPath0.Text = saftPath;
+            txtSAFTPath1.Text = saftPath;
+
+            txtSAFTPath0.SelectionStart = txtSAFTPath0.TextLength;
+            txtSAFTPath0.ScrollToCaret();
+
+            txtSAFTPath1.SelectionStart = txtSAFTPath1.TextLength;
+            txtSAFTPath1.ScrollToCaret();
+        }
+
+        private void ApplyStyles() {
+
+            btnSAFTExport0.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
+            btnSAFTExport0.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
+            btnSAFTExport0.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
+
+            btnSAFTExport1.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
+            btnSAFTExport1.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
+            btnSAFTExport1.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
+        }
+
+        #endregion
+
+        private void chkTransModuleProps_CheckedChanged(object sender, EventArgs e) {
+            pnlTransModuleProp.Enabled = chkTransModuleProps.Checked;
+        }
+
+        private void chkTransModuleSizeColor_CheckedChanged(object sender, EventArgs e) {
+            pnlTransModuleSizeColor.Enabled = chkTransModuleSizeColor.Checked;
+        }
+
         private void rbTransStock_CheckedChanged(object sender, EventArgs e) {
             tabTransModules.Visible = false;
             lblTransModules.Visible = false;
@@ -2715,7 +1966,7 @@ namespace Sage50c.API.Sample {
             btnRefreshGridLines.Visible = false;
 
             if (rbTransStock.Checked) {
-                TransactionClear();
+                TransactionClearUI();
             }
         }
 
@@ -2727,17 +1978,17 @@ namespace Sage50c.API.Sample {
             btnRefreshGridLines.Visible = false;
 
             if (rbTransBuySell.Checked) {
-                TransactionClear();
+                TransactionClearUI();
             }
         }
 
         private void cmbTransPartyType_SelectedIndexChanged(object sender, EventArgs e) {
-            TransactionClear();
+            TransactionClearUI();
         }
 
         private void btnPrint_Click(object sender, EventArgs e) {
-            double transDocNumber = 0;
-            double.TryParse(txtTransDocNumber.Text, out transDocNumber);
+
+            double transDocNumber = txtTransDocNumber.Text.ToDouble();
 
             try {
                 // Mostrar no ecran
@@ -2760,149 +2011,12 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Impressão normal via caixa de diálogo e regras da 50c
         /// </summary>
-        /// <param name="transSerial"></param>
-        /// <param name="transDoc"></param>
-        /// <param name="transDocNumber"></param>
-        /// <param name="printPreview"></param>
         private void TransactionPrint(string transSerial, string transDoc, double transDocNumber, bool printPreview) {
             if (printPreview) {
                 bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, 1);
             }
             else {
                 bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPrint, 1);
-            }
-        }
-
-        #region QuickSearch
-
-        private void btnCustomerBrow_Click(object sender, EventArgs e) {
-            var customerId = QuickSearchHelper.CustomerFind();
-            if (customerId > 0) {
-                numCustomerId.Value = (decimal)customerId;
-                CustomerGet(customerId);
-            }
-        }
-
-
-        private void btnSupplierBrow_Click(object sender, EventArgs e) {
-            var supplierId = QuickSearchHelper.SupplierFind();
-            if (supplierId > 0) {
-                SupplierGet(supplierId);
-            }
-        }
-
-        #endregion
-
-        private void btnTransGetPrep_Click(object sender, EventArgs e) {
-            try {
-                TransactionGet(true);
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void btnSavePrep_Click(object sender, EventArgs e) {
-            TransactionID result = null;
-            try {
-                if (bsoItemTransaction.Transaction.TempTransIndex != 0) {
-                    // Atualizar
-                    result = TransactionEdit(true);
-                }
-                else {
-                    result = TransactionInsert(true);
-                }
-                if (result != null) {
-                    TransactionClear();
-                    MessageBox.Show(string.Format("Colocado em preparação: {0}", result.ToString()), Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else {
-                    MessageBox.Show(string.Format("Não foi possível colocar em preparação: {0} {1}/{2}",
-                                                   txtTransSerial.Text, txtTransDoc.Text, txtTransDocNumber.Text),
-                                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        static bool tempTransactionIndexIsFinding = false;
-        private double TempTransactionIndexFind(DocumentTypeEnum transDocType) {
-            double result = 0;
-
-            //show data for view with id=0: the title is fetched by the
-            //quick search viewer.
-            try {
-                if (!tempTransactionIndexIsFinding) {
-                    tempTransactionIndexIsFinding = true;
-                    var quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_TempTransaction, false);
-
-                    if (!systemSettings.SystemInfo.CanRestoreTempTranOnAll) {
-                        quickSearch.ExtraWhereClause = "[Terminal]=" + systemSettings.WorkstationInfo.WorkstationID.ToString() + " AND [TransDocType]= " + ((int)transDocType).ToString();
-                    }
-                    else {
-                        quickSearch.ExtraWhereClause = "[TransDocType]= " + ((int)transDocType).ToString();
-                    }
-
-                    if (quickSearch.SelectValue()) {
-                        result = quickSearch.ValueSelectedDouble();
-                    }
-                    else {
-                        result = -1;
-                    }
-
-                    tempTransactionIndexIsFinding = false;
-                }
-            }
-            catch (Exception ex) {
-                tempTransactionIndexIsFinding = false;
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            return result;
-        }
-
-        private void btnTransactionFinalize_Click(object sender, EventArgs e) {
-            try {
-                string transDoc = txtTransDoc.Text;
-                string transSerial = txtTransSerial.Text;
-                double transdocNumber = 0;
-
-                if (double.TryParse(txtTransDocNumber.Text, out transdocNumber)) {
-                    if (bsoItemTransaction.FinalizeSuspendedTransaction(transSerial, transDoc, transdocNumber)) {
-                        MessageBox.Show(string.Format("Documento finalizado: {0}", bsoItemTransaction.Transaction.TransactionID.ToString()),
-                                         Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else {
-                        MessageBox.Show(string.Format("Não foi possível finalizar o documento suspenso: {0} {1}/{2}.", transDoc, transSerial, transdocNumber),
-                                        Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
-                }
-                else {
-                    MessageBox.Show(string.Format("O número do documento ({0}) não é válido.", txtTransDocNumber.Text),
-                                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void btnAccoutTransPrint_Click(object sender, EventArgs e) {
-            try {
-                // Carregar o documento
-                AccountTransactionGet();
-
-                // Pré-visualizar ou Imprimir
-                if (chkAccoutTransPrintPreview.Checked) {
-                    accountTransManager.ExecuteFunction("PREVIEW", string.Empty);
-                }
-                else {
-                    accountTransManager.ExecuteFunction("PRINT", string.Empty);
-                }
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -2962,6 +2076,121 @@ namespace Sage50c.API.Sample {
             }
         }
 
+        #region QuickSearch
+
+        private void btnSearchSalesman_Click(object sender, EventArgs e) {
+            var SalesmanId = QuickSearchHelper.SalesmanFind();
+            if (SalesmanId > 0) {
+                numCustomerSalesmanId.Value = (short)SalesmanId;
+            }
+        }
+
+        private void btnSearchZone_Click(object sender, EventArgs e) {
+            var ZoneId = QuickSearchHelper.ZoneFind();
+            if (ZoneId > 0) {
+                numCustomerZoneId.Value = (short)ZoneId;
+            }
+        }
+
+        private void btnSearchZoneSupplier_Click(object sender, EventArgs e) {
+            var zoneId = QuickSearchHelper.ZoneFind();
+            if (zoneId > 0) {
+                txtSupplierZone.Text = zoneId.ToString();
+            }
+        }
+
+        private void btnCustomerBrow_Click(object sender, EventArgs e) {
+            var customerId = QuickSearchHelper.CustomerFind();
+            if (customerId > 0) {
+                CustomerGet(customerId);
+            }
+        }
+
+
+        private void btnSupplierBrow_Click(object sender, EventArgs e) {
+            var supplierId = QuickSearchHelper.SupplierFind();
+            if (supplierId > 0) {
+                SupplierGet(supplierId);
+            }
+        }
+
+        #endregion
+
+        private void btnTransGetPrep_Click(object sender, EventArgs e) {
+            try {
+                TransactionGet(true);
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        private void btnSavePrep_Click(object sender, EventArgs e) {
+            TransactionID result = null;
+            try {
+                if (bsoItemTransaction.Transaction.TempTransIndex != 0) {
+                    // Atualizar
+                    TransactionUpdate(true);
+                }
+                else {
+                    TransactionInsert(true);
+                }
+                if (result != null) {
+                    TransactionClearUI();
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Colocado em preparação: {result.ToString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+                else {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Não foi possível colocar em preparação: {txtTransSerial.Text} {txtTransDoc.Text}/{txtTransDocNumber.Text}", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+
+                }
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+
+            }
+        }
+
+        private void btnTransactionFinalize_Click(object sender, EventArgs e) {
+            try {
+                string transDoc = txtTransDoc.Text;
+                string transSerial = txtTransSerial.Text;
+                double transdocNumber = 0;
+
+                if (double.TryParse(txtTransDocNumber.Text, out transdocNumber)) {
+                    if (bsoItemTransaction.FinalizeSuspendedTransaction(transSerial, transDoc, transdocNumber)) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Documento finalizado: {bsoItemTransaction.Transaction.TransactionID.ToString()}.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                    }
+                    else {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Não foi possível finalizar o documento suspenso: {transDoc} {transSerial}/{transdocNumber}.", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+                    }
+                }
+                else {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"O número do documento [{transdocNumber}] não é válido.", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+                }
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        private void btnAccoutTransPrint_Click(object sender, EventArgs e) {
+            try {
+                // Carregar o documento
+                AccountTransactionGet();
+
+                // Pré-visualizar ou Imprimir
+                if (chkAccoutTransPrintPreview.Checked) {
+                    accountTransManager.ExecuteFunction("PREVIEW", string.Empty);
+                }
+                else {
+                    accountTransManager.ExecuteFunction("PRINT", string.Empty);
+                }
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private ItemTransactionDetailList GetItemComponentList(int LineID) {
             var itemDetails = new ItemTransactionDetailList();
             string itemID = string.Empty;
@@ -3006,7 +2235,7 @@ namespace Sage50c.API.Sample {
                     break;
             }
 
-            var item = itemProvider.GetItem(itemID, currency, false);
+            var item = dsoCache.ItemProvider.GetItem(itemID, currency, false);
             if (item != null) {
                 if (item.ItemType == ItemTypeEnum.itmManufactured) {
                     if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose || doc.StockBehavior == StockBehaviorEnum.sbStockDecompose) {
@@ -3066,7 +2295,7 @@ namespace Sage50c.API.Sample {
             dataGridItemLines.Rows.Clear();
 
             if (rbTransStockCompose.Checked) {
-                TransactionClear();
+                TransactionClearUI();
             }
         }
 
@@ -3079,7 +2308,7 @@ namespace Sage50c.API.Sample {
             dataGridItemLines.Rows.Clear();
 
             if (rbTransStockDecompose.Checked) {
-                TransactionClear();
+                TransactionClearUI();
             }
         }
 
@@ -3091,8 +2320,11 @@ namespace Sage50c.API.Sample {
             }
             Document doc = systemSettings.WorkstationInfo.Document[transDoc];
 
-            if (doc.TransDocType != DocumentTypeEnum.dcTypeStock) {
-                throw new Exception(string.Format("O documento indicado não é um documento de stock", transDoc));
+            if (rbTransStock.Checked && doc.TransDocType != DocumentTypeEnum.dcTypeStock) {
+                throw new Exception($"O documento indicado [{transDoc}] não é um documento de stock");
+            }
+            else if (rbTransBuySell.Checked && (doc.TransDocType != DocumentTypeEnum.dcTypePurchase || doc.TransDocType != DocumentTypeEnum.dcTypeSale)) {
+                throw new Exception($"O documento indicado [{transDoc}] não é um documento de Compra/Venda");
             }
 
             if (doc.StockBehavior == StockBehaviorEnum.sbStockCompose || doc.StockBehavior == StockBehaviorEnum.sbStockDecompose) {
@@ -3105,7 +2337,7 @@ namespace Sage50c.API.Sample {
                 addComponentListToGrid(itemDetails);
             }
             else {
-                throw new Exception(string.Format("O documento indicado não é um documento de fabricação/transformação", transDoc));
+                throw new Exception($"O documento indicado [{transDoc}] não é um documento de fabricação/transformação");
             }
         }
 
@@ -3184,7 +2416,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnExternalSignature_Click(object sender, EventArgs e) {
-            MessageBox.Show("NOTA: Só é possível definir a assinatura sem séries externas.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            APIEngine.CoreGlobals.MsgBoxFrontOffice("NOTA: Só é possível definir a assinatura sem séries externas.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
 
             using (var frm = new FormExternalSignature()) {
                 frm.Signature = bsoItemTransaction.Transaction.Signature;
@@ -3236,7 +2468,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void RepClear() {
-            //Limpar
+
             txtShareTransDocument_R1.Text = string.Empty;
             txtShareTransDocument_R2.Text = string.Empty;
             txtShareTransSerial_R1.Text = string.Empty;
@@ -3253,8 +2485,7 @@ namespace Sage50c.API.Sample {
 
         private void Fill_ShareDetails(string ShareTransSerial, string ShareTransDocument, string ShareTransDocumentNumber) {
 
-            double TransDocNumber = 0;
-            double.TryParse(txtShareTransDocNumber_R1.Text, out TransDocNumber);
+            double TransDocNumber = txtShareTransDocNumber_R1.Text.ToDouble();
             ItemTransaction objTempItemTransaction = new ItemTransaction();
             DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
 
@@ -3269,7 +2500,6 @@ namespace Sage50c.API.Sample {
                         case 1:
                             LblL1.Text = objTempItemTransactionDetail.ItemID;
                             break;
-
                         case 2:
                             LblL2.Text = objTempItemTransactionDetail.ItemID;
                             break;
@@ -3308,26 +2538,25 @@ namespace Sage50c.API.Sample {
                     var Transaction = new GenericTransaction(bsoItemTransaction.Transaction);
                     TransactionShow(Transaction);
 
-                    if (DialogResult.Yes ==
-                        MessageBox.Show("Guardar o documento temporário recuperado?", Application.ProductName,
-                                        MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+                    if (VBA.VbMsgBoxResult.vbYes ==
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Guardar o documento temporário recuperado?",
+                                        VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName)) {
                         //Após importar, se pretender, será gravado automaticamente o documento.
                         if (bsoItemTransaction.Transaction.Tender.TenderID == 0) {
                             // Set the first TenderId, just in case...
                             bsoItemTransaction.TenderID = APIEngine.DSOCache.TenderProvider.GetFirstID();
                         }
                         bsoItemTransaction.SaveDocument(false, false);
-                        MessageBox.Show($"Documento gravado: {bsoItemTransaction.Transaction.TransactionID.ToString()}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        TransactionClear();
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Documento gravado: {bsoItemTransaction.Transaction.TransactionID.ToString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        TransactionClearUI();
                     }
                 }
                 else {
-                    MessageBox.Show($"O temporário indicado '{txtTransDocNumber.Text}' não existe ou não existem mais temporários.",
-                                    Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"O temporário indicado '{txtTransDocNumber.Text}' não existe ou não existem mais temporários.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
         }
 
@@ -3335,7 +2564,7 @@ namespace Sage50c.API.Sample {
             if (trans != null) {
                 var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
-                TransactionClear();
+                TransactionClearUI();
                 //txtTransColor1.Text = 
                 txtTransCurrency.Text = trans.BaseCurrency.CurrencyID;
                 txtTransDate.Text = trans.CreateDate.ToShortDateString();
@@ -3479,7 +2708,7 @@ namespace Sage50c.API.Sample {
 
                 //Fabricação/Transformação - restantes linhas
                 if ((int)doc.StockBehavior == (int)StockBehaviorEnum.sbStockCompose || (int)doc.StockBehavior == (int)StockBehaviorEnum.sbStockDecompose) {
-                    fillComponentListGrid((StockBehaviorEnum)doc.StockBehavior, trans.Details);
+                    fillComponentListGrid(doc.StockBehavior, trans.Details);
                 }
 
                 // O Documento está anulado ?
@@ -3493,10 +2722,6 @@ namespace Sage50c.API.Sample {
             else {
                 MessageBox.Show("A transação indicada não existe.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
-
-        private void btnTest_Click(object sender, EventArgs e) {
-            bsoItemTransaction.Transaction.Taxes.Remove("IVA", 1, TaxItemTypeEnum.txitmProduct);
         }
 
         private void lblTransDocNumber_Click(object sender, EventArgs e) {
@@ -3515,8 +2740,9 @@ namespace Sage50c.API.Sample {
                     txtTransSerial.Text = transSerial;
                     txtTransDocNumber.Text = transdocNumber.ToString();
                     // Load the document
-                    TransactionGet(false);
+                    //TransactionGet(false);
                     txtTransDocNumber.Focus();
+                    TransactionGet(false);
                 }
             }
             catch (Exception ex) {
@@ -3560,356 +2786,28 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void btnAddColor_Click(object sender, EventArgs e) {
-
-            var colorID = QuickSearchHelper.ColorFind();
-            if (colorID > 0) {
-                var colorToAdd = APIEngine.DSOCache.ColorProvider.GetColor((short)colorID);
-
-                var isDuplicate = false;
-                foreach (DataGridViewRow colorRow in dgvColor.Rows) {
-
-                    var colorRowID = (short)colorRow.Cells[0].Value;
-                    if (colorRowID == colorToAdd.ColorID) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                        isDuplicate = true;
-                        break;
-                    }
-                }
-
-                if (!isDuplicate) {
-                    var newRowIndex = dgvColor.Rows.Add();
-                    var newRow = dgvColor.Rows[newRowIndex];
-
-                    newRow.Cells[0].Value = colorToAdd.ColorID;
-                    newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)colorToAdd.ColorCode);
-                    newRow.Cells[2].Value = colorToAdd.Description;
-                }
-            }
-        }
-
-        private void btnRemoveColor_Click(object sender, EventArgs e) {
-
-            if (dgvColor.CurrentCell != null) {
-                dgvColor.Rows.RemoveAt(dgvColor.CurrentCell.RowIndex);
-            }
-            else {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione uma cor para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-            }
-        }
-
-        private void btnAddSize_Click(object sender, EventArgs e) {
-
-            var size = QuickSearchHelper.SizeFind();
-            if (size > 0) {
-                var sizeToAdd = APIEngine.DSOCache.SizeProvider.GetSize((short)size);
-
-                var isDuplicate = false;
-                foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
-                    var sizeId = (short)sizeRow.Cells[0].Value;
-
-                    if (sizeId == sizeToAdd.SizeID) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                        isDuplicate = true;
-                        break;
-                    }
-                }
-
-                if (!isDuplicate) {
-                    var newRowIndex = dgvSize.Rows.Add();
-                    var newRow = dgvSize.Rows[newRowIndex];
-
-                    newRow.Cells[0].Value = sizeToAdd.SizeID;
-                    newRow.Cells[1].Value = sizeToAdd.Description;
-                }
-            }
-        }
-
-        private void btnRemoveSize_Click(object sender, EventArgs e) {
-
-            if (dgvSize.CurrentCell != null) {
-                dgvSize.Rows.RemoveAt(dgvSize.CurrentCell.RowIndex);
-            }
-            else {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione um tamanho para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-            }
-        }
-
-        private void FormatColorGrid() {
-
-            var ColorID = new DataGridViewTextBoxColumn {
-                HeaderText = "Cód.",
-                Name = "ColorID",
-                ReadOnly = true,
-                Width = 50
-            };
-
-            var ColorUI = new DataGridViewTextBoxColumn {
-                HeaderText = "Cor",
-                Name = "ColorUI",
-                ReadOnly = true,
-                Width = 50
-            };
-
-            var ColorDescription = new DataGridViewTextBoxColumn {
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                HeaderText = "Descrição",
-                Name = "Description",
-                ReadOnly = true
-            };
-
-            ApplyGridStyle(dgvColor, new DataGridViewColumn[] {
-                ColorID,
-                ColorUI,
-                ColorDescription
-            });
-        }
-
-        private void FormatSizeGrid() {
-
-            var SizeID = new DataGridViewTextBoxColumn {
-                HeaderText = "Cód.",
-                Name = "SizeID",
-                ReadOnly = true,
-                Width = 50
-            };
-
-            var SizeDescription = new DataGridViewTextBoxColumn {
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                HeaderText = "Tamanho",
-                Name = "Description",
-                ReadOnly = true
-            };
-
-            ApplyGridStyle(dgvSize, new DataGridViewColumn[] {
-                SizeID,
-                SizeDescription
-            });
-        }
-
-        private void ApplyGridStyle(DataGridView dgv, DataGridViewColumn[] columns) {
-
-            dgv.BackgroundColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.AppHeaderBackColor);
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TextNoFocus);
-            dgv.GridColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.LightGray);
-
-            dgv.RowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.WindowBackColor);
-            dgv.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Colors.TabBackColor);
-
-            dgv.Rows.Clear();
-            dgv.Columns.Clear();
-            dgv.Columns.AddRange(columns);
-        }
-
-        private void AddColorsToItem(Item item) {
-
-            // Limpar as cores anteriores
-            item.Colors.Clear();
-            // Adicionar as cores atualizadas
-            foreach (DataGridViewRow colorRow in dgvColor.Rows) {
-                var colorID = (short)colorRow.Cells[0].Value;
-                var color = APIEngine.DSOCache.ColorProvider.GetColor(colorID);
-
-                var newItemColor = new ItemColor() {
-                    ColorID = color.ColorID,
-                    ColorName = color.Description,
-                    ColorCode = (int)color.ColorCode,
-                    SequenceNumber = (short)(colorRow.Index + 1)
-                };
-
-                item.Colors.Add(newItemColor);
-            }
-        }
-
-        private void btnCreateColor_Click(object sender, EventArgs e) {
-
-            fColor colorForm = new fColor();
-            colorForm.ShowDialog();
-        }
-
-        private void AddSizesToItem(Item item) {
-
-            // Limpar os tamanhos anteriores
-            item.Sizes.Clear();
-            // Adicionar os tamanhos atualizados
-            foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
-                var sizeID = (short)sizeRow.Cells[0].Value;
-                var size = APIEngine.DSOCache.SizeProvider.GetSize(sizeID);
-
-                var newItemSize = new ItemSize() {
-                    SizeID = size.SizeID,
-                    SizeName = size.Description,
-                    Quantity = 1,
-                    Units = 1,
-                    SequenceNumber = (short)(sizeRow.Index + 1)
-                };
-
-                item.Sizes.Add(newItemSize);
-            }
-        }
-
-        private void btnCreateSize_Click(object sender, EventArgs e) {
-
-            FormSizes formSizes = new FormSizes();
-            formSizes.ShowDialog();
-        }
-
-        private void cmbSAFTMonth_SelectedIndexChanged(object sender, EventArgs e) {
-
-            nudSAFTStartDay.Value = 1;
-            nudSAFTEndDay.Value = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
-        }
-
-        private void nudSAFTYear_ValueChanged(object sender, EventArgs e) {
-
-            nudSAFTStartDay.Value = 1;
-            nudSAFTEndDay.Value = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
-        }
-
-        private void nudSAFTStartDay_ValueChanged(object sender, EventArgs e) {
-
-            int daysInMonth = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
-            if (nudSAFTStartDay.Value < 1) {
-                nudSAFTStartDay.Value = daysInMonth;
-            }
-            else if (nudSAFTStartDay.Value > daysInMonth) {
-                nudSAFTStartDay.Value = 1;
-            }
-        }
-
-        private void nudSAFTEndDay_ValueChanged(object sender, EventArgs e) {
-
-            int daysInMonth = DateTime.DaysInMonth((int)nudSAFTYear.Value, ((Month)cmbSAFTMonth.SelectedItem).Value);
-            if (nudSAFTEndDay.Value < 1) {
-                nudSAFTEndDay.Value = daysInMonth;
-            }
-            else if (nudSAFTEndDay.Value > daysInMonth) {
-                nudSAFTEndDay.Value = 1;
-            }
-        }
-
         /// <summary>
-        /// Exports a global SAF-T
+        /// Disables UI buttons on tabs that don't need them
         /// </summary>
-        private void btnSAFTExport0_Click(object sender, EventArgs e) {
-
-            var fileName = $"Global-{APIEngine.SystemSettings.Company.CompanyID}-{dtpStart.Value.Date.ToString("yyyyMMdd")}-{dtpEnd.Value.Date.ToString("yyyyMMdd")}-{new Random().Next(1, 1001)}.xml";
-            var filePath = Path.Combine(txtSAFTPath0.Text, fileName);
-            ExportSAFT(dtpStart.Value, dtpEnd.Value, filePath, false);
-        }
-
-        /// <summary>
-        /// Exports a simplified SAF-T
-        /// </summary>
-        private void btnSAFTExport1_Click(object sender, EventArgs e) {
-
-            var year = (int)nudSAFTYear.Value;
-            var month = ((Month)cmbSAFTMonth.SelectedItem).Value;
-
-            DateTime startDate = new DateTime(year, month, (int)nudSAFTStartDay.Value);
-            DateTime endDate = new DateTime(year, month, (int)nudSAFTEndDay.Value);
-
-            var fileName = $"Simplified-{APIEngine.SystemSettings.Company.CompanyID}-{startDate.Date.ToString("yyyyMMdd")}-{endDate.Date.ToString("yyyyMMdd")}-{new Random().Next(1, 1001)}.xml";
-            var filePath = Path.Combine(txtSAFTPath1.Text, fileName);
-            ExportSAFT(startDate, endDate, filePath, true);
-        }
-
-        private void ExportSAFT(DateTime startDate, DateTime endDate, string filePath, bool bIsSimplified) {
-
-            SAFTExportFactory factory = new SAFTExportFactory {
-                SaftSimplified = false,
-                SAFTSelfBilling = false,
-                SaftType = SaftTypeEnum.SaftTypeInvoice,
-                TransmissionStatus = (short)TransmissionStatusEnum.TransmissionStatusExportedForTesting,
-                Version = "1.04",
-
-                AuditFileName = filePath,
-                InitialDate = startDate,
-                FinalDate = endDate
-            };
-
-            var exporter = factory.GetSAFTExporter();
-            if (exporter.ValidateDates()) {
-
-                Enabled = false;
-
-                var bExported = exporter.Export(filePath);
-                if (bExported) {
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Exportado com sucesso. Ficheiro disponível em:{Environment.NewLine}{Environment.NewLine}{filePath}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                }
-                else {
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice("Não foi possível exportar o ficheiro.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                }
-            }
-            else {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice($"As datas indicadas não são válidas.{Environment.NewLine}Data de início: {dtpStart.Value.ToShortDateString()}{Environment.NewLine}Data de fim: {dtpEnd.Value.ToShortDateString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-            }
-
-            Enabled = true;
-        }
-
-        private void SAFTClear() {
-
-            UIUtils.FillMonthCombo(cmbSAFTMonth);
-
-            var dateToday = DateTime.Today.AddMonths(-1);
-            var startDate = dateToday.FirstDayOfMonth();
-            var endDate = dateToday.LastDayOfLastMonth();
-
-            dtpStart.Value = startDate;
-            dtpEnd.Value = endDate;
-
-            cmbSAFTMonth.SelectedIndex = startDate.Month - 1;
-            nudSAFTYear.Value = startDate.Year;
-
-            var saftPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                APIEngine.SystemSettings.Application.LongName,
-                APIEngine.SystemSettings.Company.CompanyID,
-                "SAFT");
-
-            if (!Directory.Exists(saftPath)) {
-                Directory.CreateDirectory(saftPath);
-            }
-
-            txtSAFTPath0.Text = saftPath;
-            txtSAFTPath1.Text = saftPath;
-
-            txtSAFTPath0.SelectionStart = txtSAFTPath0.TextLength;
-            txtSAFTPath0.ScrollToCaret();
-
-            txtSAFTPath1.SelectionStart = txtSAFTPath1.TextLength;
-            txtSAFTPath1.ScrollToCaret();
-        }
-
-        private void ApplyStyles() {
-
-            btnSAFTExport0.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
-            btnSAFTExport0.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
-            btnSAFTExport0.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
-
-            btnSAFTExport1.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
-            btnSAFTExport1.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
-            btnSAFTExport1.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
-        }
-
         private void tabEntities_SelectedIndexChanged(object sender, EventArgs e) {
 
             int tabIndex = tabEntities.SelectedIndex;
 
-            if (tabIndex == 6) {
-                btnInsert.Enabled = false;
-                btnUpdate.Enabled = false;
-                btnRemove.Enabled = false;
-                btnClear.Enabled = false;
-                btnGet.Enabled = false;
-            }
-            else {
-                btnInsert.Enabled = true;
-                btnUpdate.Enabled = true;
-                btnRemove.Enabled = true;
-                btnClear.Enabled = true;
-                btnGet.Enabled = true;
+            switch (tabIndex) {
+                case 6: // SAF-T tab
+                    btnInsert.Enabled = false;
+                    btnUpdate.Enabled = false;
+                    btnRemove.Enabled = false;
+                    btnClear.Enabled = false;
+                    btnGet.Enabled = false;
+                    break;
+                default:
+                    btnInsert.Enabled = true;
+                    btnUpdate.Enabled = true;
+                    btnRemove.Enabled = true;
+                    btnClear.Enabled = true;
+                    btnGet.Enabled = true;
+                    break;
             }
         }
     }

@@ -91,6 +91,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnPickColor_Click(object sender, EventArgs e) {
+
             colorDialog.Color = Color.Gray;
             if (colorDialog.ShowDialog() == DialogResult.OK) {
                 panelColorUI.BackColor = colorDialog.Color;
@@ -98,6 +99,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnNew_Click(object sender, EventArgs e) {
+
             ResetUI();
             isLoaded = false;
         }
@@ -166,6 +168,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void FormatButtons() {
+
             btnSearch.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
             btnFirst.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
             btnRight.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBackColor);
@@ -183,6 +186,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void ResetUI() {
+
             ToggleUI(false);
 
             UpdateUI(new S50cBO22.Color() {
@@ -193,6 +197,7 @@ namespace Sage50c.API.Sample {
         }
 
         private void UpdateUI(S50cBO22.Color color) {
+
             if (color != null) {
                 txtColorID.Text = color.ColorID.ToString();
                 txtColorDescription.Text = color.Description;
@@ -221,12 +226,14 @@ namespace Sage50c.API.Sample {
         }
 
         private void txtColorID_PressEnter(object sender, KeyPressEventArgs e) {
+
             if (e.KeyChar == (char)Keys.Enter) {
                 txtColorDescription.Select();
             }
         }
 
         private void ToggleUI(bool isEnabled) {
+
             txtColorDescription.Enabled = isEnabled;
             btnPickColor.Enabled = isEnabled;
             btnSave.Enabled = isEnabled;

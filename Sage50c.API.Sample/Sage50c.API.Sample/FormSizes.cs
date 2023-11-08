@@ -1,14 +1,8 @@
-﻿using S50cDL22;
-using SageCoreSaft60;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using S50cDL22;
 
 namespace Sage50c.API.Sample {
     public partial class FormSizes : Form {
@@ -17,7 +11,6 @@ namespace Sage50c.API.Sample {
         /// Provedor de tamanhos
         /// </summary>
         private DSOSize sizeProvider = new DSOSize();
-
         /// <summary>
         /// Permite identificar se o tamanho foi carregado a partir da database
         /// </summary>
@@ -27,6 +20,7 @@ namespace Sage50c.API.Sample {
             InitializeComponent();
             //Insere o new id na textbox na inicalização do form
             txtId.Text = sizeProvider.GetNewID().ToString();
+
             FormatForm();
         }
 
@@ -49,15 +43,15 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Realiza o update dos campos apresentados
         /// </summary>
-        /// <param name="size"></param>
         private void UpdateUI(S50cBO22.Size size) {
+
             if (size != null) {
                 txtId.Text = size.SizeID.ToString();
                 txtDescription.Text = size.Description.ToString();
                 isLoaded = true;
             }
             else {
-                txtDescription.Text = String.Empty;
+                txtDescription.Text = string.Empty;
                 isLoaded = false;
             }
         }
@@ -66,6 +60,7 @@ namespace Sage50c.API.Sample {
         /// Realiza o reset dos campos apresentados, limpando-os
         /// </summary>
         private void ResetUI() {
+
             EnableComp(false);
             UpdateUI(new S50cBO22.Size() {
                 SizeID = sizeProvider.GetNewID(),
@@ -74,43 +69,72 @@ namespace Sage50c.API.Sample {
         }
 
         private void btnSearch_Click(object sender, EventArgs e) {
-            //Abre quick search para procurar um determinado tamanho
-            var sizeId = QuickSearchHelper.SizeFind();
-            //Atualiza os campos consoante o tamanho selecionado
-            if (sizeId > 0) {
-                var size = sizeProvider.GetSize((short)sizeId);
-                UpdateUI(size);
-                EnableComp(true);
-                isLoaded = true;
+
+            if (sizeProvider != null) {
+                //Abre quick search para procurar um determinado tamanho
+                var sizeId = QuickSearchHelper.SizeFind();
+                //Atualiza os campos consoante o tamanho selecionado
+                if (sizeId > 0) {
+                    var size = sizeProvider.GetSize((short)sizeId);
+                    UpdateUI(size);
+                    EnableComp(true);
+                    isLoaded = true;
+                }
             }
         }
 
         private void btnFirst_Click(object sender, EventArgs e) {
-            //Tamanho com menor id
-            var size = sizeProvider.GetSize(1);
-            //Atualiza os campos consoante o tamanho selecionado
-            UpdateUI(size);
-            EnableComp(true);
-            isLoaded = true;
-        }
 
-        private void btnLeft_Click(object sender, EventArgs e) {
-            if (txtId.Text.ToShort() > 1) {
-                //Tamanho com o id anterior ao atual
-                var prevSize = sizeProvider.GetPreviousID(txtId.Text.ToShort());
-                var size = sizeProvider.GetSize(prevSize);
+            if (sizeProvider != null) {
+                //Tamanho com menor id
+                var size = sizeProvider.GetSize(sizeProvider.GetNextID(0));
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
                 EnableComp(true);
                 isLoaded = true;
+            }
+        }
+
+        private void btnLeft_Click(object sender, EventArgs e) {
+
+            if (sizeProvider != null) {
+                var sizeId = txtId.Text.ToShort();
+                //Tamanho com o id anterior ao atual
+                var prevSize = sizeProvider.GetPreviousID(sizeId);
+
+                if (prevSize != sizeId) {
+                    var size = sizeProvider.GetSize(prevSize);
+                    //Atualiza os campos consoante o tamanho selecionado
+                    UpdateUI(size);
+                    EnableComp(true);
+                    isLoaded = true;
+                }
             }
         }
 
         private void btnRight_Click(object sender, EventArgs e) {
-            if (txtId.Text.ToShort() < sizeProvider.GetLastID()) {
+
+            if (sizeProvider != null) {
+                var sizeId = txtId.Text.ToShort();
                 //Tamanho com id seguinte ao atual
-                var prevSize = sizeProvider.GetNextID(txtId.Text.ToShort());
-                var size = sizeProvider.GetSize(prevSize);
+                var prevSize = sizeProvider.GetNextID(sizeId);
+
+                if (prevSize != sizeId) {
+                    var size = sizeProvider.GetSize(prevSize);
+                    //Atualiza os campos consoante o tamanho selecionado
+                    UpdateUI(size);
+                    EnableComp(true);
+                    isLoaded = true;
+                }
+            }
+        }
+
+        private void btnLast_Click(object sender, EventArgs e) {
+
+            if (sizeProvider != null) {
+                //Tamanho com maior id
+                var sizeId = sizeProvider.GetLastID();
+                var size = sizeProvider.GetSize(sizeId);
                 //Atualiza os campos consoante o tamanho selecionado
                 UpdateUI(size);
                 EnableComp(true);
@@ -118,23 +142,15 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void btnLast_Click(object sender, EventArgs e) {
-            //Tamanho com maior id
-            var sizeId = sizeProvider.GetLastID();
-            var size = sizeProvider.GetSize((short)sizeId);
-            //Atualiza os campos consoante o tamanho selecionado
-            UpdateUI(size);
-            EnableComp(true);
-            isLoaded = true;
-        }
-
         private void btnNew_Click(object sender, EventArgs e) {
+
             isLoaded = false;
             //Limpa todos os campos para que se possa criar um novo tamanho 
             ResetUI();
         }
 
         private void btnSave_Click(object sender, EventArgs e) {
+
             //Confirmar a existência de uma descrição
             if (txtDescription.Text == string.Empty) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice("Introduza uma descrição para adicionar", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
@@ -170,11 +186,11 @@ namespace Sage50c.API.Sample {
                     try {
                         //Elimina o tamanho apresentado
                         sizeProvider.Delete(txtId.Text.ToShort());
+
                         //Limpa todos os campos para que se possa criar um novo tamanho 
                         ResetUI();
                     }
                     catch {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível eliminar este tamanho porque existem registos relacionados com o mesmo.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         var opt = APIEngine.CoreGlobals.MsgBoxFrontOffice("Existem registos relacionados com este Tamanho. Para manter a integridade referencial e poder apagar este tamanho terá que indicar um código que o substitua.", VBA.VbMsgBoxStyle.vbQuestion | VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName);
                         if (opt == VBA.VbMsgBoxResult.vbYes) {
                             S50cCore22.POSInputBox box = new S50cCore22.POSInputBox();
@@ -201,6 +217,7 @@ namespace Sage50c.API.Sample {
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+
             //Usar F5 para "simular" o click do btnDelete
             if (keyData == Keys.F5) {
                 btnDelete.PerformClick();
@@ -209,26 +226,38 @@ namespace Sage50c.API.Sample {
         }
 
         private void txtId_KeyPress(object sender, KeyPressEventArgs e) {
+
             if (e.KeyChar == (char)Keys.Enter) {
                 EnableComp(true);
+                CheckTextId();
                 txtDescription.Select();
             }
         }
 
         private void txtId_Leave(object sender, EventArgs e) {
+
             var sizeId = txtId.Text.ToShort();
             if (sizeId > 0) {
                 var size = sizeProvider.GetSize(sizeId);
                 UpdateUI(size);
                 EnableComp(true);
             }
+            else {
+                CheckTextId();
+            }
         }
 
-
         private void EnableComp(bool action) {
+
             btnSave.Enabled = action;
             txtDescription.Enabled = action;
         }
 
+        private void CheckTextId() {
+
+            if (txtId.Text.ToShort() == 0) {
+                btnSearch.PerformClick();
+            }
+        }
     }
 }

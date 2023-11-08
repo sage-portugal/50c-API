@@ -1,4 +1,6 @@
-﻿namespace Sage50c.API.Sample {
+﻿using System.Windows.Forms;
+
+namespace Sage50c.API.Sample {
     partial class fApi {
         /// <summary>
         /// Required designer variable.
@@ -212,20 +214,18 @@
             this.lblTransDocNumber = new System.Windows.Forms.Label();
             this.Label25 = new System.Windows.Forms.Label();
             this.tabSupplier = new System.Windows.Forms.TabPage();
+            this.cmbSupplierCountry = new System.Windows.Forms.ComboBox();
             this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
             this.btnSupplierBrow = new System.Windows.Forms.Button();
             this.txtSupplierId = new System.Windows.Forms.TextBox();
             this.txtSupplierName = new System.Windows.Forms.TextBox();
             this.txtSupplierTaxId = new System.Windows.Forms.TextBox();
-            this.txtSupplierCurrency = new System.Windows.Forms.TextBox();
             this.txtSupplierZone = new System.Windows.Forms.TextBox();
             this.txtSupplierComments = new System.Windows.Forms.TextBox();
-            this.txtSupplierCountry = new System.Windows.Forms.TextBox();
             this.Label22 = new System.Windows.Forms.Label();
             this.Label21 = new System.Windows.Forms.Label();
             this.Label19 = new System.Windows.Forms.Label();
             this.Label18 = new System.Windows.Forms.Label();
-            this.Label17 = new System.Windows.Forms.Label();
             this._Label15_2 = new System.Windows.Forms.Label();
             this.Label16 = new System.Windows.Forms.Label();
             this.Label13 = new System.Windows.Forms.Label();
@@ -237,14 +237,12 @@
             this.txtCustomerName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbCustomerTax = new System.Windows.Forms.ComboBox();
-            this.cmbCustomerCurrency = new System.Windows.Forms.ComboBox();
             this.numCustomerSalesmanId = new System.Windows.Forms.NumericUpDown();
             this.numCustomerZoneId = new System.Windows.Forms.NumericUpDown();
             this.numCustomerId = new System.Windows.Forms.NumericUpDown();
             this.Label12 = new System.Windows.Forms.Label();
             this.Label11 = new System.Windows.Forms.Label();
             this._Label15_1 = new System.Windows.Forms.Label();
-            this.Label9 = new System.Windows.Forms.Label();
             this.Label8 = new System.Windows.Forms.Label();
             this.Label7 = new System.Windows.Forms.Label();
             this.Label6 = new System.Windows.Forms.Label();
@@ -291,6 +289,9 @@
             this.lblEndDate = new System.Windows.Forms.Label();
             this.lblExportTo0 = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.btnSearchSalesman = new System.Windows.Forms.Button();
+            this.btnSearchZone = new System.Windows.Forms.Button();
+            this.btnSearchZoneSupplier = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -2806,20 +2807,19 @@
             // 
             // tabSupplier
             // 
+            this.tabSupplier.Controls.Add(this.btnSearchZoneSupplier);
+            this.tabSupplier.Controls.Add(this.cmbSupplierCountry);
             this.tabSupplier.Controls.Add(this.cmbSupplierTax);
             this.tabSupplier.Controls.Add(this.btnSupplierBrow);
             this.tabSupplier.Controls.Add(this.txtSupplierId);
             this.tabSupplier.Controls.Add(this.txtSupplierName);
             this.tabSupplier.Controls.Add(this.txtSupplierTaxId);
-            this.tabSupplier.Controls.Add(this.txtSupplierCurrency);
             this.tabSupplier.Controls.Add(this.txtSupplierZone);
             this.tabSupplier.Controls.Add(this.txtSupplierComments);
-            this.tabSupplier.Controls.Add(this.txtSupplierCountry);
             this.tabSupplier.Controls.Add(this.Label22);
             this.tabSupplier.Controls.Add(this.Label21);
             this.tabSupplier.Controls.Add(this.Label19);
             this.tabSupplier.Controls.Add(this.Label18);
-            this.tabSupplier.Controls.Add(this.Label17);
             this.tabSupplier.Controls.Add(this._Label15_2);
             this.tabSupplier.Controls.Add(this.Label16);
             this.tabSupplier.Controls.Add(this.Label13);
@@ -2829,6 +2829,14 @@
             this.tabSupplier.TabIndex = 2;
             this.tabSupplier.Text = "Fornecedor";
             this.tabSupplier.UseVisualStyleBackColor = true;
+            // 
+            // cmbSupplierCountry
+            // 
+            this.cmbSupplierCountry.FormattingEnabled = true;
+            this.cmbSupplierCountry.Location = new System.Drawing.Point(150, 200);
+            this.cmbSupplierCountry.Name = "cmbSupplierCountry";
+            this.cmbSupplierCountry.Size = new System.Drawing.Size(346, 28);
+            this.cmbSupplierCountry.TabIndex = 77;
             // 
             // cmbSupplierTax
             // 
@@ -2889,30 +2897,17 @@
             this.txtSupplierTaxId.Size = new System.Drawing.Size(346, 23);
             this.txtSupplierTaxId.TabIndex = 8;
             // 
-            // txtSupplierCurrency
-            // 
-            this.txtSupplierCurrency.AcceptsReturn = true;
-            this.txtSupplierCurrency.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSupplierCurrency.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSupplierCurrency.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierCurrency.Location = new System.Drawing.Point(150, 167);
-            this.txtSupplierCurrency.MaxLength = 0;
-            this.txtSupplierCurrency.Name = "txtSupplierCurrency";
-            this.txtSupplierCurrency.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierCurrency.Size = new System.Drawing.Size(346, 23);
-            this.txtSupplierCurrency.TabIndex = 10;
-            // 
             // txtSupplierZone
             // 
             this.txtSupplierZone.AcceptsReturn = true;
             this.txtSupplierZone.BackColor = System.Drawing.SystemColors.Window;
             this.txtSupplierZone.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSupplierZone.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierZone.Location = new System.Drawing.Point(150, 200);
+            this.txtSupplierZone.Location = new System.Drawing.Point(150, 168);
             this.txtSupplierZone.MaxLength = 0;
             this.txtSupplierZone.Name = "txtSupplierZone";
             this.txtSupplierZone.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierZone.Size = new System.Drawing.Size(346, 23);
+            this.txtSupplierZone.Size = new System.Drawing.Size(315, 27);
             this.txtSupplierZone.TabIndex = 12;
             // 
             // txtSupplierComments
@@ -2921,25 +2916,12 @@
             this.txtSupplierComments.BackColor = System.Drawing.SystemColors.Window;
             this.txtSupplierComments.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSupplierComments.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierComments.Location = new System.Drawing.Point(150, 264);
+            this.txtSupplierComments.Location = new System.Drawing.Point(150, 232);
             this.txtSupplierComments.MaxLength = 0;
             this.txtSupplierComments.Name = "txtSupplierComments";
             this.txtSupplierComments.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtSupplierComments.Size = new System.Drawing.Size(346, 23);
             this.txtSupplierComments.TabIndex = 16;
-            // 
-            // txtSupplierCountry
-            // 
-            this.txtSupplierCountry.AcceptsReturn = true;
-            this.txtSupplierCountry.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSupplierCountry.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSupplierCountry.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierCountry.Location = new System.Drawing.Point(150, 232);
-            this.txtSupplierCountry.MaxLength = 0;
-            this.txtSupplierCountry.Name = "txtSupplierCountry";
-            this.txtSupplierCountry.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierCountry.Size = new System.Drawing.Size(346, 23);
-            this.txtSupplierCountry.TabIndex = 14;
             // 
             // Label22
             // 
@@ -2997,20 +2979,6 @@
             this.Label18.TabIndex = 71;
             this.Label18.Text = "NIF:";
             // 
-            // Label17
-            // 
-            this.Label17.AutoSize = true;
-            this.Label17.BackColor = System.Drawing.Color.Transparent;
-            this.Label17.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label17.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label17.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label17.Location = new System.Drawing.Point(43, 172);
-            this.Label17.Name = "Label17";
-            this.Label17.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label17.Size = new System.Drawing.Size(48, 15);
-            this.Label17.TabIndex = 70;
-            this.Label17.Text = "Moeda:";
-            // 
             // _Label15_2
             // 
             this._Label15_2.AutoSize = true;
@@ -3018,7 +2986,7 @@
             this._Label15_2.Cursor = System.Windows.Forms.Cursors.Default;
             this._Label15_2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._Label15_2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._Label15_2.Location = new System.Drawing.Point(43, 204);
+            this._Label15_2.Location = new System.Drawing.Point(43, 172);
             this._Label15_2.Name = "_Label15_2";
             this._Label15_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._Label15_2.Size = new System.Drawing.Size(37, 15);
@@ -3032,7 +3000,7 @@
             this.Label16.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label16.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label16.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label16.Location = new System.Drawing.Point(43, 269);
+            this.Label16.Location = new System.Drawing.Point(43, 237);
             this.Label16.Name = "Label16";
             this.Label16.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label16.Size = new System.Drawing.Size(81, 15);
@@ -3046,7 +3014,7 @@
             this.Label13.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label13.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label13.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label13.Location = new System.Drawing.Point(43, 237);
+            this.Label13.Location = new System.Drawing.Point(43, 205);
             this.Label13.Name = "Label13";
             this.Label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label13.Size = new System.Drawing.Size(31, 15);
@@ -3055,6 +3023,8 @@
             // 
             // tabCustomer
             // 
+            this.tabCustomer.Controls.Add(this.btnSearchZone);
+            this.tabCustomer.Controls.Add(this.btnSearchSalesman);
             this.tabCustomer.Controls.Add(this.btnCustomerBrow);
             this.tabCustomer.Controls.Add(this.cmbCustomerCountry);
             this.tabCustomer.Controls.Add(this.txtCustomerTaxId);
@@ -3062,14 +3032,12 @@
             this.tabCustomer.Controls.Add(this.txtCustomerName);
             this.tabCustomer.Controls.Add(this.label2);
             this.tabCustomer.Controls.Add(this.cmbCustomerTax);
-            this.tabCustomer.Controls.Add(this.cmbCustomerCurrency);
             this.tabCustomer.Controls.Add(this.numCustomerSalesmanId);
             this.tabCustomer.Controls.Add(this.numCustomerZoneId);
             this.tabCustomer.Controls.Add(this.numCustomerId);
             this.tabCustomer.Controls.Add(this.Label12);
             this.tabCustomer.Controls.Add(this.Label11);
             this.tabCustomer.Controls.Add(this._Label15_1);
-            this.tabCustomer.Controls.Add(this.Label9);
             this.tabCustomer.Controls.Add(this.Label8);
             this.tabCustomer.Controls.Add(this.Label7);
             this.tabCustomer.Controls.Add(this.Label6);
@@ -3096,7 +3064,7 @@
             // 
             this.cmbCustomerCountry.DisplayMember = "CountryID";
             this.cmbCustomerCountry.FormattingEnabled = true;
-            this.cmbCustomerCountry.Location = new System.Drawing.Point(149, 260);
+            this.cmbCustomerCountry.Location = new System.Drawing.Point(149, 229);
             this.cmbCustomerCountry.Name = "cmbCustomerCountry";
             this.cmbCustomerCountry.Size = new System.Drawing.Size(346, 23);
             this.cmbCustomerCountry.TabIndex = 16;
@@ -3121,7 +3089,7 @@
             this.txtCustomerComments.BackColor = System.Drawing.SystemColors.Window;
             this.txtCustomerComments.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtCustomerComments.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtCustomerComments.Location = new System.Drawing.Point(149, 292);
+            this.txtCustomerComments.Location = new System.Drawing.Point(149, 261);
             this.txtCustomerComments.MaxLength = 0;
             this.txtCustomerComments.Name = "txtCustomerComments";
             this.txtCustomerComments.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -3165,16 +3133,6 @@
             this.cmbCustomerTax.TabIndex = 8;
             this.cmbCustomerTax.ValueMember = "EntityFiscalStatusID";
             // 
-            // cmbCustomerCurrency
-            // 
-            this.cmbCustomerCurrency.DisplayMember = "CurrencyID";
-            this.cmbCustomerCurrency.FormattingEnabled = true;
-            this.cmbCustomerCurrency.Location = new System.Drawing.Point(149, 195);
-            this.cmbCustomerCurrency.Name = "cmbCustomerCurrency";
-            this.cmbCustomerCurrency.Size = new System.Drawing.Size(346, 23);
-            this.cmbCustomerCurrency.TabIndex = 12;
-            this.cmbCustomerCurrency.ValueMember = "CurrencyID";
-            // 
             // numCustomerSalesmanId
             // 
             this.numCustomerSalesmanId.Location = new System.Drawing.Point(149, 163);
@@ -3191,7 +3149,7 @@
             // 
             // numCustomerZoneId
             // 
-            this.numCustomerZoneId.Location = new System.Drawing.Point(149, 227);
+            this.numCustomerZoneId.Location = new System.Drawing.Point(149, 196);
             this.numCustomerZoneId.Maximum = new decimal(new int[] {
             999999999,
             0,
@@ -3224,7 +3182,7 @@
             this.Label12.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label12.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label12.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label12.Location = new System.Drawing.Point(42, 263);
+            this.Label12.Location = new System.Drawing.Point(42, 232);
             this.Label12.Name = "Label12";
             this.Label12.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label12.Size = new System.Drawing.Size(31, 15);
@@ -3238,7 +3196,7 @@
             this.Label11.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label11.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label11.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label11.Location = new System.Drawing.Point(42, 295);
+            this.Label11.Location = new System.Drawing.Point(42, 264);
             this.Label11.Name = "Label11";
             this.Label11.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label11.Size = new System.Drawing.Size(81, 15);
@@ -3252,26 +3210,12 @@
             this._Label15_1.Cursor = System.Windows.Forms.Cursors.Default;
             this._Label15_1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._Label15_1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._Label15_1.Location = new System.Drawing.Point(42, 230);
+            this._Label15_1.Location = new System.Drawing.Point(42, 199);
             this._Label15_1.Name = "_Label15_1";
             this._Label15_1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._Label15_1.Size = new System.Drawing.Size(37, 15);
             this._Label15_1.TabIndex = 55;
             this._Label15_1.Text = "Zona:";
-            // 
-            // Label9
-            // 
-            this.Label9.AutoSize = true;
-            this.Label9.BackColor = System.Drawing.Color.Transparent;
-            this.Label9.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label9.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label9.Location = new System.Drawing.Point(42, 198);
-            this.Label9.Name = "Label9";
-            this.Label9.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label9.Size = new System.Drawing.Size(48, 15);
-            this.Label9.TabIndex = 54;
-            this.Label9.Text = "Moeda:";
             // 
             // Label8
             // 
@@ -4078,15 +4022,12 @@
         public System.Windows.Forms.TextBox txtSupplierId;
         public System.Windows.Forms.TextBox txtSupplierName;
         public System.Windows.Forms.TextBox txtSupplierTaxId;
-        public System.Windows.Forms.TextBox txtSupplierCurrency;
         public System.Windows.Forms.TextBox txtSupplierZone;
         public System.Windows.Forms.TextBox txtSupplierComments;
-        public System.Windows.Forms.TextBox txtSupplierCountry;
         public System.Windows.Forms.Label Label22;
         public System.Windows.Forms.Label Label21;
         public System.Windows.Forms.Label Label19;
         public System.Windows.Forms.Label Label18;
-        public System.Windows.Forms.Label Label17;
         private System.Windows.Forms.Label _Label15_2;
         public System.Windows.Forms.Label Label16;
         public System.Windows.Forms.Label Label13;
@@ -4098,14 +4039,12 @@
         public System.Windows.Forms.TextBox txtCustomerName;
         public System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbCustomerTax;
-        private System.Windows.Forms.ComboBox cmbCustomerCurrency;
         private System.Windows.Forms.NumericUpDown numCustomerSalesmanId;
         private System.Windows.Forms.NumericUpDown numCustomerZoneId;
         private System.Windows.Forms.NumericUpDown numCustomerId;
         public System.Windows.Forms.Label Label12;
         public System.Windows.Forms.Label Label11;
         private System.Windows.Forms.Label _Label15_1;
-        public System.Windows.Forms.Label Label9;
         public System.Windows.Forms.Label Label8;
         public System.Windows.Forms.Label Label7;
         public System.Windows.Forms.Label Label6;
@@ -4189,6 +4128,10 @@
         private System.Windows.Forms.Button btnSAFTExport1;
         private System.Windows.Forms.Button btnSAFTExport0;
         private System.Windows.Forms.Button btnUnitOfMeasureBrow;
+        private ComboBox cmbSupplierCountry;
+        private Button btnSearchZone;
+        private Button btnSearchSalesman;
+        private Button btnSearchZoneSupplier;
     }
 }
 

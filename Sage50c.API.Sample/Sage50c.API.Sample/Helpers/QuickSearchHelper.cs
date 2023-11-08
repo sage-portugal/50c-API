@@ -1,11 +1,8 @@
-﻿using S50cSys22;
-using S50cUtil22;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
+
+using S50cSys22;
+using S50cUtil22;
 
 namespace Sage50c.API.Sample {
     internal class QuickSearchHelper {
@@ -353,6 +350,72 @@ namespace Sage50c.API.Sample {
             quickSearch = null;
 
             return result;
+        }
+
+        private static bool _salesmanIsFinding = false;
+        internal static double SalesmanFind() {
+            QuickSearch quickSearch = null;
+            double salesmanId = 0;
+
+            try {
+                //show data for view with id=0: the title is fetched by the
+                //quick search viewer.
+                if (!_salesmanIsFinding) {
+                    _salesmanIsFinding = true;
+
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Salesman, false);
+
+                    if (quickSearch.SelectValue()) {
+                        salesmanId = quickSearch.ValueSelectedDouble();
+                    }
+                    else {
+                        //Not found... do nothing
+                    }
+                    _salesmanIsFinding = false;
+                    quickSearch = null;
+                }
+            }
+            catch (Exception ex) {
+                _supplierIsFinding = false;
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            finally {
+            }
+
+            return salesmanId;
+        }
+
+        private static bool _zoneIsFinding = false;
+        internal static double ZoneFind() {
+            QuickSearch quickSearch = null;
+            double zoneId = 0;
+
+            try {
+                //show data for view with id=0: the title is fetched by the
+                //quick search viewer.
+                if (!_zoneIsFinding) {
+                    _zoneIsFinding = true;
+
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Zone, false);
+
+                    if (quickSearch.SelectValue()) {
+                        zoneId = quickSearch.ValueSelectedDouble();
+                    }
+                    else {
+                        //Not found... do nothing
+                    }
+                    _zoneIsFinding = false;
+                    quickSearch = null;
+                }
+            }
+            catch (Exception ex) {
+                _zoneIsFinding = false;
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            finally {
+            }
+
+            return zoneId;
         }
     }
 }
