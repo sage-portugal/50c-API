@@ -213,6 +213,7 @@ namespace Sage50c.API.Sample {
             this.lblTransDocNumber = new System.Windows.Forms.Label();
             this.Label25 = new System.Windows.Forms.Label();
             this.tabSupplier = new System.Windows.Forms.TabPage();
+            this.btnSearchZoneSupplier = new System.Windows.Forms.Button();
             this.cmbSupplierCountry = new System.Windows.Forms.ComboBox();
             this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
             this.btnSupplierBrow = new System.Windows.Forms.Button();
@@ -229,6 +230,8 @@ namespace Sage50c.API.Sample {
             this.Label16 = new System.Windows.Forms.Label();
             this.Label13 = new System.Windows.Forms.Label();
             this.tabCustomer = new System.Windows.Forms.TabPage();
+            this.btnSearchZone = new System.Windows.Forms.Button();
+            this.btnSearchSalesman = new System.Windows.Forms.Button();
             this.btnCustomerBrow = new System.Windows.Forms.Button();
             this.cmbCustomerCountry = new System.Windows.Forms.ComboBox();
             this.txtCustomerTaxId = new System.Windows.Forms.TextBox();
@@ -269,9 +272,6 @@ namespace Sage50c.API.Sample {
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
-            this.btnSearchSalesman = new System.Windows.Forms.Button();
-            this.btnSearchZone = new System.Windows.Forms.Button();
-            this.btnSearchZoneSupplier = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -2793,6 +2793,21 @@ namespace Sage50c.API.Sample {
             this.tabSupplier.Text = "Fornecedor";
             this.tabSupplier.UseVisualStyleBackColor = true;
             // 
+            // btnSearchZoneSupplier
+            // 
+            this.btnSearchZoneSupplier.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchZoneSupplier.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchZoneSupplier.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchZoneSupplier.FlatAppearance.BorderSize = 0;
+            this.btnSearchZoneSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchZoneSupplier.Location = new System.Drawing.Point(470, 169);
+            this.btnSearchZoneSupplier.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchZoneSupplier.Name = "btnSearchZoneSupplier";
+            this.btnSearchZoneSupplier.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchZoneSupplier.TabIndex = 78;
+            this.btnSearchZoneSupplier.UseVisualStyleBackColor = false;
+            this.btnSearchZoneSupplier.Click += new System.EventHandler(this.btnSearchZoneSupplier_Click);
+            // 
             // cmbSupplierCountry
             // 
             this.cmbSupplierCountry.FormattingEnabled = true;
@@ -3012,6 +3027,36 @@ namespace Sage50c.API.Sample {
             this.tabCustomer.TabIndex = 1;
             this.tabCustomer.Text = "Cliente";
             this.tabCustomer.UseVisualStyleBackColor = true;
+            // 
+            // btnSearchZone
+            // 
+            this.btnSearchZone.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchZone.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchZone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchZone.FlatAppearance.BorderSize = 0;
+            this.btnSearchZone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchZone.Location = new System.Drawing.Point(254, 196);
+            this.btnSearchZone.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchZone.Name = "btnSearchZone";
+            this.btnSearchZone.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchZone.TabIndex = 67;
+            this.btnSearchZone.UseVisualStyleBackColor = false;
+            this.btnSearchZone.Click += new System.EventHandler(this.btnSearchZone_Click);
+            // 
+            // btnSearchSalesman
+            // 
+            this.btnSearchSalesman.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchSalesman.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchSalesman.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchSalesman.FlatAppearance.BorderSize = 0;
+            this.btnSearchSalesman.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchSalesman.Location = new System.Drawing.Point(254, 163);
+            this.btnSearchSalesman.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchSalesman.Name = "btnSearchSalesman";
+            this.btnSearchSalesman.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchSalesman.TabIndex = 66;
+            this.btnSearchSalesman.UseVisualStyleBackColor = false;
+            this.btnSearchSalesman.Click += new System.EventHandler(this.btnSearchSalesman_Click);
             // 
             // btnCustomerBrow
             // 
@@ -3511,51 +3556,6 @@ namespace Sage50c.API.Sample {
             this.tabEntities.Size = new System.Drawing.Size(951, 509);
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
-            // 
-            // btnSearchSalesman
-            // 
-            this.btnSearchSalesman.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnSearchSalesman.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
-            this.btnSearchSalesman.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearchSalesman.FlatAppearance.BorderSize = 0;
-            this.btnSearchSalesman.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearchSalesman.Location = new System.Drawing.Point(254, 163);
-            this.btnSearchSalesman.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSearchSalesman.Name = "btnSearchSalesman";
-            this.btnSearchSalesman.Size = new System.Drawing.Size(26, 26);
-            this.btnSearchSalesman.TabIndex = 66;
-            this.btnSearchSalesman.UseVisualStyleBackColor = false;
-            this.btnSearchSalesman.Click += new System.EventHandler(this.btnSearchSalesman_Click);
-            // 
-            // btnSearchZone
-            // 
-            this.btnSearchZone.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnSearchZone.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
-            this.btnSearchZone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearchZone.FlatAppearance.BorderSize = 0;
-            this.btnSearchZone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearchZone.Location = new System.Drawing.Point(254, 196);
-            this.btnSearchZone.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSearchZone.Name = "btnSearchZone";
-            this.btnSearchZone.Size = new System.Drawing.Size(26, 26);
-            this.btnSearchZone.TabIndex = 67;
-            this.btnSearchZone.UseVisualStyleBackColor = false;
-            this.btnSearchZone.Click += new System.EventHandler(this.btnSearchZone_Click);
-            // 
-            // btnSearchZoneSupplier
-            // 
-            this.btnSearchZoneSupplier.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.btnSearchZoneSupplier.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
-            this.btnSearchZoneSupplier.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSearchZoneSupplier.FlatAppearance.BorderSize = 0;
-            this.btnSearchZoneSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearchZoneSupplier.Location = new System.Drawing.Point(470, 169);
-            this.btnSearchZoneSupplier.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSearchZoneSupplier.Name = "btnSearchZoneSupplier";
-            this.btnSearchZoneSupplier.Size = new System.Drawing.Size(26, 26);
-            this.btnSearchZoneSupplier.TabIndex = 78;
-            this.btnSearchZoneSupplier.UseVisualStyleBackColor = false;
-            this.btnSearchZoneSupplier.Click += new System.EventHandler(this.btnSearchZoneSupplier_Click);
             // 
             // fApi
             // 
