@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -3892,6 +3891,26 @@ namespace Sage50c.API.Sample {
             btnSAFTExport1.BackColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryBackColor);
             btnSAFTExport1.FlatAppearance.BorderColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.SecondaryBorderColor);
             btnSAFTExport1.ForeColor = ColorTranslator.FromOle((int)APIEngine.SystemSettings.Application.UI.Button.PrimaryForeColor);
+        }
+
+        private void tabEntities_SelectedIndexChanged(object sender, EventArgs e) {
+
+            int tabIndex = tabEntities.SelectedIndex;
+
+            if (tabIndex == 6) {
+                btnInsert.Enabled = false;
+                btnUpdate.Enabled = false;
+                btnRemove.Enabled = false;
+                btnClear.Enabled = false;
+                btnGet.Enabled = false;
+            }
+            else {
+                btnInsert.Enabled = true;
+                btnUpdate.Enabled = true;
+                btnRemove.Enabled = true;
+                btnClear.Enabled = true;
+                btnGet.Enabled = true;
+            }
         }
     }
 }

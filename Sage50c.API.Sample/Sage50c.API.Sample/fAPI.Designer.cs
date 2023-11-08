@@ -3603,6 +3603,7 @@
             this.tabEntities.SelectedIndex = 0;
             this.tabEntities.Size = new System.Drawing.Size(951, 509);
             this.tabEntities.TabIndex = 40;
+            this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
             // 
             // tabSAFT
             // 
@@ -3635,6 +3636,7 @@
             // 
             // btnSAFTExport1
             // 
+            this.btnSAFTExport1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSAFTExport1.Location = new System.Drawing.Point(328, 175);
             this.btnSAFTExport1.Name = "btnSAFTExport1";
             this.btnSAFTExport1.Size = new System.Drawing.Size(92, 27);
