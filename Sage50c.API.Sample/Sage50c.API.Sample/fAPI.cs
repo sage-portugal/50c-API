@@ -323,7 +323,7 @@ namespace Sage50c.API.Sample {
                     case 0: ItemInsert(); break;
                     case 1: CustomerInsert(); break;
                     case 2: SupplierInsert(); break;
-                    case 3: TransactionInsert(false); break;
+                    case 3: transId = TransactionInsert(false); break;
                     case 4: transId = AccountTransactionInsert(); break;
                     case 5: UnitOfMeasureInsert(); break;
                 }
@@ -375,7 +375,7 @@ namespace Sage50c.API.Sample {
                     case 0: ItemUpdate(); break;
                     case 1: CustomerUpdate(); break;
                     case 2: SupplierUpdate(); break;
-                    case 3: TransactionUpdate(false); break;
+                    case 3: transId = TransactionUpdate(false); break;
                     case 4: transId = AccountTransactionUpdate(); break;
                     case 5: UnitOfMeasureUpdate(); break;
                 }
@@ -410,7 +410,7 @@ namespace Sage50c.API.Sample {
                         case 0: ItemRemove(); break;
                         case 1: CustomerRemove(); break;
                         case 2: SupplierRemove(); break;
-                        case 3: TransactionRemove(); break;
+                        case 3: transId = TransactionRemove(); break;
                         case 4: transId = AccountTransactionRemove(); break;
                         case 5: UnitOfMeasureRemove(); break;
                     }
@@ -897,7 +897,7 @@ namespace Sage50c.API.Sample {
             txtSupplierComments.Text = string.Empty;
         }
 
-        private void SupplierUpdateUI(S50cBO22.Supplier supplier) {
+        private void SupplierUpdateUI(Supplier supplier) {
             if (supplier != null) {
                 txtSupplierId.Text = supplier.SupplierID.ToString();
                 txtSupplierName.Text = supplier.OrganizationName;
@@ -918,44 +918,52 @@ namespace Sage50c.API.Sample {
         #region TRANSACTION
 
         private TransactionID TransactionInsert(bool suspendTransaction) {
-            TransactionID result = null;
+
+            TransactionID transactionID;
+
             if (rbTransBuySell.Checked) {
                 _buySaleTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
-                TransactionBuySaleUpdate(suspendTransaction);
+                transactionID = TransactionBuySaleUpdate(suspendTransaction);
             }
             else {
                 _stockTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
-                TransactionStockUpdate();
+                transactionID = TransactionStockUpdate();
             }
 
-            return result;
+            return transactionID;
         }
 
-        private bool TransactionRemove() {
-            bool result = false;
+        private TransactionID TransactionRemove() {
+
+            TransactionID transactionID;
+
             if (rbTransBuySell.Checked) {
                 TransactionFill();
-                result = _buySaleTransactionController.Remove();
+                transactionID = _buySaleTransactionController.Remove();
                 TransactionClearUI();
             }
             else {
                 TransactionStockFill();
-                result = _stockTransactionController.Remove();
+                transactionID = _stockTransactionController.Remove();
                 TransactionClearUI();
             }
-            return result;
+
+            return transactionID;
         }
 
-        private bool TransactionUpdate(bool suspendedTransaction) {
-            var result = false;
+        private TransactionID TransactionUpdate(bool suspendedTransaction) {
+
+            TransactionID transactionID;
+
             if (rbTransBuySell.Checked) {
-                result = TransactionBuySaleUpdate(suspendedTransaction);
+                transactionID = TransactionBuySaleUpdate(suspendedTransaction);
             }
             else {
-                result = TransactionStockUpdate();
+                transactionID = TransactionStockUpdate();
             }
+
             TransactionClearUI();
-            return result;
+            return transactionID;
         }
 
         private void TransactionGet(bool suspendedTransaction) {
@@ -1274,12 +1282,11 @@ namespace Sage50c.API.Sample {
 
         }
 
-        private bool TransactionBuySaleUpdate(bool suspended) {
-            var result = false;
+        private TransactionID TransactionBuySaleUpdate(bool suspended) {
             transactionError = false;
             TransactionFill();
 
-            S50cSys22.Document document = systemSettings.WorkstationInfo.Document[_buySaleTransactionController.BsoItemTransaction.Transaction.TransDocument];
+            Document document = systemSettings.WorkstationInfo.Document[_buySaleTransactionController.BsoItemTransaction.Transaction.TransDocument];
             DocumentsSeries series = systemSettings.DocumentSeries[_buySaleTransactionController.BsoItemTransaction.Transaction.TransSerial];
 
             //Clear lines
@@ -1313,7 +1320,7 @@ namespace Sage50c.API.Sample {
                         MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                result = _buySaleTransactionController.Save(suspended);
+               _buySaleTransactionController.Save(suspended);
                 // Definir a assinatura de um sistema externo
             }
 
@@ -1324,7 +1331,7 @@ namespace Sage50c.API.Sample {
             _buySaleTransactionController.Print(chkPrintPreview.Checked, optPrintOptions1.Checked);
             btnPrint.Enabled = true;
             TransactionClearUI();
-            return result;
+            return _buySaleTransactionController.BsoItemTransaction.Transaction.TransactionID;
         }
 
         void bsoItemTransaction_TenderIDChanged(ref short value) {
@@ -1391,8 +1398,7 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private bool TransactionStockUpdate() {
-            var result = false;
+        private TransactionID TransactionStockUpdate() {
             transactionError = false;
             TransactionStockFill();
 
@@ -1444,9 +1450,9 @@ namespace Sage50c.API.Sample {
                 }
             }
 
-            result = _stockTransactionController.Save();
+            _stockTransactionController.Save();
             TransactionClearUI();
-            return result;
+            return _stockTransactionController.BsoStockTransaction.Transaction.TransactionID;
         }
 
         #endregion

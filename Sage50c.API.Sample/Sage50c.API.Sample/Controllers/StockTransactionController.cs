@@ -74,7 +74,7 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Delete transaction
         /// </summary>
-        public bool Remove() {
+        public TransactionID Remove() {
 
             var transType = ItemTransactionHelper.TransGetType(_bsoStockTransaction.Transaction.TransDocument);
             if (transType != DocumentTypeEnum.dcTypeStock) {
@@ -87,7 +87,7 @@ namespace Sage50c.API.Sample.Controllers {
                     _bsoStockTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
                     //
                     if (_bsoStockTransaction.DeleteStockTransaction()) {
-                        return true;
+                        return _bsoStockTransaction.Transaction.TransactionID;
                     }
                     else {
                         throw new Exception($"Não foi possível anular o Documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber}");
