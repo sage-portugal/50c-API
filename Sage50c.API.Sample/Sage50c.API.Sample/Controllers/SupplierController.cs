@@ -25,16 +25,16 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Get supplier from database
         /// </summary>
-        public Supplier Load(double supplierId) {
+        public Supplier Load(double SupplierId) {
 
-            if (supplierId > 0) {
-                _supplier = dsoCache.SupplierProvider.GetSupplier(supplierId);
+            if (SupplierId > 0) {
+                _supplier = dsoCache.SupplierProvider.GetSupplier(SupplierId);
                 if (_supplier != null) {
                     editState = EditState.Editing;
                     return _supplier;
                 }
                 else {
-                    throw new Exception($"O Fornecedor [{supplierId}] não existe.");
+                    throw new Exception($"O Fornecedor [{SupplierId}] não existe.");
                 }
             }
             else {

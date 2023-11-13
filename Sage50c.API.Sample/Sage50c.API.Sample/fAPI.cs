@@ -446,6 +446,28 @@ namespace Sage50c.API.Sample {
             }
         }
 
+        private void btnPrint_Click(object sender, EventArgs e) {
+
+            double transDocNumber = txtTransDocNumber.Text.ToDouble();
+
+            try {
+                // Mostrar no ecran
+                TransactionGet(false);
+                //
+                if (optPrintOptions0.Checked) {
+                    //Imprimir com as regras default da 50c e caixa de diálogo
+                    TransactionPrint(txtTransSerial.Text, txtTransDoc.Text, transDocNumber, chkPrintPreview.Checked);
+                }
+                else {
+                    // Impressão customizada, exportação para PDF, ...
+                    TransactionPrintWithConfig(txtTransSerial.Text, txtTransDoc.Text, transDocNumber);
+                }
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
         #region ITEM
 
         /// <summary>
@@ -1129,6 +1151,74 @@ namespace Sage50c.API.Sample {
             TransClearL2();
         }
 
+        /// <summary>
+        /// Impressão normal via caixa de diálogo e regras da 50c
+        /// </summary>
+        private void TransactionPrint(string transSerial, string transDoc, double transDocNumber, bool printPreview) {
+            if (printPreview) {
+                bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, 1);
+            }
+            else {
+                bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPrint, 1);
+            }
+        }
+
+        private void TransactionPrintWithConfig(string transSerial, string transDoc, double transDocNumber) {
+            clsLArrayObject objListPrintSettings;
+            PrintSettings oPrintSettings = null;
+            Document oDocument = null;
+            PlaceHolders oPlaceHolders = new PlaceHolders();
+
+            btnPrint.Enabled = false;
+
+            oPlaceHolders = new PlaceHolders();
+
+            try {
+                oDocument = systemSettings.WorkstationInfo.Document[transDoc];
+
+                // Preencher as opções default
+                var defaultPrintSettings = new PrintSettings() {
+                    AskForPrinter = false,
+                    UseIssuingOutput = false,
+                    PrintAction = chkPrintPreview.Checked ? PrintActionEnum.prnActPreview : PrintActionEnum.prnActPrint
+                };
+                if (optPrintOptions1.Checked) {
+                    // Exportar para PDF
+                    defaultPrintSettings.PrintAction = PrintActionEnum.prnActExportToFile;
+                    defaultPrintSettings.ExportFileType = ExportFileTypeEnum.filePDF;
+                    defaultPrintSettings.ExportFileFolder = oPlaceHolders.GetPlaceHolderPath(systemSettings.WorkstationInfo.PDFDestinationFolder);
+                }
+                //Obter configurações de impressão na configuração de postos
+                objListPrintSettings = printingManager.GetTransactionPrintSettings(oDocument, transSerial, ref defaultPrintSettings);
+                //
+                if (objListPrintSettings.getCount() > 0) {
+                    // Neste exemplo, vamos escolher a primeira configuração
+                    // Se houverem mais configuradas, deve-se alterar para a pretendida
+                    oPrintSettings = (PrintSettings)objListPrintSettings.item[0];
+                    // Imprimir...
+                    // Retorna falso em caso de erro
+                    if (chkPrintPreview.Checked) {
+                        bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, oPrintSettings.PrintCopies);
+                    }
+                    else {
+                        bsoItemTransaction.PrintTransaction
+                            (transSerial, transDoc, transDocNumber,
+                            PrintJobEnum.jobPrint, oPrintSettings.PrintCopies,
+                            oPrintSettings);
+                    }
+                }
+                MessageBox.Show("Concluido.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            finally {
+                btnPrint.Enabled = true;
+                oDocument = null;
+                oPlaceHolders = null;
+            }
+        }
+
         #endregion
 
         #region BUY/SALE TRANSACTION
@@ -1137,7 +1227,6 @@ namespace Sage50c.API.Sample {
             _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
             _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
             _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-            _itemTransactionController.Transaction.TransDocType = ItemTransactionHelper.TransGetType(txtTransDoc.Text);
             _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
             _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
             _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
@@ -1146,12 +1235,12 @@ namespace Sage50c.API.Sample {
             _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
             _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
             _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
-            _itemTransactionController.PartyID = txtTransPartyId.Text.ToShort();
+            _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
             _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
-            _itemTransactionController.Transaction.WorkstationStamp.SessionID = APIEngine.SystemSettings.TillSession.SessionID;
+            _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
             _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-            _itemTransactionController.PaymentDiscountPercent1 = txtTransGlobalDiscount.Text.ToShort();
-            _itemTransactionController.UserPermissions = systemSettings.User;
+            _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
+            _itemTransactionController.SetUserPermissions();
         }
 
         private ItemTransactionDetail TransactionDetailFill() {
@@ -1196,88 +1285,59 @@ namespace Sage50c.API.Sample {
             return details;
         }
 
-        private SimpleDocumentList TransactionCreateCostShare() {
-            SimpleDocument objDocument;
-            SimpleDocumentList objDocumentList = new SimpleDocumentList();
-            SimpleItemDetail objDocumentDetailsList;
-
-            //Begin manual Share amount 
+        private SimpleDocument TransactionFillCostShare() {
+            SimpleDocument simpleDocument = new SimpleDocument();
+            SimpleItemDetail simpleItemDetail = new SimpleItemDetail();
             if (txtShareTransDocNumber_R1.Text.Length > 0) {
-                objDocument = new SimpleDocument();
-                objDocument.TransSerial = txtShareTransSerial_R1.Text;
-                objDocument.TransDocument = txtShareTransDocument_R1.Text;
-                objDocument.TransDocNumber = txtShareTransDocNumber_R1.Text.ToDouble();
-                objDocument.TotalTransactionAmount = txtShareAmount_R1.Text.ToDouble();
-                objDocument.CurrencyID = txtTransCurrency.Text;
-                objDocument.CurrencyExchange = 1;
-                objDocument.CurrencyFactor = 1;
 
+                simpleDocument = new SimpleDocument();
+                simpleDocument.TransSerial = txtShareTransSerial_R1.Text;
+                simpleDocument.TransDocument = txtShareTransDocument_R1.Text;
+                simpleDocument.TransDocNumber = txtShareTransDocNumber_R1.Text.ToDouble();
+                simpleDocument.TotalTransactionAmount = txtShareAmount_R1.Text.ToDouble();
+                simpleDocument.CurrencyID = txtTransCurrency.Text;
+                simpleDocument.CurrencyExchange = 1;
+                simpleDocument.CurrencyFactor = 1;
 
                 //ADD Line 1
                 if (txtAmout_R1_L1.Text.Length > 0) {
-                    objDocumentDetailsList = new SimpleItemDetail();
-                    objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
-                    objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
-                    objDocumentDetailsList.DestinationTransDocNumber = txtShareTransDocNumber_R1.Text.ToDouble();
-                    objDocumentDetailsList.DestinationLineItemID = 1;
-                    objDocumentDetailsList.ItemID = LblL1.Text;
-                    objDocumentDetailsList.UnitPrice = txtAmout_R1_L1.Text.ToDouble();
-                    objDocumentDetailsList.Quantity = 1;
+                    simpleItemDetail = new SimpleItemDetail();
+                    simpleItemDetail.DestinationTransSerial = txtShareTransSerial_R1.Text;
+                    simpleItemDetail.DestinationTransDocument = txtShareTransDocument_R1.Text;
+                    simpleItemDetail.DestinationTransDocNumber = txtShareTransDocNumber_R1.Text.ToDouble();
+                    simpleItemDetail.DestinationLineItemID = 1;
+                    simpleItemDetail.ItemID = LblL1.Text;
+                    simpleItemDetail.UnitPrice = txtAmout_R1_L1.Text.ToDouble();
+                    simpleItemDetail.Quantity = 1;
                     //Line KEY
-                    objDocumentDetailsList.ItemSearchKey = objDocumentDetailsList.DestinationTransSerial + "|" + objDocumentDetailsList.DestinationTransDocument + "|" + objDocumentDetailsList.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(objDocumentDetailsList.DestinationLineItemID) + "|" + objDocumentDetailsList.ItemID + "|" + objDocumentDetailsList.Color.ColorID + "|" + objDocumentDetailsList.Size.SizeID;
+                    simpleItemDetail.ItemSearchKey = simpleItemDetail.DestinationTransSerial + "|" + simpleItemDetail.DestinationTransDocument + "|" + simpleItemDetail.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(simpleItemDetail.DestinationLineItemID) + "|" + simpleItemDetail.ItemID + "|" + simpleItemDetail.Color.ColorID + "|" + simpleItemDetail.Size.SizeID;
                     //Add Line 1 to document detail
-                    objDocument.Details.Add(objDocumentDetailsList);
+                    simpleDocument.Details.Add(simpleItemDetail);
                 }
 
-                //ADD Line 2
                 if (txtAmout_R1_L2.Text.Length > 0) {
-                    objDocumentDetailsList = new SimpleItemDetail();
-                    objDocumentDetailsList.DestinationTransSerial = txtShareTransSerial_R1.Text;
-                    objDocumentDetailsList.DestinationTransDocument = txtShareTransDocument_R1.Text;
-                    objDocumentDetailsList.DestinationTransDocNumber = txtShareTransDocNumber_R1.Text.ToDouble();
-                    objDocumentDetailsList.DestinationLineItemID = 2;
-                    objDocumentDetailsList.ItemID = LblL2.Text;
-                    objDocumentDetailsList.UnitPrice = txtAmout_R1_L2.Text.ToDouble();
-                    objDocumentDetailsList.Quantity = 1;
+                    simpleItemDetail = new SimpleItemDetail();
+                    simpleItemDetail.DestinationTransSerial = txtShareTransSerial_R1.Text;
+                    simpleItemDetail.DestinationTransDocument = txtShareTransDocument_R1.Text;
+                    simpleItemDetail.DestinationTransDocNumber = txtShareTransDocNumber_R1.Text.ToDouble();
+                    simpleItemDetail.DestinationLineItemID = 2;
+                    simpleItemDetail.ItemID = LblL2.Text;
+                    simpleItemDetail.UnitPrice = txtAmout_R1_L2.Text.ToDouble();
+                    simpleItemDetail.Quantity = 1;
                     //Line KEY
-                    objDocumentDetailsList.ItemSearchKey = objDocumentDetailsList.DestinationTransSerial + "|" + objDocumentDetailsList.DestinationTransDocument + "|" + objDocumentDetailsList.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(objDocumentDetailsList.DestinationLineItemID) + "|" + objDocumentDetailsList.ItemID + "|" + objDocumentDetailsList.Color.ColorID + "|" + objDocumentDetailsList.Size.SizeID;
+                    simpleItemDetail.ItemSearchKey = simpleItemDetail.DestinationTransSerial + "|" + simpleItemDetail.DestinationTransDocument + "|" + simpleItemDetail.DestinationTransDocNumber.ToString() + "|" + Convert.ToString(simpleItemDetail.DestinationLineItemID) + "|" + simpleItemDetail.ItemID + "|" + simpleItemDetail.Color.ColorID + "|" + simpleItemDetail.Size.SizeID;
                     //Add Line 2 to document detail
-                    objDocument.Details.Add(objDocumentDetailsList);
+                    simpleDocument.Details.Add(simpleItemDetail);
 
-                    //Add Document to list of Documento to Share amount 
                 }
-
-                objDocumentList.Add(objDocument);
-
             }
-            //End manual Share amount 
 
-            //Begin Automatic Share amount 
-            //if it does not have details, divide the value in proportion to the value of the line
-            if (txtShareTransDocNumber_R2.Text.Length > 0) {
-                objDocument = new SimpleDocument();
-                objDocument.TransSerial = txtShareTransSerial_R2.Text;
-                objDocument.TransDocument = txtShareTransDocument_R2.Text;
-                objDocument.TransDocNumber = txtShareTransDocNumber_R2.Text.ToDouble();
-                objDocument.TotalTransactionAmount = txtShareAmount_R2.Text.ToDouble();
-                objDocument.CurrencyID = txtTransCurrency.Text;
-
-                //Add Document to list of Documento to Share amount 
-                objDocumentList.Add(objDocument);
-
-            }
-            //End Automatic Share amount
-
-            return objDocumentList;
-
+            return simpleDocument;
         }
 
         private TransactionID ItemTransactionUpdate(bool suspended) {
             transactionError = false;
             TransactionFill();
-
-            Document document = systemSettings.WorkstationInfo.Document[_itemTransactionController.Transaction.TransDocument];
-            DocumentsSeries series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
 
             //Clear lines
             int i = 1;
@@ -1285,32 +1345,32 @@ namespace Sage50c.API.Sample {
                 _itemTransactionController.Transaction.Details.Remove(ref i);
             }
 
-            _itemTransactionController.BsoItemTransaction.UserPermissions = systemSettings.User;
+            _itemTransactionController.SetUserPermissions();
             var detail = TransactionDetailFill();
             if (detail != null) {
-                _itemTransactionController.AddDetail(document, txtTransTaxRateL1.Text.ToDouble(), detail);
+                _itemTransactionController.AddDetail(txtTransTaxRateL1.Text.ToDouble(), detail);
             }
             //If exist 2 items add second
             if (!string.IsNullOrEmpty(txtTransItemL2.Text)) {
                 detail = TransactionDetailFillL2();
                 if (detail != null) {
-                    _itemTransactionController.AddDetail(document, txtTransTaxRateL2.Text.ToDouble(), detail);
+                    _itemTransactionController.AddDetail(txtTransTaxRateL2.Text.ToDouble(), detail);
                 }
             }
 
             if (suspended) {
-                _itemTransactionController.BsoItemTransaction.SuspendCurrentTransaction();
+                _itemTransactionController.SuspendTransaction();
             }
             else {
                 //Exemplo da Repartição de Custos
                 //INICIO
-                if (APIEngine.SystemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
-                    _itemTransactionController.Transaction.BuyShareOtherCostList = null;
-                    // Add Shares amount cost to  Transaction , BuyShareOtherCostList 
-                    _itemTransactionController.Transaction.BuyShareOtherCostList = TransactionCreateCostShare();
+                if (systemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
+                    var document = TransactionFillCostShare();
+                    _itemTransactionController.CreateCostShare(document);
 
                 }
                 //FIM
+                var series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
                 if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
                     if (!SetExternalSignature(_itemTransactionController.Transaction)) {
                         MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1320,18 +1380,9 @@ namespace Sage50c.API.Sample {
                 // Definir a assinatura de um sistema externo
             }
 
-            //Unsubscribe from event
-            _itemTransactionController.BsoItemTransaction.TenderIDChanged -= bsoItemTransaction_TenderIDChanged;
-
-            btnPrint.Enabled = false;
-            _itemTransactionController.Print(chkPrintPreview.Checked, optPrintOptions1.Checked);
-            btnPrint.Enabled = true;
+            TransactionPrintWithConfig(_itemTransactionController.Transaction.TransSerial, _itemTransactionController.Transaction.TransDocument, _itemTransactionController.Transaction.TransDocNumber);
             TransactionClearUI();
             return _itemTransactionController.Transaction.TransactionID;
-        }
-
-        void bsoItemTransaction_TenderIDChanged(ref short value) {
-            MessageBox.Show("bsoItemTransaction_TenderIDChanged");
         }
 
         #endregion
@@ -1339,19 +1390,18 @@ namespace Sage50c.API.Sample {
         #region STOCK TRANSACTION
 
         private void TransactionStockFill() {
-            _stockTransactionController.BsoStockTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
-            _stockTransactionController.BsoStockTransaction.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
-            _stockTransactionController.BsoStockTransaction.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
-            _stockTransactionController.BsoStockTransaction.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-            _stockTransactionController.BsoStockTransaction.Transaction.TransDocType = ItemTransactionHelper.TransGetType(txtTransDoc.Text);
-            _stockTransactionController.BsoStockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-            _stockTransactionController.BsoStockTransaction.Transaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
-            _stockTransactionController.BsoStockTransaction.Transaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
-            _stockTransactionController.BsoStockTransaction.Transaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime(DateTime.Now);
-            _stockTransactionController.BsoStockTransaction.PartyType = (short)ItemTransactionHelper.TransGetPartyType(cmbTransPartyType.SelectedIndex);
-            _stockTransactionController.BsoStockTransaction.BaseCurrency = txtTransCurrency.Text;
-            _stockTransactionController.BsoStockTransaction.Transaction.Comments = "Gerado por: " + Application.ProductName;
-            _stockTransactionController.BsoStockTransaction.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+            _stockTransactionController.SetPermissions();
+            _stockTransactionController.StockTransaction.TransDocument = txtTransDoc.Text.ToUpper();
+            _stockTransactionController.StockTransaction.TransSerial = txtTransSerial.Text.ToUpper();
+            _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+            _stockTransactionController.StockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
+            _stockTransactionController.StockTransaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
+            _stockTransactionController.StockTransaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
+            _stockTransactionController.StockTransaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime(DateTime.Now);
+            _stockTransactionController.SetPartyType(cmbTransPartyType.SelectedIndex);
+            _stockTransactionController.SetBaseCurrency(txtTransCurrency.Text);
+            _stockTransactionController.StockTransaction.Comments = "Gerado por: " + Application.ProductName;
+            _stockTransactionController.StockTransaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
         }
 
         private ItemTransactionDetail TransactionStockDetailsFill() {
@@ -1400,32 +1450,31 @@ namespace Sage50c.API.Sample {
 
             // Remover todas as linhas (caso da alteração)
             int i = 1;
-            while (_stockTransactionController.BsoStockTransaction.Transaction.Details.Count > 0) {
-                _stockTransactionController.BsoStockTransaction.Transaction.Details.Remove(ref i);
+            while (_stockTransactionController.StockTransaction.Details.Count > 0) {
+                _stockTransactionController.StockTransaction.Details.Remove(ref i);
             }
 
             StockQtyRuleEnum StockQtyRule = StockQtyRuleEnum.stkQtyNone;
-            if (_stockTransactionController.BsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose) {
+            if (_stockTransactionController.StockTransaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose) {
                 StockQtyRule = StockQtyRuleEnum.stkQtyReceipt;
             }
             else {
-                if (_stockTransactionController.BsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                if (_stockTransactionController.StockTransaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     StockQtyRule = StockQtyRuleEnum.stkQtyOutgoing;
                 }
             }
 
-            _stockTransactionController.BsoStockTransaction.UserPermissions = systemSettings.User;
-            _stockTransactionController.BsoStockTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
+            _stockTransactionController.SetPermissions();
 
             if (!string.IsNullOrEmpty(txtTransItemL1.Text)) {
                 //Add details
-                _stockTransactionController.AddDetailsStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, TransactionStockDetailsFill());
+                _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, TransactionStockDetailsFill());
 
                 if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     var itemDetails = GetItemComponentList(1);
                     if (itemDetails != null) {
                         foreach (ItemTransactionDetail value in itemDetails) {
-                            _stockTransactionController.AddDetailsStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, TransactionStockDetailsFill());
+                            _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, TransactionStockDetailsFill());
                             //TransStockAddDetail(taxRate, value.PhysicalQtyRule);
                         }
                     }
@@ -1433,13 +1482,13 @@ namespace Sage50c.API.Sample {
             }
             if (!string.IsNullOrEmpty(txtTransItemL2.Text)) {
                 //Add details
-                _stockTransactionController.AddDetailsStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, TransactionStockDetailsFillL2());
+                _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, TransactionStockDetailsFillL2());
 
-                if (_stockTransactionController.BsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
+                if (_stockTransactionController.StockTransaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     var itemDetails = GetItemComponentList(1);
                     if (itemDetails != null) {
                         foreach (ItemTransactionDetail value in itemDetails) {
-                            _stockTransactionController.AddDetailsStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, TransactionStockDetailsFillL2());
+                            _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, TransactionStockDetailsFillL2());
                             //TransStockAddDetail(taxRate, value.PhysicalQtyRule);
                         }
                     }
@@ -1448,7 +1497,7 @@ namespace Sage50c.API.Sample {
 
             _stockTransactionController.Save();
             TransactionClearUI();
-            return _stockTransactionController.BsoStockTransaction.Transaction.TransactionID;
+            return _stockTransactionController.StockTransaction.TransactionID;
         }
 
         #endregion
@@ -1988,95 +2037,7 @@ namespace Sage50c.API.Sample {
             TransactionClearUI();
         }
 
-        private void btnPrint_Click(object sender, EventArgs e) {
-
-            double transDocNumber = txtTransDocNumber.Text.ToDouble();
-
-            try {
-                // Mostrar no ecran
-                TransactionGet(false);
-                //
-                if (optPrintOptions0.Checked) {
-                    //Imprimir com as regras default da 50c e caixa de diálogo
-                    TransactionPrint(txtTransSerial.Text, txtTransDoc.Text, transDocNumber, chkPrintPreview.Checked);
-                }
-                else {
-                    // Impressão customizada, exportação para PDF, ...
-                    TransactionPrint2(txtTransSerial.Text, txtTransDoc.Text, transDocNumber);
-                }
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        /// <summary>
-        /// Impressão normal via caixa de diálogo e regras da 50c
-        /// </summary>
-        private void TransactionPrint(string transSerial, string transDoc, double transDocNumber, bool printPreview) {
-            if (printPreview) {
-                bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, 1);
-            }
-            else {
-                bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPrint, 1);
-            }
-        }
-
-        private void TransactionPrint2(string transSerial, string transDoc, double transDocNumber) {
-            clsLArrayObject objListPrintSettings;
-            PrintSettings oPrintSettings = null;
-            Document oDocument = null;
-            PlaceHolders oPlaceHolders = new PlaceHolders();
-
-            btnPrint.Enabled = false;
-
-            oPlaceHolders = new PlaceHolders();
-
-            try {
-                oDocument = systemSettings.WorkstationInfo.Document[transDoc];
-
-                // Preencher as opções default
-                var defaultPrintSettings = new PrintSettings() {
-                    AskForPrinter = false,
-                    UseIssuingOutput = false,
-                    PrintAction = chkPrintPreview.Checked ? PrintActionEnum.prnActPreview : PrintActionEnum.prnActPrint
-                };
-                if (optPrintOptions1.Checked) {
-                    // Exportar para PDF
-                    defaultPrintSettings.PrintAction = PrintActionEnum.prnActExportToFile;
-                    defaultPrintSettings.ExportFileType = ExportFileTypeEnum.filePDF;
-                    defaultPrintSettings.ExportFileFolder = oPlaceHolders.GetPlaceHolderPath(systemSettings.WorkstationInfo.PDFDestinationFolder);
-                }
-                //Obter configurações de impressão na configuração de postos
-                objListPrintSettings = printingManager.GetTransactionPrintSettings(oDocument, transSerial, ref defaultPrintSettings);
-                //
-                if (objListPrintSettings.getCount() > 0) {
-                    // Neste exemplo, vamos escolher a primeira configuração
-                    // Se houverem mais configuradas, deve-se alterar para a pretendida
-                    oPrintSettings = (PrintSettings)objListPrintSettings.item[0];
-                    // Imprimir...
-                    // Retorna falso em caso de erro
-                    if (chkPrintPreview.Checked) {
-                        bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, oPrintSettings.PrintCopies);
-                    }
-                    else {
-                        bsoItemTransaction.PrintTransaction
-                            (transSerial, transDoc, transDocNumber,
-                            PrintJobEnum.jobPrint, oPrintSettings.PrintCopies,
-                            oPrintSettings);
-                    }
-                }
-                MessageBox.Show("Concluido.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            finally {
-                btnPrint.Enabled = true;
-                oDocument = null;
-                oPlaceHolders = null;
-            }
-        }
+       
 
         #region QuickSearch
 
@@ -2132,10 +2093,10 @@ namespace Sage50c.API.Sample {
             try {
                 if (bsoItemTransaction.Transaction.TempTransIndex != 0) {
                     // Atualizar
-                    TransactionUpdate(true);
+                    result = TransactionUpdate(true);
                 }
                 else {
-                    TransactionInsert(true);
+                    result = TransactionInsert(true);
                 }
                 if (result != null) {
                     TransactionClearUI();

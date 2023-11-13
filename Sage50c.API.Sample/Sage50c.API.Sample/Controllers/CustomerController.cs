@@ -26,16 +26,16 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Get customer from database
         /// </summary>
-        public Customer Load(double customerId) {
+        public Customer Load(double CustomerId) {
 
-            if (customerId > 0) {
-                _customer = dsoCache.CustomerProvider.GetCustomer(customerId);
+            if (CustomerId > 0) {
+                _customer = dsoCache.CustomerProvider.GetCustomer(CustomerId);
                 if (_customer != null) {
                     editState = EditState.Editing;
                     return _customer;
                 }
                 else {
-                    throw new Exception($"O Cliente [{customerId}] não existe.");
+                    throw new Exception($"O Cliente [{CustomerId}] não existe.");
                 }
             }
             else {

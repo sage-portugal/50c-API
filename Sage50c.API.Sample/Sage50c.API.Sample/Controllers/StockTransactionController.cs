@@ -11,15 +11,16 @@ namespace Sage50c.API.Sample.Controllers {
     internal class StockTransactionController : ControllerBase {
 
         private BSOStockTransaction _bsoStockTransaction = null;
-        public BSOStockTransaction BsoStockTransaction { get { return _bsoStockTransaction; } }
+
+        public StockTransaction StockTransaction {  get { return _bsoStockTransaction.Transaction; } }
 
         /// <summary>
         /// Create a new sotck transaction
         /// </summary>
-        public StockTransaction Create(string transDoc, string transSerial) {
+        public StockTransaction Create(string TransDoc, string TransSerial) {
 
-            Initialize(transDoc);
-            _bsoStockTransaction.InitNewTransaction(transDoc, transSerial);
+            Initialize(TransDoc, TransSerial);
+            
 
             editState = EditState.New;
             return _bsoStockTransaction.Transaction;
@@ -28,27 +29,27 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Get transaction from database
         /// </summary>
-        public StockTransaction Load(string transDoc, string transSerial, double transDocNum) {
+        public StockTransaction Load(string TransDoc, string TransSerial, double TransDocNum) {
 
             Document doc = null;
             dynamic trans = null;
             _bsoStockTransaction = new BSOStockTransaction();
             editState = EditState.Editing;
-            if (systemSettings.WorkstationInfo.Document.IsInCollection(transDoc)) {
-                doc = systemSettings.WorkstationInfo.Document[transDoc];
+            if (systemSettings.WorkstationInfo.Document.IsInCollection(TransDoc)) {
+                doc = systemSettings.WorkstationInfo.Document[TransDoc];
             }
             else {
-                throw new Exception($"O documento [{transDoc}] não existe");
+                throw new Exception($"O documento [{TransDoc}] não existe");
             }
             if (doc.TransDocType == DocumentTypeEnum.dcTypeStock) {
-                if (!_bsoStockTransaction.LoadStockTransaction(doc.TransDocType, transSerial, transDoc, transDocNum)) {
-                    throw new Exception($"Não foi possível ler o documento [{transDoc} {transSerial}/{transDocNum}]");
+                if (!_bsoStockTransaction.LoadStockTransaction(doc.TransDocType, TransSerial, TransDoc, TransDocNum)) {
+                    throw new Exception($"Não foi possível ler o documento [{TransDoc} {TransSerial}/{TransDocNum}]");
                 }
                 trans = _bsoStockTransaction.Transaction;
                 return trans;
             }
             else {
-                throw new Exception($"O Documento {transDoc} não é um documento de stock");
+                throw new Exception($"O Documento {TransDoc} não é um documento de stock");
             }
         }
 
@@ -76,7 +77,7 @@ namespace Sage50c.API.Sample.Controllers {
         /// </summary>
         public TransactionID Remove() {
 
-            var transType = ItemTransactionHelper.TransGetType(_bsoStockTransaction.Transaction.TransDocument);
+            var transType = TransGetType(_bsoStockTransaction.Transaction.TransDocument);
             if (transType != DocumentTypeEnum.dcTypeStock) {
                 throw new Exception($"O documento indicado [{_bsoStockTransaction.Transaction.TransDocument}] não é um documento de stock.");
             }
@@ -102,17 +103,18 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Initialize new Transaction
         /// </summary>
-        public void Initialize(string transDoc) {
+        public void Initialize(string TransDoc, string TransSerial) {
 
             _bsoStockTransaction = new BSOStockTransaction();
 
             _bsoStockTransaction.BSOStockTransactionDetail = new BSOItemTransactionDetail() {
                 UserPermissions = systemSettings.User,
                 PermissionsType = FrontOfficePermissionEnum.foPermByUser,
-                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
+                TransactionType = TransGetType(TransDoc),
             };
 
-            _bsoStockTransaction.Transaction = new StockTransaction();
+            _bsoStockTransaction.InitNewTransaction(TransDoc, TransSerial);
+            _bsoStockTransaction.Transaction.TransDocType = TransGetType(TransDoc);
         }
 
         /// <summary>
@@ -141,7 +143,7 @@ namespace Sage50c.API.Sample.Controllers {
                 if (!systemSettings.WorkstationInfo.Document.IsInCollection(_bsoStockTransaction.Transaction.TransDocument)) {
                     error.Append($"O documento [{_bsoStockTransaction.Transaction.TransDocument}] não existe ou não se encontra preenchido.");
                 }
-                var transType = ItemTransactionHelper.TransGetType(_bsoStockTransaction.Transaction.TransDocument);
+                var transType = TransGetType(_bsoStockTransaction.Transaction.TransDocument);
                 if (transType != DocumentTypeEnum.dcTypeStock) {
                     error.Append($"O documento indicado [{_bsoStockTransaction.Transaction.TransDocument}] não é um documento de stock");
                 }
@@ -172,47 +174,47 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Add stock details 
         /// </summary>
-        public void AddDetailsStock(double taxRate, StockQtyRuleEnum StockQtyRule, ItemTransactionDetail details) {
+        public void AddDetailStock(double TaxRate, StockQtyRuleEnum StockQtyRule, ItemTransactionDetail Detail) {
 
             StockTransaction stockTransaction = _bsoStockTransaction.Transaction;
 
-            details.BaseCurrency = stockTransaction.BaseCurrency;
-            details.CreateDate = stockTransaction.CreateDate;
-            details.ActualDeliveryDate = stockTransaction.ActualDeliveryDate;
-            details.PartyTypeCode = stockTransaction.PartyTypeCode;
-            details.PartyID = stockTransaction.PartyID;
-            details.WarehouseOutgoing = details.WarehouseID;
-            details.WarehouseReceipt = details.WarehouseID;
-            details.PhysicalQtyRule = StockQtyRule;
-            details.LineItemID = stockTransaction.Details.Count + 1;
+            Detail.BaseCurrency = stockTransaction.BaseCurrency;
+            Detail.CreateDate = stockTransaction.CreateDate;
+            Detail.ActualDeliveryDate = stockTransaction.ActualDeliveryDate;
+            Detail.PartyTypeCode = stockTransaction.PartyTypeCode;
+            Detail.PartyID = stockTransaction.PartyID;
+            Detail.WarehouseOutgoing = Detail.WarehouseID;
+            Detail.WarehouseReceipt = Detail.WarehouseID;
+            Detail.PhysicalQtyRule = StockQtyRule;
+            Detail.LineItemID = stockTransaction.Details.Count + 1;
 
             //Get item
-            Item item = dsoCache.ItemProvider.GetItemForTransactionDetail(details.ItemID, details.BaseCurrency);
+            Item item = dsoCache.ItemProvider.GetItemForTransactionDetail(Detail.ItemID, Detail.BaseCurrency);
 
             if (item != null) {
-                details.Description = item.Description;
-                details.TaxableGroupID = item.TaxableGroupID;
-                details.ItemType = item.ItemType;
-                details.FamilyID = item.Family.FamilyID;
-                details.UnitList = item.UnitList.Clone();
+                Detail.Description = item.Description;
+                Detail.TaxableGroupID = item.TaxableGroupID;
+                Detail.ItemType = item.ItemType;
+                Detail.FamilyID = item.Family.FamilyID;
+                Detail.UnitList = item.UnitList.Clone();
 
-                details.WeightUnitOfMeasure = item.WeightUnitOfMeasure;
-                details.WeightMeasure = item.WeightMeasure;
-                details.Graduation = item.Graduation;
-                details.ItemTax = item.ItemTax;
-                details.ItemTax2 = item.ItemTax2;
-                details.ItemTax3 = item.ItemTax3;
-                details.ItemExtraInfo.ItemQuantityCalcFormula = item.ItemQuantityCalcFormula;
+                Detail.WeightUnitOfMeasure = item.WeightUnitOfMeasure;
+                Detail.WeightMeasure = item.WeightMeasure;
+                Detail.Graduation = item.Graduation;
+                Detail.ItemTax = item.ItemTax;
+                Detail.ItemTax2 = item.ItemTax2;
+                Detail.ItemTax3 = item.ItemTax3;
+                Detail.ItemExtraInfo.ItemQuantityCalcFormula = item.ItemQuantityCalcFormula;
 
-                string unitOfSaleId = details.UnitOfSaleID;
+                string unitOfSaleId = Detail.UnitOfSaleID;
                 if (item.UnitList.IsInCollection(unitOfSaleId)) {
-                    details.UnitOfSaleID = unitOfSaleId;
+                    Detail.UnitOfSaleID = unitOfSaleId;
                 }
                 else {
-                    details.UnitOfSaleID = item.GetDefaultUnitForTransaction(DocumentTypeEnum.dcTypeStock);
+                    Detail.UnitOfSaleID = item.GetDefaultUnitForTransaction(DocumentTypeEnum.dcTypeStock);
                 }
             }
-            else if (details.ItemID == "=") {
+            else if (Detail.ItemID == "=") {
                 item = new Item();
                 //ItemId: //=// represents comment line
                 item.ItemID = "=";
@@ -229,12 +231,12 @@ namespace Sage50c.API.Sample.Controllers {
                 item.CurrencyFactor = APIEngine.SystemSettings.BaseCurrency.EuroConversionRate;
             }
             else {
-                throw new Exception($"O Artigo [{details.ItemID}] não foi entrado.");
+                throw new Exception($"O Artigo [{Detail.ItemID}] não foi entrado.");
             }
 
-            details.TaxableGroupID = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(taxRate, APIEngine.SystemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
+            Detail.TaxableGroupID = dsoCache.TaxesProvider.GetTaxableGroupIDFromTaxRate(TaxRate, APIEngine.SystemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID,
                                                                                                            APIEngine.SystemSettings.SystemInfo.TaxRegionID);
-            details.SetUnitOfSaleID(details.UnitOfSaleID);
+            Detail.SetUnitOfSaleID(Detail.UnitOfSaleID);
 
             //Formulas
             double Quantity1 = 0;
@@ -244,48 +246,61 @@ namespace Sage50c.API.Sample.Controllers {
 
             bool blnHaveSetUnits = false;
 
-            details.Quantity1 = Quantity1;
-            details.Quantity2 = Quantity2;
-            details.Quantity3 = Quantity3;
-            details.Quantity4 = Quantity4;
+            Detail.Quantity1 = Quantity1;
+            Detail.Quantity2 = Quantity2;
+            Detail.Quantity3 = Quantity3;
+            Detail.Quantity4 = Quantity4;
             if (!blnHaveSetUnits) {
-                if (!string.IsNullOrEmpty(details.ItemExtraInfo.ItemQuantityCalcFormula) && APIEngine.SystemSettings.SystemInfo.UseUnitWithFormulaItems) {
-                    details.SetQuantity(StockHelper.CalculateQuantity(details.ItemExtraInfo.ItemQuantityCalcFormula, details, true));
+                if (!string.IsNullOrEmpty(Detail.ItemExtraInfo.ItemQuantityCalcFormula) && APIEngine.SystemSettings.SystemInfo.UseUnitWithFormulaItems) {
+                    Detail.SetQuantity(StockHelper.CalculateQuantity(Detail.ItemExtraInfo.ItemQuantityCalcFormula, Detail, true));
                 }
                 else {
-                    details.SetQuantity(StockHelper.CalculateQuantity(null, details, true));
+                    Detail.SetQuantity(StockHelper.CalculateQuantity(null, Detail, true));
                 }
             }
             //    
             if (!blnHaveSetUnits) {
-                details.SetQuantity(details.Quantity);
+                Detail.SetQuantity(Detail.Quantity);
             }
-            details.Description = item.Description;     // OR "Custom description"
-            details.Comments = "Observações de linha: Gerada por" + Application.ProductName;
+            Detail.Description = item.Description;     // OR "Custom description"
+            Detail.Comments = "Observações de linha: Gerada por" + Application.ProductName;
 
             //*** UnitPrice
             if (stockTransaction.TransactionTaxIncluded) {
-                details.TaxIncludedPrice = details.UnitPrice;
+                Detail.TaxIncludedPrice = Detail.UnitPrice;
             }
 
             MathFunctions mathUtil = new MathFunctions();
 
-            if (details.DiscountPercent == 0 && (details.CumulativeDiscountPercent1 != 0 || details.CumulativeDiscountPercent2 != 0 || details.CumulativeDiscountPercent3 != 0)) {
-                details.DiscountPercent = mathUtil.GetCumulativeDiscount(details.CumulativeDiscountPercent1, details.CumulativeDiscountPercent2, details.CumulativeDiscountPercent3);
+            if (Detail.DiscountPercent == 0 && (Detail.CumulativeDiscountPercent1 != 0 || Detail.CumulativeDiscountPercent2 != 0 || Detail.CumulativeDiscountPercent3 != 0)) {
+                Detail.DiscountPercent = mathUtil.GetCumulativeDiscount(Detail.CumulativeDiscountPercent1, Detail.CumulativeDiscountPercent2, Detail.CumulativeDiscountPercent3);
             }
 
-            if (details.DiscountPercent != 0 && (details.CumulativeDiscountPercent1 == 0 && details.CumulativeDiscountPercent2 == 0 && details.CumulativeDiscountPercent3 == 0)) {
-                details.CumulativeDiscountPercent1 = details.DiscountPercent;
+            if (Detail.DiscountPercent != 0 && (Detail.CumulativeDiscountPercent1 == 0 && Detail.CumulativeDiscountPercent2 == 0 && Detail.CumulativeDiscountPercent3 == 0)) {
+                Detail.CumulativeDiscountPercent1 = Detail.DiscountPercent;
             }
 
-            if (details.ItemProperties.HasPropertyValues) {
-                dsoCache.ItemPropertyProvider.GetItemPropertyStock(details.ItemID, details.WarehouseID, details.ItemProperties);
+            if (Detail.ItemProperties.HasPropertyValues) {
+                dsoCache.ItemPropertyProvider.GetItemPropertyStock(Detail.ItemID, Detail.WarehouseID, Detail.ItemProperties);
             }
 
             bool calculate = true;
             item = null;
-            _bsoStockTransaction.AddDetail(details, ref calculate);
-            details = null;
+            _bsoStockTransaction.AddDetail(Detail, ref calculate);
+            Detail = null;
+        }
+    
+        public void SetPermissions() {
+            _bsoStockTransaction.UserPermissions = systemSettings.User;
+            _bsoStockTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
+        }
+
+        public void SetPartyType(int selected) {
+            _bsoStockTransaction.PartyType = (short)TransGetPartyType(selected);
+        }
+
+        public void SetBaseCurrency (string currency) {
+            _bsoStockTransaction.BaseCurrency = currency;
         }
     }
 }

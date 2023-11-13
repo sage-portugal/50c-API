@@ -298,7 +298,6 @@
     <Compile Include="FormTenderCheck.Designer.cs">
       <DependentUpon>FormTenderCheck.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\ItemTransactionHelper.cs" />
     <Compile Include="GenericTransaction.cs" />
     <Compile Include="Month.cs" />
     <Compile Include="Program.cs" />
