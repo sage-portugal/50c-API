@@ -224,20 +224,19 @@ namespace Sage50c.API.Sample {
                     break;
             }
             if (!string.IsNullOrEmpty(strMessage)) {
-                MessageBox.Show(strMessage, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
         }
 
         /// <summary>
-        /// Mensagens de AVISO da API
-        /// Vamos mostrar só as mensagens
+        /// Displays warning messages from the API
         /// </summary>
-        /// <param name="Message"></param>
         void S50cAPIEngine_WarningMessage(string Message) {
-            //Indicar um erro na transação de forma a cancelá-la
+
+            // Flag the error in the transaction in order to cancel it
             transactionError = true;
-            //
-            MessageBox.Show(Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+            APIEngine.CoreGlobals.MsgBoxFrontOffice(Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
         }
 
         /// <summary>
@@ -248,11 +247,13 @@ namespace Sage50c.API.Sample {
         /// <param name="Source">O método que gerou o erro</param>
         /// <param name="Description">A descrição do erro</param>
         void S50cAPIEngine_WarningError(int Number, string Source, string Description) {
-            //Indicar um erro na transação de forma a cancelá-la
+
+            // Flag the error in the transaction in order to cancel it
             transactionError = true;
-            //
-            string msg = string.Format("Erro: {0}{1}Fonte: {2}{1}{3}", Number, Environment.NewLine, Source, Description);
+
+            string msg = $"Erro: {Number}{Environment.NewLine}Fonte: {Source}{Environment.NewLine}{Description}";
             MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbCritical, Application.ProductName);
         }
 
         /// <summary>
@@ -270,13 +271,11 @@ namespace Sage50c.API.Sample {
         #region User interface
 
         /// <summary>
-        /// Inicialização da API
+        /// API initialization
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void btnStartAPI_Click(object sender, EventArgs e) {
             try {
-                this.Cursor = Cursors.WaitCursor;
+                Cursor = Cursors.WaitCursor;
 
                 APIEngine.WarningError += S50cAPIEngine_WarningError;
                 APIEngine.WarningMessage += S50cAPIEngine_WarningMessage;
@@ -285,24 +284,26 @@ namespace Sage50c.API.Sample {
                 APIEngine.Initialize(cmbAPI.SelectedItem.ToString(), txtCompanyId.Text, chkAPIDebugMode.Checked);
             }
             catch (Exception ex) {
-                this.Cursor = Cursors.Default;
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                Cursor = Cursors.Default;
+
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
 
         private void fApi_FormClosed(object sender, FormClosedEventArgs e) {
-            // Guardar a empresa de testes
+            // Save settings
             Properties.Settings.Default.DebugMode = chkAPIDebugMode.Checked;
             Properties.Settings.Default.CompanyId = txtCompanyId.Text;
             Properties.Settings.Default.API = cmbAPI.SelectedItem.ToString();
             Properties.Settings.Default.Save();
-            //
-            // Terminar a API e sair
-            APIEngine.Terminate();
+
+            if (APIEngine.APIInitialized) {
+                APIEngine.Terminate();
+            }
             Application.Exit();
         }
 
-        private void btnCloseAPI_Click(object sender, EventArgs e) {
+        private void btnStopAPI_Click(object sender, EventArgs e) {
             if (APIEngine.APIInitialized) {
                 APIEngine.Terminate();
             }
@@ -464,7 +465,7 @@ namespace Sage50c.API.Sample {
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
 
@@ -484,9 +485,9 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Fills the item with data from the UI
         /// </summary>
-        private void ItemFill(bool isNew) {
+        private void ItemFill(bool bIsNew) {
 
-            if (isNew) {
+            if (bIsNew) {
                 _itemController.Create();
                 _itemController.Item.ItemID = txtItemID.Text;
             }
@@ -514,7 +515,7 @@ namespace Sage50c.API.Sample {
 
 
             // Clear the previous colors
-            _itemController.Item.Colors.Clear();
+            _itemController.ClearItemColors();
             // Add the new colors
             foreach (DataGridViewRow colorRow in dgvColor.Rows) {
                 var colorID = (short)colorRow.Cells[0].Value;
@@ -523,7 +524,7 @@ namespace Sage50c.API.Sample {
 
 
             // Clear the previous sizes
-            _itemController.Item.Sizes.Clear();
+            _itemController.ClearItemSizes();
             // Add the new sizes
             foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
                 var sizeID = (short)sizeRow.Cells[0].Value;
@@ -543,10 +544,10 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Loads an item
         /// </summary>
-        void ItemGet(string itemID) {
+        void ItemGet(string ItemID) {
 
             ItemClear(false);
-            _itemController.Load(itemID);
+            _itemController.Load(ItemID);
 
             var item = _itemController.Item;
             if (item != null) {
@@ -596,9 +597,9 @@ namespace Sage50c.API.Sample {
         /// <summary>
         /// Clears the UI
         /// </summary>
-        private void ItemClear(bool clearItemId) {
+        private void ItemClear(bool bClearItemID) {
 
-            if (clearItemId) {
+            if (bClearItemID) {
                 txtItemID.Text = string.Empty;
             }
 
@@ -615,13 +616,12 @@ namespace Sage50c.API.Sample {
 
             var colorID = QuickSearchHelper.ColorFind();
             if (colorID > 0) {
-                var colorToAdd = APIEngine.DSOCache.ColorProvider.GetColor((short)colorID);
 
                 var isDuplicate = false;
                 foreach (DataGridViewRow colorRow in dgvColor.Rows) {
 
                     var colorRowID = (short)colorRow.Cells[0].Value;
-                    if (colorRowID == colorToAdd.ColorID) {
+                    if (colorRowID == colorID) {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar a mesma cor mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                         isDuplicate = true;
                         break;
@@ -629,12 +629,42 @@ namespace Sage50c.API.Sample {
                 }
 
                 if (!isDuplicate) {
+                    var colorToAdd = APIEngine.DSOCache.ColorProvider.GetColor((short)colorID);
+
                     var newRowIndex = dgvColor.Rows.Add();
                     var newRow = dgvColor.Rows[newRowIndex];
 
                     newRow.Cells[0].Value = colorToAdd.ColorID;
                     newRow.Cells[1].Style.BackColor = ColorTranslator.FromOle((int)colorToAdd.ColorCode);
                     newRow.Cells[2].Value = colorToAdd.Description;
+                }
+            }
+        }
+
+        private void btnAddSize_Click(object sender, EventArgs e) {
+
+            var sizeID = QuickSearchHelper.SizeFind();
+            if (sizeID > 0) {
+
+                var isDuplicate = false;
+                foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
+                    var sizeId = (short)sizeRow.Cells[0].Value;
+
+                    if (sizeId == sizeID) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!isDuplicate) {
+                    var sizeToAdd = APIEngine.DSOCache.SizeProvider.GetSize((short)sizeID);
+
+                    var newRowIndex = dgvSize.Rows.Add();
+                    var newRow = dgvSize.Rows[newRowIndex];
+
+                    newRow.Cells[0].Value = sizeToAdd.SizeID;
+                    newRow.Cells[1].Value = sizeToAdd.Description;
                 }
             }
         }
@@ -646,33 +676,6 @@ namespace Sage50c.API.Sample {
             }
             else {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice("Selecione uma cor para remover.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-            }
-        }
-
-        private void btnAddSize_Click(object sender, EventArgs e) {
-
-            var size = QuickSearchHelper.SizeFind();
-            if (size > 0) {
-                var sizeToAdd = APIEngine.DSOCache.SizeProvider.GetSize((short)size);
-
-                var isDuplicate = false;
-                foreach (DataGridViewRow sizeRow in dgvSize.Rows) {
-                    var sizeId = (short)sizeRow.Cells[0].Value;
-
-                    if (sizeId == sizeToAdd.SizeID) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("Não é possível adicionar o mesmo tamanho mais do que uma vez.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                        isDuplicate = true;
-                        break;
-                    }
-                }
-
-                if (!isDuplicate) {
-                    var newRowIndex = dgvSize.Rows.Add();
-                    var newRow = dgvSize.Rows[newRowIndex];
-
-                    newRow.Cells[0].Value = sizeToAdd.SizeID;
-                    newRow.Cells[1].Value = sizeToAdd.Description;
-                }
             }
         }
 
@@ -1201,16 +1204,14 @@ namespace Sage50c.API.Sample {
                         bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, oPrintSettings.PrintCopies);
                     }
                     else {
-                        bsoItemTransaction.PrintTransaction
-                            (transSerial, transDoc, transDocNumber,
-                            PrintJobEnum.jobPrint, oPrintSettings.PrintCopies,
-                            oPrintSettings);
+                        bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPrint, oPrintSettings.PrintCopies, oPrintSettings);
                     }
                 }
-                MessageBox.Show("Concluido.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Concluido.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
             finally {
                 btnPrint.Enabled = true;
@@ -1373,7 +1374,7 @@ namespace Sage50c.API.Sample {
                 var series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
                 if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
                     if (!SetExternalSignature(_itemTransactionController.Transaction)) {
-                        MessageBox.Show("A assinatura não foi definida. Vão ser usados valores por omissão", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice("A assinatura não foi definida. Vão ser usados valores por omissão", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
                 }
                 _itemTransactionController.Save(suspended);
@@ -1531,10 +1532,8 @@ namespace Sage50c.API.Sample {
 
             _accountTransactionController.SetLedgerAccount(ACCOUNT_ID, partyId);
 
-            // Remove all the transaction details if updating
-            while (_accountTransactionController.AccountTransManager.Transaction.Details.Count > 0) {
-                _accountTransactionController.AccountTransManager.Transaction.Details.Remove(1);
-            }
+            // Remove all the transaction details
+            _accountTransactionController.ClearTransactionDetails();
 
             _accountTransactionController.SetAccountID(ACCOUNT_ID);
             _accountTransactionController.SetBaseCurrencyID(txtAccountTransDocCurrency.Text);
@@ -1798,12 +1797,12 @@ namespace Sage50c.API.Sample {
 
             if (isNew) {
                 _unitOfMeasureController.Create();
-                _unitOfMeasureController.UnitOfMeasure.UnitOfMeasureID = txtUnitOfMeasureId.Text;
+                _unitOfMeasureController.SetUnitOfMeasureID(txtUnitOfMeasureId.Text);
             }
             else if (_unitOfMeasureController.UnitOfMeasure == null) {
                 throw new Exception("Carregue uma unidade de medição antes de fazer alterações.");
             }
-            _unitOfMeasureController.UnitOfMeasure.Description = txtUnitOfMeasureName.Text;
+            _unitOfMeasureController.SetDescription(txtUnitOfMeasureName.Text);
         }
 
         /// <summary>
@@ -2037,8 +2036,6 @@ namespace Sage50c.API.Sample {
             TransactionClearUI();
         }
 
-       
-
         #region QuickSearch
 
         private void btnSearchSalesman_Click(object sender, EventArgs e) {
@@ -2104,12 +2101,10 @@ namespace Sage50c.API.Sample {
                 }
                 else {
                     APIEngine.CoreGlobals.MsgBoxFrontOffice($"Não foi possível colocar em preparação: {txtTransSerial.Text} {txtTransDoc.Text}/{txtTransDocNumber.Text}", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-
                 }
             }
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-
             }
         }
 
@@ -2117,9 +2112,9 @@ namespace Sage50c.API.Sample {
             try {
                 string transDoc = txtTransDoc.Text;
                 string transSerial = txtTransSerial.Text;
-                double transdocNumber = 0;
+                double transdocNumber = txtTransDocNumber.Text.ToDouble();
 
-                if (double.TryParse(txtTransDocNumber.Text, out transdocNumber)) {
+                if (transdocNumber > 0) {
                     if (bsoItemTransaction.FinalizeSuspendedTransaction(transSerial, transDoc, transdocNumber)) {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice($"Documento finalizado: {bsoItemTransaction.Transaction.TransactionID.ToString()}.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
@@ -2150,7 +2145,7 @@ namespace Sage50c.API.Sample {
                 }
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
 
@@ -2683,7 +2678,7 @@ namespace Sage50c.API.Sample {
                 }
             }
             else {
-                MessageBox.Show("A transação indicada não existe.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("A transação indicada não existe.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
         }
 

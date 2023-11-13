@@ -22,13 +22,13 @@ namespace Sage50c.API.Sample.Controllers {
             return _unitOfMeasure;
         }
 
-        public UnitOfMeasure Load(string unitOfMeasureID) {
+        public UnitOfMeasure Load(string UnitOfMeasureID) {
 
-            if (string.IsNullOrEmpty(unitOfMeasureID)) {
+            if (string.IsNullOrEmpty(UnitOfMeasureID)) {
                 throw new Exception("O código da unidade de medição não está preenchido.");
             }
 
-            _unitOfMeasure = dsoCache.UnitOfMeasureProvider.GetUnitOfMeasure(unitOfMeasureID);
+            _unitOfMeasure = dsoCache.UnitOfMeasureProvider.GetUnitOfMeasure(UnitOfMeasureID);
             editState = _unitOfMeasure != null ? EditState.Editing : editState;
             return _unitOfMeasure;
         }
@@ -48,17 +48,17 @@ namespace Sage50c.API.Sample.Controllers {
             return true;
         }
 
-        public void Remove(string unitOfMeasureID) {
+        public void Remove(string UnitOfMeasureID) {
 
-            if (string.IsNullOrEmpty(unitOfMeasureID)) {
+            if (string.IsNullOrEmpty(UnitOfMeasureID)) {
                 throw new Exception("O código da unidade de medição não está preenchido.");
             }
 
-            dsoCache.UnitOfMeasureProvider.Delete(unitOfMeasureID);
+            dsoCache.UnitOfMeasureProvider.Delete(UnitOfMeasureID);
             editState = EditState.None;
         }
 
-        public bool Validate(out string ErrorMessage) {
+        private bool Validate(out string ErrorMessage) {
 
             bool result = true;
             StringBuilder errorMessage = new StringBuilder();
@@ -93,8 +93,16 @@ namespace Sage50c.API.Sample.Controllers {
             return result;
         }
 
-        public bool FillDefaultValues() {
+        private bool FillDefaultValues() {
             return true;
+        }
+
+        public void SetUnitOfMeasureID(string UnitOfMeasureID) {
+            _unitOfMeasure.UnitOfMeasureID = UnitOfMeasureID;
+        }
+
+        public void SetDescription(string Description) {
+            _unitOfMeasure.Description = Description;
         }
     }
 }

@@ -22,13 +22,13 @@ namespace Sage50c.API.Sample.Controllers {
             return _item;
         }
 
-        public Item Load(string itemID) {
+        public Item Load(string ItemID) {
 
-            if (string.IsNullOrEmpty(itemID)) {
+            if (string.IsNullOrEmpty(ItemID)) {
                 throw new Exception("O código do artigo não está preenchido.");
             }
 
-            _item = dsoCache.ItemProvider.GetItem(itemID, systemSettings.BaseCurrency);
+            _item = dsoCache.ItemProvider.GetItem(ItemID, systemSettings.BaseCurrency);
             editState = _item != null ? EditState.Editing : editState;
             return _item;
         }
@@ -48,17 +48,17 @@ namespace Sage50c.API.Sample.Controllers {
             return true;
         }
 
-        public void Remove(string itemID) {
+        public void Remove(string ItemID) {
 
-            if (string.IsNullOrEmpty(itemID)) {
+            if (string.IsNullOrEmpty(ItemID)) {
                 throw new Exception("O código do artigo não está preenchido.");
             }
 
-            dsoCache.ItemProvider.Delete(itemID);
+            dsoCache.ItemProvider.Delete(ItemID);
             editState = EditState.None;
         }
 
-        public bool Validate(out string ErrorMessage) {
+        private bool Validate(out string ErrorMessage) {
 
             bool result = true;
             StringBuilder errorMessage = new StringBuilder();
@@ -91,7 +91,7 @@ namespace Sage50c.API.Sample.Controllers {
             return result;
         }
 
-        public bool FillDefaultValues() {
+        private bool FillDefaultValues() {
             // Set default taxable group
             _item.TaxableGroupID = systemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
             // Get the first available supplier
@@ -103,24 +103,44 @@ namespace Sage50c.API.Sample.Controllers {
             return true;
         }
 
+        /// <summary>
+        /// Erases all item's colors
+        /// </summary>
+        public void ClearItemColors() {
+            _item.Colors.Clear();
+        }
+
+        /// <summary>
+        /// Erases all item's sizes
+        /// </summary>
+        public void ClearItemSizes() {
+            _item.Sizes.Clear();
+        }
+
+        /// <summary>
+        /// Adds a new color to the item
+        /// </summary>
         public int AddColor(int ColorID) {
 
             var color = dsoCache.ColorProvider.GetColor((short)ColorID);
-            var newItemColor = new ItemColor() {
+            var newColor = new ItemColor() {
                 ColorID = color.ColorID,
                 ColorName = color.Description,
                 ColorCode = (int)color.ColorCode,
                 SequenceNumber = (short)(_item.Colors.Count + 1)
             };
 
-            _item.Colors.Add(newItemColor);
+            _item.Colors.Add(newColor);
             return _item.Colors.Count;
         }
 
+        /// <summary>
+        /// Adds a new size to the item
+        /// </summary>
         public int AddSize(int SizeID) {
 
             var size = dsoCache.SizeProvider.GetSize((short)SizeID);
-            var newItemSize = new ItemSize() {
+            var newSize = new ItemSize() {
                 SizeID = size.SizeID,
                 SizeName = size.Description,
                 Quantity = 1,
@@ -128,7 +148,7 @@ namespace Sage50c.API.Sample.Controllers {
                 SequenceNumber = (short)(_item.Sizes.Count + 1)
             };
 
-            _item.Sizes.Add(newItemSize);
+            _item.Sizes.Add(newSize);
             return _item.Sizes.Count;
         }
     }

@@ -1,11 +1,9 @@
-﻿using S50cBL22;
+﻿using System;
+using System.ComponentModel;
+
+using S50cBL22;
 using S50cBO22;
 using S50cSys22;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 
 namespace Sage50c.API {
     public static class APIExtensions {

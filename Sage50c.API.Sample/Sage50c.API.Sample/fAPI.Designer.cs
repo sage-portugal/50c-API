@@ -558,7 +558,7 @@ namespace Sage50c.API.Sample {
             this.btnStopAPI.TabIndex = 10;
             this.btnStopAPI.Text = "Terminar API";
             this.btnStopAPI.UseVisualStyleBackColor = true;
-            this.btnStopAPI.Click += new System.EventHandler(this.btnCloseAPI_Click);
+            this.btnStopAPI.Click += new System.EventHandler(this.btnStopAPI_Click);
             // 
             // btnStartAPI
             // 

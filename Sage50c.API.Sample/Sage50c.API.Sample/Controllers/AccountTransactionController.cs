@@ -15,26 +15,26 @@ namespace Sage50c.API.Sample.Controllers {
         private AccountTransactionManager _accountTransManager = new AccountTransactionManager();
         public AccountTransactionManager AccountTransManager { get { return _accountTransManager; } }
 
-        public bool Create(AccountUsedEnum accountUsed, string transSerial, string transDoc, double transDocNumber) {
+        public bool Create(AccountUsedEnum AccountUsed, string TransSerial, string TransDoc, double TransDocNumber) {
 
             // Initialize the account transaction manager
-            _accountTransManager.InitManager(accountUsed);
+            _accountTransManager.InitManager(AccountUsed);
 
             // Create a new transaction
-            _accountTransManager.InitNewTransaction(transSerial, transDoc, transDocNumber);
+            _accountTransManager.InitNewTransaction(TransSerial, TransDoc, TransDocNumber);
             if (_accountTransManager.Transaction == null) {
-                throw new Exception($"Não foi possível criar o documento {transDoc} {transSerial}/{transDocNumber}.");
+                throw new Exception($"Não foi possível criar o documento {TransDoc} {TransSerial}/{TransDocNumber}.");
             }
 
             return true;
         }
 
-        public bool Load(string transSerial, string transDoc, double transDocNumber) {
+        public bool Load(string TransSerial, string TransDoc, double TransDocNumber) {
 
             // Load an existing transaction
-            var transLoaded = _accountTransManager.LoadTransaction(transSerial, transDoc, transDocNumber);
+            var transLoaded = _accountTransManager.LoadTransaction(TransSerial, TransDoc, TransDocNumber);
             if (!transLoaded) {
-                throw new Exception($"Não foi possível carregar o documento {transDoc} {transSerial}/{transDocNumber}.");
+                throw new Exception($"Não foi possível carregar o documento {TransDoc} {TransSerial}/{TransDocNumber}.");
             }
 
             return true;
@@ -58,12 +58,12 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public TransactionID Remove(string transSerial, string transDoc, double transDocNumber, string ProductName) {
+        public TransactionID Remove(string TransSerial, string TransDoc, double TransDocNumber, string ProductName) {
 
             // Obtain the transaction (receipt or payment)
-            var result = _accountTransManager.LoadTransaction(transSerial, transDoc, transDocNumber);
+            var result = _accountTransManager.LoadTransaction(TransSerial, TransDoc, TransDocNumber);
             if (!result) {
-                throw new Exception($"O documento {transDoc} {transSerial}/{transDocNumber} não existe ou não é possível carregá-lo.");
+                throw new Exception($"O documento {TransDoc} {TransSerial}/{TransDocNumber} não existe ou não é possível carregá-lo.");
             }
 
             // Set the motive for the removal (may or may not be required depending on the document's definition)
@@ -75,7 +75,7 @@ namespace Sage50c.API.Sample.Controllers {
                 return _accountTransManager.Transaction.TransactionID;
             }
             else {
-                throw new Exception($"Não foi possível anular o documento {transDoc} {transSerial}/{transDocNumber}.");
+                throw new Exception($"Não foi possível anular o documento {TransDoc} {TransSerial}/{TransDocNumber}.");
             }
         }
 
@@ -90,57 +90,69 @@ namespace Sage50c.API.Sample.Controllers {
             return result;
         }
 
-        public bool SetAccountID(string accountID) {
-            return _accountTransManager.SetAccountID(accountID);
+        public bool SetAccountID(string AccountID) {
+            return _accountTransManager.SetAccountID(AccountID);
         }
 
-        public bool SetBaseCurrencyID(string accountTransDocCurrency) {
-            return _accountTransManager.SetBaseCurrencyID(accountTransDocCurrency);
+        public bool SetBaseCurrencyID(string AccountTransDocCurrency) {
+            return _accountTransManager.SetBaseCurrencyID(AccountTransDocCurrency);
         }
 
-        public bool SetCreateDate(DateTime createDate) {
-            return _accountTransManager.SetCreateDate(createDate);
+        public bool SetCreateDate(DateTime CreateDate) {
+            return _accountTransManager.SetCreateDate(CreateDate);
         }
 
-        public bool SetPartyID(double partyId) {
-            return _accountTransManager.SetPartyID(partyId);
+        public bool SetPartyID(double PartyID) {
+            return _accountTransManager.SetPartyID(PartyID);
         }
 
-        public bool SetLedgerAccount(string accountID, double partyId) {
+        public bool SetLedgerAccount(string AccountID, double PartyID) {
 
             var transaction = _accountTransManager.Transaction;
 
-            transaction.LedgerAccounts = dsoCache.LedgerAccountProvider.GetLedgerAccountList(_accountTransManager.AccountUsed, accountID, partyId, transaction.BaseCurrency);
+            transaction.LedgerAccounts = dsoCache.LedgerAccountProvider.GetLedgerAccountList(_accountTransManager.AccountUsed, AccountID, PartyID, transaction.BaseCurrency);
             if (transaction.LedgerAccounts.Count == 0) {
-                throw new Exception($"A entidade [{partyId}] não tem pendentes na carteira [{accountID}].");
+                throw new Exception($"A entidade [{PartyID}] não tem pendentes na carteira [{AccountID}].");
             }
 
             return true;
         }
 
-        public AccountTransactionDetail AddDetail(string transDoc, string transSerial, double transDocNumber, short transInstallment, double paymentValue) {
+        /// <summary>
+        /// Erases all transaction details of the current transaction
+        /// </summary>
+        public void ClearTransactionDetails() {
+            while (_accountTransManager.Transaction.Details.Count > 0) {
+                _accountTransManager.Transaction.Details.Remove(1);
+            }
+        }
+
+        /// <summary>
+        /// Adds a transaction detail to the current transaction
+        /// </summary>
+        public AccountTransactionDetail AddDetail(string TransDoc, string TransSerial, double TransDocNumber, short TransInstallment, double PaymentValue) {
 
             AccountTransactionDetail detail = null;
 
-            if (paymentValue > 0) {
+            if (PaymentValue > 0) {
                 AccountTransaction accountTrans = _accountTransManager.Transaction;
 
-                if (systemSettings.WorkstationInfo.Document.IsInCollection(transDoc)) {
+                if (systemSettings.WorkstationInfo.Document.IsInCollection(TransDoc)) {
 
                     // Obter o pendente. PAra efeito de exemplo consideramos que não há prestações (installmentId=0)
-                    var ledger = _accountTransManager.LedgerAccounts.OfType<LedgerAccount>().FirstOrDefault(x => x.TransDocument == transDoc && x.TransSerial == transSerial && x.TransDocNumber == transDocNumber && x.TransInstallmentID == transInstallment);
+                    var ledger = _accountTransManager.LedgerAccounts.OfType<LedgerAccount>().FirstOrDefault(x => x.TransDocument == TransDoc && x.TransSerial == TransSerial && x.TransDocNumber == TransDocNumber && x.TransInstallmentID == TransInstallment);
                     if (ledger != null) {
 
-                        if (paymentValue > ledger.TotalPendingAmount) {
-                            throw new Exception($"O valor a pagar é superior ao valor em divida no documento: {transDoc} {transSerial}/{transDocNumber}");
+                        if (PaymentValue > ledger.TotalPendingAmount) {
+                            throw new Exception($"O valor a pagar é superior ao valor em divida no documento: {TransDoc} {TransSerial}/{TransDocNumber}");
                         }
 
-                        detail = accountTrans.Details.Find(transSerial, transDoc, transDocNumber, transInstallment);
+                        detail = accountTrans.Details.Find(TransSerial, TransDoc, TransDocNumber, TransInstallment);
                         if (detail == null) {
                             detail = new AccountTransactionDetail();
                         }
 
-                        _accountTransManager.SetPaymentValue(ledger.Guid, paymentValue);
+                        _accountTransManager.SetPaymentValue(ledger.Guid, PaymentValue);
 
                         // Copy the ledger details to the payment
                         detail.AccountTypeID = ledger.PartyAccountTypeID;
@@ -185,14 +197,14 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Fill the types of payment used when receiving/paying 
         /// </summary>
-        public TenderLineItemList GetTenderLineItems(string accountTransPaymentId) {
+        public TenderLineItemList GetTenderLineItems(string AccountTransPaymentID) {
 
             var accountTrans = _accountTransManager.Transaction;
             var TenderLines = new TenderLineItemList();
 
             // Tender payment type(s)
             short tenderId = dsoCache.TenderProvider.GetFirstTenderCash();
-            short.TryParse(accountTransPaymentId, out tenderId);
+            short.TryParse(AccountTransPaymentID, out tenderId);
             var tender = dsoCache.TenderProvider.GetTender(tenderId);
 
             // Add tender line
