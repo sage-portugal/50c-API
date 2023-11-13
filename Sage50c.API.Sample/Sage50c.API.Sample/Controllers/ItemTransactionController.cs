@@ -376,5 +376,9 @@ namespace Sage50c.API.Sample.Controllers {
             _bsoItemTransaction.SuspendCurrentTransaction();
         }
 
+        public bool FinalizeTransaction(string TransSerial, string TransDoc, double TransDocNumber) {
+            return _bsoItemTransaction.FinalizeSuspendedTransaction(TransSerial, TransDoc, TransDocNumber);
+        }
+
     }
 }

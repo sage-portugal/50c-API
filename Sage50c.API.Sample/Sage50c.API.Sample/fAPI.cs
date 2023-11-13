@@ -330,7 +330,7 @@ namespace Sage50c.API.Sample {
                 if (!transactionError) {
                     string msg = null;
                     if (transId != null) {
-                        msg = string.Format("Registo inserido: {0}", transId.ToString());
+                        msg = $"Registo inserido: {transId.ToString()}";
                     }
                     else {
                         msg = "Registo inserido.";
@@ -383,7 +383,7 @@ namespace Sage50c.API.Sample {
                 if (!transactionError) {
                     string msg = null;
                     if (transId != null) {
-                        msg = string.Format("Registo alterado: {0}", transId.ToString());
+                        msg = $"Registo alterado: {transId.ToString()}" ;
                     }
                     else {
                         msg = "Registo alterado.";
@@ -418,7 +418,7 @@ namespace Sage50c.API.Sample {
                     if (!transactionError) {
                         string msg = null;
                         if (transId != null) {
-                            msg = string.Format("Registo anulado: {0}", transId.ToString());
+                            msg = $"Registo anulado: {transId.ToString()}";
                         }
                         else {
                             msg = "Registo anulado.";
@@ -1207,10 +1207,10 @@ namespace Sage50c.API.Sample {
                             oPrintSettings);
                     }
                 }
-                MessageBox.Show("Concluido.", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice("Concluido.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
             }
             catch (Exception ex) {
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
             finally {
                 btnPrint.Enabled = true;
@@ -1468,27 +1468,28 @@ namespace Sage50c.API.Sample {
 
             if (!string.IsNullOrEmpty(txtTransItemL1.Text)) {
                 //Add details
-                _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, TransactionStockDetailsFill());
+                var detail = TransactionStockDetailsFill();
+                _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, detail);
 
                 if (bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     var itemDetails = GetItemComponentList(1);
                     if (itemDetails != null) {
                         foreach (ItemTransactionDetail value in itemDetails) {
-                            _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, TransactionStockDetailsFill());
-                            //TransStockAddDetail(taxRate, value.PhysicalQtyRule);
+                            _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, value);
                         }
                     }
                 }
             }
             if (!string.IsNullOrEmpty(txtTransItemL2.Text)) {
                 //Add details
-                _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, TransactionStockDetailsFillL2());
+                var detail = TransactionStockDetailsFillL2();
+                _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), StockQtyRule, detail);
 
                 if (_stockTransactionController.StockTransaction.TransStockBehavior == StockBehaviorEnum.sbStockCompose || bsoStockTransaction.Transaction.TransStockBehavior == StockBehaviorEnum.sbStockDecompose) {
                     var itemDetails = GetItemComponentList(1);
                     if (itemDetails != null) {
                         foreach (ItemTransactionDetail value in itemDetails) {
-                            _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, TransactionStockDetailsFillL2());
+                            _stockTransactionController.AddDetailStock(txtTransTaxRateL1.Text.ToDouble(), value.PhysicalQtyRule, value);
                             //TransStockAddDetail(taxRate, value.PhysicalQtyRule);
                         }
                     }
@@ -2091,7 +2092,7 @@ namespace Sage50c.API.Sample {
         private void btnSavePrep_Click(object sender, EventArgs e) {
             TransactionID result = null;
             try {
-                if (bsoItemTransaction.Transaction.TempTransIndex != 0) {
+                if (_itemTransactionController.Transaction.TempTransIndex != 0) {
                     // Atualizar
                     result = TransactionUpdate(true);
                 }
@@ -2117,10 +2118,10 @@ namespace Sage50c.API.Sample {
             try {
                 string transDoc = txtTransDoc.Text;
                 string transSerial = txtTransSerial.Text;
-                double transdocNumber = 0;
+                double transdocNumber = txtTransDocNumber.Text.ToDouble();
 
-                if (double.TryParse(txtTransDocNumber.Text, out transdocNumber)) {
-                    if (bsoItemTransaction.FinalizeSuspendedTransaction(transSerial, transDoc, transdocNumber)) {
+                if (transdocNumber > 0) {
+                    if (_itemTransactionController.FinalizeTransaction(transSerial, transDoc, transdocNumber)) {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice($"Documento finalizado: {bsoItemTransaction.Transaction.TransactionID.ToString()}.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
                     else {
