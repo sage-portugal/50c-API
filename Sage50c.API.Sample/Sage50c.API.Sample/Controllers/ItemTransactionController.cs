@@ -9,19 +9,17 @@ using S50cSys22;
 using S50cUtil22;
 
 namespace Sage50c.API.Sample.Controllers {
-    internal class BuySaleTransactionController : ControllerBase {
+    internal class ItemTransactionController : ControllerBase {
 
         private BSOItemTransaction _bsoItemTransaction = null;
-        public BSOItemTransaction BsoItemTransaction { get { return _bsoItemTransaction; } }
-
-        private PrintingManager _printingManager { get { return APIEngine.PrintingManager; } }
+        //public BSOItemTransaction BsoItemTransaction { get { return _bsoItemTransaction; } }
+        public ItemTransaction Transaction { get { return _bsoItemTransaction.Transaction; } }
 
         /// <summary>
         /// Create a new buy/sale transaction
         /// </summary>
         public ItemTransaction Create(string transDoc, string transSerial) {
-            Initialize(transDoc);
-            _bsoItemTransaction.InitNewTransaction(transDoc, transSerial);
+            Initialize(transDoc, transSerial);
 
             FillSuggestedValues();
             editState = EditState.New;
@@ -119,20 +117,19 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Initialize new transaction
         /// </summary>
-        public void Initialize(string transDoc) {
+        public void Initialize(string TransDoc, string TransSerial) {
 
             _bsoItemTransaction = new BSOItemTransaction() {
-                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
+                TransactionType = ItemTransactionHelper.TransGetType(TransDoc),
             };
 
             _bsoItemTransaction.BSOItemTransactionDetail = new BSOItemTransactionDetail() {
                 UserPermissions = systemSettings.User,
                 PermissionsType = FrontOfficePermissionEnum.foPermByUser,
-                TransactionType = ItemTransactionHelper.TransGetType(transDoc),
+                TransactionType = ItemTransactionHelper.TransGetType(TransDoc),
             };
 
-            //_itemTransactionDetail = _bsoItemTransaction.BSOItemTransactionDetail.TransactionDetail;
-            _bsoItemTransaction.Transaction = new ItemTransaction();
+            _bsoItemTransaction.InitNewTransaction(TransDoc, TransSerial);
         }
 
         /// <summary>
@@ -158,7 +155,7 @@ namespace Sage50c.API.Sample.Controllers {
                     defaultPrintSettings.ExportFileType = ExportFileTypeEnum.filePDF;
                     defaultPrintSettings.ExportFileFolder = oPlaceHolders.GetPlaceHolderPath(systemSettings.WorkstationInfo.PDFDestinationFolder);
                 }
-                objListPrintSettings = _printingManager.GetTransactionPrintSettings(oDocument, _bsoItemTransaction.Transaction.TransSerial, ref defaultPrintSettings);
+                objListPrintSettings = printingManager.GetTransactionPrintSettings(oDocument, _bsoItemTransaction.Transaction.TransSerial, ref defaultPrintSettings);
                 if (objListPrintSettings.getCount() > 0) {
                     oPrintSettings = (PrintSettings)objListPrintSettings.item[0];
 
@@ -281,7 +278,7 @@ namespace Sage50c.API.Sample.Controllers {
         /// <summary>
         /// Add item details 
         /// </summary>
-        public void AddDetailsItem(Document document, double taxPercent, ItemTransactionDetail details) {
+        public void AddDetail(Document document, double taxPercent, ItemTransactionDetail details) {
 
             //Get item
             Item item = dsoCache.ItemProvider.GetItem(details.ItemID, details.BaseCurrency);

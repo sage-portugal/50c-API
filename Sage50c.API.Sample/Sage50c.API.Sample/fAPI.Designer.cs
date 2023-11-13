@@ -2850,7 +2850,7 @@ namespace Sage50c.API.Sample {
             this.cmbSupplierCountry.FormattingEnabled = true;
             this.cmbSupplierCountry.Location = new System.Drawing.Point(150, 200);
             this.cmbSupplierCountry.Name = "cmbSupplierCountry";
-            this.cmbSupplierCountry.Size = new System.Drawing.Size(346, 28);
+            this.cmbSupplierCountry.Size = new System.Drawing.Size(346, 23);
             this.cmbSupplierCountry.TabIndex = 77;
             // 
             // cmbSupplierTax
@@ -2922,7 +2922,7 @@ namespace Sage50c.API.Sample {
             this.txtSupplierZone.MaxLength = 0;
             this.txtSupplierZone.Name = "txtSupplierZone";
             this.txtSupplierZone.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierZone.Size = new System.Drawing.Size(315, 27);
+            this.txtSupplierZone.Size = new System.Drawing.Size(315, 23);
             this.txtSupplierZone.TabIndex = 12;
             // 
             // txtSupplierComments

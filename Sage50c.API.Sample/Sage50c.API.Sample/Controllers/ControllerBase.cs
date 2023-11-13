@@ -1,4 +1,5 @@
 ﻿using S50cDL22;
+using S50cPrint22;
 using S50cSys22;
 
 namespace Sage50c.API.Sample.Controllers {
@@ -23,6 +24,10 @@ namespace Sage50c.API.Sample.Controllers {
         /// System parameters
         /// </summary>
         protected SystemSettings systemSettings { get { return APIEngine.SystemSettings; } }
+        /// <summary>
+        /// 
+        /// </summary>
+        protected PrintingManager printingManager { get { return APIEngine.PrintingManager; } }
 
         protected int GetMaxFieldSize(string TableName, string FieldName) {
 
