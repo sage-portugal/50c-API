@@ -229,7 +229,7 @@ namespace Sage50c.API.Sample {
         }
 
         /// <summary>
-        /// Displays warning messages from the API
+        /// Displays exclamation warning messages from the API
         /// </summary>
         void S50cAPIEngine_WarningMessage(string Message) {
 
@@ -240,20 +240,15 @@ namespace Sage50c.API.Sample {
         }
 
         /// <summary>
-        /// Mensagens de erro da API
-        /// Neste caso vamos lançar uma exeção que será apanhada no botão pressionado neste exemplo, de forma a informar o utilizador que falhou.
+        /// Displays critical error messages from the API
         /// </summary>
-        /// <param name="Number">Número do erro </param>
-        /// <param name="Source">O método que gerou o erro</param>
-        /// <param name="Description">A descrição do erro</param>
         void S50cAPIEngine_WarningError(int Number, string Source, string Description) {
 
             // Flag the error in the transaction in order to cancel it
             transactionError = true;
 
             string msg = $"Erro: {Number}{Environment.NewLine}Fonte: {Source}{Environment.NewLine}{Description}";
-            MessageBox.Show(msg, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbCritical, Application.ProductName);
+            APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbCritical, Application.ProductName);
         }
 
         /// <summary>
@@ -384,7 +379,7 @@ namespace Sage50c.API.Sample {
                 if (!transactionError) {
                     string msg = null;
                     if (transId != null) {
-                        msg = $"Registo alterado: {transId.ToString()}" ;
+                        msg = $"Registo alterado: {transId.ToString()}";
                     }
                     else {
                         msg = "Registo alterado.";
