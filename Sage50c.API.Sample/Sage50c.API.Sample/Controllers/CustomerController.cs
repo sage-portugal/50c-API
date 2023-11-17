@@ -64,15 +64,14 @@ namespace Sage50c.API.Sample.Controllers {
         /// </summary>
         public bool Remove() {
 
-            if (_customer != null) {
+            if(_customer == null || !dsoCache.CustomerProvider.CustomerExists(_customer.CustomerID)) {
+                throw new Exception($"O Cliente [{_customer.CustomerID}] não existe.");
+            }
+            else { 
                 dsoCache.CustomerProvider.Delete(_customer.CustomerID);
                 editState = EditState.None;
                 return true;
             }
-            else {
-                throw new Exception($"O Cliente [{_customer.CustomerID}] não existe.");
-            }
-
         }
 
         /// <summary>
@@ -97,7 +96,7 @@ namespace Sage50c.API.Sample.Controllers {
                 if (_customer.CustomerID <= 0 && customerExist) {
                     error.AppendLine("Tem que preencher o código do Cliente!");
                 }
-                else if (editState == EditState.New) {
+                else if (editState == EditState.New && _customer.CustomerID==0) {
                     _customer.CustomerID = dsoCache.CustomerProvider.GetNewID();
                 }
                 //Name

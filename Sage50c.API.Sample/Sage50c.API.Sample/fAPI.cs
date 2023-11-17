@@ -798,14 +798,19 @@ namespace Sage50c.API.Sample {
         }
 
         private void CustomerFill() {
-            _customerController.Customer.CustomerID = (short)numCustomerId.Value;
-            _customerController.Customer.OrganizationName = txtCustomerName.Text;
-            _customerController.Customer.FederalTaxId = txtCustomerTaxId.Text;
-            _customerController.Customer.EntityFiscalStatusID = ((EntityFiscalStatus)cmbCustomerTax.SelectedItem).EntityFiscalStatusID;
-            _customerController.Customer.SalesmanId = (int)numCustomerSalesmanId.Value;
-            _customerController.Customer.ZoneID = (short)numCustomerZoneId.Value;
-            _customerController.Customer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
-            _customerController.Customer.Comments = txtCustomerComments.Text;
+            if (_customerController.Customer == null) {
+                throw new Exception("Carregue um cliente antes de fazer alterações.");
+            }
+            else {
+                _customerController.Customer.CustomerID = (double)numCustomerId.Value;
+                _customerController.Customer.OrganizationName = txtCustomerName.Text;
+                _customerController.Customer.FederalTaxId = txtCustomerTaxId.Text;
+                _customerController.Customer.EntityFiscalStatusID = ((EntityFiscalStatus)cmbCustomerTax.SelectedItem).EntityFiscalStatusID;
+                _customerController.Customer.SalesmanId = (int)numCustomerSalesmanId.Value;
+                _customerController.Customer.ZoneID = (short)numCustomerZoneId.Value;
+                _customerController.Customer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
+                _customerController.Customer.Comments = txtCustomerComments.Text;
+            }
         }
 
         private void CustomerClearUI() {
