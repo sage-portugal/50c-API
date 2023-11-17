@@ -890,13 +890,18 @@ namespace Sage50c.API.Sample {
         }
 
         private void SupplierFill() {
-            _supplierController.Supplier.SupplierID = txtSupplierId.Text.ToShort();
-            _supplierController.Supplier.OrganizationName = txtSupplierName.Text;
-            _supplierController.Supplier.EntityFiscalStatusID = ((EntityFiscalStatus)cmbSupplierTax.SelectedItem).EntityFiscalStatusID;
-            _supplierController.Supplier.FederalTaxId = txtSupplierTaxId.Text;
-            _supplierController.Supplier.ZoneID = txtSupplierZone.Text.ToShort();
-            _supplierController.Supplier.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
-            _supplierController.Supplier.Comments = txtSupplierComments.Text;
+            if (_supplierController.Supplier == null) {
+                throw new Exception("Carregue um fornecedor antes de fazer alterações.");
+            }
+            else {
+                _supplierController.Supplier.SupplierID = txtSupplierId.Text.ToDouble();
+                _supplierController.Supplier.OrganizationName = txtSupplierName.Text;
+                _supplierController.Supplier.EntityFiscalStatusID = ((EntityFiscalStatus)cmbSupplierTax.SelectedItem).EntityFiscalStatusID;
+                _supplierController.Supplier.FederalTaxId = txtSupplierTaxId.Text;
+                _supplierController.Supplier.ZoneID = txtSupplierZone.Text.ToShort();
+                _supplierController.Supplier.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
+                _supplierController.Supplier.Comments = txtSupplierComments.Text;
+            }
         }
 
         private void SupplierClearUI() {
@@ -1224,23 +1229,28 @@ namespace Sage50c.API.Sample {
         #region BUY/SALE TRANSACTION
 
         private void TransactionFill() {
-            _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
-            _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
-            _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-            _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
-            _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
-            _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
-            _itemTransactionController.Transaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime().Date;
-            _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
-            _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
-            _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
-            _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
-            _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
-            _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
-            _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
-            _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-            _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
-            _itemTransactionController.SetUserPermissions();
+            if (_itemTransactionController.Transaction == null) {
+                throw new Exception("Carregue uma transação antes de fazer alterações.");
+            }
+            else {
+                _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
+                _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
+                _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+                _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+                _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
+                _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
+                _itemTransactionController.Transaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime().Date;
+                _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
+                _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
+                _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
+                _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
+                _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
+                _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
+                _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
+                _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
+                _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
+                _itemTransactionController.SetUserPermissions();
+            }
         }
 
         private ItemTransactionDetail TransactionDetailFill() {
@@ -1390,18 +1400,23 @@ namespace Sage50c.API.Sample {
         #region STOCK TRANSACTION
 
         private void TransactionStockFill() {
-            _stockTransactionController.SetPermissions();
-            _stockTransactionController.StockTransaction.TransDocument = txtTransDoc.Text.ToUpper();
-            _stockTransactionController.StockTransaction.TransSerial = txtTransSerial.Text.ToUpper();
-            _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-            _stockTransactionController.StockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-            _stockTransactionController.StockTransaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
-            _stockTransactionController.StockTransaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
-            _stockTransactionController.StockTransaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime(DateTime.Now);
-            _stockTransactionController.SetPartyType(cmbTransPartyType.SelectedIndex);
-            _stockTransactionController.SetBaseCurrency(txtTransCurrency.Text);
-            _stockTransactionController.StockTransaction.Comments = "Gerado por: " + Application.ProductName;
-            _stockTransactionController.StockTransaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+            if (_stockTransactionController.StockTransaction == null) {
+                throw new Exception("Carregue uma transação antes de fazer alterações.");
+            }
+            else {
+                _stockTransactionController.SetPermissions();
+                _stockTransactionController.StockTransaction.TransDocument = txtTransDoc.Text.ToUpper();
+                _stockTransactionController.StockTransaction.TransSerial = txtTransSerial.Text.ToUpper();
+                _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+                _stockTransactionController.StockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
+                _stockTransactionController.StockTransaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
+                _stockTransactionController.StockTransaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
+                _stockTransactionController.StockTransaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime(DateTime.Now);
+                _stockTransactionController.SetPartyType(cmbTransPartyType.SelectedIndex);
+                _stockTransactionController.SetBaseCurrency(txtTransCurrency.Text);
+                _stockTransactionController.StockTransaction.Comments = "Gerado por: " + Application.ProductName;
+                _stockTransactionController.StockTransaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+            }
         }
 
         private ItemTransactionDetail TransactionStockDetailsFill() {

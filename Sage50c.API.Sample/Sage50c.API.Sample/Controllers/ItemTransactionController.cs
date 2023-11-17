@@ -162,6 +162,7 @@ namespace Sage50c.API.Sample.Controllers {
                 }
             }
             else {
+                
                 if (!systemSettings.WorkstationInfo.Document.IsInCollection(_bsoItemTransaction.Transaction.TransDocument)) {
                     error.AppendLine("O Documento não se encontra preenchido ou não existe");
                 }
