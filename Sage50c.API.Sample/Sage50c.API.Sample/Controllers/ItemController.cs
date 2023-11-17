@@ -79,9 +79,6 @@ namespace Sage50c.API.Sample.Controllers {
             if (string.IsNullOrEmpty(_item.Description)) {
                 errorMessage.AppendLine("Tem de preencher a descrição do artigo.");
             }
-            if (string.IsNullOrEmpty(_item.ShortDescription)) {
-                errorMessage.AppendLine("Tem de preencher a descrição abreviada do artigo.");
-            }
 
             if (errorMessage.Length != 0) {
                 result = false;
