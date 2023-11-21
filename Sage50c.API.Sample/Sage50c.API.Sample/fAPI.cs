@@ -1353,9 +1353,12 @@ namespace Sage50c.API.Sample {
                     simpleDocument.Details.Add(simpleItemDetail);
 
                 }
+                return simpleDocument;
             }
-
-            return simpleDocument;
+            else {
+                return null;
+            }
+            
         }
 
         private TransactionID ItemTransactionUpdate(bool suspended) {
@@ -1385,6 +1388,16 @@ namespace Sage50c.API.Sample {
                 }
             }
 
+            _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
+            _itemTransactionController.Calculate();
+
+            var series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
+            if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
+                if (!SetExternalSignature(_itemTransactionController.Transaction)) {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice("A assinatura não foi definida. Vão ser usados valores por omissão", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+            }
+
             if (suspended) {
                 _itemTransactionController.SuspendTransaction();
             }
@@ -1392,18 +1405,12 @@ namespace Sage50c.API.Sample {
                 //Exemplo da Repartição de Custos
                 //INICIO
                 if (systemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
+                    
                     var document = TransactionFillCostShare();
                     _itemTransactionController.CreateCostShare(document);
 
                 }
-                //FIM
-                var series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
-                if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
-                    if (!SetExternalSignature(_itemTransactionController.Transaction)) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("A assinatura não foi definida. Vão ser usados valores por omissão", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                    }
-                }
-                _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
+          
                 _itemTransactionController.Save(suspended);
                 // Definir a assinatura de um sistema externo
             }

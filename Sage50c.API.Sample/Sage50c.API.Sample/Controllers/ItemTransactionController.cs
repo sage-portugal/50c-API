@@ -76,12 +76,11 @@ namespace Sage50c.API.Sample.Controllers {
         public bool Save(bool Suspended) {
 
             if (Validate(Suspended)) {
-
+                //corrigir create time
                 SetUserPermissions();
-                //Calculate document
-                _bsoItemTransaction.Calculate(true, true);
 
                 _bsoItemTransaction.EnsureOpenTill(_bsoItemTransaction.Transaction.Till.TillID);
+
                 _bsoItemTransaction.SaveDocument(false, false);
 
                 editState = EditState.Editing;
@@ -166,7 +165,7 @@ namespace Sage50c.API.Sample.Controllers {
             else {
 
                 DSODocument dsoDocument = new DSODocument();
-                
+
                 if (!systemSettings.WorkstationInfo.Document.IsInCollection(_bsoItemTransaction.Transaction.TransDocument)) {
                     error.AppendLine("O Documento não se encontra preenchido ou não existe");
                 }
@@ -363,13 +362,11 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public void CreateCostShare(SimpleDocument document) {
-
             _bsoItemTransaction.Transaction.BuyShareOtherCostList = null;
-            if (document != null) {
-                SimpleDocumentList simpleDocumentList = new SimpleDocumentList();
-                simpleDocumentList.Add(document);
-                _bsoItemTransaction.Transaction.BuyShareOtherCostList = simpleDocumentList;
-            }
+            SimpleDocumentList simpleDocumentList = new SimpleDocumentList();
+            simpleDocumentList.Add(document);
+            _bsoItemTransaction.Transaction.BuyShareOtherCostList = simpleDocumentList;
+
 
         }
 
@@ -394,6 +391,10 @@ namespace Sage50c.API.Sample.Controllers {
 
         public bool FinalizeTransaction(string TransSerial, string TransDoc, double TransDocNumber) {
             return _bsoItemTransaction.FinalizeSuspendedTransaction(TransSerial, TransDoc, TransDocNumber);
+        }
+
+        public void Calculate() {
+            _bsoItemTransaction.Calculate(true, true);
         }
     }
 }
