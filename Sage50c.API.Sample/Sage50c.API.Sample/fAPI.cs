@@ -1235,12 +1235,10 @@ namespace Sage50c.API.Sample {
             else {
                 _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
                 _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
-                if (txtTransDocNumber.Text.ToShort() == 0) {
-                    throw new Exception("O número de Documento não se encontra preenchido");
-                }
-                else {
+                
+                
                     _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-                }
+                
                 _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
                 _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
                 _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
@@ -1253,8 +1251,9 @@ namespace Sage50c.API.Sample {
                 _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
                 _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
                 _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-                _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
+                //_itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
                 _itemTransactionController.SetUserPermissions();
+          
             }
         }
 
@@ -1404,6 +1403,7 @@ namespace Sage50c.API.Sample {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice("A assinatura não foi definida. Vão ser usados valores por omissão", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
                 }
+                _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
                 _itemTransactionController.Save(suspended);
                 // Definir a assinatura de um sistema externo
             }

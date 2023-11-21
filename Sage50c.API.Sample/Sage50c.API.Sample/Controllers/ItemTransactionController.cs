@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 using S50cBL22;
 using S50cBO22;
+using S50cDL22;
 using S50cPrint22;
 using S50cSys22;
 using S50cUtil22;
@@ -76,6 +77,7 @@ namespace Sage50c.API.Sample.Controllers {
 
             if (Validate(Suspended)) {
 
+                SetUserPermissions();
                 //Calculate document
                 _bsoItemTransaction.Calculate(true, true);
 
@@ -162,6 +164,8 @@ namespace Sage50c.API.Sample.Controllers {
                 }
             }
             else {
+
+                DSODocument dsoDocument = new DSODocument();
                 
                 if (!systemSettings.WorkstationInfo.Document.IsInCollection(_bsoItemTransaction.Transaction.TransDocument)) {
                     error.AppendLine("O Documento não se encontra preenchido ou não existe");
@@ -175,10 +179,13 @@ namespace Sage50c.API.Sample.Controllers {
                 if (!systemSettings.DocumentSeries.IsInCollection(_bsoItemTransaction.Transaction.TransSerial)) {
                     error.AppendLine("A Série não se encontra preenchida ou não existe");
                 }
-                if (_bsoItemTransaction.Transaction.TransDocNumber == 0) {
+                if (editState == EditState.New && _bsoItemTransaction.Transaction.TransDocNumber == 0) {
+                    _bsoItemTransaction.Transaction.TransDocNumber = dsoDocument.GetLastDocNumber(_bsoItemTransaction.Transaction.TransDocType, _bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument, _bsoItemTransaction.Transaction.WorkstationStamp.WorkstationID);
+                }
+                else if (_bsoItemTransaction.Transaction.TransDocNumber == 0) {
                     error.AppendLine("O número de Documento não se encontra preenchido");
                 }
-                
+
                 if (string.IsNullOrEmpty(_bsoItemTransaction.Transaction.BaseCurrency.CurrencyID)) {
                     _bsoItemTransaction.Transaction.BaseCurrency = systemSettings.BaseCurrency;
                 }
@@ -371,7 +378,9 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public void SetPaymentDiscountPercent(double PaymentDiscountPercent) {
+
             _bsoItemTransaction.PaymentDiscountPercent1 = PaymentDiscountPercent;
+
         }
 
         public void SetUserPermissions() {
