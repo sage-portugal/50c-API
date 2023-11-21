@@ -304,7 +304,7 @@ namespace Sage50c.API.Sample.Controllers {
                     size = item.Sizes[sizeId];
                 }
                 else {
-                    throw new Exception($"A cor indicada [{sizeId}] não existe");
+                    throw new Exception($"O tamanho indicado [{sizeId}] não existe");
                 }
                 Detail.Size.Description = size.SizeName;
                 Detail.Size.SizeKey = size.SizeKey;

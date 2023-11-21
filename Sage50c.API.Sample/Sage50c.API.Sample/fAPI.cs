@@ -1259,45 +1259,54 @@ namespace Sage50c.API.Sample {
         }
 
         private ItemTransactionDetail TransactionDetailFill() {
-            ItemTransactionDetail details = new ItemTransactionDetail();
-            details.ItemID = txtTransItemL1.Text;
-            details.Quantity = txtTransQuantityL1.Text.ToShort();
-            if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
-                details.TaxIncludedPrice = txtTransUnitPriceL1.Text.ToDouble();
+            if (dsoCache.ItemProvider.ItemExist(txtTransItemL1.Text)) {
+                ItemTransactionDetail details = new ItemTransactionDetail();
+                details.ItemID = txtTransItemL1.Text;
+                details.Quantity = txtTransQuantityL1.Text.ToShort();
+                if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
+                    details.TaxIncludedPrice = txtTransUnitPriceL1.Text.ToDouble();
+                }
+                details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
+                details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
+                details.UnitOfSaleID = txtTransUnL1.Text;
+                if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
+                    details.Color.ColorID = txtTransColor1.Text.ToShort();
+                    details.Size.SizeID = txtTransSize1.Text.ToShort();
+                }
+                if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
+                    details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
+                    details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+                }
+                return details;
+            } else {
+                throw new Exception($"O artigo [{txtTransItemL1.Text}] não foi encontrado");
             }
-            details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
-            details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
-            details.UnitOfSaleID = txtTransUnL1.Text;
-            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
-                details.Color.ColorID = txtTransColor1.Text.ToShort();
-                details.Size.SizeID = txtTransColor1.Text.ToShort();
-            }
-            if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
-                details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
-                details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
-            }
-            return details;
         }
 
         private ItemTransactionDetail TransactionDetailFillL2() {
-            ItemTransactionDetail details = new ItemTransactionDetail();
-            details.ItemID = txtTransItemL2.Text;
-            details.Quantity = txtTransQuantityL2.Text.ToShort();
-            if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
-                details.TaxIncludedPrice = txtTransUnitPriceL2.Text.ToDouble();
+            if (dsoCache.ItemProvider.ItemExist(txtTransItemL2.Text)) {
+                ItemTransactionDetail details = new ItemTransactionDetail();
+                details.ItemID = txtTransItemL2.Text;
+                details.Quantity = txtTransQuantityL2.Text.ToShort();
+                if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
+                    details.TaxIncludedPrice = txtTransUnitPriceL2.Text.ToDouble();
+                }
+                details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
+                details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
+                details.UnitOfSaleID = txtTransUnL1.Text;
+                if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
+                    details.Color.ColorID = txtTransColor1.Text.ToShort();
+                    details.Size.SizeID = txtTransSize1.Text.ToShort();
+                }
+                if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
+                    details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
+                    details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+                }
+                return details;
             }
-            details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
-            details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
-            details.UnitOfSaleID = txtTransUnL1.Text;
-            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
-                details.Color.ColorID = txtTransColor1.Text.ToShort();
-                details.Size.SizeID = txtTransColor1.Text.ToShort();
+            else {
+                throw new Exception($"O artigo [{txtTransItemL2.Text}] não foi encontrado");
             }
-            if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
-                details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
-                details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
-            }
-            return details;
         }
 
         private SimpleDocument TransactionFillCostShare() {
@@ -1416,7 +1425,12 @@ namespace Sage50c.API.Sample {
                 _stockTransactionController.SetPermissions();
                 _stockTransactionController.StockTransaction.TransDocument = txtTransDoc.Text.ToUpper();
                 _stockTransactionController.StockTransaction.TransSerial = txtTransSerial.Text.ToUpper();
-                _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+                if (txtTransDocNumber.Text.ToShort() == 0) {
+                    throw new Exception("O número de Documento não se encontra preenchido");
+                }
+                else {
+                    _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+                }
                 _stockTransactionController.StockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
                 _stockTransactionController.StockTransaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
                 _stockTransactionController.StockTransaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
@@ -1429,9 +1443,9 @@ namespace Sage50c.API.Sample {
         }
 
         private ItemTransactionDetail TransactionStockDetailsFill() {
-            ItemTransactionDetail details = new ItemTransactionDetail();
-            details.ItemID = txtTransItemL1.Text;
             if (dsoCache.ItemProvider.ItemExist(txtTransItemL1.Text)) {
+                ItemTransactionDetail details = new ItemTransactionDetail();
+                details.ItemID = txtTransItemL1.Text;
                 if (dsoCache.WarehouseProvider.WarehouseExists(txtTransWarehouseL1.Text.ToShort())) {
                     details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
                     details.UnitOfSaleID = txtTransUnL1.Text;
@@ -1449,9 +1463,10 @@ namespace Sage50c.API.Sample {
         }
 
         private ItemTransactionDetail TransactionStockDetailsFillL2() {
-            ItemTransactionDetail details = new ItemTransactionDetail();
-            details.ItemID = txtTransItemL2.Text;
+            
             if (dsoCache.ItemProvider.ItemExist(txtTransItemL2.Text)) {
+                ItemTransactionDetail details = new ItemTransactionDetail();
+                details.ItemID = txtTransItemL2.Text;
                 if (dsoCache.WarehouseProvider.WarehouseExists(txtTransWarehouseL2.Text.ToShort())) {
                     details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
                     details.UnitOfSaleID = txtTransUnL2.Text;

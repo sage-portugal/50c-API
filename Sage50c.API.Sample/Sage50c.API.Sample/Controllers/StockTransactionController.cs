@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 using S50cBL22;
 using S50cBO22;
+using S50cDL22;
 using S50cSys22;
 using S50cUtil22;
 
@@ -157,6 +158,10 @@ namespace Sage50c.API.Sample.Controllers {
                 if (serie == null) {
                     error.Append("A série indicada não existe");
                 }
+                if (_bsoStockTransaction.Transaction.TransDocNumber == 0) {
+                    error.AppendLine("O número de Documento não se encontra preenchido");
+                }
+
                 if (_bsoStockTransaction.Transaction.Details.Count <= 0) {
                     error.Append("O Documento não tem linhas");
                 }
