@@ -385,6 +385,7 @@ namespace Sage50c.API.Sample.Controllers {
 
         public void SetUserPermissions() {
             _bsoItemTransaction.UserPermissions = systemSettings.User;
+            _bsoItemTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
         }
 
         public void SuspendTransaction() {
