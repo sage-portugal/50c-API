@@ -171,9 +171,14 @@ namespace Sage50c.API.Sample.Controllers {
                 if (_bsoItemTransaction.Transaction.TransDocType != DocumentTypeEnum.dcTypeSale && _bsoItemTransaction.Transaction.TransDocType != DocumentTypeEnum.dcTypePurchase) {
                     error.AppendLine($"O documento indicado [{_bsoItemTransaction.Transaction.TransDocument}] não é um documento de venda/compra");
                 }
+
                 if (!systemSettings.DocumentSeries.IsInCollection(_bsoItemTransaction.Transaction.TransSerial)) {
                     error.AppendLine("A Série não se encontra preenchida ou não existe");
                 }
+                if (_bsoItemTransaction.Transaction.TransDocNumber == 0) {
+                    error.AppendLine("O número de Documento não se encontra preenchido");
+                }
+                
                 if (string.IsNullOrEmpty(_bsoItemTransaction.Transaction.BaseCurrency.CurrencyID)) {
                     _bsoItemTransaction.Transaction.BaseCurrency = systemSettings.BaseCurrency;
                 }

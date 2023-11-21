@@ -1235,7 +1235,12 @@ namespace Sage50c.API.Sample {
             else {
                 _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
                 _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
-                _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+                if (txtTransDocNumber.Text.ToShort() == 0) {
+                    throw new Exception("O número de Documento não se encontra preenchido");
+                }
+                else {
+                    _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+                }
                 _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
                 _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
                 _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
@@ -1356,6 +1361,10 @@ namespace Sage50c.API.Sample {
             }
 
             _itemTransactionController.SetUserPermissions();
+
+            if (string.IsNullOrEmpty(txtTransItemL1.Text)) {
+                throw new Exception("Não pode criar uma transação vazia!");
+            } 
             var detail = TransactionDetailFill();
             if (detail != null) {
                 _itemTransactionController.AddDetail(txtTransTaxRateL1.Text.ToDouble(), detail);
