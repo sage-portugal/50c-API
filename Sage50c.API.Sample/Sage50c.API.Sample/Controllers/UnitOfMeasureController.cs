@@ -82,7 +82,7 @@ namespace Sage50c.API.Sample.Controllers {
             }
 
             if (string.IsNullOrEmpty(_unitOfMeasure.Description)) {
-                errorMessage.AppendLine("Tem de preencher a descrição da unidade de medição.");
+                errorMessage.AppendLine("Tem de preencher a descrição da unidade de medida.");
             }
 
             if (errorMessage.Length != 0) {
