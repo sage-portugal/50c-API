@@ -86,6 +86,14 @@ namespace Sage50c.API.Sample.Controllers {
 
             result = _accountTransManager.ValidateForSave();
 
+            if (_accountTransManager.Locked) {
+                errorMessage.AppendLine("O recibo está bloqueado e por isso não pode ser alterado!");
+            }
+
+            if (errorMessage.Length != 0) {
+                result = false;
+            }
+
             ErrorMessage = errorMessage.ToString();
             return result;
         }
