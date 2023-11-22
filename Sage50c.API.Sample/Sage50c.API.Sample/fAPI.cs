@@ -1178,9 +1178,6 @@ namespace Sage50c.API.Sample {
 
             btnPrint.Enabled = false;
 
-            bsoItemTransaction.UserPermissions = systemSettings.User;
-            bsoItemTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
-
             oPlaceHolders = new PlaceHolders();
 
             try {
@@ -1198,6 +1195,7 @@ namespace Sage50c.API.Sample {
                     defaultPrintSettings.ExportFileType = ExportFileTypeEnum.filePDF;
                     defaultPrintSettings.ExportFileFolder = oPlaceHolders.GetPlaceHolderPath(systemSettings.WorkstationInfo.PDFDestinationFolder);
                 }
+
                 //Obter configurações de impressão na configuração de postos
                 objListPrintSettings = printingManager.GetTransactionPrintSettings(oDocument, transSerial, ref defaultPrintSettings);
                 //
@@ -1206,12 +1204,14 @@ namespace Sage50c.API.Sample {
                     // Se houverem mais configuradas, deve-se alterar para a pretendida
                     oPrintSettings = (PrintSettings)objListPrintSettings.item[0];
                     // Imprimir...
-                    // Retorna falso em caso de erro
+                    bsoItemTransaction.UserPermissions = systemSettings.User;
+                    bsoItemTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
+
                     if (chkPrintPreview.Checked) {
-                        bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, oPrintSettings.PrintCopies);
+                        bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPreview, 1);
                     }
                     else {
-                        bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPrint, oPrintSettings.PrintCopies, oPrintSettings);
+                        bsoItemTransaction.PrintTransaction(transSerial, transDoc, transDocNumber, PrintJobEnum.jobPrint, 1, oPrintSettings);
                     }
                 }
                 APIEngine.CoreGlobals.MsgBoxFrontOffice("Concluido.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
@@ -1273,6 +1273,7 @@ namespace Sage50c.API.Sample {
                     details.Size.SizeID = txtTransSize1.Text.ToShort();
                 }
                 if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
+                    details.ItemProperties.ResetValues();
                     details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
                     details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
                 }
@@ -1408,10 +1409,8 @@ namespace Sage50c.API.Sample {
                 //Exemplo da Repartição de Custos
                 //INICIO
                 if (systemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
-
                     var document = TransactionFillCostShare();
                     _itemTransactionController.CreateCostShare(document);
-
                 }
 
                 _itemTransactionController.Save(suspended);

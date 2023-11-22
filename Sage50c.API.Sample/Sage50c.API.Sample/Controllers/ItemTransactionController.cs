@@ -343,7 +343,6 @@ namespace Sage50c.API.Sample.Controllers {
             if (!string.IsNullOrEmpty(Detail.ItemProperties.PropertyValue1)) {
                 if (item.PropertyEnabled) {
                     if (item.PropertyID1.Equals("NS", StringComparison.CurrentCultureIgnoreCase) || item.PropertyID1.Equals("LOT", StringComparison.CurrentCultureIgnoreCase)) {
-                        Detail.ItemProperties.ResetValues();
                         Detail.ItemProperties.PropertyID1 = item.PropertyID1;
                         Detail.ItemProperties.PropertyID2 = item.PropertyID2;
                         Detail.ItemProperties.PropertyID3 = item.PropertyID3;
