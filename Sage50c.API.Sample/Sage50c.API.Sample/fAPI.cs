@@ -798,14 +798,19 @@ namespace Sage50c.API.Sample {
         }
 
         private void CustomerFill() {
-            _customerController.Customer.CustomerID = (short)numCustomerId.Value;
-            _customerController.Customer.OrganizationName = txtCustomerName.Text;
-            _customerController.Customer.FederalTaxId = txtCustomerTaxId.Text;
-            _customerController.Customer.EntityFiscalStatusID = ((EntityFiscalStatus)cmbCustomerTax.SelectedItem).EntityFiscalStatusID;
-            _customerController.Customer.SalesmanId = (int)numCustomerSalesmanId.Value;
-            _customerController.Customer.ZoneID = (short)numCustomerZoneId.Value;
-            _customerController.Customer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
-            _customerController.Customer.Comments = txtCustomerComments.Text;
+            if (_customerController.Customer == null) {
+                throw new Exception("Carregue um cliente antes de fazer alterações.");
+            }
+            else {
+                _customerController.Customer.CustomerID = (double)numCustomerId.Value;
+                _customerController.Customer.OrganizationName = txtCustomerName.Text;
+                _customerController.Customer.FederalTaxId = txtCustomerTaxId.Text;
+                _customerController.Customer.EntityFiscalStatusID = ((EntityFiscalStatus)cmbCustomerTax.SelectedItem).EntityFiscalStatusID;
+                _customerController.Customer.SalesmanId = (int)numCustomerSalesmanId.Value;
+                _customerController.Customer.ZoneID = (short)numCustomerZoneId.Value;
+                _customerController.Customer.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
+                _customerController.Customer.Comments = txtCustomerComments.Text;
+            }
         }
 
         private void CustomerClearUI() {
@@ -885,13 +890,18 @@ namespace Sage50c.API.Sample {
         }
 
         private void SupplierFill() {
-            _supplierController.Supplier.SupplierID = txtSupplierId.Text.ToShort();
-            _supplierController.Supplier.OrganizationName = txtSupplierName.Text;
-            _supplierController.Supplier.EntityFiscalStatusID = ((EntityFiscalStatus)cmbSupplierTax.SelectedItem).EntityFiscalStatusID;
-            _supplierController.Supplier.FederalTaxId = txtSupplierTaxId.Text;
-            _supplierController.Supplier.ZoneID = txtSupplierZone.Text.ToShort();
-            _supplierController.Supplier.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
-            _supplierController.Supplier.Comments = txtSupplierComments.Text;
+            if (_supplierController.Supplier == null) {
+                throw new Exception("Carregue um fornecedor antes de fazer alterações.");
+            }
+            else {
+                _supplierController.Supplier.SupplierID = txtSupplierId.Text.ToDouble();
+                _supplierController.Supplier.OrganizationName = txtSupplierName.Text;
+                _supplierController.Supplier.EntityFiscalStatusID = ((EntityFiscalStatus)cmbSupplierTax.SelectedItem).EntityFiscalStatusID;
+                _supplierController.Supplier.FederalTaxId = txtSupplierTaxId.Text;
+                _supplierController.Supplier.ZoneID = txtSupplierZone.Text.ToShort();
+                _supplierController.Supplier.CountryID = ((CountryCode)cmbCustomerCountry.SelectedItem).CountryID;
+                _supplierController.Supplier.Comments = txtSupplierComments.Text;
+            }
         }
 
         private void SupplierClearUI() {
@@ -1057,7 +1067,6 @@ namespace Sage50c.API.Sample {
                 // partyType = Nenhum
                 cmbTransPartyType.SelectedIndex = 2;
             }
-            //
             txtTransDoc.Text = docId;
             txtTransDocNumber.Text = "0";
             txtTransGlobalDiscount.Text = "0";
@@ -1169,6 +1178,9 @@ namespace Sage50c.API.Sample {
 
             btnPrint.Enabled = false;
 
+            bsoItemTransaction.UserPermissions = systemSettings.User;
+            bsoItemTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
+
             oPlaceHolders = new PlaceHolders();
 
             try {
@@ -1219,65 +1231,84 @@ namespace Sage50c.API.Sample {
         #region BUY/SALE TRANSACTION
 
         private void TransactionFill() {
-            _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
-            _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
-            _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-            _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
-            _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
-            _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
-            _itemTransactionController.Transaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime().Date;
-            _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
-            _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
-            _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
-            _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
-            _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
-            _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
-            _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
-            _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-            _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
-            _itemTransactionController.SetUserPermissions();
+            if (_itemTransactionController.Transaction == null) {
+                throw new Exception("Carregue uma transação antes de fazer alterações.");
+            }
+            else {
+                _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
+                _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
+                _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToDouble();
+                _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+                _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
+                _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
+                _itemTransactionController.Transaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime().Date;
+                _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
+                _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
+                _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
+                _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
+                _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
+                _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
+                _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
+                _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
+                _itemTransactionController.SetUserPermissions();
+
+            }
         }
 
         private ItemTransactionDetail TransactionDetailFill() {
-            ItemTransactionDetail details = new ItemTransactionDetail();
-            details.ItemID = txtTransItemL1.Text;
-            details.Quantity = txtTransQuantityL1.Text.ToShort();
-            if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
-                details.TaxIncludedPrice = txtTransUnitPriceL1.Text.ToDouble();
+            if (dsoCache.ItemProvider.ItemExist(txtTransItemL1.Text)) {
+                ItemTransactionDetail details = new ItemTransactionDetail();
+                details.ItemID = txtTransItemL1.Text;
+                details.Quantity = txtTransQuantityL1.Text.ToDouble();
+                if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
+                    details.TaxIncludedPrice = txtTransUnitPriceL1.Text.ToDouble();
+                }
+                else {
+                    details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
+                }
+                details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
+                details.SetUnitOfSaleID(txtTransUnL1.Text);
+                if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
+                    details.Color.ColorID = txtTransColor1.Text.ToShort();
+                    details.Size.SizeID = txtTransSize1.Text.ToShort();
+                }
+                if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
+                    details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
+                    details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+                }
+                return details;
             }
-            details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
-            details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
-            details.UnitOfSaleID = txtTransUnL1.Text;
-            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
-                details.Color.ColorID = txtTransColor1.Text.ToShort();
-                details.Size.SizeID = txtTransColor1.Text.ToShort();
+            else {
+                throw new Exception($"O artigo [{txtTransItemL1.Text}] não foi encontrado");
             }
-            if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
-                details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
-                details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
-            }
-            return details;
         }
 
         private ItemTransactionDetail TransactionDetailFillL2() {
-            ItemTransactionDetail details = new ItemTransactionDetail();
-            details.ItemID = txtTransItemL2.Text;
-            details.Quantity = txtTransQuantityL2.Text.ToShort();
-            if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
-                details.TaxIncludedPrice = txtTransUnitPriceL2.Text.ToDouble();
+            if (dsoCache.ItemProvider.ItemExist(txtTransItemL2.Text)) {
+                ItemTransactionDetail details = new ItemTransactionDetail();
+                details.ItemID = txtTransItemL2.Text;
+                details.Quantity = txtTransQuantityL2.Text.ToDouble();
+                if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
+                    details.TaxIncludedPrice = txtTransUnitPriceL2.Text.ToDouble();
+                }
+                else {
+                    details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
+                }
+                details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
+                details.UnitOfSaleID = txtTransUnL1.Text;
+                if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
+                    details.Color.ColorID = txtTransColor1.Text.ToShort();
+                    details.Size.SizeID = txtTransSize1.Text.ToShort();
+                }
+                if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
+                    details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
+                    details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+                }
+                return details;
             }
-            details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
-            details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
-            details.UnitOfSaleID = txtTransUnL1.Text;
-            if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
-                details.Color.ColorID = txtTransColor1.Text.ToShort();
-                details.Size.SizeID = txtTransColor1.Text.ToShort();
+            else {
+                throw new Exception($"O artigo [{txtTransItemL2.Text}] não foi encontrado");
             }
-            if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
-                details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
-                details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
-            }
-            return details;
         }
 
         private SimpleDocument TransactionFillCostShare() {
@@ -1325,9 +1356,12 @@ namespace Sage50c.API.Sample {
                     simpleDocument.Details.Add(simpleItemDetail);
 
                 }
+                return simpleDocument;
+            }
+            else {
+                return null;
             }
 
-            return simpleDocument;
         }
 
         private TransactionID ItemTransactionUpdate(bool suspended) {
@@ -1341,6 +1375,10 @@ namespace Sage50c.API.Sample {
             }
 
             _itemTransactionController.SetUserPermissions();
+
+            if (string.IsNullOrEmpty(txtTransItemL1.Text)) {
+                throw new Exception("Não pode criar uma transação vazia!");
+            }
             var detail = TransactionDetailFill();
             if (detail != null) {
                 _itemTransactionController.AddDetail(txtTransTaxRateL1.Text.ToDouble(), detail);
@@ -1353,6 +1391,16 @@ namespace Sage50c.API.Sample {
                 }
             }
 
+            _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToDouble());
+            _itemTransactionController.Calculate();
+
+            var series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
+            if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
+                if (!SetExternalSignature(_itemTransactionController.Transaction)) {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice("A assinatura não foi definida. Vão ser usados valores por omissão", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+            }
+
             if (suspended) {
                 _itemTransactionController.SuspendTransaction();
             }
@@ -1360,17 +1408,12 @@ namespace Sage50c.API.Sample {
                 //Exemplo da Repartição de Custos
                 //INICIO
                 if (systemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
+
                     var document = TransactionFillCostShare();
                     _itemTransactionController.CreateCostShare(document);
 
                 }
-                //FIM
-                var series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
-                if (series.SeriesType == SeriesTypeEnum.SeriesExternal) {
-                    if (!SetExternalSignature(_itemTransactionController.Transaction)) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice("A assinatura não foi definida. Vão ser usados valores por omissão", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                    }
-                }
+
                 _itemTransactionController.Save(suspended);
                 // Definir a assinatura de um sistema externo
             }
@@ -1385,24 +1428,34 @@ namespace Sage50c.API.Sample {
         #region STOCK TRANSACTION
 
         private void TransactionStockFill() {
-            _stockTransactionController.SetPermissions();
-            _stockTransactionController.StockTransaction.TransDocument = txtTransDoc.Text.ToUpper();
-            _stockTransactionController.StockTransaction.TransSerial = txtTransSerial.Text.ToUpper();
-            _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-            _stockTransactionController.StockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-            _stockTransactionController.StockTransaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
-            _stockTransactionController.StockTransaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
-            _stockTransactionController.StockTransaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime(DateTime.Now);
-            _stockTransactionController.SetPartyType(cmbTransPartyType.SelectedIndex);
-            _stockTransactionController.SetBaseCurrency(txtTransCurrency.Text);
-            _stockTransactionController.StockTransaction.Comments = "Gerado por: " + Application.ProductName;
-            _stockTransactionController.StockTransaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+            if (_stockTransactionController.StockTransaction == null) {
+                throw new Exception("Carregue uma transação antes de fazer alterações.");
+            }
+            else {
+                _stockTransactionController.SetPermissions();
+                _stockTransactionController.StockTransaction.TransDocument = txtTransDoc.Text.ToUpper();
+                _stockTransactionController.StockTransaction.TransSerial = txtTransSerial.Text.ToUpper();
+                if (txtTransDocNumber.Text.ToShort() == 0) {
+                    throw new Exception("O número de Documento não se encontra preenchido");
+                }
+                else {
+                    _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
+                }
+                _stockTransactionController.StockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
+                _stockTransactionController.StockTransaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
+                _stockTransactionController.StockTransaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
+                _stockTransactionController.StockTransaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime(DateTime.Now);
+                _stockTransactionController.SetPartyType(cmbTransPartyType.SelectedIndex);
+                _stockTransactionController.SetBaseCurrency(txtTransCurrency.Text);
+                _stockTransactionController.StockTransaction.Comments = "Gerado por: " + Application.ProductName;
+                _stockTransactionController.StockTransaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
+            }
         }
 
         private ItemTransactionDetail TransactionStockDetailsFill() {
-            ItemTransactionDetail details = new ItemTransactionDetail();
-            details.ItemID = txtTransItemL1.Text;
             if (dsoCache.ItemProvider.ItemExist(txtTransItemL1.Text)) {
+                ItemTransactionDetail details = new ItemTransactionDetail();
+                details.ItemID = txtTransItemL1.Text;
                 if (dsoCache.WarehouseProvider.WarehouseExists(txtTransWarehouseL1.Text.ToShort())) {
                     details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
                     details.UnitOfSaleID = txtTransUnL1.Text;
@@ -1420,9 +1473,10 @@ namespace Sage50c.API.Sample {
         }
 
         private ItemTransactionDetail TransactionStockDetailsFillL2() {
-            ItemTransactionDetail details = new ItemTransactionDetail();
-            details.ItemID = txtTransItemL2.Text;
+
             if (dsoCache.ItemProvider.ItemExist(txtTransItemL2.Text)) {
+                ItemTransactionDetail details = new ItemTransactionDetail();
+                details.ItemID = txtTransItemL2.Text;
                 if (dsoCache.WarehouseProvider.WarehouseExists(txtTransWarehouseL2.Text.ToShort())) {
                     details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
                     details.UnitOfSaleID = txtTransUnL2.Text;

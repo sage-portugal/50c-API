@@ -48,7 +48,7 @@ namespace Sage50c.API.Sample.Controllers {
         public bool Save() {
 
             if (Validate()) {
-                //Save customer 
+                //Save supplier 
                 dsoCache.SupplierProvider.Save(_supplier, _supplier.SupplierID, editState == EditState.New);
                 editState = EditState.Editing;
                 return true;
@@ -59,17 +59,17 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         /// <summary>
-        /// Delete customer
+        /// Delete supplier
         /// </summary>
         public bool Remove() {
 
-            if (_supplier != null) {
+            if (_supplier == null || !dsoCache.SupplierProvider.SupplierExists(_supplier.SupplierID)) {
+                throw new Exception($"O Fornecedor [{_supplier.SupplierID}] não existe.");
+            }
+            else {
                 dsoCache.SupplierProvider.Delete(_supplier.SupplierID);
                 editState = EditState.None;
                 return true;
-            }
-            else {
-                throw new Exception($"O Fornecedor [{_supplier.SupplierID}] não existe.");
             }
 
         }
@@ -82,8 +82,8 @@ namespace Sage50c.API.Sample.Controllers {
             //String for errors 
             StringBuilder error = new StringBuilder();
 
-            //Check if costumer exists
-            var supplierExist = dsoCache.CustomerProvider.CustomerExists(_supplier.SupplierID);
+            //Check if supplier exists
+            var supplierExist = dsoCache.SupplierProvider.SupplierExists(_supplier.SupplierID);
             //
             if (!supplierExist && editState == EditState.Editing) {
                 throw new Exception($"O Fornecedor [{_supplier.SupplierID}] não existe.");
@@ -96,7 +96,7 @@ namespace Sage50c.API.Sample.Controllers {
                 if (_supplier.SupplierID <= 0 && supplierExist) {
                     error.AppendLine("Tem que preencher o código do Fornecedor!");
                 }
-                else if (editState == EditState.New) {
+                else if (editState == EditState.New && _supplier.SupplierID == 0) {
                     _supplier.SupplierID = dsoCache.SupplierProvider.GetNewID();
                 }
                 //Name

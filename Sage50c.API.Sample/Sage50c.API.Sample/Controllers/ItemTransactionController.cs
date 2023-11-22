@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 using S50cBL22;
 using S50cBO22;
+using S50cDL22;
 using S50cPrint22;
 using S50cSys22;
 using S50cUtil22;
@@ -75,11 +76,11 @@ namespace Sage50c.API.Sample.Controllers {
         public bool Save(bool Suspended) {
 
             if (Validate(Suspended)) {
-
-                //Calculate document
-                _bsoItemTransaction.Calculate(true, true);
+                //corrigir create time
+                SetUserPermissions();
 
                 _bsoItemTransaction.EnsureOpenTill(_bsoItemTransaction.Transaction.Till.TillID);
+
                 _bsoItemTransaction.SaveDocument(false, false);
 
                 editState = EditState.Editing;
@@ -144,6 +145,18 @@ namespace Sage50c.API.Sample.Controllers {
 
             StringBuilder error = new StringBuilder();
 
+            DSODocument dsoDocument = new DSODocument();
+
+            if (editState == EditState.New && _bsoItemTransaction.Transaction.TransDocNumber == 0) {
+
+                if (dsoCache.ItemTransactionProvider.TransactionCount(_bsoItemTransaction.Transaction.TransDocType) == 0) {
+                    _bsoItemTransaction.Transaction.TransDocNumber = 1;
+                }
+                else {
+                    _bsoItemTransaction.Transaction.TransDocNumber = dsoDocument.GetLastDocNumber(_bsoItemTransaction.Transaction.TransDocType, _bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument, _bsoItemTransaction.Transaction.WorkstationStamp.WorkstationID) + 1;
+                }
+            }
+
             if (editState != EditState.New && !Suspended) {
                 if (!dsoCache.ItemTransactionProvider.ItemTransactionExists(_bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument, _bsoItemTransaction.Transaction.TransDocNumber)) {
                     throw new Exception($"O documento {_bsoItemTransaction.Transaction.TransDocument} {_bsoItemTransaction.Transaction.TransSerial}/{_bsoItemTransaction.Transaction.TransDocNumber} não existe para ser alterado. Deve criar um novo.");
@@ -162,6 +175,7 @@ namespace Sage50c.API.Sample.Controllers {
                 }
             }
             else {
+
                 if (!systemSettings.WorkstationInfo.Document.IsInCollection(_bsoItemTransaction.Transaction.TransDocument)) {
                     error.AppendLine("O Documento não se encontra preenchido ou não existe");
                 }
@@ -170,9 +184,15 @@ namespace Sage50c.API.Sample.Controllers {
                 if (_bsoItemTransaction.Transaction.TransDocType != DocumentTypeEnum.dcTypeSale && _bsoItemTransaction.Transaction.TransDocType != DocumentTypeEnum.dcTypePurchase) {
                     error.AppendLine($"O documento indicado [{_bsoItemTransaction.Transaction.TransDocument}] não é um documento de venda/compra");
                 }
+
                 if (!systemSettings.DocumentSeries.IsInCollection(_bsoItemTransaction.Transaction.TransSerial)) {
                     error.AppendLine("A Série não se encontra preenchida ou não existe");
                 }
+
+                if (_bsoItemTransaction.Transaction.TransDocNumber == 0) {
+                    error.AppendLine("O número de Documento não se encontra preenchido");
+                }
+
                 if (string.IsNullOrEmpty(_bsoItemTransaction.Transaction.BaseCurrency.CurrencyID)) {
                     _bsoItemTransaction.Transaction.BaseCurrency = systemSettings.BaseCurrency;
                 }
@@ -239,16 +259,30 @@ namespace Sage50c.API.Sample.Controllers {
         /// </summary>
         public void AddDetail(double TaxPercent, ItemTransactionDetail Detail) {
 
+            _document = systemSettings.WorkstationInfo.Document[_bsoItemTransaction.Transaction.TransDocument];
             //Get item
-            Item item = dsoCache.ItemProvider.GetItem(Detail.ItemID, Detail.BaseCurrency);
+            Item item = dsoCache.ItemProvider.GetItem(Detail.ItemID, systemSettings.BaseCurrency);
+
+            if (_bsoItemTransaction.Transaction.BaseCurrency == null) {
+                Detail.BaseCurrency = systemSettings.BaseCurrency;
+            }
+            else {
+                CurrencyDefinition currencyDefinition = new CurrencyDefinition();
+                currencyDefinition = dsoCache.CurrencyProvider.GetCurrency(_bsoItemTransaction.Transaction.BaseCurrency.CurrencyID);
+                if (currencyDefinition != null) {
+                    Detail.BaseCurrency = currencyDefinition;
+                }
+                else {
+                    Detail.BaseCurrency = systemSettings.BaseCurrency;
+                }
+            }
+
+            Detail.CreateDate = _bsoItemTransaction.Transaction.CreateDate;
+            Detail.CreateTime = _bsoItemTransaction.Transaction.CreateTime;
+            Detail.ActualDeliveryDate = _bsoItemTransaction.Transaction.ActualDeliveryDate;
 
             Detail.Description = item.Description;
             Detail.UnitList = item.UnitList;
-            Detail.Graduation = item.Graduation;
-            Detail.ItemTax = item.ItemTax;
-            Detail.ItemTax2 = item.ItemTax2;
-            Detail.ItemTax3 = item.ItemTax3;
-            Detail.ItemType = item.ItemType;
 
             short TaxGroupId = 0;
             if (TaxPercent == 0 && item.TaxableGroupID != 0) {
@@ -261,20 +295,21 @@ namespace Sage50c.API.Sample.Controllers {
                 TaxGroupId = _bsoItemTransaction.BSOTaxes.GetTaxableGroupIDFromTaxRate(TaxPercent, _bsoItemTransaction.Transaction.Zone.CountryID, _bsoItemTransaction.Transaction.Zone.TaxRegionID);
             }
             Detail.TaxableGroupID = TaxGroupId;
-            Detail.LineItemID = _bsoItemTransaction.Transaction.Details.Count + 1;
 
-            if (!string.IsNullOrEmpty(Detail.UnitOfSaleID)) {
-                Detail.SetUnitOfSaleID(Detail.UnitOfSaleID.ToUpper());
+            short warehouse = Detail.WarehouseID;
+            if (dsoCache.WarehouseProvider.WarehouseExists(warehouse)) {
+                Detail.WarehouseID = warehouse;
             }
+            else {
+                Detail.WarehouseID = _document.Defaults.Warehouse;
+            }
+
+            Detail.LineItemID = _bsoItemTransaction.Transaction.Details.Count + 1;
 
             //Last purchase price 
             if (_document.TransDocType == DocumentTypeEnum.dcTypePurchase) {
                 Detail.ItemExtraInfo.ItemLastCostTaxIncludedPrice = item.SalePrice[0, Detail.Size.SizeID, string.Empty, 0, item.UnitOfSaleID].TaxIncludedPrice;
                 Detail.ItemExtraInfo.ItemLastCostUnitPrice = item.SalePrice[0, Detail.Size.SizeID, string.Empty, 0, item.UnitOfSaleID].UnitPrice;
-            }
-
-            if (item.ItemType == ItemTypeEnum.itmService || item.ItemType == ItemTypeEnum.itmInterestRate || item.ItemType == ItemTypeEnum.itmOtherProductOrService) {
-                Detail.RetentionTax = item.WithholdingTaxRate;
             }
 
             var colorId = Detail.Color.ColorID;
@@ -298,7 +333,7 @@ namespace Sage50c.API.Sample.Controllers {
                     size = item.Sizes[sizeId];
                 }
                 else {
-                    throw new Exception($"A cor indicada [{sizeId}] não existe");
+                    throw new Exception($"O tamanho indicado [{sizeId}] não existe");
                 }
                 Detail.Size.Description = size.SizeName;
                 Detail.Size.SizeKey = size.SizeKey;
@@ -328,6 +363,16 @@ namespace Sage50c.API.Sample.Controllers {
                 }
             }
 
+            Detail.Graduation = item.Graduation;
+            Detail.ItemTax = item.ItemTax;
+            Detail.ItemTax2 = item.ItemTax2;
+            Detail.ItemTax3 = item.ItemTax3;
+
+            Detail.ItemType = item.ItemType;
+            if (item.ItemType == ItemTypeEnum.itmService || item.ItemType == ItemTypeEnum.itmInterestRate || item.ItemType == ItemTypeEnum.itmOtherProductOrService) {
+                Detail.RetentionTax = item.WithholdingTaxRate;
+            }
+
             item = null;
             _bsoItemTransaction.Transaction.Details.Add(Detail);
             Detail = null;
@@ -339,7 +384,7 @@ namespace Sage50c.API.Sample.Controllers {
                 _bsoItemTransaction.Transaction.WorkstationStamp.SessionID = APIEngine.SystemSettings.TillSession.SessionID;
                 _bsoItemTransaction.Transaction.Comments = "Gerado por: " + Application.ProductName;
                 _bsoItemTransaction.Transaction.CreateDate = DateTime.Today.Date;
-                _bsoItemTransaction.Transaction.CreateTime = DateTime.Now;
+                _bsoItemTransaction.Transaction.CreateTime = DateTime.Today;
                 _bsoItemTransaction.Transaction.ActualDeliveryDate = DateTime.Today.Date;
                 _bsoItemTransaction.Transaction.TransDocType = TransGetType(_bsoItemTransaction.Transaction.TransDocument);
                 return true;
@@ -350,13 +395,11 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public void CreateCostShare(SimpleDocument document) {
-
             _bsoItemTransaction.Transaction.BuyShareOtherCostList = null;
-            if (document != null) {
-                SimpleDocumentList simpleDocumentList = new SimpleDocumentList();
-                simpleDocumentList.Add(document);
-                _bsoItemTransaction.Transaction.BuyShareOtherCostList = simpleDocumentList;
-            }
+            SimpleDocumentList simpleDocumentList = new SimpleDocumentList();
+            simpleDocumentList.Add(document);
+            _bsoItemTransaction.Transaction.BuyShareOtherCostList = simpleDocumentList;
+
 
         }
 
@@ -365,11 +408,14 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public void SetPaymentDiscountPercent(double PaymentDiscountPercent) {
+
             _bsoItemTransaction.PaymentDiscountPercent1 = PaymentDiscountPercent;
+
         }
 
         public void SetUserPermissions() {
             _bsoItemTransaction.UserPermissions = systemSettings.User;
+            _bsoItemTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
         }
 
         public void SuspendTransaction() {
@@ -378,6 +424,10 @@ namespace Sage50c.API.Sample.Controllers {
 
         public bool FinalizeTransaction(string TransSerial, string TransDoc, double TransDocNumber) {
             return _bsoItemTransaction.FinalizeSuspendedTransaction(TransSerial, TransDoc, TransDocNumber);
+        }
+
+        public void Calculate() {
+            _bsoItemTransaction.Calculate(true, true);
         }
     }
 }
