@@ -1067,7 +1067,6 @@ namespace Sage50c.API.Sample {
                 // partyType = Nenhum
                 cmbTransPartyType.SelectedIndex = 2;
             }
-            //
             txtTransDoc.Text = docId;
             txtTransDocNumber.Text = "0";
             txtTransGlobalDiscount.Text = "0";
@@ -1179,6 +1178,9 @@ namespace Sage50c.API.Sample {
 
             btnPrint.Enabled = false;
 
+            bsoItemTransaction.UserPermissions = systemSettings.User;
+            bsoItemTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
+
             oPlaceHolders = new PlaceHolders();
 
             try {
@@ -1235,10 +1237,7 @@ namespace Sage50c.API.Sample {
             else {
                 _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
                 _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
-                
-                
-                    _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-                
+                _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToDouble();
                 _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
                 _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
                 _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
@@ -1251,9 +1250,8 @@ namespace Sage50c.API.Sample {
                 _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
                 _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
                 _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
-                //_itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
                 _itemTransactionController.SetUserPermissions();
-          
+
             }
         }
 
@@ -1261,13 +1259,15 @@ namespace Sage50c.API.Sample {
             if (dsoCache.ItemProvider.ItemExist(txtTransItemL1.Text)) {
                 ItemTransactionDetail details = new ItemTransactionDetail();
                 details.ItemID = txtTransItemL1.Text;
-                details.Quantity = txtTransQuantityL1.Text.ToShort();
+                details.Quantity = txtTransQuantityL1.Text.ToDouble();
                 if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
                     details.TaxIncludedPrice = txtTransUnitPriceL1.Text.ToDouble();
                 }
-                details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
+                else {
+                    details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
+                }
                 details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
-                details.UnitOfSaleID = txtTransUnL1.Text;
+                details.SetUnitOfSaleID(txtTransUnL1.Text);
                 if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
                     details.Color.ColorID = txtTransColor1.Text.ToShort();
                     details.Size.SizeID = txtTransSize1.Text.ToShort();
@@ -1277,7 +1277,8 @@ namespace Sage50c.API.Sample {
                     details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
                 }
                 return details;
-            } else {
+            }
+            else {
                 throw new Exception($"O artigo [{txtTransItemL1.Text}] não foi encontrado");
             }
         }
@@ -1286,11 +1287,13 @@ namespace Sage50c.API.Sample {
             if (dsoCache.ItemProvider.ItemExist(txtTransItemL2.Text)) {
                 ItemTransactionDetail details = new ItemTransactionDetail();
                 details.ItemID = txtTransItemL2.Text;
-                details.Quantity = txtTransQuantityL2.Text.ToShort();
+                details.Quantity = txtTransQuantityL2.Text.ToDouble();
                 if (_itemTransactionController.Transaction.TransactionTaxIncluded) {
                     details.TaxIncludedPrice = txtTransUnitPriceL2.Text.ToDouble();
                 }
-                details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
+                else {
+                    details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
+                }
                 details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
                 details.UnitOfSaleID = txtTransUnL1.Text;
                 if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
@@ -1358,7 +1361,7 @@ namespace Sage50c.API.Sample {
             else {
                 return null;
             }
-            
+
         }
 
         private TransactionID ItemTransactionUpdate(bool suspended) {
@@ -1375,7 +1378,7 @@ namespace Sage50c.API.Sample {
 
             if (string.IsNullOrEmpty(txtTransItemL1.Text)) {
                 throw new Exception("Não pode criar uma transação vazia!");
-            } 
+            }
             var detail = TransactionDetailFill();
             if (detail != null) {
                 _itemTransactionController.AddDetail(txtTransTaxRateL1.Text.ToDouble(), detail);
@@ -1388,7 +1391,7 @@ namespace Sage50c.API.Sample {
                 }
             }
 
-            _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToShort());
+            _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToDouble());
             _itemTransactionController.Calculate();
 
             var series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
@@ -1405,12 +1408,12 @@ namespace Sage50c.API.Sample {
                 //Exemplo da Repartição de Custos
                 //INICIO
                 if (systemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
-                    
+
                     var document = TransactionFillCostShare();
                     _itemTransactionController.CreateCostShare(document);
 
                 }
-          
+
                 _itemTransactionController.Save(suspended);
                 // Definir a assinatura de um sistema externo
             }
@@ -1470,7 +1473,7 @@ namespace Sage50c.API.Sample {
         }
 
         private ItemTransactionDetail TransactionStockDetailsFillL2() {
-            
+
             if (dsoCache.ItemProvider.ItemExist(txtTransItemL2.Text)) {
                 ItemTransactionDetail details = new ItemTransactionDetail();
                 details.ItemID = txtTransItemL2.Text;

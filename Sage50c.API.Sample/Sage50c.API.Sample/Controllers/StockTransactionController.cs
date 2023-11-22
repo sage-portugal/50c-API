@@ -13,7 +13,7 @@ namespace Sage50c.API.Sample.Controllers {
 
         private BSOStockTransaction _bsoStockTransaction = null;
 
-        public StockTransaction StockTransaction {  get { return _bsoStockTransaction.Transaction; } }
+        public StockTransaction StockTransaction { get { return _bsoStockTransaction.Transaction; } }
 
         /// <summary>
         /// Create a new sotck transaction
@@ -21,7 +21,7 @@ namespace Sage50c.API.Sample.Controllers {
         public StockTransaction Create(string TransDoc, string TransSerial) {
 
             Initialize(TransDoc, TransSerial);
-            
+
 
             editState = EditState.New;
             return _bsoStockTransaction.Transaction;
@@ -124,6 +124,17 @@ namespace Sage50c.API.Sample.Controllers {
         public bool Validate() {
 
             StringBuilder error = new StringBuilder();
+
+            DSODocument dsoDocument = new DSODocument();
+
+            if (editState == EditState.New && _bsoStockTransaction.Transaction.TransDocNumber==0) {
+                if (dsoCache.ItemTransactionProvider.TransactionCount(_bsoStockTransaction.Transaction.TransDocType) == 0) {
+                    _bsoStockTransaction.Transaction.TransDocNumber = 1;
+                }
+                else {
+                    _bsoStockTransaction.Transaction.TransDocNumber = dsoDocument.GetLastDocNumber(_bsoStockTransaction.Transaction.TransDocType, _bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.WorkstationStamp.WorkstationID) + 1;
+                }
+            }
 
             if (editState != EditState.New && !dsoCache.StockTransactionProvider.TransactionExists(_bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.TransDocNumber)) {
                 throw new Exception($"O documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber} não existe para ser alterado. Deve criar um novo.");
@@ -294,7 +305,7 @@ namespace Sage50c.API.Sample.Controllers {
             _bsoStockTransaction.AddDetail(Detail, ref calculate);
             Detail = null;
         }
-    
+
         public void SetPermissions() {
             _bsoStockTransaction.UserPermissions = systemSettings.User;
             _bsoStockTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
@@ -304,7 +315,7 @@ namespace Sage50c.API.Sample.Controllers {
             _bsoStockTransaction.PartyType = (short)TransGetPartyType(selected);
         }
 
-        public void SetBaseCurrency (string currency) {
+        public void SetBaseCurrency(string currency) {
             _bsoStockTransaction.BaseCurrency = currency;
         }
     }
