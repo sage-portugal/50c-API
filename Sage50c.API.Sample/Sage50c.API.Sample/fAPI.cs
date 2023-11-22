@@ -1267,7 +1267,7 @@ namespace Sage50c.API.Sample {
                     details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
                 }
                 details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
-                details.SetUnitOfSaleID(txtTransUnL1.Text);
+                details.UnitOfSaleID= txtTransUnL1.Text;
                 if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
                     details.Color.ColorID = txtTransColor1.Text.ToShort();
                     details.Size.SizeID = txtTransSize1.Text.ToShort();
@@ -1296,7 +1296,7 @@ namespace Sage50c.API.Sample {
                     details.UnitPrice = txtTransUnitPriceL2.Text.ToDouble();
                 }
                 details.WarehouseID = txtTransWarehouseL2.Text.ToShort();
-                details.UnitOfSaleID = txtTransUnL1.Text;
+                details.UnitOfSaleID = txtTransUnL2.Text;
                 if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
                     details.Color.ColorID = txtTransColor1.Text.ToShort();
                     details.Size.SizeID = txtTransSize1.Text.ToShort();
@@ -1312,9 +1312,10 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private SimpleDocument TransactionFillCostShare() {
-            SimpleDocument simpleDocument = new SimpleDocument();
-            SimpleItemDetail simpleItemDetail = new SimpleItemDetail();
+        private SimpleDocumentList TransactionFillCostShare() {
+            SimpleDocument simpleDocument;
+            SimpleDocumentList simpleDocumentList = new SimpleDocumentList();
+            SimpleItemDetail simpleItemDetail;
             if (txtShareTransDocNumber_R1.Text.Length > 0) {
 
                 simpleDocument = new SimpleDocument();
@@ -1357,12 +1358,23 @@ namespace Sage50c.API.Sample {
                     simpleDocument.Details.Add(simpleItemDetail);
 
                 }
-                return simpleDocument;
+                simpleDocumentList.Add(simpleDocument);
             }
             else {
-                return null;
+                if (txtShareTransDocNumber_R2.Text.Length > 0) {
+                    simpleDocument = new SimpleDocument();
+                    simpleDocument.TransSerial = txtShareTransSerial_R2.Text;
+                    simpleDocument.TransDocument = txtShareTransDocument_R2.Text;
+                    simpleDocument.TransDocNumber = txtShareTransDocNumber_R2.Text.ToDouble();
+                    simpleDocument.TotalTransactionAmount = txtShareAmount_R2.Text.ToDouble();
+                    simpleDocument.CurrencyID = txtTransCurrency.Text;
+
+                    //Add Document to list of Documento to Share amount 
+                    simpleDocumentList.Add(simpleDocument);
+                }
             }
 
+            return simpleDocumentList;
         }
 
         private TransactionID ItemTransactionUpdate(bool suspended) {
@@ -1403,14 +1415,15 @@ namespace Sage50c.API.Sample {
             }
 
             if (suspended) {
+                _itemTransactionController.Save(suspended);
                 _itemTransactionController.SuspendTransaction();
             }
             else {
                 //Exemplo da Repartição de Custos
                 //INICIO
                 if (systemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
-                    var document = TransactionFillCostShare();
-                    _itemTransactionController.CreateCostShare(document);
+                    var simpleDocumentList = TransactionFillCostShare();
+                    _itemTransactionController.CreateCostShare(simpleDocumentList);
                 }
 
                 _itemTransactionController.Save(suspended);
@@ -1434,12 +1447,7 @@ namespace Sage50c.API.Sample {
                 _stockTransactionController.SetPermissions();
                 _stockTransactionController.StockTransaction.TransDocument = txtTransDoc.Text.ToUpper();
                 _stockTransactionController.StockTransaction.TransSerial = txtTransSerial.Text.ToUpper();
-                if (txtTransDocNumber.Text.ToShort() == 0) {
-                    throw new Exception("O número de Documento não se encontra preenchido");
-                }
-                else {
-                    _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
-                }
+                _stockTransactionController.StockTransaction.TransDocNumber = txtTransDocNumber.Text.ToShort();
                 _stockTransactionController.StockTransaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
                 _stockTransactionController.StockTransaction.CreateDate = txtTransDate.Text.ToDateTime(DateTime.Now);
                 _stockTransactionController.StockTransaction.CreateTime = new DateTime(DateTime.Now.TimeOfDay.Ticks);
@@ -2571,7 +2579,7 @@ namespace Sage50c.API.Sample {
                 var doc = APIEngine.SystemSettings.WorkstationInfo.Document[trans.TransDocument];
 
                 TransactionClearUI();
-                //txtTransColor1.Text = 
+
                 txtTransCurrency.Text = trans.BaseCurrency.CurrencyID;
                 txtTransDate.Text = trans.CreateDate.ToShortDateString();
                 txtTransDoc.Text = trans.TransDocument;

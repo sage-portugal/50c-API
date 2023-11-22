@@ -393,13 +393,9 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public void CreateCostShare(SimpleDocument document) {
+        public void CreateCostShare(SimpleDocumentList simpleDocumentList) {
             _bsoItemTransaction.Transaction.BuyShareOtherCostList = null;
-            SimpleDocumentList simpleDocumentList = new SimpleDocumentList();
-            simpleDocumentList.Add(document);
             _bsoItemTransaction.Transaction.BuyShareOtherCostList = simpleDocumentList;
-
-
         }
 
         public void SetPartyID(double PartyID) {

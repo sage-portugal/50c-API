@@ -128,7 +128,7 @@ namespace Sage50c.API.Sample.Controllers {
             DSODocument dsoDocument = new DSODocument();
 
             if (editState == EditState.New && _bsoStockTransaction.Transaction.TransDocNumber==0) {
-                if (dsoCache.ItemTransactionProvider.TransactionCount(_bsoStockTransaction.Transaction.TransDocType) == 0) {
+                if (dsoCache.StockTransactionProvider.TransactionCount(_bsoStockTransaction.Transaction.TransDocType) == 0) {
                     _bsoStockTransaction.Transaction.TransDocNumber = 1;
                 }
                 else {
