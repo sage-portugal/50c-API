@@ -35,6 +35,8 @@ namespace Sage50c.API.Sample {
 
         public DocumentTypeEnum TransDocType { get; }
 
+        public SimpleDocumentList BuyShareOtherCostList { get; }
+
         public GenericTransaction(ItemTransaction trans) {
             //Common
             TransDocument = trans.TransDocument;
@@ -53,6 +55,7 @@ namespace Sage50c.API.Sample {
             _TenderID = trans.Tender.TenderID;
             PaymentDiscountPercent = trans.PaymentDiscountPercent.ToString();
             TransGlobalDiscountEnabled = true;
+            BuyShareOtherCostList = trans.BuyShareOtherCostList;
         }
 
         public GenericTransaction(StockTransaction trans) {

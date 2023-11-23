@@ -2673,48 +2673,50 @@ namespace Sage50c.API.Sample {
                         }
                     }
 
-                    if (bsoItemTransaction.Transaction.BuyShareOtherCostList.Count > 0) {
+                    if (doc.TransDocType == DocumentTypeEnum.dcTypePurchase) {
+                        if (trans.BuyShareOtherCostList.Count > 0) {
 
-                        SimpleDocumentList objDocumentList = new SimpleDocumentList();
-                        objDocumentList = bsoItemTransaction.Transaction.BuyShareOtherCostList;
+                            SimpleDocumentList objDocumentList = new SimpleDocumentList();
+                            objDocumentList = trans.BuyShareOtherCostList;
 
-                        ItemTransaction objTempItemTransaction = new ItemTransaction();
-                        DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
+                            ItemTransaction objTempItemTransaction = new ItemTransaction();
+                            DSOItemTransaction objDSOItemTransaction = new DSOItemTransaction();
 
-                        string sDetailKey;
-                        foreach (SimpleDocument objDocument in objDocumentList) {
+                            string sDetailKey;
+                            foreach (SimpleDocument objDocument in objDocumentList) {
 
-                            if (objDocument.Details.Count > 0) {
+                                if (objDocument.Details.Count > 0) {
 
-                                objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber);
+                                    objTempItemTransaction = objDSOItemTransaction.GetItemTransaction(DocumentTypeEnum.dcTypePurchase, objDocument.TransID.TransSerial, objDocument.TransID.TransDocument, objDocument.TransID.TransDocNumber);
 
-                                txtShareTransSerial_R1.Text = objDocument.TransID.TransSerial;
-                                txtShareTransDocument_R1.Text = objDocument.TransID.TransDocument;
-                                txtShareTransDocNumber_R1.Text = objDocument.TransID.TransDocNumber.ToString();
-                                txtShareAmount_R1.Text = objDocument.TotalTransactionAmount.ToString();
+                                    txtShareTransSerial_R1.Text = objDocument.TransID.TransSerial;
+                                    txtShareTransDocument_R1.Text = objDocument.TransID.TransDocument;
+                                    txtShareTransDocNumber_R1.Text = objDocument.TransID.TransDocNumber.ToString();
+                                    txtShareAmount_R1.Text = objDocument.TotalTransactionAmount.ToString();
 
-                                foreach (ItemTransactionDetail objTempItemTransactionDetail in objTempItemTransaction.Details) {
+                                    foreach (ItemTransactionDetail objTempItemTransactionDetail in objTempItemTransaction.Details) {
 
-                                    sDetailKey = objDocument.TransID.TransSerial + "|" + objDocument.TransID.TransDocument + "|" + objDocument.TransID.TransDocNumber.ToString() + "|" + objTempItemTransactionDetail.LineItemID.ToString() + "|" + objTempItemTransactionDetail.ItemID + "|" + objTempItemTransactionDetail.Color.ColorID + "|" + objTempItemTransactionDetail.Size.SizeID;
+                                        sDetailKey = objDocument.TransID.TransSerial + "|" + objDocument.TransID.TransDocument + "|" + objDocument.TransID.TransDocNumber.ToString() + "|" + objTempItemTransactionDetail.LineItemID.ToString() + "|" + objTempItemTransactionDetail.ItemID + "|" + objTempItemTransactionDetail.Color.ColorID + "|" + objTempItemTransactionDetail.Size.SizeID;
 
-                                    switch ((int)objTempItemTransactionDetail.LineItemID) {
-                                        case 1:
-                                            LblL1.Text = objDocument.Details.ItemByIndex[1].ItemID;
-                                            txtAmout_R1_L1.Text = objDocument.Details.ItemByIndex[1].UnitPrice.ToString();
-                                            break;
+                                        switch ((int)objTempItemTransactionDetail.LineItemID) {
+                                            case 1:
+                                                LblL1.Text = objDocument.Details.ItemByIndex[1].ItemID;
+                                                txtAmout_R1_L1.Text = objDocument.Details.ItemByIndex[1].UnitPrice.ToString();
+                                                break;
 
-                                        case 2:
-                                            LblL2.Text = objDocument.Details.ItemByIndex[2].ItemID;
-                                            txtAmout_R1_L2.Text = objDocument.Details.ItemByIndex[2].UnitPrice.ToString();
-                                            break;
+                                            case 2:
+                                                LblL2.Text = objDocument.Details.ItemByIndex[2].ItemID;
+                                                txtAmout_R1_L2.Text = objDocument.Details.ItemByIndex[2].UnitPrice.ToString();
+                                                break;
+                                        }
                                     }
                                 }
-                            }
-                            else {
-                                txtShareTransSerial_R2.Text = objDocument.TransID.TransSerial;
-                                txtShareTransDocument_R2.Text = objDocument.TransID.TransDocument;
-                                txtShareTransDocNumber_R2.Text = objDocument.TransID.TransDocNumber.ToString();
-                                txtShareAmount_R2.Text = objDocument.TotalTransactionAmount.ToString();
+                                else {
+                                    txtShareTransSerial_R2.Text = objDocument.TransID.TransSerial;
+                                    txtShareTransDocument_R2.Text = objDocument.TransID.TransDocument;
+                                    txtShareTransDocNumber_R2.Text = objDocument.TransID.TransDocNumber.ToString();
+                                    txtShareAmount_R2.Text = objDocument.TotalTransactionAmount.ToString();
+                                }
                             }
                         }
                     }
