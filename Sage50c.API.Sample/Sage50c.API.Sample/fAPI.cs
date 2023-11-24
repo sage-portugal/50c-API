@@ -1023,6 +1023,10 @@ namespace Sage50c.API.Sample {
             string docId = string.Empty;
 
             if (rbTransBuySell.Checked) {
+
+                groupBox3.Enabled = true;
+                groupBox3.Visible = true;
+
                 if (partyType == PartyTypeEnum.ptCustomer) {
                     docId = systemSettings.WorkstationInfo.DefaultTransDocument;
                     cmbTransPartyType.SelectedIndex = 1;
@@ -1040,6 +1044,10 @@ namespace Sage50c.API.Sample {
                 }
             }
             else {
+
+                groupBox3.Enabled = false;
+                groupBox3.Visible = false;
+
                 TransactionNatureEnum StockTransactionNatureId = 0;
                 if (rbTransStock.Checked) {
                     StockTransactionNatureId = TransactionNatureEnum.Stock_Release;
