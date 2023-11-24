@@ -8,6 +8,7 @@ namespace Sage50c.API.Sample.Controllers {
         None = 0,
         New = 1,
         Editing = 2,
+        Suspending = 3,
     }
 
     internal abstract class ControllerBase {

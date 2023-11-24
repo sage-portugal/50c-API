@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -17,6 +20,10 @@ namespace Sage50c.API.Sample.Controllers {
         public ItemTransaction Transaction { get { return _bsoItemTransaction.Transaction; } }
 
         private Document _document = null;
+        
+        public ItemTransactionController() {
+            _bsoItemTransaction = new BSOItemTransaction();
+        } 
 
         /// <summary>
         /// Create a new buy/sale transaction
@@ -36,7 +43,6 @@ namespace Sage50c.API.Sample.Controllers {
         public ItemTransaction Load(bool Suspended, string TransDoc, string TransSerial, double TransDocNum) {
 
             dynamic trans = null;
-            _bsoItemTransaction = new BSOItemTransaction();
             editState = EditState.Editing;
             if (systemSettings.WorkstationInfo.Document.IsInCollection(TransDoc)) {
                 _document = systemSettings.WorkstationInfo.Document[TransDoc];
@@ -47,12 +53,12 @@ namespace Sage50c.API.Sample.Controllers {
             }
 
             if (Suspended) {
-                if (_bsoItemTransaction.LoadSuspendedTransaction(TransSerial, TransDoc, TransDocNum)) {
+                if (_bsoItemTransaction.LoadSuspendedTransaction(TransSerial, TransDoc, TransDocNum)) {  
                     trans = _bsoItemTransaction.Transaction;
                     return trans;
                 }
                 else {
-                    throw new Exception($"O documento {TransDoc} {TransSerial}/{TransDocNum} não existe para ser alterado. Deve criar um novo");
+                    throw new Exception($"O documento {TransDoc} {TransSerial}/{TransDocNum} não existe em preparação.");
                 }
             }
             else {
@@ -76,7 +82,6 @@ namespace Sage50c.API.Sample.Controllers {
         public bool Save(bool Suspended) {
 
             if (Validate(Suspended)) {
-                //corrigir create time
                 SetUserPermissions();
 
                 _bsoItemTransaction.EnsureOpenTill(_bsoItemTransaction.Transaction.Till.TillID);
@@ -413,8 +418,8 @@ namespace Sage50c.API.Sample.Controllers {
             _bsoItemTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
         }
 
-        public void SuspendTransaction() {
-            _bsoItemTransaction.SuspendCurrentTransaction();
+        public TransactionID SuspendTransaction() {
+            return _bsoItemTransaction.SuspendCurrentTransaction();
         }
 
         public bool FinalizeTransaction(string TransSerial, string TransDoc, double TransDocNumber) {
@@ -424,5 +429,6 @@ namespace Sage50c.API.Sample.Controllers {
         public void Calculate() {
             _bsoItemTransaction.Calculate(true, true);
         }
+
     }
 }

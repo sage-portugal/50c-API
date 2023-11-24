@@ -25,6 +25,7 @@ namespace Sage50c.API.Sample {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fApi));
             this.panel1 = new System.Windows.Forms.Panel();
             this.pbCSharp = new System.Windows.Forms.PictureBox();
@@ -292,6 +293,9 @@ namespace Sage50c.API.Sample {
             this.lblEndDate = new System.Windows.Forms.Label();
             this.lblExportTo0 = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.LerPreparacao = new System.Windows.Forms.ToolTip(this.components);
+            this.FinalizarPreparacao = new System.Windows.Forms.ToolTip(this.components);
+            this.GuardarPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -1775,12 +1779,14 @@ namespace Sage50c.API.Sample {
             // 
             // btnTransactionRestoreTemp
             // 
+            this.btnTransactionRestoreTemp.Enabled = false;
             this.btnTransactionRestoreTemp.Location = new System.Drawing.Point(18, 160);
             this.btnTransactionRestoreTemp.Name = "btnTransactionRestoreTemp";
             this.btnTransactionRestoreTemp.Size = new System.Drawing.Size(139, 28);
             this.btnTransactionRestoreTemp.TabIndex = 342;
             this.btnTransactionRestoreTemp.Text = "Restaurar temporário";
             this.btnTransactionRestoreTemp.UseVisualStyleBackColor = true;
+            this.btnTransactionRestoreTemp.Visible = false;
             this.btnTransactionRestoreTemp.Click += new System.EventHandler(this.btnTransactionRestoreTemp_Click);
             // 
             // btnTransactionFinalize
@@ -1790,6 +1796,7 @@ namespace Sage50c.API.Sample {
             this.btnTransactionFinalize.Size = new System.Drawing.Size(139, 42);
             this.btnTransactionFinalize.TabIndex = 341;
             this.btnTransactionFinalize.Text = "Finalizar preparação";
+            this.FinalizarPreparacao.SetToolTip(this.btnTransactionFinalize, "Finalizar a preparação Doc Serie/Número");
             this.btnTransactionFinalize.UseVisualStyleBackColor = true;
             this.btnTransactionFinalize.Click += new System.EventHandler(this.btnTransactionFinalize_Click);
             // 
@@ -1800,6 +1807,7 @@ namespace Sage50c.API.Sample {
             this.btnTransSavePrep.Size = new System.Drawing.Size(138, 42);
             this.btnTransSavePrep.TabIndex = 340;
             this.btnTransSavePrep.Text = "Guardar preparação";
+            this.GuardarPreparacao.SetToolTip(this.btnTransSavePrep, "Guardar preparação com os dados da interface");
             this.btnTransSavePrep.UseVisualStyleBackColor = true;
             this.btnTransSavePrep.Click += new System.EventHandler(this.btnSavePrep_Click);
             // 
@@ -1810,6 +1818,7 @@ namespace Sage50c.API.Sample {
             this.btnTransGetPrep.Size = new System.Drawing.Size(138, 27);
             this.btnTransGetPrep.TabIndex = 339;
             this.btnTransGetPrep.Text = "Ler preparação";
+            this.LerPreparacao.SetToolTip(this.btnTransGetPrep, "Ler preparação Doc Serie/Número");
             this.btnTransGetPrep.UseVisualStyleBackColor = true;
             this.btnTransGetPrep.Click += new System.EventHandler(this.btnTransGetPrep_Click);
             // 
@@ -1851,8 +1860,6 @@ namespace Sage50c.API.Sample {
             // chkPrintPreview
             // 
             this.chkPrintPreview.AutoSize = true;
-            this.chkPrintPreview.Checked = true;
-            this.chkPrintPreview.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPrintPreview.Enabled = false;
             this.chkPrintPreview.Location = new System.Drawing.Point(120, 24);
             this.chkPrintPreview.Name = "chkPrintPreview";
@@ -4177,6 +4184,9 @@ namespace Sage50c.API.Sample {
         private Button btnSearchZone;
         private Button btnSearchSalesman;
         private Button btnSearchZoneSupplier;
+        private ToolTip LerPreparacao;
+        private ToolTip FinalizarPreparacao;
+        private ToolTip GuardarPreparacao;
     }
 }
 

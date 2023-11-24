@@ -1236,7 +1236,6 @@ namespace Sage50c.API.Sample {
             }
             else {
                 _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
-                _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
                 _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToDouble();
                 _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
                 _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
@@ -1247,6 +1246,7 @@ namespace Sage50c.API.Sample {
                 _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
                 _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
                 _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
+                _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
                 _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
                 _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
                 _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
@@ -1267,7 +1267,7 @@ namespace Sage50c.API.Sample {
                     details.UnitPrice = txtTransUnitPriceL1.Text.ToDouble();
                 }
                 details.WarehouseID = txtTransWarehouseL1.Text.ToShort();
-                details.UnitOfSaleID= txtTransUnL1.Text;
+                details.UnitOfSaleID = txtTransUnL1.Text;
                 if (systemSettings.SystemInfo.UseColorSizeItems && chkTransModuleSizeColor.Checked) {
                     details.Color.ColorID = txtTransColor1.Text.ToShort();
                     details.Size.SizeID = txtTransSize1.Text.ToShort();
@@ -1414,25 +1414,22 @@ namespace Sage50c.API.Sample {
                 }
             }
 
+            TransactionID transactionID = null;
             if (suspended) {
-                _itemTransactionController.Save(suspended);
-                _itemTransactionController.SuspendTransaction();
+                transactionID = _itemTransactionController.SuspendTransaction();   
             }
-            else {
+            if(!suspended) {
                 //Exemplo da Repartição de Custos
-                //INICIO
                 if (systemSettings.SpecialConfigs.UpdateItemCostWithFreightAmount) {
                     var simpleDocumentList = TransactionFillCostShare();
                     _itemTransactionController.CreateCostShare(simpleDocumentList);
                 }
-
                 _itemTransactionController.Save(suspended);
-                // Definir a assinatura de um sistema externo
+                transactionID = _itemTransactionController.Transaction.TransactionID;
             }
-
             TransactionPrintWithConfig(_itemTransactionController.Transaction.TransSerial, _itemTransactionController.Transaction.TransDocument, _itemTransactionController.Transaction.TransDocNumber);
             TransactionClearUI();
-            return _itemTransactionController.Transaction.TransactionID;
+            return transactionID;
         }
 
         #endregion
@@ -1471,11 +1468,11 @@ namespace Sage50c.API.Sample {
                     return details;
                 }
                 else {
-                    throw new Exception($"O Armazém [{txtTransWarehouseL1.Text}] não foi entrado.");
+                    throw new Exception($"O Armazém indicado [{txtTransWarehouseL1.Text.ToDouble()}] não existe.");
                 }
             }
             else {
-                throw new Exception($"O Artigo [{txtTransItemL1.Text}] não foi entrado.");
+                throw new Exception($"O Artigo [{txtTransItemL1.Text}] não foi encontrado.");
             }
         }
 
@@ -1492,11 +1489,11 @@ namespace Sage50c.API.Sample {
                     return details;
                 }
                 else {
-                    throw new Exception($"O Armazém [{txtTransWarehouseL2.Text}] não foi entrado.");
+                    throw new Exception($"O Armazém indicado [{txtTransWarehouseL1.Text.ToDouble()}] não existe.");
                 }
             }
             else {
-                throw new Exception($"O Artigo [{txtTransItemL2.Text}] não foi entrado.");
+                throw new Exception($"O Artigo [{txtTransItemL2.Text}] não foi encontrado.");
             }
         }
 
@@ -2151,13 +2148,15 @@ namespace Sage50c.API.Sample {
                 else {
                     result = TransactionInsert(true);
                 }
+                //var docNum = _itemTransactionController.SuspendTransaction();
                 if (result != null) {
-                    TransactionClearUI();
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Colocado em preparação: {result.ToString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                    //TransactionClearUI();
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Colocado em preparação: {result.TransDocument} {result.TransSerial}/{result.TransDocNumber} ", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                 }
                 else {
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Não foi possível colocar em preparação: {txtTransSerial.Text} {txtTransDoc.Text}/{txtTransDocNumber.Text}", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Não foi possível colocar em preparação: {txtTransDoc.Text} {txtTransSerial.Text}/{txtTransDocNumber.Text}", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
                 }
+
             }
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
@@ -2172,7 +2171,7 @@ namespace Sage50c.API.Sample {
 
                 if (transdocNumber > 0) {
                     if (_itemTransactionController.FinalizeTransaction(transSerial, transDoc, transdocNumber)) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Documento finalizado: {bsoItemTransaction.Transaction.TransactionID.ToString()}.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice($"Documento finalizado: {transDoc} {transSerial}/{transdocNumber}.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
                     else {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice($"Não foi possível finalizar o documento suspenso: {transDoc} {transSerial}/{transdocNumber}.", VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
@@ -2825,6 +2824,10 @@ namespace Sage50c.API.Sample {
                     btnGet.Enabled = true;
                     break;
             }
+        }
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e) {
+
         }
     }
 }
