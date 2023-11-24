@@ -83,5 +83,5 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers {
             MessageBox.Show("Hello!");
         }
 
+        }
     }
-}

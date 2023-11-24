@@ -77,7 +77,11 @@ namespace Sage50c.ExtenderSample22 {
         public void SetSize(float Width, float Height) {
             try {
                 // Traduzir para pixels
-                this.SetBounds(0, 0, (int)(Width/16), (int)(Height/16));
+                var width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Width);
+                var height  = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Height);
+
+                //this.SetBounds(0, 0, (int)(Width/16), (int)(Height/16));
+                this.SetBounds(0, 0, width, height);
                 this.Visible = true;
                 //this.BringToFront();
             }

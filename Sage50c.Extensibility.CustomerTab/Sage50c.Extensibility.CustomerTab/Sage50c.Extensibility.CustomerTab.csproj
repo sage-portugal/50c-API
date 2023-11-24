@@ -216,6 +216,19 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Extender.cs" />
+    <Compile Include="Handlers\BuyTransactionHandler.cs" />
+    <Compile Include="Handlers\FormBuyTransactionTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Handlers\FormBuyTransactionTab.designer.cs">
+      <DependentUpon>FormBuyTransactionTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\FormSaleTransactionTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Handlers\FormSaleTransactionTab.designer.cs">
+      <DependentUpon>FormSaleTransactionTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Handlers\OtherContactHandler.cs" />
     <Compile Include="Handlers\FormOtherContactTab.cs">
       <SubType>Form</SubType>
@@ -242,12 +255,16 @@
     <Compile Include="Handlers\FormCustomerTab.Designer.cs">
       <DependentUpon>FormCustomerTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\SaleTransactionHandler.cs" />
     <Compile Include="Handlers\SupplierHandler.cs" />
     <Compile Include="Handlers\SystemHandler.cs" />
     <Compile Include="Handlers\CustomerHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Handlers\FormBuyTransactionTab.resx">
+      <DependentUpon>FormBuyTransactionTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Handlers\FormOtherContactTab.resx">
       <DependentUpon>FormOtherContactTab.cs</DependentUpon>
     </EmbeddedResource>
@@ -256,6 +273,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Handlers\FormCustomerTab.resx">
       <DependentUpon>FormCustomerTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\FormSaleTransactionTab.resx">
+      <DependentUpon>FormSaleTransactionTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Handlers\formSupplierTab.resx">
       <DependentUpon>FormSupplierTab.cs</DependentUpon>

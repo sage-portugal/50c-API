@@ -12,17 +12,16 @@ namespace Sage50c.API {
         public static event MessageEventHandler Message;
 
         private static bool apiInitialized = false;
-        public static bool APIInitialized { 
+        public static bool APIInitialized {
             get {
-                return apiInitialized; 
-            } 
+                return apiInitialized;
+            }
         }
         //// Colocar SEMPRE ao nivel do módulo/class para não ser descarregado indevidamente
         //private static S50cAPICGCO22.SystemStarter systemStarter = null;
 
-        /// <summary>basMain
-        /// Inicializa a API da 50c
-        /// Lança uma exceção se falhar
+        /// <summary>
+        /// Inicializa a API da 50c. Lança uma exceção se falhar
         /// </summary>
         /// <param name="companyId">Identificador da empresa a Abrir</param>
         public static void Initialize(string ProductCode, string CompanyId, bool DebugMode) {
@@ -48,8 +47,9 @@ namespace Sage50c.API {
 
             apiInitialized = true;
             //
-            if (APIStarted != null)
+            if (APIStarted != null) {
                 APIStarted(null, null);
+            }
         }
 
 #if WPF
@@ -92,8 +92,9 @@ namespace Sage50c.API {
         /// <param name="Source"></param>
         /// <param name="Description"></param>
         static void dataManagerEvents___DataManagerEvents_Event_WarningError(int Number, string Source, string Description) {
-            if (WarningError != null)
+            if (WarningError != null) {
                 WarningError(Number, Source, Description);
+            }
         }
 
         /// <summary>
@@ -167,9 +168,10 @@ namespace Sage50c.API {
                 apiInitialized = false;
                 //
                 // Fire event
-                if (APIStopped != null)
+                if (APIStopped != null) {
                     APIStopped(null, null);
+                }
             }
         }
     }
-    }
+}

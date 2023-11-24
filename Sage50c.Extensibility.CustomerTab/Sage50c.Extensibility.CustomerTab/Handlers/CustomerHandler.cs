@@ -7,13 +7,16 @@ using System.Linq;
 using System.Text;
 using Sage50c.API;
 
-namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
-    class CustomerHandler : IDisposable {
+namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler
+{
+    class CustomerHandler : IDisposable
+    {
         private IManagementConsole _managementConsole = null;   //Consola de gestão dos parâmetros
         private ExtenderEvents _myEvents = null;
         private FormCustomerTab _formTab = null;                     //Form das propriedades
 
-        public void SetEventHandler(ExtenderEvents e) {
+        public void SetEventHandler(ExtenderEvents e)
+        {
             _myEvents = e;
 
             _myEvents.OnDelete += myEvents_OnDelete;         // Delete  Customer
@@ -42,9 +45,10 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
         ///     result.Sucess: Ignorado
         ///     result.ResultMessage: Mensagem a apresentar
         /// </param>
-        void myEvents_OnSave(object Sender, ExtenderEventArgs e) {
+        void myEvents_OnSave(object Sender, ExtenderEventArgs e)
+        {
             var proplist = (ExtendedPropertyList)e.get_data();
-            var  Customer = ( Customer)proplist.get_Value("Data");    // The  Customer
+            var Customer = (Customer)proplist.get_Value("Data");    // The  Customer
             var isNew = (bool)proplist.get_Value("IsNew");  // Is new?
         }
 
@@ -59,10 +63,12 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
         /// OUT:
         ///     Ignorado
         /// </param>
-        void myEvents_OnMenuItem(object Sender, ExtenderEventArgs e) {
+        void myEvents_OnMenuItem(object Sender, ExtenderEventArgs e)
+        {
             var menuId = (string)e.get_data();
 
-            switch( menuId) {
+            switch (menuId)
+            {
                 case "mniXCustomer1":
                     System.Windows.Forms.MessageBox.Show("Pressionei  Customer 1");
                     break;
@@ -85,11 +91,13 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
         ///     Sucess: true or false
         ///     ResultMessage: caso preenchida, apresenta a mensagem
         /// </param>
-        void myEvents_OnLoad(object Sender, ExtenderEventArgs e) {
-            var Customer = ( Customer)e.get_data();
+        void myEvents_OnLoad(object Sender, ExtenderEventArgs e)
+        {
+            var Customer = (Customer)e.get_data();
 
-            if (Customer != null) {
-                _formTab.OnLoad (Customer);
+            if (Customer != null)
+            {
+                _formTab.OnLoad(Customer);
             }
 
         }
@@ -112,10 +120,12 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
         ///     
         /// Não mostra mensagens
         ///</param>
-        void myEvents_OnInitialize(object Sender, ExtenderEventArgs e) {
+        void myEvents_OnInitialize(object Sender, ExtenderEventArgs e)
+        {
             var propertyList = (ExtendedPropertyList)e.get_data();
 
-            if (propertyList.PropertyExists("IManagementConsole")) {
+            if (propertyList.PropertyExists("IManagementConsole"))
+            {
                 _managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
 
                 // Form a colocar no TAB dos clientes
@@ -149,8 +159,10 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
         /// Não é possivel cancelar
         /// Não mostra mensagens
         /// </summary>
-        void myEvents_OnDispose() {
-            if (_formTab != null) {
+        void myEvents_OnDispose()
+        {
+            if (_formTab != null)
+            {
                 _formTab.Dispose();
                 _formTab = null;
             }
@@ -162,7 +174,8 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
         /// </summary>
         /// <param name="Sender">GenericExtensibilityController</param>
         /// <param name="e">e.get_Data():  Customer</param>
-        void myEvents_OnDelete(object Sender, ExtenderEventArgs e) {
+        void myEvents_OnDelete(object Sender, ExtenderEventArgs e)
+        {
         }
 
         /// <summary>
@@ -176,7 +189,8 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
         /// </summary>
         /// <param name="Sender">ExtensibilityController</param>
         /// <param name="e">Event parameters</param>
-        void myEvents_OnNew(object Sender, ExtenderEventArgs e) {
+        void myEvents_OnNew(object Sender, ExtenderEventArgs e)
+        {
             var customer = (Customer)e.get_data();
 
             _formTab.ResetInterface();
@@ -203,19 +217,22 @@ namespace Sage50c.Extensibility.CustomerTab.Handlers.CustomerHandler {
         ///     result.Success: true para continuar; false para falhar a validação
         ///     result.ResultMessage: Mensagem a apresentar
         /// </param>
-        void myEvents_OnValidating(object Sender, ExtenderEventArgs e) {
+        void myEvents_OnValidating(object Sender, ExtenderEventArgs e)
+        {
             var proplist = (ExtendedPropertyList)e.get_data();
-            var Customer = ( Customer)proplist.get_Value("Data");
+            var Customer = (Customer)proplist.get_Value("Data");
             var forDeletion = (bool)proplist.get_Value("ForDeletion");
 
             e.result.Success = true;
 
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             // House cleanup
             _myEvents = null;
-            if (_formTab != null) {
+            if (_formTab != null)
+            {
                 _formTab.Dispose();
                 _formTab = null;
             }

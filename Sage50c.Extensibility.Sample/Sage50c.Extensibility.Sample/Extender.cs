@@ -8,8 +8,9 @@ using System.Text;
 namespace Sage50c.ExtenderSample22 {
     [ProgId("Sage50c.ExtenderSample22")]
     public class Extender : ISageExtender, IDisposable {
-        private SystemHandler           systemHandler = null;       // System handler, startup, system menus
-        private SystemInfoHandler       systemInfoHandler = null;   // Parâmetros do sistema
+        private SystemHandler           systemHandler = null;               // System handler, startup, system menus
+        private SystemInfoHandler       systemInfoHandler = null;           // Parâmetros do sistema
+        private WorkstationInfoHandler  workstationInfoHandler = null;      // Configuração de postos
 
         private AccountTransactionHandler accountTransactionHandler = null; //AccountTransactionHandler
         private TransactionHandler      transactionHandler = null;          // Sales Transaction handler
@@ -117,7 +118,16 @@ namespace Sage50c.ExtenderSample22 {
                     }
                     systemInfoHandler.SetEventHandler(EventHandler);
                     break;
-                
+
+                // Configuração de postos
+                case "workstationinfo":
+                    if (workstationInfoHandler == null) {
+                        workstationInfoHandler = new WorkstationInfoHandler();
+                    }
+                    workstationInfoHandler.SetEventHandler(EventHandler);
+
+                    break;
+
                 default:
                     break;
 

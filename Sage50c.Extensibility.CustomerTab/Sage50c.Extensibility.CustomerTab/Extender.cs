@@ -4,6 +4,9 @@ using Sage50c.Extensibility.CustomerTab.Handlers.SupplierHandler;
 using Sage50c.Extensibility.CustomerTab.Handlers.SalesmanHandler;
 using Sage50c.Extensibility.CustomerTab.Handlers.OtherContactHandler;
 using Sage50c.Extensibility.CustomerTab.Handlers.SystemHandler;
+using Sage50c.Extensibility.CustomerTab.Handlers.SaleTransactionHandler;
+using Sage50c.Extensibility.CustomerTab.Handlers.BuyTransactionHandler;
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -19,7 +22,9 @@ namespace Sage50c.Extensibility.CustomerTab {
         private CustomerHandler customerHandler = null;
         private SupplierHandler supplierHandler = null;
         private SalesmanHandler salesmanHandler = null;
-        private OtherContactHandler otherContactHandler = null; 
+        private OtherContactHandler otherContactHandler = null;
+        private SaleTransactionHandler saleTransactionHandler = null;
+        private BuyTransactionHandler buyTransactionHandler = null;
 
         public string Initialize(string ApplicationKey) {
             //Do Nothing for now
@@ -33,6 +38,22 @@ namespace Sage50c.Extensibility.CustomerTab {
         /// <param name="EventHandler"></param>
         public void SetExtenderEventHandler(string EntityID, ExtenderEvents EventHandler) {
             switch (EntityID.ToLower()) {
+                case "saletransaction":
+                    if (saleTransactionHandler == null)
+                    {
+                        saleTransactionHandler = new SaleTransactionHandler();
+                        saleTransactionHandler.SetEventHandler(EventHandler);
+                    }
+                    break;
+
+                case "buytransaction":
+                    if (buyTransactionHandler == null)
+                    {
+                        buyTransactionHandler = new BuyTransactionHandler();
+                        buyTransactionHandler.SetEventHandler(EventHandler);
+                    }
+                    break;
+
                 case "customer":    //Clientes
                     if (customerHandler == null) {
                         customerHandler = new CustomerHandler();
@@ -97,6 +118,17 @@ namespace Sage50c.Extensibility.CustomerTab {
                 otherContactHandler = null;
             }
 
+            if (saleTransactionHandler != null)
+            {
+                saleTransactionHandler.Dispose();
+                saleTransactionHandler = null;
+            }
+
+            if (buyTransactionHandler != null)
+            {
+                buyTransactionHandler.Dispose();
+                buyTransactionHandler = null;
+            }
         }
     }
 }

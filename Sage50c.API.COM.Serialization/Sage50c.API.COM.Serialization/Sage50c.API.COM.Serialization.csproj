@@ -155,7 +155,7 @@
     </Reference>
     <Reference Include="Sage50c.ShopConnection.JsonCOMSerialization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\sage\2070\50c2018\Extra Online\Sage50c.ShopConnection.JsonCOMSerialization.dll</HintPath>
+      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Extra Online\Sage50c.ShopConnection.JsonCOMSerialization.dll</HintPath>
     </Reference>
     <Reference Include="SageCEMV15">
       <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\SageCEMV15.dll</HintPath>
@@ -269,10 +269,10 @@
     <None Include="Resources\Print.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Refs\Sage50c.ShopConnection.JsonCOMSerialization.dll" />
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <Content Include="ReadMe!.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

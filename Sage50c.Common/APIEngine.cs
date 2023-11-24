@@ -118,23 +118,30 @@ namespace Sage50c.API {
 
 
         /// <summary>
-        /// Retail System Settings
+        /// Sage 50c System Settings
         /// </summary>
         public static S50cSys22.SystemSettings SystemSettings { get { return s50cSystemGlobals.SystemSettings; } }
+
+
         /// <summary>
-        /// Retail data providers cache
+        /// Sage 50c System Folders
+        /// </summary>
+        public static S50cSys22.SystemFolders SystemFolders { get { return s50cSystemGlobals.SystemFolders; } }
+
+        /// <summary>
+        /// Sage 50c data providers cache
         /// </summary>
         public static DSOFactory DSOCache { get { return s50cDLGlobals.DSOCache; } }
         /// <summary>
-        /// Retail Data manager for low level data access. Not Recommended to use freely
+        /// Sage 50c Data manager for low level data access. Not Recommended to use freely
         /// </summary>
         public static DataManager DataManager { get { return s50cDataGlobals.DataManager; } }
         /// <summary>
-        /// Retail low level Printing manager. Usage not recomended.
+        /// Sage 50c low level Printing manager. Usage not recomended.
         /// </summary>
         public static PrintingManager PrintingManager { get { return s50cPrintGlobals.PrintingManager; } }
         /// <summary>
-        /// Retail Federal Tax Id Validator
+        /// Sage 50c Federal Tax Id Validator
         /// </summary>
         public static S50cBL22.FederalTaxValidator FederalTaxValidator { get { return s50cBLGlobals.FederalTaxValidator; } }
         /// <summary>

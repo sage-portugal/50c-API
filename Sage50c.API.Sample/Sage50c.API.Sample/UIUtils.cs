@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Data;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-
 using System.Windows.Forms;
 
-using S50cBO22;
 using S50cSys22;
 
 namespace Sage50c.API.Sample {
     internal static class UIUtils {
-        internal static void FillCountryCombo( ComboBox combo ){
+        internal static void FillCountryCombo(ComboBox combo) {
             combo.SuspendLayout();
 
             combo.Items.Clear();
@@ -42,9 +39,9 @@ namespace Sage50c.API.Sample {
 
             var rs = APIEngine.DSOCache.CurrencyProvider.GetCurrencyActiveRS();
             while (!rs.EOF) {
-                CurrencyDefinition currency = new CurrencyDefinition(){
+                CurrencyDefinition currency = new CurrencyDefinition() {
                     CurrencyID = (string)rs.Fields["CurrencyId"].Value,
-                    Description = (string)rs.Fields["Description"].Value 
+                    Description = (string)rs.Fields["Description"].Value
                 };
                 combo.Items.Add(currency);
                 rs.MoveNext();
@@ -55,7 +52,6 @@ namespace Sage50c.API.Sample {
             combo.ResumeLayout();
         }
 
-        
         internal static void FillEntityFiscalStatusCombo(ComboBox combo) {
             combo.SuspendLayout();
 
@@ -76,6 +72,23 @@ namespace Sage50c.API.Sample {
             rs.Close();
             rs = null;
 
+            combo.ResumeLayout();
+        }
+
+        internal static void FillMonthCombo(ComboBox combo) {
+            combo.SuspendLayout();
+
+            combo.Items.Clear();
+            combo.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            string[] monthNames = DateTimeFormatInfo.CurrentInfo.MonthNames.Where(month => !string.IsNullOrEmpty(month)).ToArray();
+
+            for (int i = 0; i < monthNames.Length; i++) {
+                combo.Items.Add(new Month(i + 1, monthNames[i]));
+            }
+
+            combo.DisplayMember = "Display";
+            combo.ValueMember = "Value";
             combo.ResumeLayout();
         }
     }
