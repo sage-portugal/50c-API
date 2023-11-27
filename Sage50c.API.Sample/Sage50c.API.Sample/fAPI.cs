@@ -1283,7 +1283,7 @@ namespace Sage50c.API.Sample {
                 if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
                     details.ItemProperties.ResetValues();
                     details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
-                    details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+                    //details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
                 }
                 return details;
             }
@@ -1310,8 +1310,8 @@ namespace Sage50c.API.Sample {
                     details.Size.SizeID = txtTransSize1.Text.ToShort();
                 }
                 if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
-                    details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
-                    details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+                    //details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
+                    details.ItemProperties.PropertyValue1 = txtTransPropValueL2.Text;
                 }
                 return details;
             }

@@ -128,7 +128,7 @@ namespace Sage50c.API.Sample.Controllers {
             DSODocument dsoDocument = new DSODocument();
 
             if (editState == EditState.New && _bsoStockTransaction.Transaction.TransDocNumber==0) {
-                var docNum = dsoDocument.GetLastDocNumber(_bsoStockTransaction.Transaction.TransDocType, _bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument, _bsoStockTransaction.Transaction.WorkstationStamp.WorkstationID) + 1;
+                var docNum = dsoDocument.GetLastDocNumber(_bsoStockTransaction.Transaction.TransDocType, _bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument) + 1;
                 _bsoStockTransaction.Transaction.TransDocNumber = docNum;
             }
 

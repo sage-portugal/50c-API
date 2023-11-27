@@ -154,7 +154,7 @@ namespace Sage50c.API.Sample.Controllers {
 
             if (editState == EditState.New && _bsoItemTransaction.Transaction.TransDocNumber == 0) {
 
-                var docNum = dsoDocument.GetLastDocNumber(_bsoItemTransaction.Transaction.TransDocType, _bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument, _bsoItemTransaction.Transaction.WorkstationStamp.WorkstationID) + 1;
+                var docNum = dsoDocument.GetLastDocNumber(_bsoItemTransaction.Transaction.TransDocType, _bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument) + 1;
                 _bsoItemTransaction.Transaction.TransDocNumber = docNum;
             }
 
@@ -341,7 +341,7 @@ namespace Sage50c.API.Sample.Controllers {
                 Detail.Size.SizeID = size.SizeID;
             }
 
-            if (!string.IsNullOrEmpty(Detail.ItemProperties.PropertyValue1)) {
+            if (!string.IsNullOrEmpty(Detail.ItemProperties.PropertyValue1) || !string.IsNullOrEmpty(Detail.ItemProperties.PropertyValue2)) {
                 if (item.PropertyEnabled) {
                     if (item.PropertyID1.Equals("NS", StringComparison.CurrentCultureIgnoreCase) || item.PropertyID1.Equals("LOT", StringComparison.CurrentCultureIgnoreCase)) {
                         Detail.ItemProperties.PropertyID1 = item.PropertyID1;
