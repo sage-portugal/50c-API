@@ -20,10 +20,10 @@ namespace Sage50c.API.Sample.Controllers {
         public ItemTransaction Transaction { get { return _bsoItemTransaction.Transaction; } }
 
         private Document _document = null;
-        
+
         public ItemTransactionController() {
             _bsoItemTransaction = new BSOItemTransaction();
-        } 
+        }
 
         /// <summary>
         /// Create a new buy/sale transaction
@@ -53,7 +53,7 @@ namespace Sage50c.API.Sample.Controllers {
             }
 
             if (Suspended) {
-                if (_bsoItemTransaction.LoadSuspendedTransaction(TransSerial, TransDoc, TransDocNum)) {  
+                if (_bsoItemTransaction.LoadSuspendedTransaction(TransSerial, TransDoc, TransDocNum)) {
                     trans = _bsoItemTransaction.Transaction;
                     return trans;
                 }
@@ -154,12 +154,8 @@ namespace Sage50c.API.Sample.Controllers {
 
             if (editState == EditState.New && _bsoItemTransaction.Transaction.TransDocNumber == 0) {
 
-                if (dsoCache.ItemTransactionProvider.TransactionCount(_bsoItemTransaction.Transaction.TransDocType) == 0) {
-                    _bsoItemTransaction.Transaction.TransDocNumber = 1;
-                }
-                else {
-                    _bsoItemTransaction.Transaction.TransDocNumber = dsoDocument.GetLastDocNumber(_bsoItemTransaction.Transaction.TransDocType, _bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument, _bsoItemTransaction.Transaction.WorkstationStamp.WorkstationID) + 1;
-                }
+                var docNum = dsoDocument.GetLastDocNumber(_bsoItemTransaction.Transaction.TransDocType, _bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument, _bsoItemTransaction.Transaction.WorkstationStamp.WorkstationID) + 1;
+                _bsoItemTransaction.Transaction.TransDocNumber = docNum;
             }
 
             if (editState != EditState.New && !Suspended) {
