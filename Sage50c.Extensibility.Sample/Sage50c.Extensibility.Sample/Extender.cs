@@ -19,6 +19,7 @@ namespace Sage50c.ExtenderSample22 {
         private StockHandler            stockHandler = null;                // StockTransaction handler
         private ItemHandler             itemHandler = null;                 // Items
         private CustomerHandler         customerHandler = null;             // Customer
+        private SalesmanHandler         salesmanHandler = null;             //Salesman
 
         public string Initialize(string ApplicationKey) {
             //Do Nothing for now
@@ -126,6 +127,15 @@ namespace Sage50c.ExtenderSample22 {
                     }
                     workstationInfoHandler.SetEventHandler(EventHandler);
 
+                    break;
+
+                //Vendedor
+                case "salesman":
+                    if (salesmanHandler == null) {
+                        salesmanHandler = new SalesmanHandler();
+                    }
+                    salesmanHandler.SetEventHandler(EventHandler);
+                    
                     break;
 
                 default:

@@ -271,6 +271,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SalesmanHandler.cs" />
     <Compile Include="StockHandler.cs" />
     <Compile Include="SystemHandler.cs" />
     <Compile Include="WokstationInfoHandler.cs" />
