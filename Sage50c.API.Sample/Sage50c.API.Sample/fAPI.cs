@@ -1243,17 +1243,17 @@ namespace Sage50c.API.Sample {
                 throw new Exception("Carregue uma transação antes de fazer alterações.");
             }
             else {
+                _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
+                _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
+                _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
                 _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
                 _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToDouble();
                 _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
                 _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
                 _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
                 _itemTransactionController.Transaction.ActualDeliveryDate = txtTransDate.Text.ToDateTime().Date;
-                _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
-                _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
                 _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
                 _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
-                _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
                 _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
                 _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
                 _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
@@ -1283,7 +1283,7 @@ namespace Sage50c.API.Sample {
                 if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
                     details.ItemProperties.ResetValues();
                     details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
-                    details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+                    //details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
                 }
                 return details;
             }
@@ -1310,8 +1310,8 @@ namespace Sage50c.API.Sample {
                     details.Size.SizeID = txtTransSize1.Text.ToShort();
                 }
                 if (systemSettings.SystemInfo.UsePropertyItems && chkTransModuleProps.Checked) {
-                    details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
-                    details.ItemProperties.PropertyValue2 = txtTransPropValueL2.Text;
+                    //details.ItemProperties.PropertyValue1 = txtTransPropValueL1.Text;
+                    details.ItemProperties.PropertyValue1 = txtTransPropValueL2.Text;
                 }
                 return details;
             }
