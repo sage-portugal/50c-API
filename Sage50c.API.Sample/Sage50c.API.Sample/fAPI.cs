@@ -1243,8 +1243,6 @@ namespace Sage50c.API.Sample {
                 throw new Exception("Carregue uma transação antes de fazer alterações.");
             }
             else {
-                _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
-                _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
                 _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
                 _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
                 _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToDouble();

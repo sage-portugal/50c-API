@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using VBA;
 
 namespace Sage50c.ExtenderSample22 {
     internal class SalesmanHandler {
         private ExtenderEvents myEvents = null;
         private IManagementConsole managementConsole = null;   //Consola de gestão dos parâmetros
-
+        private FormSalesman formSalesman = null;
         public void SetEventHandler(ExtenderEvents e) {
             myEvents = e;
 
@@ -87,6 +89,8 @@ namespace Sage50c.ExtenderSample22 {
         /// </param>
         void myEvents_OnLoad(object Sender, ExtenderEventArgs e) {
             var Salesman = (Salesman)e.get_data();
+            
+            formSalesman.UpdateNumSales(Salesman.SalesmanID);
 
             // Salesman.Description = "My description";
 
@@ -115,13 +119,13 @@ namespace Sage50c.ExtenderSample22 {
         void myEvents_OnInitialize(object Sender, ExtenderEventArgs e) {
             var propertyList = (ExtendedPropertyList)e.get_data();
 
-            /*if (propertyList.PropertyExists("IManagementConsole")) {
+            if (propertyList.PropertyExists("IManagementConsole")) {
                 managementConsole = (IManagementConsole)propertyList.get_Value("IManagementConsole");
 
                 // Form a colocar no TAB dos clientes
-                var formProps = new FormProps();
-                managementConsole.AddChildPanel(formProps);
-            }*/
+                formSalesman = new FormSalesman();
+                managementConsole.AddChildPanel(formSalesman);
+            }
             // Acrescentar Salesman ao menu
             var newMenu = new ExtenderMenuItems();
 
