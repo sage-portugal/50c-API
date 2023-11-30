@@ -21,8 +21,11 @@ namespace Sage50c.API.Sample.Controllers {
 
         private Document _document = null;
 
+        private DSODocument dsoDocument = null;
+
         public ItemTransactionController() {
             _bsoItemTransaction = new BSOItemTransaction();
+            dsoDocument = new DSODocument();
         }
 
         /// <summary>
@@ -140,6 +143,7 @@ namespace Sage50c.API.Sample.Controllers {
             };
 
             _bsoItemTransaction.InitNewTransaction(TransDoc, TransSerial);
+
             _document = systemSettings.WorkstationInfo.Document[TransDoc];
         }
 
@@ -149,8 +153,6 @@ namespace Sage50c.API.Sample.Controllers {
         public bool Validate(bool Suspended) {
 
             StringBuilder error = new StringBuilder();
-
-            DSODocument dsoDocument = new DSODocument();
 
             if (editState == EditState.New && _bsoItemTransaction.Transaction.TransDocNumber == 0) {
 
