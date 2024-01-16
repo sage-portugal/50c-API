@@ -29,7 +29,7 @@ namespace Sage50c.API.Sample.Controllers {
             }
 
             _unitOfMeasure = dsoCache.UnitOfMeasureProvider.GetUnitOfMeasure(UnitOfMeasureID);
-            editState = _unitOfMeasure != null ? EditState.Editing : editState;
+            editState = _unitOfMeasure != null ? EditState.Editing : EditState.None;
             return _unitOfMeasure;
         }
 
@@ -58,7 +58,7 @@ namespace Sage50c.API.Sample.Controllers {
             editState = EditState.None;
         }
 
-        private bool Validate(out string ErrorMessage) {
+        public bool Validate(out string ErrorMessage) {
 
             bool result = true;
             StringBuilder errorMessage = new StringBuilder();
@@ -93,7 +93,7 @@ namespace Sage50c.API.Sample.Controllers {
             return result;
         }
 
-        private bool FillDefaultValues() {
+        public bool FillDefaultValues() {
             return true;
         }
 

@@ -13,7 +13,7 @@ namespace Sage50c.API.Sample.Controllers {
         /// Transaction data
         /// </summary>
         private AccountTransactionManager _accountTransManager = new AccountTransactionManager();
-        public AccountTransactionManager AccountTransManager { get { return _accountTransManager; } }
+        public AccountTransaction AccountTransaction { get { return _accountTransManager.Transaction; } }
 
         public bool Create(AccountUsedEnum AccountUsed, string TransSerial, string TransDoc, double TransDocNumber) {
 
@@ -79,7 +79,7 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        private bool Validate(out string ErrorMessage) {
+        public bool Validate(out string ErrorMessage) {
 
             bool result = true;
             StringBuilder errorMessage = new StringBuilder();
@@ -249,6 +249,10 @@ namespace Sage50c.API.Sample.Controllers {
 
             TenderLines.Add(tenderLine);
             return TenderLines;
+        }
+
+        public TillSession EnsureOpenTill() {
+            return _accountTransManager.EnsureOpenTill(_accountTransManager.Transaction.Till.TillID);
         }
     }
 }

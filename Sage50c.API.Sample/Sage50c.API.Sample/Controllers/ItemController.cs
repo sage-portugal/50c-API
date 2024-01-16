@@ -29,7 +29,7 @@ namespace Sage50c.API.Sample.Controllers {
             }
 
             _item = dsoCache.ItemProvider.GetItem(ItemID, systemSettings.BaseCurrency);
-            editState = _item != null ? EditState.Editing : editState;
+            editState = _item != null ? EditState.Editing : EditState.None;
             return _item;
         }
 
@@ -58,7 +58,7 @@ namespace Sage50c.API.Sample.Controllers {
             editState = EditState.None;
         }
 
-        private bool Validate(out string ErrorMessage) {
+        public bool Validate(out string ErrorMessage) {
 
             bool result = true;
             StringBuilder errorMessage = new StringBuilder();
@@ -88,7 +88,7 @@ namespace Sage50c.API.Sample.Controllers {
             return result;
         }
 
-        private bool FillDefaultValues() {
+        public bool FillDefaultValues() {
             // Set default taxable group
             _item.TaxableGroupID = systemSettings.SystemInfo.ItemDefaultsSettings.DefaultTaxableGroupID;
             // Get the first available supplier

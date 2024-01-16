@@ -9,10 +9,10 @@ using S50cBL22;
 using S50cBO22;
 using S50cDL22;
 using S50cPrint22;
-using S50cSAFTX22;
 using S50cSys22;
 using S50cUtil22;
 using Sage50c.API.Sample.Controllers;
+using Sage50c.API.Sample.Helpers;
 
 namespace Sage50c.API.Sample {
     public partial class fApi : Form {
@@ -1616,7 +1616,7 @@ namespace Sage50c.API.Sample {
                 _accountTransactionController.AddDetail(docId, docSeries, docNumber, 0, paymentValue);
             }
 
-            var transaction = _accountTransactionController.AccountTransManager.Transaction;
+            var transaction = _accountTransactionController.AccountTransaction;
 
             // Abort if the document doesn't have any lines
             if (transaction.Details.Count == 0) {
@@ -1626,7 +1626,7 @@ namespace Sage50c.API.Sample {
             transaction.TenderLineItems = _accountTransactionController.GetTenderLineItems(txtAccountTransPaymentId.Text);
 
             // Ensure the till is open
-            _accountTransactionController.AccountTransManager.EnsureOpenTill(transaction.Till.TillID);
+            _accountTransactionController.EnsureOpenTill();
         }
 
         /// <summary>
@@ -1654,7 +1654,7 @@ namespace Sage50c.API.Sample {
             // Load the transaction
             _accountTransactionController.Load(transSerial, transDoc, transDocNumber);
 
-            var accountTrans = _accountTransactionController.AccountTransManager.Transaction;
+            var accountTrans = _accountTransactionController.AccountTransaction;
             txtAccountTransDoc.Text = accountTrans.TransDocument;
             txtAccountTransDocCurrency.Text = accountTrans.BaseCurrency.CurrencyID;
             txtAccountTransDocNumber.Text = accountTrans.TransDocNumber.ToString();
@@ -1960,7 +1960,7 @@ namespace Sage50c.API.Sample {
 
             var fileName = $"Global-{APIEngine.SystemSettings.Company.CompanyID}-{dtpStart.Value.Date:yyyyMMdd}-{dtpEnd.Value.Date:yyyyMMdd}-{new Random().Next(1, 1001)}.xml";
             var filePath = Path.Combine(txtSAFTPath0.Text, fileName);
-            ExportSAFT(dtpStart.Value, dtpEnd.Value, filePath, false);
+            SAFTHelper.ExportSAFT(dtpStart.Value, dtpEnd.Value, filePath, false);
         }
 
         /// <summary>
@@ -1976,41 +1976,7 @@ namespace Sage50c.API.Sample {
 
             var fileName = $"Simplified-{APIEngine.SystemSettings.Company.CompanyID}-{startDate.Date:yyyyMMdd}-{endDate.Date:yyyyMMdd}-{new Random().Next(1, 1001)}.xml";
             var filePath = Path.Combine(txtSAFTPath1.Text, fileName);
-            ExportSAFT(startDate, endDate, filePath, true);
-        }
-
-        private void ExportSAFT(DateTime startDate, DateTime endDate, string filePath, bool bIsSimplified) {
-
-            SAFTExportFactory factory = new SAFTExportFactory {
-                SaftSimplified = bIsSimplified,
-                SAFTSelfBilling = false,
-                SaftType = SaftTypeEnum.SaftTypeInvoice,
-                TransmissionStatus = (short)TransmissionStatusEnum.TransmissionStatusExportedForTesting,
-                Version = "1.04",
-
-                AuditFileName = filePath,
-                InitialDate = startDate,
-                FinalDate = endDate
-            };
-
-            var exporter = factory.GetSAFTExporter();
-            if (exporter.ValidateDates()) {
-
-                Enabled = false;
-
-                var bExported = exporter.Export(filePath);
-                if (bExported) {
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice($"Exportado com sucesso. Ficheiro disponível em:{Environment.NewLine}{Environment.NewLine}{filePath}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                }
-                else {
-                    APIEngine.CoreGlobals.MsgBoxFrontOffice("Não foi possível exportar o ficheiro.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                }
-            }
-            else {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice($"As datas indicadas não são válidas.{Environment.NewLine}Data de início: {dtpStart.Value.ToShortDateString()}{Environment.NewLine}Data de fim: {dtpEnd.Value.ToShortDateString()}", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-            }
-
-            Enabled = true;
+            SAFTHelper.ExportSAFT(startDate, endDate, filePath, true);
         }
 
         private void SAFTClear() {
