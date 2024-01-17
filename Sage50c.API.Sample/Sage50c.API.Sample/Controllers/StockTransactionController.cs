@@ -15,13 +15,18 @@ namespace Sage50c.API.Sample.Controllers {
 
         public StockTransaction StockTransaction { get { return _bsoStockTransaction.Transaction; } }
 
+        private Document _document = null;
+
+        public StockTransactionController() {
+            _bsoStockTransaction = new BSOStockTransaction();
+        }
+
         /// <summary>
         /// Create a new sotck transaction
         /// </summary>
         public StockTransaction Create(string TransDoc, string TransSerial) {
 
             Initialize(TransDoc, TransSerial);
-
 
             editState = EditState.New;
             return _bsoStockTransaction.Transaction;
@@ -32,33 +37,32 @@ namespace Sage50c.API.Sample.Controllers {
         /// </summary>
         public StockTransaction Load(string TransDoc, string TransSerial, double TransDocNum) {
 
-            Document doc = null;
             dynamic trans = null;
             _bsoStockTransaction = new BSOStockTransaction();
             editState = EditState.Editing;
             if (systemSettings.WorkstationInfo.Document.IsInCollection(TransDoc)) {
-                doc = systemSettings.WorkstationInfo.Document[TransDoc];
+                _document = systemSettings.WorkstationInfo.Document[TransDoc];
             }
             else {
                 throw new Exception($"O documento [{TransDoc}] não existe");
             }
-            if (doc.TransDocType == DocumentTypeEnum.dcTypeStock) {
-                if (!_bsoStockTransaction.LoadStockTransaction(doc.TransDocType, TransSerial, TransDoc, TransDocNum)) {
+            if (_document.TransDocType == DocumentTypeEnum.dcTypeStock) {
+                if (!_bsoStockTransaction.LoadStockTransaction(_document.TransDocType, TransSerial, TransDoc, TransDocNum)) {
                     throw new Exception($"Não foi possível ler o documento [{TransDoc} {TransSerial}/{TransDocNum}]");
                 }
                 trans = _bsoStockTransaction.Transaction;
-                return trans;
             }
             else {
                 throw new Exception($"O Documento {TransDoc} não é um documento de stock");
             }
+            return trans;
         }
 
         /// <summary>
         /// Save (insert or update) transaction
         /// </summary>
         public bool Save() {
-
+            bool result = false;
             if (Validate()) {
 
                 //Calculate document
@@ -66,18 +70,16 @@ namespace Sage50c.API.Sample.Controllers {
                 _bsoStockTransaction.SaveDocumentEx(true, false);
 
                 editState = EditState.Editing;
-                return true;
+                result = true;
             }
-            else {
-                return false;
-            }
+            return result;
         }
 
         /// <summary>
         /// Delete transaction
         /// </summary>
         public TransactionID Remove() {
-
+            TransactionID trans = null;
             var transType = TransGetType(_bsoStockTransaction.Transaction.TransDocument);
             if (transType != DocumentTypeEnum.dcTypeStock) {
                 throw new Exception($"O documento indicado [{_bsoStockTransaction.Transaction.TransDocument}] não é um documento de stock.");
@@ -89,7 +91,7 @@ namespace Sage50c.API.Sample.Controllers {
                     _bsoStockTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
                     //
                     if (_bsoStockTransaction.DeleteStockTransaction()) {
-                        return _bsoStockTransaction.Transaction.TransactionID;
+                        trans = _bsoStockTransaction.Transaction.TransactionID;
                     }
                     else {
                         throw new Exception($"Não foi possível anular o Documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber}");
@@ -99,6 +101,7 @@ namespace Sage50c.API.Sample.Controllers {
                     throw new Exception($"Não foi possível carregar o Documento {_bsoStockTransaction.Transaction.TransDocument} {_bsoStockTransaction.Transaction.TransSerial}/{_bsoStockTransaction.Transaction.TransDocNumber}");
                 }
             }
+            return trans;
         }
 
         /// <summary>
@@ -125,10 +128,8 @@ namespace Sage50c.API.Sample.Controllers {
 
             StringBuilder error = new StringBuilder();
 
-            DSODocument dsoDocument = new DSODocument();
-
-            if (editState == EditState.New && _bsoStockTransaction.Transaction.TransDocNumber==0) {
-                var docNum = dsoDocument.GetLastDocNumber(_bsoStockTransaction.Transaction.TransDocType, _bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument) + 1;
+            if (editState == EditState.New && _bsoStockTransaction.Transaction.TransDocNumber == 0) {
+                var docNum = APIEngine.DSOCache.DocumentProvider.GetLastDocNumber(_bsoStockTransaction.Transaction.TransDocType, _bsoStockTransaction.Transaction.TransSerial, _bsoStockTransaction.Transaction.TransDocument) + 1;
                 _bsoStockTransaction.Transaction.TransDocNumber = docNum;
             }
 

@@ -21,11 +21,9 @@ namespace Sage50c.API.Sample.Controllers {
 
         private Document _document = null;
 
-        private DSODocument dsoDocument = null;
 
         public ItemTransactionController() {
             _bsoItemTransaction = new BSOItemTransaction();
-            dsoDocument = new DSODocument();
         }
 
         /// <summary>
@@ -34,7 +32,7 @@ namespace Sage50c.API.Sample.Controllers {
         public ItemTransaction Create(string TransDoc, string TransSerial) {
             Initialize(TransDoc, TransSerial);
 
-            FillSuggestedValues();
+            FillDefaultValues();
             editState = EditState.New;
 
             return _bsoItemTransaction.Transaction;
@@ -58,7 +56,6 @@ namespace Sage50c.API.Sample.Controllers {
             if (Suspended) {
                 if (_bsoItemTransaction.LoadSuspendedTransaction(TransSerial, TransDoc, TransDocNum)) {
                     trans = _bsoItemTransaction.Transaction;
-                    return trans;
                 }
                 else {
                     throw new Exception($"O documento {TransDoc} {TransSerial}/{TransDocNum} não existe em preparação.");
@@ -71,19 +68,20 @@ namespace Sage50c.API.Sample.Controllers {
                         throw new Exception($"Não foi possível ler o documento {TransDoc} {TransSerial}/{TransDocNum}");
                     }
                     trans = _bsoItemTransaction.Transaction;
-                    return trans;
                 }
                 else {
                     throw new Exception($"O Documento {TransDoc} não é um documento de compra/venda");
                 }
             }
+
+            return trans;
         }
 
         /// <summary>
         /// Save (insert or update) transaction
         /// </summary>
         public bool Save(bool Suspended) {
-
+            bool result = false;
             if (Validate(Suspended)) {
                 SetUserPermissions();
 
@@ -93,11 +91,9 @@ namespace Sage50c.API.Sample.Controllers {
 
                 editState = EditState.Editing;
                 _document = null;
-                return true;
+                result = true;
             }
-            else {
-                return false;
-            }
+            return result;
         }
 
         /// <summary>
@@ -106,7 +102,7 @@ namespace Sage50c.API.Sample.Controllers {
         public TransactionID Remove() {
 
             var transType = TransGetType(_bsoItemTransaction.Transaction.TransDocument);
-
+            TransactionID trans = null;
             if (transType != DocumentTypeEnum.dcTypeSale && transType != DocumentTypeEnum.dcTypePurchase) {
                 throw new Exception($"O documento indicado [{_bsoItemTransaction.Transaction.TransDocument}] não é um documento de venda/compra");
             }
@@ -115,7 +111,7 @@ namespace Sage50c.API.Sample.Controllers {
                     _bsoItemTransaction.Transaction.VoidMotive = "Anulado por: " + Application.ProductName;
                     if (_bsoItemTransaction.DeleteItemTransaction(false)) {
                         _document = null;
-                        return _bsoItemTransaction.Transaction.TransactionID;
+                        trans = _bsoItemTransaction.Transaction.TransactionID;
                     }
                     else {
                         throw new Exception($"Não foi possível anular o Documento {_bsoItemTransaction.Transaction.TransDocument} {_bsoItemTransaction.Transaction.TransSerial}/{_bsoItemTransaction.Transaction.TransDocNumber}");
@@ -125,6 +121,7 @@ namespace Sage50c.API.Sample.Controllers {
                     throw new Exception($"Não foi possível carregar o Documento {_bsoItemTransaction.Transaction.TransDocument} {_bsoItemTransaction.Transaction.TransSerial}/{_bsoItemTransaction.Transaction.TransDocNumber}");
                 }
             }
+            return trans;
         }
 
         /// <summary>
@@ -156,7 +153,7 @@ namespace Sage50c.API.Sample.Controllers {
 
             if (editState == EditState.New && _bsoItemTransaction.Transaction.TransDocNumber == 0) {
 
-                var docNum = dsoDocument.GetLastDocNumber(_bsoItemTransaction.Transaction.TransDocType, _bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument) + 1;
+                var docNum = APIEngine.DSOCache.DocumentProvider.GetLastDocNumber(_bsoItemTransaction.Transaction.TransDocType, _bsoItemTransaction.Transaction.TransSerial, _bsoItemTransaction.Transaction.TransDocument) + 1;
                 _bsoItemTransaction.Transaction.TransDocNumber = docNum;
             }
 
@@ -205,7 +202,7 @@ namespace Sage50c.API.Sample.Controllers {
                         _bsoItemTransaction.Transaction.BaseCurrency = currency;
                     }
                     else {
-                        throw new Exception($"A moeda [{_bsoItemTransaction.Transaction.BaseCurrency.CurrencyID}] não existe");
+                        error.AppendLine($"A moeda [{_bsoItemTransaction.Transaction.BaseCurrency.CurrencyID}] não existe");
                     }
                 }
                 if (_bsoItemTransaction.Transaction.Payment.PaymentID == 0) {
@@ -380,7 +377,8 @@ namespace Sage50c.API.Sample.Controllers {
             Detail = null;
         }
 
-        public bool FillSuggestedValues() {
+        public bool FillDefaultValues() {
+            bool result = false;
 
             if (_bsoItemTransaction.Transaction != null) {
                 _bsoItemTransaction.Transaction.WorkstationStamp.SessionID = APIEngine.SystemSettings.TillSession.SessionID;
@@ -389,11 +387,9 @@ namespace Sage50c.API.Sample.Controllers {
                 _bsoItemTransaction.Transaction.CreateTime = DateTime.Today;
                 _bsoItemTransaction.Transaction.ActualDeliveryDate = DateTime.Today.Date;
                 _bsoItemTransaction.Transaction.TransDocType = TransGetType(_bsoItemTransaction.Transaction.TransDocument);
-                return true;
+                result = true;
             }
-            else {
-                return false;
-            }
+            return result;
         }
 
         public void CreateCostShare(SimpleDocumentList simpleDocumentList) {

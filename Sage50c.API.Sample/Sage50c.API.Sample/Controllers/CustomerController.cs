@@ -19,7 +19,7 @@ namespace Sage50c.API.Sample.Controllers {
             //state
             editState = EditState.New;
             // Suggest values for required fields
-            FillSuggestedValues();
+            FillDefaultValues();
             return _customer;
         }
 
@@ -47,31 +47,35 @@ namespace Sage50c.API.Sample.Controllers {
         /// Save (insert or update) customer
         /// </summary>
         public bool Save() {
-
+            bool result = false;
             if (Validate()) {
                 //Save customer 
                 dsoCache.CustomerProvider.Save(_customer, _customer.CustomerID, editState == EditState.New);
                 editState = EditState.Editing;
-                return true;
+                result =  true;
             }
-            else {
-                return false;
-            }
+            return result;
         }
 
         /// <summary>
         /// Delete customer
         /// </summary>
         public bool Remove() {
-
-            if(_customer == null || !dsoCache.CustomerProvider.CustomerExists(_customer.CustomerID)) {
+            bool result = false;
+            if (_customer != null) {
+                if (!dsoCache.CustomerProvider.CustomerExists(_customer.CustomerID)) {
+                    throw new Exception($"O Cliente [{_customer.CustomerID}] não existe.");
+                }
+                else {
+                    dsoCache.CustomerProvider.Delete(_customer.CustomerID);
+                    editState = EditState.None;
+                    result = true;
+                }
+            } 
+            else {
                 throw new Exception($"O Cliente [{_customer.CustomerID}] não existe.");
             }
-            else { 
-                dsoCache.CustomerProvider.Delete(_customer.CustomerID);
-                editState = EditState.None;
-                return true;
-            }
+            return result;
         }
 
         /// <summary>
@@ -137,7 +141,8 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public bool FillSuggestedValues() {
+        public bool FillDefaultValues() {
+            bool result = false;
 
             if (_customer != null) {
                 _customer.CarrierID = dsoCache.CarrierProvider.GetFirstCarrierID();
@@ -146,11 +151,9 @@ namespace Sage50c.API.Sample.Controllers {
                 _customer.SalesmanId = (int)dsoCache.SalesmanProvider.GetFirstSalesmanID();
                 _customer.ZoneID = dsoCache.ZoneProvider.FindZone(ZoneTypeEnum.ztNational);
                 _customer.CountryID = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
-                return true;
+                result =  true;
             }
-            else {
-                return false;
-            }
+            return result;
         }
     }
 }

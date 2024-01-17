@@ -18,7 +18,7 @@ namespace Sage50c.API.Sample.Controllers {
             //state
             editState = EditState.New;
             //Suggest values for required fields
-            FillSuggestedValues();
+            FillDefaultValues();
             return _supplier;
         }
 
@@ -46,32 +46,33 @@ namespace Sage50c.API.Sample.Controllers {
         /// Save (insert or update) supplier
         /// </summary>
         public bool Save() {
-
+            bool result = false;
             if (Validate()) {
                 //Save supplier 
                 dsoCache.SupplierProvider.Save(_supplier, _supplier.SupplierID, editState == EditState.New);
                 editState = EditState.Editing;
-                return true;
+                result = true;
             }
-            else {
-                return false;
-            }
+            return result;
         }
 
         /// <summary>
         /// Delete supplier
         /// </summary>
         public bool Remove() {
+            bool result = false;
+            if (_supplier != null) {
 
-            if (_supplier == null || !dsoCache.SupplierProvider.SupplierExists(_supplier.SupplierID)) {
-                throw new Exception($"O Fornecedor [{_supplier.SupplierID}] não existe.");
+                if (_supplier == null || !dsoCache.SupplierProvider.SupplierExists(_supplier.SupplierID)) {
+                    throw new Exception($"O Fornecedor [{_supplier.SupplierID}] não existe.");
+                }
+                else {
+                    dsoCache.SupplierProvider.Delete(_supplier.SupplierID);
+                    editState = EditState.None;
+                    result = true;
+                }
             }
-            else {
-                dsoCache.SupplierProvider.Delete(_supplier.SupplierID);
-                editState = EditState.None;
-                return true;
-            }
-
+            return result;
         }
 
         /// <summary>
@@ -130,18 +131,16 @@ namespace Sage50c.API.Sample.Controllers {
             }
         }
 
-        public bool FillSuggestedValues() {
-
+        public bool FillDefaultValues() {
+            bool result = false;
             if (_supplier != null) {
                 _supplier.PaymentID = dsoCache.PaymentProvider.GetFirstID();
                 _supplier.TenderID = dsoCache.TenderProvider.GetFirstTenderCash();
                 _supplier.ZoneID = dsoCache.ZoneProvider.FindZone(ZoneTypeEnum.ztNational);
                 _supplier.CountryID = systemSettings.SystemInfo.LocalDefinitionsSettings.DefaultCountryID;
-                return true;
+                result = true;
             }
-            else {
-                return false;
-            }
+            return result;
         }
     }
 }
