@@ -2066,7 +2066,7 @@ namespace Sage50c.API.Sample {
         private void btnSearchSalesman_Click(object sender, EventArgs e) {
             var SalesmanId = QuickSearchHelper.SalesmanFind();
             if (SalesmanId > 0) {
-                numCustomerSalesmanId.Value = (short)SalesmanId;
+                numCustomerSalesmanId.Value = (long)SalesmanId;
             }
         }
 

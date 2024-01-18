@@ -3189,8 +3189,8 @@ namespace Sage50c.API.Sample {
             // 
             this.numCustomerSalesmanId.Location = new System.Drawing.Point(149, 163);
             this.numCustomerSalesmanId.Maximum = new decimal(new int[] {
-            999999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.numCustomerSalesmanId.Name = "numCustomerSalesmanId";
@@ -3217,8 +3217,8 @@ namespace Sage50c.API.Sample {
             // 
             this.numCustomerId.Location = new System.Drawing.Point(149, 33);
             this.numCustomerId.Maximum = new decimal(new int[] {
-            999999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.numCustomerId.Name = "numCustomerId";
