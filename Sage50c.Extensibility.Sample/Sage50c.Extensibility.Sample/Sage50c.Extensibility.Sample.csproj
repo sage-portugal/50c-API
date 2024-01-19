@@ -260,6 +260,19 @@
     <Compile Include="FormProps.Designer.cs">
       <DependentUpon>FormProps.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\fSupplierExtra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Handlers\fSupplierExtra.Designer.cs">
+      <DependentUpon>fSupplierExtra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\SupplierHandler.cs" />
+    <Compile Include="FormSalesman.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSalesman.Designer.cs">
+      <DependentUpon>FormSalesman.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageConverter.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -271,6 +284,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SalesmanHandler.cs" />
     <Compile Include="StockHandler.cs" />
     <Compile Include="SystemHandler.cs" />
     <Compile Include="WokstationInfoHandler.cs" />
@@ -291,6 +305,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormProps.resx">
       <DependentUpon>FormProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\fSupplierExtra.resx">
+      <DependentUpon>fSupplierExtra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSalesman.resx">
+      <DependentUpon>FormSalesman.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

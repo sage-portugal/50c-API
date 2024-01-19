@@ -1,13 +1,7 @@
 ﻿using S50cBO22;
 using S50cBL22;
-using S50cDL22;
 using S50cSys22;
 using S50cUtil22;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace Sage50c.API.Sample {
     internal static class StockHelper {

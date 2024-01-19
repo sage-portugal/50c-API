@@ -1,11 +1,9 @@
-﻿using S50cBL22;
+﻿using System;
+using System.ComponentModel;
+
+using S50cBL22;
 using S50cBO22;
 using S50cSys22;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 
 namespace Sage50c.API {
     public static class APIExtensions {
@@ -29,7 +27,7 @@ namespace Sage50c.API {
         public static DateTime ToDateTime(this string value) {
             DateTime result = DateTime.Now;
             if (!DateTime.TryParse(value, out result)) {
-                result = new DateTime(1899,12,30);
+                result = new DateTime(1899, 12, 30);
             }
             return result;
         }
@@ -41,6 +39,12 @@ namespace Sage50c.API {
             }
             return result;
         }
+
+        public static DateTime ToTime(this string value) {
+            DateTime result = new DateTime(value.ToDateTime().TimeOfDay.Ticks);
+            return result;
+        }
+
         #endregion
 
         #region Till Extensions
@@ -65,7 +69,7 @@ namespace Sage50c.API {
         #endregion
 
         #region Transaction Extensions
-        public static TillSession EnsureOpenTill(this BSOItemTransaction BSOTrans, string TillId ) {
+        public static TillSession EnsureOpenTill(this BSOItemTransaction BSOTrans, string TillId) {
             var tillManager = new TillManager();
             var tillSetResult = BSOTrans.SetTillID(TillId);
             var sessions = APIEngine.DSOCache.TillSessionProvider.GetOpenedTillSessions(TillId, BSOTrans.Transaction.CreateDate);

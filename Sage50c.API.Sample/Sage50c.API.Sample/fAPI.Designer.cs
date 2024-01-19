@@ -1,4 +1,6 @@
-﻿namespace Sage50c.API.Sample {
+﻿using System.Windows.Forms;
+
+namespace Sage50c.API.Sample {
     partial class fApi {
         /// <summary>
         /// Required designer variable.
@@ -23,6 +25,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fApi));
             this.panel1 = new System.Windows.Forms.Panel();
             this.pbCSharp = new System.Windows.Forms.PictureBox();
@@ -46,6 +49,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabUnitOfMeasure = new System.Windows.Forms.TabPage();
+            this.btnUnitOfMeasureBrow = new System.Windows.Forms.Button();
             this.txtUnitOfMeasureName = new System.Windows.Forms.TextBox();
             this.txtUnitOfMeasureId = new System.Windows.Forms.TextBox();
             this.Label63 = new System.Windows.Forms.Label();
@@ -211,24 +215,25 @@
             this.lblTransDocNumber = new System.Windows.Forms.Label();
             this.Label25 = new System.Windows.Forms.Label();
             this.tabSupplier = new System.Windows.Forms.TabPage();
+            this.btnSearchZoneSupplier = new System.Windows.Forms.Button();
+            this.cmbSupplierCountry = new System.Windows.Forms.ComboBox();
             this.cmbSupplierTax = new System.Windows.Forms.ComboBox();
             this.btnSupplierBrow = new System.Windows.Forms.Button();
             this.txtSupplierId = new System.Windows.Forms.TextBox();
             this.txtSupplierName = new System.Windows.Forms.TextBox();
             this.txtSupplierTaxId = new System.Windows.Forms.TextBox();
-            this.txtSupplierCurrency = new System.Windows.Forms.TextBox();
             this.txtSupplierZone = new System.Windows.Forms.TextBox();
             this.txtSupplierComments = new System.Windows.Forms.TextBox();
-            this.txtSupplierCountry = new System.Windows.Forms.TextBox();
             this.Label22 = new System.Windows.Forms.Label();
             this.Label21 = new System.Windows.Forms.Label();
             this.Label19 = new System.Windows.Forms.Label();
             this.Label18 = new System.Windows.Forms.Label();
-            this.Label17 = new System.Windows.Forms.Label();
             this._Label15_2 = new System.Windows.Forms.Label();
             this.Label16 = new System.Windows.Forms.Label();
             this.Label13 = new System.Windows.Forms.Label();
             this.tabCustomer = new System.Windows.Forms.TabPage();
+            this.btnSearchZone = new System.Windows.Forms.Button();
+            this.btnSearchSalesman = new System.Windows.Forms.Button();
             this.btnCustomerBrow = new System.Windows.Forms.Button();
             this.cmbCustomerCountry = new System.Windows.Forms.ComboBox();
             this.txtCustomerTaxId = new System.Windows.Forms.TextBox();
@@ -236,14 +241,12 @@
             this.txtCustomerName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbCustomerTax = new System.Windows.Forms.ComboBox();
-            this.cmbCustomerCurrency = new System.Windows.Forms.ComboBox();
             this.numCustomerSalesmanId = new System.Windows.Forms.NumericUpDown();
             this.numCustomerZoneId = new System.Windows.Forms.NumericUpDown();
             this.numCustomerId = new System.Windows.Forms.NumericUpDown();
             this.Label12 = new System.Windows.Forms.Label();
             this.Label11 = new System.Windows.Forms.Label();
             this._Label15_1 = new System.Windows.Forms.Label();
-            this.Label9 = new System.Windows.Forms.Label();
             this.Label8 = new System.Windows.Forms.Label();
             this.Label7 = new System.Windows.Forms.Label();
             this.Label6 = new System.Windows.Forms.Label();
@@ -266,11 +269,33 @@
             this.txtItemComments = new System.Windows.Forms.TextBox();
             this.txtItemShortDescription = new System.Windows.Forms.TextBox();
             this.txtItemDescription = new System.Windows.Forms.TextBox();
-            this.txtItemId = new System.Windows.Forms.TextBox();
+            this.txtItemID = new System.Windows.Forms.TextBox();
             this.lblItemObs = new System.Windows.Forms.Label();
             this.lblItemDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabEntities = new System.Windows.Forms.TabControl();
+            this.tabSAFT = new System.Windows.Forms.TabPage();
+            this.gbSimplified = new System.Windows.Forms.GroupBox();
+            this.btnSAFTExport1 = new System.Windows.Forms.Button();
+            this.nudSAFTYear = new System.Windows.Forms.NumericUpDown();
+            this.txtSAFTPath1 = new System.Windows.Forms.TextBox();
+            this.lblExportTo1 = new System.Windows.Forms.Label();
+            this.nudSAFTEndDay = new System.Windows.Forms.NumericUpDown();
+            this.nudSAFTStartDay = new System.Windows.Forms.NumericUpDown();
+            this.cmbSAFTMonth = new System.Windows.Forms.ComboBox();
+            this.lblSAFTMonthYear = new System.Windows.Forms.Label();
+            this.lblSAFTDays = new System.Windows.Forms.Label();
+            this.gbGlobal = new System.Windows.Forms.GroupBox();
+            this.btnSAFTExport0 = new System.Windows.Forms.Button();
+            this.lblInitialDate = new System.Windows.Forms.Label();
+            this.dtpStart = new System.Windows.Forms.DateTimePicker();
+            this.txtSAFTPath0 = new System.Windows.Forms.TextBox();
+            this.lblEndDate = new System.Windows.Forms.Label();
+            this.lblExportTo0 = new System.Windows.Forms.Label();
+            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.LerPreparacao = new System.Windows.Forms.ToolTip(this.components);
+            this.FinalizarPreparacao = new System.Windows.Forms.ToolTip(this.components);
+            this.GuardarPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -306,6 +331,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvColor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numItemPriceTaxIncluded)).BeginInit();
             this.tabEntities.SuspendLayout();
+            this.tabSAFT.SuspendLayout();
+            this.gbSimplified.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSAFTYear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSAFTEndDay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSAFTStartDay)).BeginInit();
+            this.gbGlobal.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -531,7 +562,7 @@
             this.btnStopAPI.TabIndex = 10;
             this.btnStopAPI.Text = "Terminar API";
             this.btnStopAPI.UseVisualStyleBackColor = true;
-            this.btnStopAPI.Click += new System.EventHandler(this.btnCloseAPI_Click);
+            this.btnStopAPI.Click += new System.EventHandler(this.btnStopAPI_Click);
             // 
             // btnStartAPI
             // 
@@ -569,6 +600,7 @@
             // 
             // tabUnitOfMeasure
             // 
+            this.tabUnitOfMeasure.Controls.Add(this.btnUnitOfMeasureBrow);
             this.tabUnitOfMeasure.Controls.Add(this.txtUnitOfMeasureName);
             this.tabUnitOfMeasure.Controls.Add(this.txtUnitOfMeasureId);
             this.tabUnitOfMeasure.Controls.Add(this.Label63);
@@ -580,17 +612,27 @@
             this.tabUnitOfMeasure.Text = "Unidades";
             this.tabUnitOfMeasure.UseVisualStyleBackColor = true;
             // 
+            // btnUnitOfMeasureBrow
+            // 
+            this.btnUnitOfMeasureBrow.Location = new System.Drawing.Point(413, 38);
+            this.btnUnitOfMeasureBrow.Name = "btnUnitOfMeasureBrow";
+            this.btnUnitOfMeasureBrow.Size = new System.Drawing.Size(33, 25);
+            this.btnUnitOfMeasureBrow.TabIndex = 180;
+            this.btnUnitOfMeasureBrow.Text = "...";
+            this.btnUnitOfMeasureBrow.UseVisualStyleBackColor = true;
+            this.btnUnitOfMeasureBrow.Click += new System.EventHandler(this.btnUnitOfMeasureBrow_Click);
+            // 
             // txtUnitOfMeasureName
             // 
             this.txtUnitOfMeasureName.AcceptsReturn = true;
             this.txtUnitOfMeasureName.BackColor = System.Drawing.SystemColors.Window;
             this.txtUnitOfMeasureName.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtUnitOfMeasureName.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtUnitOfMeasureName.Location = new System.Drawing.Point(153, 70);
+            this.txtUnitOfMeasureName.Location = new System.Drawing.Point(153, 67);
             this.txtUnitOfMeasureName.MaxLength = 0;
             this.txtUnitOfMeasureName.Name = "txtUnitOfMeasureName";
             this.txtUnitOfMeasureName.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUnitOfMeasureName.Size = new System.Drawing.Size(293, 27);
+            this.txtUnitOfMeasureName.Size = new System.Drawing.Size(292, 27);
             this.txtUnitOfMeasureName.TabIndex = 20;
             // 
             // txtUnitOfMeasureId
@@ -599,11 +641,11 @@
             this.txtUnitOfMeasureId.BackColor = System.Drawing.SystemColors.Window;
             this.txtUnitOfMeasureId.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtUnitOfMeasureId.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtUnitOfMeasureId.Location = new System.Drawing.Point(153, 38);
+            this.txtUnitOfMeasureId.Location = new System.Drawing.Point(154, 39);
             this.txtUnitOfMeasureId.MaxLength = 0;
             this.txtUnitOfMeasureId.Name = "txtUnitOfMeasureId";
             this.txtUnitOfMeasureId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUnitOfMeasureId.Size = new System.Drawing.Size(94, 27);
+            this.txtUnitOfMeasureId.Size = new System.Drawing.Size(255, 27);
             this.txtUnitOfMeasureId.TabIndex = 10;
             // 
             // Label63
@@ -613,7 +655,7 @@
             this.Label63.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label63.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label63.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label63.Location = new System.Drawing.Point(43, 74);
+            this.Label63.Location = new System.Drawing.Point(28, 67);
             this.Label63.Name = "Label63";
             this.Label63.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label63.Size = new System.Drawing.Size(80, 20);
@@ -627,7 +669,7 @@
             this.Label62.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label62.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label62.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label62.Location = new System.Drawing.Point(43, 42);
+            this.Label62.Location = new System.Drawing.Point(28, 39);
             this.Label62.Name = "Label62";
             this.Label62.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label62.Size = new System.Drawing.Size(62, 20);
@@ -1737,12 +1779,14 @@
             // 
             // btnTransactionRestoreTemp
             // 
+            this.btnTransactionRestoreTemp.Enabled = false;
             this.btnTransactionRestoreTemp.Location = new System.Drawing.Point(18, 160);
             this.btnTransactionRestoreTemp.Name = "btnTransactionRestoreTemp";
             this.btnTransactionRestoreTemp.Size = new System.Drawing.Size(139, 28);
             this.btnTransactionRestoreTemp.TabIndex = 342;
             this.btnTransactionRestoreTemp.Text = "Restaurar temporário";
             this.btnTransactionRestoreTemp.UseVisualStyleBackColor = true;
+            this.btnTransactionRestoreTemp.Visible = false;
             this.btnTransactionRestoreTemp.Click += new System.EventHandler(this.btnTransactionRestoreTemp_Click);
             // 
             // btnTransactionFinalize
@@ -1752,6 +1796,7 @@
             this.btnTransactionFinalize.Size = new System.Drawing.Size(139, 42);
             this.btnTransactionFinalize.TabIndex = 341;
             this.btnTransactionFinalize.Text = "Finalizar preparação";
+            this.FinalizarPreparacao.SetToolTip(this.btnTransactionFinalize, "Finalizar a preparação Doc Serie/Número");
             this.btnTransactionFinalize.UseVisualStyleBackColor = true;
             this.btnTransactionFinalize.Click += new System.EventHandler(this.btnTransactionFinalize_Click);
             // 
@@ -1762,6 +1807,7 @@
             this.btnTransSavePrep.Size = new System.Drawing.Size(138, 42);
             this.btnTransSavePrep.TabIndex = 340;
             this.btnTransSavePrep.Text = "Guardar preparação";
+            this.GuardarPreparacao.SetToolTip(this.btnTransSavePrep, "Guardar preparação com os dados da interface");
             this.btnTransSavePrep.UseVisualStyleBackColor = true;
             this.btnTransSavePrep.Click += new System.EventHandler(this.btnSavePrep_Click);
             // 
@@ -1772,6 +1818,7 @@
             this.btnTransGetPrep.Size = new System.Drawing.Size(138, 27);
             this.btnTransGetPrep.TabIndex = 339;
             this.btnTransGetPrep.Text = "Ler preparação";
+            this.LerPreparacao.SetToolTip(this.btnTransGetPrep, "Ler preparação Doc Serie/Número");
             this.btnTransGetPrep.UseVisualStyleBackColor = true;
             this.btnTransGetPrep.Click += new System.EventHandler(this.btnTransGetPrep_Click);
             // 
@@ -1813,8 +1860,6 @@
             // chkPrintPreview
             // 
             this.chkPrintPreview.AutoSize = true;
-            this.chkPrintPreview.Checked = true;
-            this.chkPrintPreview.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkPrintPreview.Enabled = false;
             this.chkPrintPreview.Location = new System.Drawing.Point(120, 24);
             this.chkPrintPreview.Name = "chkPrintPreview";
@@ -2769,20 +2814,19 @@
             // 
             // tabSupplier
             // 
+            this.tabSupplier.Controls.Add(this.btnSearchZoneSupplier);
+            this.tabSupplier.Controls.Add(this.cmbSupplierCountry);
             this.tabSupplier.Controls.Add(this.cmbSupplierTax);
             this.tabSupplier.Controls.Add(this.btnSupplierBrow);
             this.tabSupplier.Controls.Add(this.txtSupplierId);
             this.tabSupplier.Controls.Add(this.txtSupplierName);
             this.tabSupplier.Controls.Add(this.txtSupplierTaxId);
-            this.tabSupplier.Controls.Add(this.txtSupplierCurrency);
             this.tabSupplier.Controls.Add(this.txtSupplierZone);
             this.tabSupplier.Controls.Add(this.txtSupplierComments);
-            this.tabSupplier.Controls.Add(this.txtSupplierCountry);
             this.tabSupplier.Controls.Add(this.Label22);
             this.tabSupplier.Controls.Add(this.Label21);
             this.tabSupplier.Controls.Add(this.Label19);
             this.tabSupplier.Controls.Add(this.Label18);
-            this.tabSupplier.Controls.Add(this.Label17);
             this.tabSupplier.Controls.Add(this._Label15_2);
             this.tabSupplier.Controls.Add(this.Label16);
             this.tabSupplier.Controls.Add(this.Label13);
@@ -2792,6 +2836,29 @@
             this.tabSupplier.TabIndex = 2;
             this.tabSupplier.Text = "Fornecedor";
             this.tabSupplier.UseVisualStyleBackColor = true;
+            // 
+            // btnSearchZoneSupplier
+            // 
+            this.btnSearchZoneSupplier.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchZoneSupplier.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchZoneSupplier.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchZoneSupplier.FlatAppearance.BorderSize = 0;
+            this.btnSearchZoneSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchZoneSupplier.Location = new System.Drawing.Point(470, 169);
+            this.btnSearchZoneSupplier.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchZoneSupplier.Name = "btnSearchZoneSupplier";
+            this.btnSearchZoneSupplier.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchZoneSupplier.TabIndex = 78;
+            this.btnSearchZoneSupplier.UseVisualStyleBackColor = false;
+            this.btnSearchZoneSupplier.Click += new System.EventHandler(this.btnSearchZoneSupplier_Click);
+            // 
+            // cmbSupplierCountry
+            // 
+            this.cmbSupplierCountry.FormattingEnabled = true;
+            this.cmbSupplierCountry.Location = new System.Drawing.Point(150, 200);
+            this.cmbSupplierCountry.Name = "cmbSupplierCountry";
+            this.cmbSupplierCountry.Size = new System.Drawing.Size(346, 28);
+            this.cmbSupplierCountry.TabIndex = 77;
             // 
             // cmbSupplierTax
             // 
@@ -2852,30 +2919,17 @@
             this.txtSupplierTaxId.Size = new System.Drawing.Size(346, 27);
             this.txtSupplierTaxId.TabIndex = 8;
             // 
-            // txtSupplierCurrency
-            // 
-            this.txtSupplierCurrency.AcceptsReturn = true;
-            this.txtSupplierCurrency.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSupplierCurrency.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSupplierCurrency.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierCurrency.Location = new System.Drawing.Point(150, 167);
-            this.txtSupplierCurrency.MaxLength = 0;
-            this.txtSupplierCurrency.Name = "txtSupplierCurrency";
-            this.txtSupplierCurrency.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierCurrency.Size = new System.Drawing.Size(346, 27);
-            this.txtSupplierCurrency.TabIndex = 10;
-            // 
             // txtSupplierZone
             // 
             this.txtSupplierZone.AcceptsReturn = true;
             this.txtSupplierZone.BackColor = System.Drawing.SystemColors.Window;
             this.txtSupplierZone.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSupplierZone.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierZone.Location = new System.Drawing.Point(150, 200);
+            this.txtSupplierZone.Location = new System.Drawing.Point(150, 168);
             this.txtSupplierZone.MaxLength = 0;
             this.txtSupplierZone.Name = "txtSupplierZone";
             this.txtSupplierZone.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierZone.Size = new System.Drawing.Size(346, 27);
+            this.txtSupplierZone.Size = new System.Drawing.Size(315, 27);
             this.txtSupplierZone.TabIndex = 12;
             // 
             // txtSupplierComments
@@ -2884,25 +2938,12 @@
             this.txtSupplierComments.BackColor = System.Drawing.SystemColors.Window;
             this.txtSupplierComments.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtSupplierComments.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierComments.Location = new System.Drawing.Point(150, 264);
+            this.txtSupplierComments.Location = new System.Drawing.Point(150, 232);
             this.txtSupplierComments.MaxLength = 0;
             this.txtSupplierComments.Name = "txtSupplierComments";
             this.txtSupplierComments.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtSupplierComments.Size = new System.Drawing.Size(346, 27);
             this.txtSupplierComments.TabIndex = 16;
-            // 
-            // txtSupplierCountry
-            // 
-            this.txtSupplierCountry.AcceptsReturn = true;
-            this.txtSupplierCountry.BackColor = System.Drawing.SystemColors.Window;
-            this.txtSupplierCountry.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSupplierCountry.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtSupplierCountry.Location = new System.Drawing.Point(150, 232);
-            this.txtSupplierCountry.MaxLength = 0;
-            this.txtSupplierCountry.Name = "txtSupplierCountry";
-            this.txtSupplierCountry.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierCountry.Size = new System.Drawing.Size(346, 27);
-            this.txtSupplierCountry.TabIndex = 14;
             // 
             // Label22
             // 
@@ -2960,20 +3001,6 @@
             this.Label18.TabIndex = 71;
             this.Label18.Text = "NIF:";
             // 
-            // Label17
-            // 
-            this.Label17.AutoSize = true;
-            this.Label17.BackColor = System.Drawing.Color.Transparent;
-            this.Label17.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label17.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label17.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label17.Location = new System.Drawing.Point(43, 172);
-            this.Label17.Name = "Label17";
-            this.Label17.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label17.Size = new System.Drawing.Size(61, 20);
-            this.Label17.TabIndex = 70;
-            this.Label17.Text = "Moeda:";
-            // 
             // _Label15_2
             // 
             this._Label15_2.AutoSize = true;
@@ -2981,7 +3008,7 @@
             this._Label15_2.Cursor = System.Windows.Forms.Cursors.Default;
             this._Label15_2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._Label15_2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._Label15_2.Location = new System.Drawing.Point(43, 204);
+            this._Label15_2.Location = new System.Drawing.Point(43, 172);
             this._Label15_2.Name = "_Label15_2";
             this._Label15_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._Label15_2.Size = new System.Drawing.Size(48, 20);
@@ -2995,7 +3022,7 @@
             this.Label16.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label16.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label16.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label16.Location = new System.Drawing.Point(43, 269);
+            this.Label16.Location = new System.Drawing.Point(43, 237);
             this.Label16.Name = "Label16";
             this.Label16.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label16.Size = new System.Drawing.Size(102, 20);
@@ -3009,7 +3036,7 @@
             this.Label13.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label13.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label13.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label13.Location = new System.Drawing.Point(43, 237);
+            this.Label13.Location = new System.Drawing.Point(43, 205);
             this.Label13.Name = "Label13";
             this.Label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label13.Size = new System.Drawing.Size(41, 20);
@@ -3018,6 +3045,8 @@
             // 
             // tabCustomer
             // 
+            this.tabCustomer.Controls.Add(this.btnSearchZone);
+            this.tabCustomer.Controls.Add(this.btnSearchSalesman);
             this.tabCustomer.Controls.Add(this.btnCustomerBrow);
             this.tabCustomer.Controls.Add(this.cmbCustomerCountry);
             this.tabCustomer.Controls.Add(this.txtCustomerTaxId);
@@ -3025,14 +3054,12 @@
             this.tabCustomer.Controls.Add(this.txtCustomerName);
             this.tabCustomer.Controls.Add(this.label2);
             this.tabCustomer.Controls.Add(this.cmbCustomerTax);
-            this.tabCustomer.Controls.Add(this.cmbCustomerCurrency);
             this.tabCustomer.Controls.Add(this.numCustomerSalesmanId);
             this.tabCustomer.Controls.Add(this.numCustomerZoneId);
             this.tabCustomer.Controls.Add(this.numCustomerId);
             this.tabCustomer.Controls.Add(this.Label12);
             this.tabCustomer.Controls.Add(this.Label11);
             this.tabCustomer.Controls.Add(this._Label15_1);
-            this.tabCustomer.Controls.Add(this.Label9);
             this.tabCustomer.Controls.Add(this.Label8);
             this.tabCustomer.Controls.Add(this.Label7);
             this.tabCustomer.Controls.Add(this.Label6);
@@ -3044,6 +3071,36 @@
             this.tabCustomer.TabIndex = 1;
             this.tabCustomer.Text = "Cliente";
             this.tabCustomer.UseVisualStyleBackColor = true;
+            // 
+            // btnSearchZone
+            // 
+            this.btnSearchZone.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchZone.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchZone.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchZone.FlatAppearance.BorderSize = 0;
+            this.btnSearchZone.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchZone.Location = new System.Drawing.Point(254, 196);
+            this.btnSearchZone.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchZone.Name = "btnSearchZone";
+            this.btnSearchZone.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchZone.TabIndex = 67;
+            this.btnSearchZone.UseVisualStyleBackColor = false;
+            this.btnSearchZone.Click += new System.EventHandler(this.btnSearchZone_Click);
+            // 
+            // btnSearchSalesman
+            // 
+            this.btnSearchSalesman.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.btnSearchSalesman.BackgroundImage = global::Sage50c.API.Sample.Properties.Resources.Search;
+            this.btnSearchSalesman.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSearchSalesman.FlatAppearance.BorderSize = 0;
+            this.btnSearchSalesman.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchSalesman.Location = new System.Drawing.Point(254, 163);
+            this.btnSearchSalesman.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearchSalesman.Name = "btnSearchSalesman";
+            this.btnSearchSalesman.Size = new System.Drawing.Size(26, 26);
+            this.btnSearchSalesman.TabIndex = 66;
+            this.btnSearchSalesman.UseVisualStyleBackColor = false;
+            this.btnSearchSalesman.Click += new System.EventHandler(this.btnSearchSalesman_Click);
             // 
             // btnCustomerBrow
             // 
@@ -3059,7 +3116,7 @@
             // 
             this.cmbCustomerCountry.DisplayMember = "CountryID";
             this.cmbCustomerCountry.FormattingEnabled = true;
-            this.cmbCustomerCountry.Location = new System.Drawing.Point(149, 260);
+            this.cmbCustomerCountry.Location = new System.Drawing.Point(149, 229);
             this.cmbCustomerCountry.Name = "cmbCustomerCountry";
             this.cmbCustomerCountry.Size = new System.Drawing.Size(346, 28);
             this.cmbCustomerCountry.TabIndex = 16;
@@ -3084,7 +3141,7 @@
             this.txtCustomerComments.BackColor = System.Drawing.SystemColors.Window;
             this.txtCustomerComments.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtCustomerComments.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtCustomerComments.Location = new System.Drawing.Point(149, 292);
+            this.txtCustomerComments.Location = new System.Drawing.Point(149, 261);
             this.txtCustomerComments.MaxLength = 0;
             this.txtCustomerComments.Name = "txtCustomerComments";
             this.txtCustomerComments.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -3128,22 +3185,12 @@
             this.cmbCustomerTax.TabIndex = 8;
             this.cmbCustomerTax.ValueMember = "EntityFiscalStatusID";
             // 
-            // cmbCustomerCurrency
-            // 
-            this.cmbCustomerCurrency.DisplayMember = "CurrencyID";
-            this.cmbCustomerCurrency.FormattingEnabled = true;
-            this.cmbCustomerCurrency.Location = new System.Drawing.Point(149, 195);
-            this.cmbCustomerCurrency.Name = "cmbCustomerCurrency";
-            this.cmbCustomerCurrency.Size = new System.Drawing.Size(346, 28);
-            this.cmbCustomerCurrency.TabIndex = 12;
-            this.cmbCustomerCurrency.ValueMember = "CurrencyID";
-            // 
             // numCustomerSalesmanId
             // 
             this.numCustomerSalesmanId.Location = new System.Drawing.Point(149, 163);
             this.numCustomerSalesmanId.Maximum = new decimal(new int[] {
-            999999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.numCustomerSalesmanId.Name = "numCustomerSalesmanId";
@@ -3154,7 +3201,7 @@
             // 
             // numCustomerZoneId
             // 
-            this.numCustomerZoneId.Location = new System.Drawing.Point(149, 227);
+            this.numCustomerZoneId.Location = new System.Drawing.Point(149, 196);
             this.numCustomerZoneId.Maximum = new decimal(new int[] {
             999999999,
             0,
@@ -3170,8 +3217,8 @@
             // 
             this.numCustomerId.Location = new System.Drawing.Point(149, 33);
             this.numCustomerId.Maximum = new decimal(new int[] {
-            999999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.numCustomerId.Name = "numCustomerId";
@@ -3187,7 +3234,7 @@
             this.Label12.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label12.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label12.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label12.Location = new System.Drawing.Point(42, 263);
+            this.Label12.Location = new System.Drawing.Point(42, 232);
             this.Label12.Name = "Label12";
             this.Label12.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label12.Size = new System.Drawing.Size(41, 20);
@@ -3201,7 +3248,7 @@
             this.Label11.Cursor = System.Windows.Forms.Cursors.Default;
             this.Label11.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label11.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label11.Location = new System.Drawing.Point(42, 295);
+            this.Label11.Location = new System.Drawing.Point(42, 264);
             this.Label11.Name = "Label11";
             this.Label11.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Label11.Size = new System.Drawing.Size(102, 20);
@@ -3215,26 +3262,12 @@
             this._Label15_1.Cursor = System.Windows.Forms.Cursors.Default;
             this._Label15_1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._Label15_1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._Label15_1.Location = new System.Drawing.Point(42, 230);
+            this._Label15_1.Location = new System.Drawing.Point(42, 199);
             this._Label15_1.Name = "_Label15_1";
             this._Label15_1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._Label15_1.Size = new System.Drawing.Size(48, 20);
             this._Label15_1.TabIndex = 55;
             this._Label15_1.Text = "Zona:";
-            // 
-            // Label9
-            // 
-            this.Label9.AutoSize = true;
-            this.Label9.BackColor = System.Drawing.Color.Transparent;
-            this.Label9.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label9.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Label9.Location = new System.Drawing.Point(42, 198);
-            this.Label9.Name = "Label9";
-            this.Label9.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label9.Size = new System.Drawing.Size(61, 20);
-            this.Label9.TabIndex = 54;
-            this.Label9.Text = "Moeda:";
             // 
             // Label8
             // 
@@ -3304,7 +3337,7 @@
             this.tabItem.Controls.Add(this.txtItemComments);
             this.tabItem.Controls.Add(this.txtItemShortDescription);
             this.tabItem.Controls.Add(this.txtItemDescription);
-            this.tabItem.Controls.Add(this.txtItemId);
+            this.tabItem.Controls.Add(this.txtItemID);
             this.tabItem.Controls.Add(this.lblItemObs);
             this.tabItem.Controls.Add(this.lblItemDescription);
             this.tabItem.Controls.Add(this.label1);
@@ -3314,7 +3347,6 @@
             this.tabItem.Size = new System.Drawing.Size(943, 476);
             this.tabItem.TabIndex = 0;
             this.tabItem.Text = "Artigo";
-            this.tabItem.Click += new System.EventHandler(this.tabItem_Click);
             // 
             // gbSize
             // 
@@ -3513,13 +3545,13 @@
             this.txtItemDescription.Size = new System.Drawing.Size(292, 27);
             this.txtItemDescription.TabIndex = 6;
             // 
-            // txtItemId
+            // txtItemID
             // 
-            this.txtItemId.Location = new System.Drawing.Point(154, 39);
-            this.txtItemId.Name = "txtItemId";
-            this.txtItemId.Size = new System.Drawing.Size(255, 27);
-            this.txtItemId.TabIndex = 4;
-            this.txtItemId.Click += new System.EventHandler(this.txtItemId_Click);
+            this.txtItemID.Location = new System.Drawing.Point(154, 39);
+            this.txtItemID.Name = "txtItemID";
+            this.txtItemID.Size = new System.Drawing.Size(255, 27);
+            this.txtItemID.TabIndex = 4;
+            this.txtItemID.Click += new System.EventHandler(this.txtItemId_Click);
             // 
             // lblItemObs
             // 
@@ -3559,6 +3591,7 @@
             this.tabEntities.Controls.Add(this.tabBuySaleTransaction);
             this.tabEntities.Controls.Add(this.tabAccount);
             this.tabEntities.Controls.Add(this.tabUnitOfMeasure);
+            this.tabEntities.Controls.Add(this.tabSAFT);
             this.tabEntities.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabEntities.Enabled = false;
             this.tabEntities.Location = new System.Drawing.Point(0, 106);
@@ -3567,6 +3600,242 @@
             this.tabEntities.Size = new System.Drawing.Size(951, 509);
             this.tabEntities.TabIndex = 40;
             this.tabEntities.SelectedIndexChanged += new System.EventHandler(this.tabEntities_SelectedIndexChanged);
+            // 
+            // tabSAFT
+            // 
+            this.tabSAFT.Controls.Add(this.gbSimplified);
+            this.tabSAFT.Controls.Add(this.gbGlobal);
+            this.tabSAFT.Location = new System.Drawing.Point(4, 29);
+            this.tabSAFT.Name = "tabSAFT";
+            this.tabSAFT.Size = new System.Drawing.Size(943, 476);
+            this.tabSAFT.TabIndex = 6;
+            this.tabSAFT.Text = "SAF-T";
+            this.tabSAFT.UseVisualStyleBackColor = true;
+            // 
+            // gbSimplified
+            // 
+            this.gbSimplified.Controls.Add(this.btnSAFTExport1);
+            this.gbSimplified.Controls.Add(this.nudSAFTYear);
+            this.gbSimplified.Controls.Add(this.txtSAFTPath1);
+            this.gbSimplified.Controls.Add(this.lblExportTo1);
+            this.gbSimplified.Controls.Add(this.nudSAFTEndDay);
+            this.gbSimplified.Controls.Add(this.nudSAFTStartDay);
+            this.gbSimplified.Controls.Add(this.cmbSAFTMonth);
+            this.gbSimplified.Controls.Add(this.lblSAFTMonthYear);
+            this.gbSimplified.Controls.Add(this.lblSAFTDays);
+            this.gbSimplified.Location = new System.Drawing.Point(487, 15);
+            this.gbSimplified.Name = "gbSimplified";
+            this.gbSimplified.Size = new System.Drawing.Size(436, 218);
+            this.gbSimplified.TabIndex = 14;
+            this.gbSimplified.TabStop = false;
+            this.gbSimplified.Text = "Simplificado";
+            // 
+            // btnSAFTExport1
+            // 
+            this.btnSAFTExport1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSAFTExport1.Location = new System.Drawing.Point(328, 175);
+            this.btnSAFTExport1.Name = "btnSAFTExport1";
+            this.btnSAFTExport1.Size = new System.Drawing.Size(92, 27);
+            this.btnSAFTExport1.TabIndex = 16;
+            this.btnSAFTExport1.Text = "Exportar";
+            this.btnSAFTExport1.UseVisualStyleBackColor = true;
+            this.btnSAFTExport1.Click += new System.EventHandler(this.btnSAFTExport1_Click);
+            // 
+            // nudSAFTYear
+            // 
+            this.nudSAFTYear.Location = new System.Drawing.Point(235, 26);
+            this.nudSAFTYear.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.nudSAFTYear.Name = "nudSAFTYear";
+            this.nudSAFTYear.Size = new System.Drawing.Size(80, 27);
+            this.nudSAFTYear.TabIndex = 17;
+            this.nudSAFTYear.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.nudSAFTYear.ValueChanged += new System.EventHandler(this.nudSAFTYear_ValueChanged);
+            // 
+            // txtSAFTPath1
+            // 
+            this.txtSAFTPath1.AcceptsReturn = true;
+            this.txtSAFTPath1.BackColor = System.Drawing.SystemColors.Window;
+            this.txtSAFTPath1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSAFTPath1.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtSAFTPath1.Location = new System.Drawing.Point(116, 92);
+            this.txtSAFTPath1.MaxLength = 0;
+            this.txtSAFTPath1.Name = "txtSAFTPath1";
+            this.txtSAFTPath1.ReadOnly = true;
+            this.txtSAFTPath1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtSAFTPath1.Size = new System.Drawing.Size(304, 27);
+            this.txtSAFTPath1.TabIndex = 14;
+            // 
+            // lblExportTo1
+            // 
+            this.lblExportTo1.AutoSize = true;
+            this.lblExportTo1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblExportTo1.Location = new System.Drawing.Point(18, 95);
+            this.lblExportTo1.Name = "lblExportTo1";
+            this.lblExportTo1.Size = new System.Drawing.Size(108, 20);
+            this.lblExportTo1.TabIndex = 13;
+            this.lblExportTo1.Text = "Exportar para:";
+            // 
+            // nudSAFTEndDay
+            // 
+            this.nudSAFTEndDay.Location = new System.Drawing.Point(174, 59);
+            this.nudSAFTEndDay.Maximum = new decimal(new int[] {
+            32,
+            0,
+            0,
+            0});
+            this.nudSAFTEndDay.Name = "nudSAFTEndDay";
+            this.nudSAFTEndDay.Size = new System.Drawing.Size(46, 27);
+            this.nudSAFTEndDay.TabIndex = 13;
+            this.nudSAFTEndDay.Value = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.nudSAFTEndDay.ValueChanged += new System.EventHandler(this.nudSAFTEndDay_ValueChanged);
+            // 
+            // nudSAFTStartDay
+            // 
+            this.nudSAFTStartDay.Location = new System.Drawing.Point(99, 59);
+            this.nudSAFTStartDay.Maximum = new decimal(new int[] {
+            32,
+            0,
+            0,
+            0});
+            this.nudSAFTStartDay.Name = "nudSAFTStartDay";
+            this.nudSAFTStartDay.Size = new System.Drawing.Size(46, 27);
+            this.nudSAFTStartDay.TabIndex = 12;
+            this.nudSAFTStartDay.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudSAFTStartDay.ValueChanged += new System.EventHandler(this.nudSAFTStartDay_ValueChanged);
+            // 
+            // cmbSAFTMonth
+            // 
+            this.cmbSAFTMonth.FormattingEnabled = true;
+            this.cmbSAFTMonth.Location = new System.Drawing.Point(99, 26);
+            this.cmbSAFTMonth.Name = "cmbSAFTMonth";
+            this.cmbSAFTMonth.Size = new System.Drawing.Size(121, 28);
+            this.cmbSAFTMonth.TabIndex = 11;
+            this.cmbSAFTMonth.SelectedIndexChanged += new System.EventHandler(this.cmbSAFTMonth_SelectedIndexChanged);
+            // 
+            // lblSAFTMonthYear
+            // 
+            this.lblSAFTMonthYear.AutoSize = true;
+            this.lblSAFTMonthYear.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSAFTMonthYear.Location = new System.Drawing.Point(18, 29);
+            this.lblSAFTMonthYear.Name = "lblSAFTMonthYear";
+            this.lblSAFTMonthYear.Size = new System.Drawing.Size(82, 20);
+            this.lblSAFTMonthYear.TabIndex = 6;
+            this.lblSAFTMonthYear.Text = "Mês / Ano";
+            // 
+            // lblSAFTDays
+            // 
+            this.lblSAFTDays.AutoSize = true;
+            this.lblSAFTDays.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSAFTDays.Location = new System.Drawing.Point(18, 62);
+            this.lblSAFTDays.Name = "lblSAFTDays";
+            this.lblSAFTDays.Size = new System.Drawing.Size(39, 20);
+            this.lblSAFTDays.TabIndex = 8;
+            this.lblSAFTDays.Text = "Dias";
+            // 
+            // gbGlobal
+            // 
+            this.gbGlobal.Controls.Add(this.btnSAFTExport0);
+            this.gbGlobal.Controls.Add(this.lblInitialDate);
+            this.gbGlobal.Controls.Add(this.dtpStart);
+            this.gbGlobal.Controls.Add(this.txtSAFTPath0);
+            this.gbGlobal.Controls.Add(this.lblEndDate);
+            this.gbGlobal.Controls.Add(this.lblExportTo0);
+            this.gbGlobal.Controls.Add(this.dtpEnd);
+            this.gbGlobal.Location = new System.Drawing.Point(23, 15);
+            this.gbGlobal.Name = "gbGlobal";
+            this.gbGlobal.Size = new System.Drawing.Size(436, 218);
+            this.gbGlobal.TabIndex = 13;
+            this.gbGlobal.TabStop = false;
+            this.gbGlobal.Text = "Global";
+            // 
+            // btnSAFTExport0
+            // 
+            this.btnSAFTExport0.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSAFTExport0.Location = new System.Drawing.Point(328, 175);
+            this.btnSAFTExport0.Name = "btnSAFTExport0";
+            this.btnSAFTExport0.Size = new System.Drawing.Size(92, 27);
+            this.btnSAFTExport0.TabIndex = 15;
+            this.btnSAFTExport0.Text = "Exportar";
+            this.btnSAFTExport0.UseVisualStyleBackColor = true;
+            this.btnSAFTExport0.Click += new System.EventHandler(this.btnSAFTExport0_Click);
+            // 
+            // lblInitialDate
+            // 
+            this.lblInitialDate.AutoSize = true;
+            this.lblInitialDate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInitialDate.Location = new System.Drawing.Point(18, 29);
+            this.lblInitialDate.Name = "lblInitialDate";
+            this.lblInitialDate.Size = new System.Drawing.Size(90, 20);
+            this.lblInitialDate.TabIndex = 6;
+            this.lblInitialDate.Text = "Data inicial:";
+            // 
+            // dtpStart
+            // 
+            this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpStart.Location = new System.Drawing.Point(116, 26);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(110, 27);
+            this.dtpStart.TabIndex = 7;
+            this.dtpStart.Value = new System.DateTime(1945, 7, 16, 0, 0, 0, 0);
+            // 
+            // txtSAFTPath0
+            // 
+            this.txtSAFTPath0.AcceptsReturn = true;
+            this.txtSAFTPath0.BackColor = System.Drawing.SystemColors.Window;
+            this.txtSAFTPath0.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSAFTPath0.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtSAFTPath0.Location = new System.Drawing.Point(116, 92);
+            this.txtSAFTPath0.MaxLength = 0;
+            this.txtSAFTPath0.Name = "txtSAFTPath0";
+            this.txtSAFTPath0.ReadOnly = true;
+            this.txtSAFTPath0.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtSAFTPath0.Size = new System.Drawing.Size(304, 27);
+            this.txtSAFTPath0.TabIndex = 11;
+            // 
+            // lblEndDate
+            // 
+            this.lblEndDate.AutoSize = true;
+            this.lblEndDate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEndDate.Location = new System.Drawing.Point(18, 62);
+            this.lblEndDate.Name = "lblEndDate";
+            this.lblEndDate.Size = new System.Drawing.Size(81, 20);
+            this.lblEndDate.TabIndex = 8;
+            this.lblEndDate.Text = "Data final:";
+            // 
+            // lblExportTo0
+            // 
+            this.lblExportTo0.AutoSize = true;
+            this.lblExportTo0.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblExportTo0.Location = new System.Drawing.Point(18, 95);
+            this.lblExportTo0.Name = "lblExportTo0";
+            this.lblExportTo0.Size = new System.Drawing.Size(108, 20);
+            this.lblExportTo0.TabIndex = 10;
+            this.lblExportTo0.Text = "Exportar para:";
+            // 
+            // dtpEnd
+            // 
+            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpEnd.Location = new System.Drawing.Point(116, 59);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(110, 27);
+            this.dtpEnd.TabIndex = 9;
+            this.dtpEnd.Value = new System.DateTime(1945, 7, 16, 0, 0, 0, 0);
             // 
             // fApi
             // 
@@ -3636,6 +3905,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvColor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numItemPriceTaxIncluded)).EndInit();
             this.tabEntities.ResumeLayout(false);
+            this.tabSAFT.ResumeLayout(false);
+            this.gbSimplified.ResumeLayout(false);
+            this.gbSimplified.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSAFTYear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSAFTEndDay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSAFTStartDay)).EndInit();
+            this.gbGlobal.ResumeLayout(false);
+            this.gbGlobal.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3797,15 +4074,12 @@
         public System.Windows.Forms.TextBox txtSupplierId;
         public System.Windows.Forms.TextBox txtSupplierName;
         public System.Windows.Forms.TextBox txtSupplierTaxId;
-        public System.Windows.Forms.TextBox txtSupplierCurrency;
         public System.Windows.Forms.TextBox txtSupplierZone;
         public System.Windows.Forms.TextBox txtSupplierComments;
-        public System.Windows.Forms.TextBox txtSupplierCountry;
         public System.Windows.Forms.Label Label22;
         public System.Windows.Forms.Label Label21;
         public System.Windows.Forms.Label Label19;
         public System.Windows.Forms.Label Label18;
-        public System.Windows.Forms.Label Label17;
         private System.Windows.Forms.Label _Label15_2;
         public System.Windows.Forms.Label Label16;
         public System.Windows.Forms.Label Label13;
@@ -3817,14 +4091,12 @@
         public System.Windows.Forms.TextBox txtCustomerName;
         public System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbCustomerTax;
-        private System.Windows.Forms.ComboBox cmbCustomerCurrency;
         private System.Windows.Forms.NumericUpDown numCustomerSalesmanId;
         private System.Windows.Forms.NumericUpDown numCustomerZoneId;
         private System.Windows.Forms.NumericUpDown numCustomerId;
         public System.Windows.Forms.Label Label12;
         public System.Windows.Forms.Label Label11;
         private System.Windows.Forms.Label _Label15_1;
-        public System.Windows.Forms.Label Label9;
         public System.Windows.Forms.Label Label8;
         public System.Windows.Forms.Label Label7;
         public System.Windows.Forms.Label Label6;
@@ -3837,7 +4109,7 @@
         private System.Windows.Forms.TextBox txtItemComments;
         private System.Windows.Forms.TextBox txtItemShortDescription;
         private System.Windows.Forms.TextBox txtItemDescription;
-        private System.Windows.Forms.TextBox txtItemId;
+        private System.Windows.Forms.TextBox txtItemID;
         private System.Windows.Forms.Label lblItemObs;
         private System.Windows.Forms.Label lblItemDescription;
         private System.Windows.Forms.Label label1;
@@ -3888,6 +4160,33 @@
         private System.Windows.Forms.Button btnAddColor;
         private System.Windows.Forms.DataGridView dgvColor;
         private System.Windows.Forms.GroupBox gbSize;
+        private System.Windows.Forms.TabPage tabSAFT;
+        private System.Windows.Forms.Label lblInitialDate;
+        private System.Windows.Forms.DateTimePicker dtpStart;
+        private System.Windows.Forms.DateTimePicker dtpEnd;
+        private System.Windows.Forms.Label lblEndDate;
+        public System.Windows.Forms.TextBox txtSAFTPath0;
+        private System.Windows.Forms.Label lblExportTo0;
+        private System.Windows.Forms.GroupBox gbGlobal;
+        private System.Windows.Forms.GroupBox gbSimplified;
+        private System.Windows.Forms.ComboBox cmbSAFTMonth;
+        private System.Windows.Forms.Label lblSAFTMonthYear;
+        private System.Windows.Forms.Label lblSAFTDays;
+        private System.Windows.Forms.NumericUpDown nudSAFTEndDay;
+        private System.Windows.Forms.NumericUpDown nudSAFTStartDay;
+        private System.Windows.Forms.NumericUpDown nudSAFTYear;
+        public System.Windows.Forms.TextBox txtSAFTPath1;
+        private System.Windows.Forms.Label lblExportTo1;
+        private System.Windows.Forms.Button btnSAFTExport1;
+        private System.Windows.Forms.Button btnSAFTExport0;
+        private System.Windows.Forms.Button btnUnitOfMeasureBrow;
+        private ComboBox cmbSupplierCountry;
+        private Button btnSearchZone;
+        private Button btnSearchSalesman;
+        private Button btnSearchZoneSupplier;
+        private ToolTip LerPreparacao;
+        private ToolTip FinalizarPreparacao;
+        private ToolTip GuardarPreparacao;
     }
 }
 

@@ -259,6 +259,14 @@
     <Compile Include="..\..\Sage50c.Common\APIQuickSearch.cs">
       <Link>50cAPI\APIQuickSearch.cs</Link>
     </Compile>
+    <Compile Include="Controllers\AccountTransactionController.cs" />
+    <Compile Include="Controllers\ItemTransactionController.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\StockTransactionController.cs" />
+    <Compile Include="Controllers\SupplierController.cs" />
+    <Compile Include="Controllers\UnitOfMeasureController.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="fAPI.cs">
       <SubType>Form</SubType>
@@ -290,8 +298,9 @@
     <Compile Include="FormTenderCheck.Designer.cs">
       <DependentUpon>FormTenderCheck.cs</DependentUpon>
     </Compile>
-    <Compile Include="ItemTransactionHelper.cs" />
     <Compile Include="GenericTransaction.cs" />
+    <Compile Include="Helpers\SAFTHelper.cs" />
+    <Compile Include="Month.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -373,6 +382,7 @@
     <None Include="Resources\Search.ico" />
     <None Include="Resources\caretDoubleLeft.ico" />
     <None Include="Resources\caretDoubleRight.ico" />
+    <None Include="Resources\FileFolder.ico" />
     <Content Include="S_ico_Black.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
