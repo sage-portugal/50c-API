@@ -372,6 +372,10 @@ namespace Sage50c.API.Sample.Controllers {
                 Detail.RetentionTax = item.WithholdingTaxRate;
             }
 
+            //Defines if stock is updated 
+            //The transaction will allways update stock without this line
+            Detail.ItemExtraInfo.StockManagement = item.StockManagement;
+
             item = null;
             _bsoItemTransaction.Transaction.Details.Add(Detail);
             Detail = null;
