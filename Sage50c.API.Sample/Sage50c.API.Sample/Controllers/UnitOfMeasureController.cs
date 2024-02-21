@@ -53,8 +53,8 @@ namespace Sage50c.API.Sample.Controllers {
             if (string.IsNullOrEmpty(UnitOfMeasureID)) {
                 throw new Exception("O código da unidade de medição não está preenchido.");
             }
-            if (UnitOfMeasureID.Equals(systemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit)) {
-                throw new Exception("Não pode eliminar a unidade de medida default.");
+            if (string.Equals( UnitOfMeasureID, systemSettings.SystemInfo.ItemDefaultsSettings.ItemDefaultUnit, StringComparison.InvariantCultureIgnoreCase)) {
+                throw new Exception("Não pode eliminar a unidade de medida por omissão.");
             }
 
             dsoCache.UnitOfMeasureProvider.Delete(UnitOfMeasureID);

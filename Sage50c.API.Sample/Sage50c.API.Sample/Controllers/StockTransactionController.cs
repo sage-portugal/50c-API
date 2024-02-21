@@ -297,6 +297,10 @@ namespace Sage50c.API.Sample.Controllers {
                 dsoCache.ItemPropertyProvider.GetItemPropertyStock(Detail.ItemID, Detail.WarehouseID, Detail.ItemProperties);
             }
 
+            //Defines if stock is updated 
+            //The transaction will allways update stock without this line
+            Detail.ItemExtraInfo.StockManagement = item.StockManagement;
+
             bool calculate = true;
             item = null;
             _bsoStockTransaction.AddDetail(Detail, ref calculate);
