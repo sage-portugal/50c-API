@@ -46,8 +46,6 @@ namespace Sage50c.API.Sample {
             return result;
         }
 
-
-
         private static bool _customerIsFinding = false;
         internal static double CustomerFind() {
             QuickSearch quickSearch = null;
@@ -83,7 +81,6 @@ namespace Sage50c.API.Sample {
             return customerId;
         }
 
-
         private static bool _supplierIsFinding = false;
         internal static double SupplierFind() {
             QuickSearch quickSearch = null;
@@ -117,11 +114,7 @@ namespace Sage50c.API.Sample {
             return supplierId;
         }
 
-
-
-
         private static bool _itemTransIsFindind = false;
-
         /// <summary>
         /// Creates a quick search and return the document number selected by the user
         /// </summary>
@@ -173,10 +166,7 @@ namespace Sage50c.API.Sample {
             return transDocNumber;
         }
 
-
-
         private static bool _stockTransIsFindind = false;
-
         /// <summary>
         /// Creates a quick search and return the document number selected by the user
         /// </summary>
@@ -215,8 +205,6 @@ namespace Sage50c.API.Sample {
 
             return transDocNumber;
         }
-
-
 
         private static bool _accountTransIsFindind = false;
         /// <summary>
@@ -417,5 +405,72 @@ namespace Sage50c.API.Sample {
 
             return zoneId;
         }
+    
+        private static bool _tenderIsFinding = false;
+        internal static double TenderFind() {
+            QuickSearch quickSearch = null;
+            double tenderId = 0;
+
+            try {
+                //show data for view with id=0: the title is fetched by the
+                //quick search viewer.
+                if (!_tenderIsFinding) {
+                    _tenderIsFinding = true;
+
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_TenderNames, false);
+
+                    if (quickSearch.SelectValue()) {
+                        tenderId = quickSearch.ValueSelectedDouble();
+                    }
+                    else {
+                        //Not found... do nothing
+                    }
+                    _tenderIsFinding = false;
+                    quickSearch = null;
+                }
+            }
+            catch (Exception ex) {
+                _tenderIsFinding = false;
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            finally {
+            }
+
+            return tenderId;
+        }
+
+        private static bool _paymentIsFinding = false;
+        internal static double PaymentFind() {
+            QuickSearch quickSearch = null;
+            double paymentId = 0;
+
+            try {
+                //show data for view with id=0: the title is fetched by the
+                //quick search viewer.
+                if (!_paymentIsFinding) {
+                    _paymentIsFinding = true;
+
+                    quickSearch = APIEngine.CreateQuickSearch(QuickSearchViews.QSV_Payment, false);
+
+                    if (quickSearch.SelectValue()) {
+                        paymentId = quickSearch.ValueSelectedDouble();
+                    }
+                    else {
+                        //Not found... do nothing
+                    }
+                    _paymentIsFinding = false;
+                    quickSearch = null;
+                }
+            }
+            catch (Exception ex) {
+                _paymentIsFinding = false;
+                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            finally {
+            }
+
+            return paymentId;
+        }
+
     }
 }
