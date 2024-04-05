@@ -1042,6 +1042,10 @@ namespace Sage50c.API.Sample {
                     var doc = systemSettings.WorkstationInfo.Document[docId];
                     chkTransTaxIncluded.Checked = doc.TaxIncludedPrice;
                 }
+                lblTenderID.Enabled = true;
+                txtTenderID.Enabled = true;
+                lblPaymentID.Enabled = true;
+                txtPaymentID.Enabled = true;
             }
             else {
 
@@ -1074,6 +1078,10 @@ namespace Sage50c.API.Sample {
                 }
                 // partyType = Nenhum
                 cmbTransPartyType.SelectedIndex = 2;
+                lblTenderID.Enabled = false;
+                txtTenderID.Enabled = false;
+                lblPaymentID.Enabled = false;
+                txtPaymentID.Enabled = false;
             }
             txtTransDoc.Text = docId;
             txtTransDocNumber.Text = "0";
@@ -1253,6 +1261,8 @@ namespace Sage50c.API.Sample {
                 _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
                 _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
                 _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
+                _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
+                _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
                 _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
                 _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
                 _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
@@ -2800,6 +2810,31 @@ namespace Sage50c.API.Sample {
 
         private void toolTip1_Popup(object sender, PopupEventArgs e) {
 
+        }
+
+        private void lblTenderID_Click(object sender, EventArgs e) {
+            try {
+                var tenderID = QuickSearchHelper.TenderFind();
+                if(tenderID > 0) {
+                    txtTenderID.Text = tenderID.ToString();
+                }
+
+            } catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        private void lblPaymentID_Click(object sender, EventArgs e) {
+            try {
+                var paymentID = QuickSearchHelper.PaymentFind();
+                if (paymentID > 0) {
+                    txtPaymentID.Text = paymentID.ToString();
+                }
+
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
         }
     }
 }
