@@ -220,12 +220,15 @@ namespace Sage50c.API.Sample.Controllers {
                 }
                 if (_bsoItemTransaction.Transaction.Tender.TenderID == 0) {
                     var tenderId = dsoCache.TenderProvider.GetFirstID();
-                    _bsoItemTransaction.Transaction.Tender = dsoCache.TenderProvider.GetTender(tenderId);
+                    var tender = dsoCache.TenderProvider.GetTender(tenderId);
+                    _bsoItemTransaction.Transaction.Tender = tender;
+                    SetTenderLine(tender);
                 }
                 else {
                     var tender = dsoCache.TenderProvider.GetTender(_bsoItemTransaction.Transaction.Tender.TenderID);
                     if (tender != null) {
                         _bsoItemTransaction.Transaction.Tender = tender;
+                        SetTenderLine(tender);
                     }
                     else {
                         error.AppendLine($"O método de pagamento não existe");
@@ -426,6 +429,16 @@ namespace Sage50c.API.Sample.Controllers {
 
         public void Calculate() {
             _bsoItemTransaction.Calculate(true, true);
+        }
+
+        private void SetTenderLine(Tender tender) {
+            var tenderLine = new TenderLineItem();
+            tenderLine.Tender = tender;
+            tenderLine.PartyID = _bsoItemTransaction.Transaction.PartyID;
+            tenderLine.TenderCurrency = _bsoItemTransaction.Transaction.BaseCurrency;
+            tenderLine.Amount = _bsoItemTransaction.Transaction.TotalAmount;
+
+            _bsoItemTransaction.Transaction.TenderLineItem.Add(tenderLine);
         }
 
     }
