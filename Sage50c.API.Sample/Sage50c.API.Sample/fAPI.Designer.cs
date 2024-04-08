@@ -1741,28 +1741,30 @@ namespace Sage50c.API.Sample {
             // lblPaymentID
             // 
             this.lblPaymentID.BackColor = System.Drawing.Color.Transparent;
-            this.lblPaymentID.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblPaymentID.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPaymentID.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblPaymentID.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblPaymentID.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPaymentID.ForeColor = System.Drawing.SystemColors.Highlight;
             this.lblPaymentID.Location = new System.Drawing.Point(640, 106);
             this.lblPaymentID.Name = "lblPaymentID";
             this.lblPaymentID.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblPaymentID.Size = new System.Drawing.Size(85, 15);
             this.lblPaymentID.TabIndex = 345;
             this.lblPaymentID.Text = "Tipo Pag.";
+            this.lblPaymentID.Click += new System.EventHandler(this.lblPaymentID_Click);
             // 
             // lblTenderID
             // 
             this.lblTenderID.BackColor = System.Drawing.Color.Transparent;
-            this.lblTenderID.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblTenderID.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTenderID.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblTenderID.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblTenderID.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTenderID.ForeColor = System.Drawing.SystemColors.Highlight;
             this.lblTenderID.Location = new System.Drawing.Point(642, 62);
             this.lblTenderID.Name = "lblTenderID";
             this.lblTenderID.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblTenderID.Size = new System.Drawing.Size(74, 15);
             this.lblTenderID.TabIndex = 343;
             this.lblTenderID.Text = "Modo Pag.";
+            this.lblTenderID.Click += new System.EventHandler(this.lblTenderID_Click);
             // 
             // groupBox3
             // 
