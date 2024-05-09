@@ -440,8 +440,10 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public void RecalculateInstallments() {
-            if (_bsoItemTransaction.Transaction.Payment.PaymentID > 0) {
-                _bsoItemTransaction.RecalculateInstallments();
+            if (_bsoItemTransaction.Transaction.Payment != null) {
+                if (_bsoItemTransaction.Transaction.Payment.PaymentID > 0) {
+                    _bsoItemTransaction.RecalculateInstallments();
+                }
             }
         }
 
