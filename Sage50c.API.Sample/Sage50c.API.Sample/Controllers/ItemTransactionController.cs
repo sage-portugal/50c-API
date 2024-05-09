@@ -205,19 +205,27 @@ namespace Sage50c.API.Sample.Controllers {
                         error.AppendLine($"A moeda [{_bsoItemTransaction.Transaction.BaseCurrency.CurrencyID}] não existe");
                     }
                 }
-                if (_bsoItemTransaction.Transaction.Payment.PaymentID == 0) {
-                    var paymentId = dsoCache.PaymentProvider.GetFirstID();
-                    _bsoItemTransaction.Transaction.Payment = dsoCache.PaymentProvider.GetPayment(paymentId);
+
+                //if (_bsoItemTransaction.Transaction.Payment.PaymentID == 0) {
+                //    var paymentId = dsoCache.PaymentProvider.GetFirstID();
+                //    _bsoItemTransaction.Transaction.Payment = dsoCache.PaymentProvider.GetPayment(paymentId);
+                //}
+                //else {
+                //    var payment = dsoCache.PaymentProvider.GetPayment(_bsoItemTransaction.Transaction.Payment.PaymentID);
+                //    if (payment != null) {
+                //        _bsoItemTransaction.Transaction.Payment = payment;
+                //    }
+                //    else {
+                //        error.AppendLine($"O pagamento não existe");
+                //    }
+                //}
+                if (_bsoItemTransaction.Transaction.Payment == null) {
+                    error.AppendLine($"O pagamento não existe");
                 }
-                else {
-                    var payment = dsoCache.PaymentProvider.GetPayment(_bsoItemTransaction.Transaction.Payment.PaymentID);
-                    if (payment != null) {
-                        _bsoItemTransaction.Transaction.Payment = payment;
-                    }
-                    else {
-                        error.AppendLine($"O pagamento não existe");
-                    }
+                else if (_bsoItemTransaction.Transaction.Payment.PaymentID == 0) {
+                    error.AppendLine($"O pagamento é obrigatório");
                 }
+                
                 if (_bsoItemTransaction.Transaction.Tender.TenderID == 0) {
                     var tenderId = dsoCache.TenderProvider.GetFirstID();
                     var tender = dsoCache.TenderProvider.GetTender(tenderId);
@@ -413,6 +421,12 @@ namespace Sage50c.API.Sample.Controllers {
             _bsoItemTransaction.PaymentDiscountPercent1 = PaymentDiscountPercent;
 
         }
+        
+        public void PaymentID(double PaymentID) {
+
+            _bsoItemTransaction.PaymentID = PaymentID;
+
+        }
 
         public void SetUserPermissions() {
             _bsoItemTransaction.UserPermissions = systemSettings.User;
@@ -429,6 +443,12 @@ namespace Sage50c.API.Sample.Controllers {
 
         public void Calculate() {
             _bsoItemTransaction.Calculate(true, true);
+        }
+
+        public void RecalculateInstallments() {
+            if (_bsoItemTransaction.Transaction.Payment.PaymentID > 0) {
+                _bsoItemTransaction.RecalculateInstallments();
+            }
         }
 
         private void SetTenderLine(Tender tender) {

@@ -1261,8 +1261,25 @@ namespace Sage50c.API.Sample {
                 _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
                 _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
                 _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
+                //_itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
+                //if (APIEngine.DSOCache.TenderProvider.TenderExist(txtTenderID.Text.ToShort()))
                 _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
-                _itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
+
+                //_itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
+                
+                if (APIEngine.DSOCache.PaymentProvider.PaymentExists(txtPaymentID.Text.ToShort())) {
+                    _itemTransactionController.Transaction.Payment = APIEngine.DSOCache.PaymentProvider.GetPayment(txtPaymentID.Text.ToShort());
+                }
+                else {
+                    if (txtPaymentID.Text.ToShort() == 0) {
+                        _itemTransactionController.Transaction.Payment.PaymentID = 0;
+                    }
+                    else {
+                        _itemTransactionController.Transaction.Payment = null;
+                    }
+                    
+                }
+                
                 _itemTransactionController.Transaction.Comments = "Gerado por " + Application.ProductName;
                 _itemTransactionController.Transaction.WorkstationStamp.SessionID = systemSettings.TillSession.SessionID;
                 _itemTransactionController.Transaction.TransactionTaxIncluded = chkTransTaxIncluded.Checked;
@@ -1440,6 +1457,10 @@ namespace Sage50c.API.Sample {
                     var simpleDocumentList = TransactionFillCostShare();
                     _itemTransactionController.CreateCostShare(simpleDocumentList);
                 }
+                
+                //Exemplo de recalculo de prestações
+                _itemTransactionController.RecalculateInstallments();
+
                 _itemTransactionController.Save(suspended);
                 transactionID = _itemTransactionController.Transaction.TransactionID;
             }
