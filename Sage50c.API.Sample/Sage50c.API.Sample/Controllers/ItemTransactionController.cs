@@ -421,13 +421,7 @@ namespace Sage50c.API.Sample.Controllers {
             _bsoItemTransaction.PaymentDiscountPercent1 = PaymentDiscountPercent;
 
         }
-        
-        public void PaymentID(double PaymentID) {
-
-            _bsoItemTransaction.PaymentID = PaymentID;
-
-        }
-
+       
         public void SetUserPermissions() {
             _bsoItemTransaction.UserPermissions = systemSettings.User;
             _bsoItemTransaction.PermissionsType = FrontOfficePermissionEnum.foPermByUser;
