@@ -1261,10 +1261,7 @@ namespace Sage50c.API.Sample {
                 _itemTransactionController.Transaction.ATCUD = txtAtcud.Text;
                 _itemTransactionController.Transaction.QRCode = txtQrCode.Text;
                 _itemTransactionController.Transaction.TransSerial = txtTransSerial.Text.ToUpper();
-                //_itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
-                //if (APIEngine.DSOCache.TenderProvider.TenderExist(txtTenderID.Text.ToShort()))
                 _itemTransactionController.Transaction.Tender.TenderID = txtTenderID.Text.ToShort();
-
                 //_itemTransactionController.Transaction.Payment.PaymentID = txtPaymentID.Text.ToShort();
                 
                 if (APIEngine.DSOCache.PaymentProvider.PaymentExists(txtPaymentID.Text.ToShort())) {
