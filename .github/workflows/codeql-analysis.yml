@@ -2,7 +2,7 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ "dev-beta" ]
+    branches: [ "master" ]
   schedule:
     - cron: '0 0 * * 5'
 
@@ -53,7 +53,7 @@ jobs:
           nuget restore ./Sage50c.API.NetCore.PromotionPrice/Sage50c.API.NetCore.PromotionPrice.sln -verbosity detailed
           nuget restore ./Sage50c.API.COM.Serialization/Sage50c.API.COM.Serialization.sln -verbosity detailed
           
-    - name: Build solution
+    - name: Build solutions
       run: |
           msbuild ./Sage50c.Extensibility.Sample/Sage50c.Extensibility.Sample.sln /p:configuration=Release /p:Platform="Any CPU"
           msbuild ./Sage50c.Extensibility.CustomerTab/Sage50c.Extensibility.CustomerTab.sln /p:configuration=Release /p:Platform="Any CPU"
