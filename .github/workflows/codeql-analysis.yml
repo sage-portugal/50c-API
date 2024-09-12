@@ -1,0 +1,54 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "dev-beta" ]
+  schedule:
+    - cron: '0 0 * * 5'
+
+jobs:
+  analyze:
+    name: Analyze 
+    runs-on: windows-latest
+    permissions:      
+      actions: read
+      contents: read
+      security-events: write          
+      
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - language: csharp
+          build-mode: manual
+          
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+      
+    - name: Setup Nuget
+      uses: Nuget/setup-nuget@v2
+        
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        db-location: 'C:/codeql_db'
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+        queries: security-extended    
+      
+    - name: Restore Packages
+      run: |
+          nuget restore ./Sage50c.Extensibility.Sample/Sage50c.Extensibility.Sample.sln -verbosity detailed 
+          
+    - name: Build solution
+      run: |
+           msbuild ./Sage50c.Extensibility.Sample/Sage50c.Extensibility.Sample.sln /p:configuration=Release /p:Platform="Any CPU"
+      
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
