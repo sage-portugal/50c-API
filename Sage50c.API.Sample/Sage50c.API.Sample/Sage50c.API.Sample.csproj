@@ -191,10 +191,6 @@
       <HintPath>..\..\Interops\SageCEMV15.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="SageCoreComm10">
-      <HintPath>..\..\Interops\SageCoreComm10.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
     <Reference Include="SageCoreLicenses30">
       <HintPath>..\..\Interops\SageCoreLicenses30.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>

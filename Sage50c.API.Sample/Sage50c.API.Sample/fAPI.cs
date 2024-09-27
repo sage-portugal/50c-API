@@ -2854,5 +2854,19 @@ namespace Sage50c.API.Sample {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
+
+        private void btnRecalculate_Click(object sender, EventArgs e) {
+            DSORecalculate oDSORecalculate = new DSORecalculate();
+
+            try {
+
+                if (oDSORecalculate.RecalculateItem(txtItemID.Text)) {
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice("Artigo recalculado com sucesso.", VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
     }
 }
