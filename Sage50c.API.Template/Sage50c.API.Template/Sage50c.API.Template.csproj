@@ -284,42 +284,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Interops\ADODB.dll" />
-    <Content Include="Interops\ADODB27.dll" />
-    <Content Include="Interops\DAO.dll" />
-    <Content Include="Interops\DartMail.dll" />
-    <Content Include="Interops\MSScriptControl.dll" />
-    <Content Include="Interops\MSXML2.dll" />
-    <Content Include="Interops\POPLib.dll" />
-    <Content Include="Interops\S50cAPI18.dll" />
-    <Content Include="Interops\S50cBL18.dll" />
-    <Content Include="Interops\S50cBO18.dll" />
-    <Content Include="Interops\S50cCore18.dll" />
-    <Content Include="Interops\S50cData18.dll" />
-    <Content Include="Interops\S50cDL18.dll" />
-    <Content Include="Interops\S50cDP18.dll" />
-    <Content Include="Interops\S50cLocalize18.dll" />
-    <Content Include="Interops\S50cPrint18.dll" />
-    <Content Include="Interops\S50cQS18.dll" />
-    <Content Include="Interops\S50cRV18.dll" />
-    <Content Include="Interops\S50cSAFTX18.dll" />
-    <Content Include="Interops\S50cSys18.dll" />
-    <Content Include="Interops\S50cUIBase18.dll" />
-    <Content Include="Interops\S50cUpdate16.dll" />
-    <Content Include="Interops\S50cUpdate18.dll" />
-    <Content Include="Interops\S50cUtil18.dll" />
-    <Content Include="Interops\SageCEMV15.dll" />
-    <Content Include="Interops\SageCoreComm10.dll" />
-    <Content Include="Interops\SageCoreLicenses20.dll" />
-    <Content Include="Interops\SageCoreSaft40.dll" />
-    <Content Include="Interops\SageCoreUtil10.dll" />
-    <Content Include="Interops\Scripting.dll" />
-    <Content Include="Interops\VBA.dll" />
-    <Content Include="Interops\VBRUN.dll" />
-    <Content Include="Interops\XceedZipLib.dll" />
-    <Content Include="Interops\XtremeDockingPane.dll" />
-    <Content Include="Interops\XtremeSuiteControls.dll" />
-    <Content Include="Interops\XtremeTaskPanel.dll" />
     <Content Include="Resources\50C.ico" />
     <Content Include="Resources\icone_Sage_Retail_C.ico" />
     <None Include="Resources\Sage-CMYK-Cinza-200x53.png" />

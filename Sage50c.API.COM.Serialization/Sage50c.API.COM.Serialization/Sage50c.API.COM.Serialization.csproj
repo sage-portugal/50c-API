@@ -60,125 +60,120 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ADODB">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\ADODB.dll</HintPath>
+      <HintPath>..\..\Interops\ADODB.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="ADODB27">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\ADODB27.dll</HintPath>
+      <HintPath>..\..\Interops\ADODB27.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="DAO">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\DAO.dll</HintPath>
+      <HintPath>..\..\Interops\DAO.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.12\lib\net40\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MSScriptControl">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\MSScriptControl.dll</HintPath>
+      <HintPath>..\..\Interops\MSScriptControl.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="MSXML2">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\MSXML2.dll</HintPath>
+      <HintPath>..\..\Interops\MSXML2.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="S50cAPI22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cAPI22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cAPI22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cBL22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cBL22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cBL22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cBO22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cBO22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cBO22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cCore22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cCore22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cCore22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cData22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cData22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cData22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cDL22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cDL22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cDL22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cDP22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cDP22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cDP22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cLocalize22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cLocalize22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cLocalize22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cPrint22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cPrint22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cPrint22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cQS22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cQS22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cQS22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cRV22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cRV22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cRV22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cSAFTX22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cSAFTX22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cSAFTX22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cSC22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cSC22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cSC22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cSys22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cSys22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cSys22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cUIBase22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cUIBase22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cUIBase22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cUpdate22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cUpdate22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cUpdate22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="S50cUtil22">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\S50cUtil22.dll</HintPath>
+      <HintPath>..\..\Interops\S50cUtil22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Sage50c.ShopConnection.JsonCOMSerialization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8af6bd8cf5420fe4, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Extra Online\Sage50c.ShopConnection.JsonCOMSerialization.dll</HintPath>
+    <Reference Include="Sage50c.ShopConnection.JsonCOMSerialization">
+      <HintPath>..\..\dependencies\Sage50c.ShopConnection.JsonCOMSerialization.dll</HintPath>
     </Reference>
     <Reference Include="SageCEMV15">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\SageCEMV15.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="SageCoreComm10">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\SageCoreComm10.dll</HintPath>
+      <HintPath>..\..\Interops\SageCEMV15.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="SageCoreLicenses30">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\SageCoreLicenses30.dll</HintPath>
+      <HintPath>..\..\Interops\SageCoreLicenses30.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="SageCoreSaft60">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\SageCoreSaft60.dll</HintPath>
+      <HintPath>..\..\Interops\SageCoreSaft60.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="SageCoreUtil10">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\SageCoreUtil10.dll</HintPath>
+      <HintPath>..\..\Interops\SageCoreUtil10.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Scripting">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\Scripting.dll</HintPath>
+      <HintPath>..\..\Interops\Scripting.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -193,27 +188,27 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="VBA">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\VBA.dll</HintPath>
+      <HintPath>..\..\Interops\VBA.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="VBRUN">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\VBRUN.dll</HintPath>
+      <HintPath>..\..\Interops\VBRUN.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="XceedZipLib">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\XceedZipLib.dll</HintPath>
+      <HintPath>..\..\Interops\XceedZipLib.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="XtremeDockingPane">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\XtremeDockingPane.dll</HintPath>
+      <HintPath>..\..\Interops\XtremeDockingPane.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="XtremeSuiteControls">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\XtremeSuiteControls.dll</HintPath>
+      <HintPath>..\..\Interops\XtremeSuiteControls.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="XtremeTaskPanel">
-      <HintPath>..\..\..\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\Interops\XtremeTaskPanel.dll</HintPath>
+      <HintPath>..\..\Interops\XtremeTaskPanel.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
