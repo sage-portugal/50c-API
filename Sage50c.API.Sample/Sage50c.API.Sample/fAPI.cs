@@ -276,7 +276,7 @@ namespace Sage50c.API.Sample {
                 APIEngine.WarningMessage += S50cAPIEngine_WarningMessage;
                 APIEngine.Message += S50cAPIEngine_Message;
 
-                APIEngine.Initialize(cmbAPI.SelectedItem.ToString(), txtCompanyId.Text, chkAPIDebugMode.Checked);
+                APIEngine.Initialize(cmbAPI.SelectedItem.ToString(), txtCompanyId.Text, chkAPIDebugMode.Checked, txtMachineId.Text);
             }
             catch (Exception ex) {
                 Cursor = Cursors.Default;
