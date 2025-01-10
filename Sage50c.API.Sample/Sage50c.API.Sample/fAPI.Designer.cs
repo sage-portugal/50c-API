@@ -296,6 +296,8 @@ namespace Sage50c.API.Sample {
             this.LerPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.FinalizarPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.GuardarPreparacao = new System.Windows.Forms.ToolTip(this.components);
+            this.txtMachineId = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -343,6 +345,8 @@ namespace Sage50c.API.Sample {
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel1.Controls.Add(this.label17);
+            this.panel1.Controls.Add(this.txtMachineId);
             this.panel1.Controls.Add(this.pbCSharp);
             this.panel1.Controls.Add(this.chkAPIDebugMode);
             this.panel1.Controls.Add(this.panel5);
@@ -373,7 +377,7 @@ namespace Sage50c.API.Sample {
             this.chkAPIDebugMode.ForeColor = System.Drawing.Color.White;
             this.chkAPIDebugMode.Location = new System.Drawing.Point(718, 41);
             this.chkAPIDebugMode.Name = "chkAPIDebugMode";
-            this.chkAPIDebugMode.Size = new System.Drawing.Size(123, 24);
+            this.chkAPIDebugMode.Size = new System.Drawing.Size(98, 19);
             this.chkAPIDebugMode.TabIndex = 305;
             this.chkAPIDebugMode.Text = "Modo DEBUG";
             this.chkAPIDebugMode.UseVisualStyleBackColor = true;
@@ -408,11 +412,11 @@ namespace Sage50c.API.Sample {
             this.txtCompanyId.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtCompanyId.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCompanyId.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtCompanyId.Location = new System.Drawing.Point(401, 38);
+            this.txtCompanyId.Location = new System.Drawing.Point(439, 38);
             this.txtCompanyId.MaxLength = 0;
             this.txtCompanyId.Name = "txtCompanyId";
             this.txtCompanyId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtCompanyId.Size = new System.Drawing.Size(310, 27);
+            this.txtCompanyId.Size = new System.Drawing.Size(272, 23);
             this.txtCompanyId.TabIndex = 30;
             this.txtCompanyId.Text = "APIXDEMO";
             // 
@@ -426,7 +430,7 @@ namespace Sage50c.API.Sample {
             this.Label40.Location = new System.Drawing.Point(319, 42);
             this.Label40.Name = "Label40";
             this.Label40.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label40.Size = new System.Drawing.Size(73, 20);
+            this.Label40.Size = new System.Drawing.Size(57, 15);
             this.Label40.TabIndex = 294;
             this.Label40.Text = "Empresa:";
             // 
@@ -538,7 +542,7 @@ namespace Sage50c.API.Sample {
             "CRTL"});
             this.cmbAPI.Location = new System.Drawing.Point(6, 10);
             this.cmbAPI.Name = "cmbAPI";
-            this.cmbAPI.Size = new System.Drawing.Size(92, 28);
+            this.cmbAPI.Size = new System.Drawing.Size(92, 23);
             this.cmbAPI.TabIndex = 181;
             // 
             // _Bar1_1
@@ -605,9 +609,9 @@ namespace Sage50c.API.Sample {
             this.tabUnitOfMeasure.Controls.Add(this.txtUnitOfMeasureId);
             this.tabUnitOfMeasure.Controls.Add(this.Label63);
             this.tabUnitOfMeasure.Controls.Add(this.Label62);
-            this.tabUnitOfMeasure.Location = new System.Drawing.Point(4, 29);
+            this.tabUnitOfMeasure.Location = new System.Drawing.Point(4, 24);
             this.tabUnitOfMeasure.Name = "tabUnitOfMeasure";
-            this.tabUnitOfMeasure.Size = new System.Drawing.Size(943, 476);
+            this.tabUnitOfMeasure.Size = new System.Drawing.Size(943, 481);
             this.tabUnitOfMeasure.TabIndex = 5;
             this.tabUnitOfMeasure.Text = "Unidades";
             this.tabUnitOfMeasure.UseVisualStyleBackColor = true;
@@ -632,7 +636,7 @@ namespace Sage50c.API.Sample {
             this.txtUnitOfMeasureName.MaxLength = 0;
             this.txtUnitOfMeasureName.Name = "txtUnitOfMeasureName";
             this.txtUnitOfMeasureName.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUnitOfMeasureName.Size = new System.Drawing.Size(292, 27);
+            this.txtUnitOfMeasureName.Size = new System.Drawing.Size(292, 23);
             this.txtUnitOfMeasureName.TabIndex = 20;
             // 
             // txtUnitOfMeasureId
@@ -645,7 +649,7 @@ namespace Sage50c.API.Sample {
             this.txtUnitOfMeasureId.MaxLength = 0;
             this.txtUnitOfMeasureId.Name = "txtUnitOfMeasureId";
             this.txtUnitOfMeasureId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtUnitOfMeasureId.Size = new System.Drawing.Size(255, 27);
+            this.txtUnitOfMeasureId.Size = new System.Drawing.Size(255, 23);
             this.txtUnitOfMeasureId.TabIndex = 10;
             // 
             // Label63
@@ -658,7 +662,7 @@ namespace Sage50c.API.Sample {
             this.Label63.Location = new System.Drawing.Point(28, 67);
             this.Label63.Name = "Label63";
             this.Label63.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label63.Size = new System.Drawing.Size(80, 20);
+            this.Label63.Size = new System.Drawing.Size(64, 15);
             this.Label63.TabIndex = 179;
             this.Label63.Text = "Descrição:";
             // 
@@ -672,7 +676,7 @@ namespace Sage50c.API.Sample {
             this.Label62.Location = new System.Drawing.Point(28, 39);
             this.Label62.Name = "Label62";
             this.Label62.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label62.Size = new System.Drawing.Size(62, 20);
+            this.Label62.Size = new System.Drawing.Size(48, 15);
             this.Label62.TabIndex = 178;
             this.Label62.Text = "Código:";
             // 
@@ -711,9 +715,9 @@ namespace Sage50c.API.Sample {
             this.tabAccount.Controls.Add(this.Label31);
             this.tabAccount.Controls.Add(this.Label30);
             this.tabAccount.Controls.Add(this.pictureBox1);
-            this.tabAccount.Location = new System.Drawing.Point(4, 29);
+            this.tabAccount.Location = new System.Drawing.Point(4, 24);
             this.tabAccount.Name = "tabAccount";
-            this.tabAccount.Size = new System.Drawing.Size(943, 476);
+            this.tabAccount.Size = new System.Drawing.Size(943, 481);
             this.tabAccount.TabIndex = 4;
             this.tabAccount.Text = "Recibo";
             this.tabAccount.UseVisualStyleBackColor = true;
@@ -737,7 +741,7 @@ namespace Sage50c.API.Sample {
             this.chkAccoutTransPrintPreview.Enabled = false;
             this.chkAccoutTransPrintPreview.Location = new System.Drawing.Point(15, 29);
             this.chkAccoutTransPrintPreview.Name = "chkAccoutTransPrintPreview";
-            this.chkAccoutTransPrintPreview.Size = new System.Drawing.Size(113, 24);
+            this.chkAccoutTransPrintPreview.Size = new System.Drawing.Size(91, 19);
             this.chkAccoutTransPrintPreview.TabIndex = 342;
             this.chkAccoutTransPrintPreview.Text = "Prévisualizar";
             this.chkAccoutTransPrintPreview.UseVisualStyleBackColor = true;
@@ -763,7 +767,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocDate.MaxLength = 0;
             this.txtAccountTransDocDate.Name = "txtAccountTransDocDate";
             this.txtAccountTransDocDate.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocDate.Size = new System.Drawing.Size(81, 27);
+            this.txtAccountTransDocDate.Size = new System.Drawing.Size(81, 23);
             this.txtAccountTransDocDate.TabIndex = 70;
             // 
             // txtAccountTransPaymentId
@@ -776,7 +780,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransPaymentId.MaxLength = 0;
             this.txtAccountTransPaymentId.Name = "txtAccountTransPaymentId";
             this.txtAccountTransPaymentId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransPaymentId.Size = new System.Drawing.Size(68, 27);
+            this.txtAccountTransPaymentId.Size = new System.Drawing.Size(68, 23);
             this.txtAccountTransPaymentId.TabIndex = 80;
             // 
             // txtAccountTransDocValueL2
@@ -789,7 +793,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocValueL2.MaxLength = 0;
             this.txtAccountTransDocValueL2.Name = "txtAccountTransDocValueL2";
             this.txtAccountTransDocValueL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocValueL2.Size = new System.Drawing.Size(77, 27);
+            this.txtAccountTransDocValueL2.Size = new System.Drawing.Size(77, 23);
             this.txtAccountTransDocValueL2.TabIndex = 230;
             this.txtAccountTransDocValueL2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -803,7 +807,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocValueL1.MaxLength = 0;
             this.txtAccountTransDocValueL1.Name = "txtAccountTransDocValueL1";
             this.txtAccountTransDocValueL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocValueL1.Size = new System.Drawing.Size(77, 27);
+            this.txtAccountTransDocValueL1.Size = new System.Drawing.Size(77, 23);
             this.txtAccountTransDocValueL1.TabIndex = 120;
             this.txtAccountTransDocValueL1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -817,7 +821,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransPartyId.MaxLength = 0;
             this.txtAccountTransPartyId.Name = "txtAccountTransPartyId";
             this.txtAccountTransPartyId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransPartyId.Size = new System.Drawing.Size(68, 27);
+            this.txtAccountTransPartyId.Size = new System.Drawing.Size(68, 23);
             this.txtAccountTransPartyId.TabIndex = 60;
             // 
             // txtAccountTransSerial
@@ -830,7 +834,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransSerial.MaxLength = 4;
             this.txtAccountTransSerial.Name = "txtAccountTransSerial";
             this.txtAccountTransSerial.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransSerial.Size = new System.Drawing.Size(39, 27);
+            this.txtAccountTransSerial.Size = new System.Drawing.Size(39, 23);
             this.txtAccountTransSerial.TabIndex = 20;
             // 
             // txtAccountTransDoc
@@ -843,7 +847,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDoc.MaxLength = 4;
             this.txtAccountTransDoc.Name = "txtAccountTransDoc";
             this.txtAccountTransDoc.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDoc.Size = new System.Drawing.Size(39, 27);
+            this.txtAccountTransDoc.Size = new System.Drawing.Size(39, 23);
             this.txtAccountTransDoc.TabIndex = 30;
             // 
             // txtAccountTransDocNumber
@@ -856,7 +860,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocNumber.MaxLength = 0;
             this.txtAccountTransDocNumber.Name = "txtAccountTransDocNumber";
             this.txtAccountTransDocNumber.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocNumber.Size = new System.Drawing.Size(72, 27);
+            this.txtAccountTransDocNumber.Size = new System.Drawing.Size(72, 23);
             this.txtAccountTransDocNumber.TabIndex = 40;
             // 
             // txtAccountTransDocCurrency
@@ -869,7 +873,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocCurrency.MaxLength = 3;
             this.txtAccountTransDocCurrency.Name = "txtAccountTransDocCurrency";
             this.txtAccountTransDocCurrency.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocCurrency.Size = new System.Drawing.Size(51, 27);
+            this.txtAccountTransDocCurrency.Size = new System.Drawing.Size(51, 23);
             this.txtAccountTransDocCurrency.TabIndex = 50;
             // 
             // txtAccountTransDocL1
@@ -882,7 +886,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocL1.MaxLength = 4;
             this.txtAccountTransDocL1.Name = "txtAccountTransDocL1";
             this.txtAccountTransDocL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocL1.Size = new System.Drawing.Size(62, 27);
+            this.txtAccountTransDocL1.Size = new System.Drawing.Size(62, 23);
             this.txtAccountTransDocL1.TabIndex = 100;
             // 
             // txtAccountTransDocL2
@@ -895,7 +899,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocL2.MaxLength = 4;
             this.txtAccountTransDocL2.Name = "txtAccountTransDocL2";
             this.txtAccountTransDocL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocL2.Size = new System.Drawing.Size(62, 27);
+            this.txtAccountTransDocL2.Size = new System.Drawing.Size(62, 23);
             this.txtAccountTransDocL2.TabIndex = 210;
             // 
             // txtAccountTransSeriesL2
@@ -908,7 +912,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransSeriesL2.MaxLength = 4;
             this.txtAccountTransSeriesL2.Name = "txtAccountTransSeriesL2";
             this.txtAccountTransSeriesL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransSeriesL2.Size = new System.Drawing.Size(51, 27);
+            this.txtAccountTransSeriesL2.Size = new System.Drawing.Size(51, 23);
             this.txtAccountTransSeriesL2.TabIndex = 200;
             // 
             // txtAccountTransDocNumberL2
@@ -921,7 +925,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocNumberL2.MaxLength = 0;
             this.txtAccountTransDocNumberL2.Name = "txtAccountTransDocNumberL2";
             this.txtAccountTransDocNumberL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocNumberL2.Size = new System.Drawing.Size(62, 27);
+            this.txtAccountTransDocNumberL2.Size = new System.Drawing.Size(62, 23);
             this.txtAccountTransDocNumberL2.TabIndex = 220;
             this.txtAccountTransDocNumberL2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -935,7 +939,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransSeriesL1.MaxLength = 4;
             this.txtAccountTransSeriesL1.Name = "txtAccountTransSeriesL1";
             this.txtAccountTransSeriesL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransSeriesL1.Size = new System.Drawing.Size(51, 27);
+            this.txtAccountTransSeriesL1.Size = new System.Drawing.Size(51, 23);
             this.txtAccountTransSeriesL1.TabIndex = 90;
             // 
             // txtAccountTransDocNumberL1
@@ -948,7 +952,7 @@ namespace Sage50c.API.Sample {
             this.txtAccountTransDocNumberL1.MaxLength = 0;
             this.txtAccountTransDocNumberL1.Name = "txtAccountTransDocNumberL1";
             this.txtAccountTransDocNumberL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAccountTransDocNumberL1.Size = new System.Drawing.Size(62, 27);
+            this.txtAccountTransDocNumberL1.Size = new System.Drawing.Size(62, 23);
             this.txtAccountTransDocNumberL1.TabIndex = 110;
             this.txtAccountTransDocNumberL1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -962,7 +966,7 @@ namespace Sage50c.API.Sample {
             this.label35.Location = new System.Drawing.Point(450, 37);
             this.label35.Name = "label35";
             this.label35.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label35.Size = new System.Drawing.Size(42, 20);
+            this.label35.Size = new System.Drawing.Size(33, 15);
             this.label35.TabIndex = 336;
             this.label35.Text = "Data";
             // 
@@ -976,7 +980,7 @@ namespace Sage50c.API.Sample {
             this.label33.Location = new System.Drawing.Point(314, 38);
             this.label33.Name = "label33";
             this.label33.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label33.Size = new System.Drawing.Size(57, 20);
+            this.label33.Size = new System.Drawing.Size(45, 15);
             this.label33.TabIndex = 334;
             this.label33.Text = "Moeda";
             // 
@@ -990,7 +994,7 @@ namespace Sage50c.API.Sample {
             this.lblAccountTransDocNumber.Location = new System.Drawing.Point(234, 38);
             this.lblAccountTransDocNumber.Name = "lblAccountTransDocNumber";
             this.lblAccountTransDocNumber.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblAccountTransDocNumber.Size = new System.Drawing.Size(67, 20);
+            this.lblAccountTransDocNumber.Size = new System.Drawing.Size(53, 15);
             this.lblAccountTransDocNumber.TabIndex = 333;
             this.lblAccountTransDocNumber.Text = "Número";
             this.lblAccountTransDocNumber.Click += new System.EventHandler(this.lblAccountTransDocNumber_Click);
@@ -1005,7 +1009,7 @@ namespace Sage50c.API.Sample {
             this.label15.Location = new System.Drawing.Point(190, 38);
             this.label15.Name = "label15";
             this.label15.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label15.Size = new System.Drawing.Size(40, 20);
+            this.label15.Size = new System.Drawing.Size(32, 15);
             this.label15.TabIndex = 332;
             this.label15.Text = "Doc.";
             // 
@@ -1019,7 +1023,7 @@ namespace Sage50c.API.Sample {
             this.label14.Location = new System.Drawing.Point(142, 38);
             this.label14.Name = "label14";
             this.label14.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label14.Size = new System.Drawing.Size(43, 20);
+            this.label14.Size = new System.Drawing.Size(36, 15);
             this.label14.TabIndex = 331;
             this.label14.Text = "Serie";
             // 
@@ -1035,7 +1039,7 @@ namespace Sage50c.API.Sample {
             this.cmbRecPeg.Location = new System.Drawing.Point(45, 57);
             this.cmbRecPeg.Name = "cmbRecPeg";
             this.cmbRecPeg.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmbRecPeg.Size = new System.Drawing.Size(89, 28);
+            this.cmbRecPeg.Size = new System.Drawing.Size(89, 23);
             this.cmbRecPeg.TabIndex = 10;
             this.cmbRecPeg.SelectedIndexChanged += new System.EventHandler(this.cmbRecPeg_SelectedIndexChanged);
             // 
@@ -1092,7 +1096,7 @@ namespace Sage50c.API.Sample {
             this.Label36.Location = new System.Drawing.Point(399, 149);
             this.Label36.Name = "Label36";
             this.Label36.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label36.Size = new System.Drawing.Size(45, 20);
+            this.Label36.Size = new System.Drawing.Size(35, 15);
             this.Label36.TabIndex = 322;
             this.Label36.Text = "Valor";
             // 
@@ -1106,7 +1110,7 @@ namespace Sage50c.API.Sample {
             this.lblAccountPartyId.Location = new System.Drawing.Point(374, 38);
             this.lblAccountPartyId.Name = "lblAccountPartyId";
             this.lblAccountPartyId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblAccountPartyId.Size = new System.Drawing.Size(57, 20);
+            this.lblAccountPartyId.Size = new System.Drawing.Size(46, 15);
             this.lblAccountPartyId.TabIndex = 319;
             this.lblAccountPartyId.Text = "Cliente";
             // 
@@ -1120,7 +1124,7 @@ namespace Sage50c.API.Sample {
             this.Label34.Location = new System.Drawing.Point(194, 149);
             this.Label34.Name = "Label34";
             this.Label34.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label34.Size = new System.Drawing.Size(91, 20);
+            this.Label34.Size = new System.Drawing.Size(73, 15);
             this.Label34.TabIndex = 317;
             this.Label34.Text = "Documento";
             // 
@@ -1134,7 +1138,7 @@ namespace Sage50c.API.Sample {
             this._Label15_4.Location = new System.Drawing.Point(268, 149);
             this._Label15_4.Name = "_Label15_4";
             this._Label15_4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._Label15_4.Size = new System.Drawing.Size(67, 20);
+            this._Label15_4.Size = new System.Drawing.Size(53, 15);
             this._Label15_4.TabIndex = 316;
             this._Label15_4.Text = "Numero";
             // 
@@ -1148,7 +1152,7 @@ namespace Sage50c.API.Sample {
             this.Label32.Location = new System.Drawing.Point(128, 149);
             this.Label32.Name = "Label32";
             this.Label32.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label32.Size = new System.Drawing.Size(43, 20);
+            this.Label32.Size = new System.Drawing.Size(36, 15);
             this.Label32.TabIndex = 314;
             this.Label32.Text = "Serie";
             // 
@@ -1252,9 +1256,9 @@ namespace Sage50c.API.Sample {
             this.tabBuySaleTransaction.Controls.Add(this._Label15_5);
             this.tabBuySaleTransaction.Controls.Add(this.lblTransDocNumber);
             this.tabBuySaleTransaction.Controls.Add(this.Label25);
-            this.tabBuySaleTransaction.Location = new System.Drawing.Point(4, 29);
+            this.tabBuySaleTransaction.Location = new System.Drawing.Point(4, 24);
             this.tabBuySaleTransaction.Name = "tabBuySaleTransaction";
-            this.tabBuySaleTransaction.Size = new System.Drawing.Size(943, 476);
+            this.tabBuySaleTransaction.Size = new System.Drawing.Size(943, 481);
             this.tabBuySaleTransaction.TabIndex = 3;
             this.tabBuySaleTransaction.Text = "Compra/Venda/Stock";
             // 
@@ -1294,7 +1298,7 @@ namespace Sage50c.API.Sample {
             this.txtQrCode.MaxLength = 0;
             this.txtQrCode.Name = "txtQrCode";
             this.txtQrCode.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtQrCode.Size = new System.Drawing.Size(303, 27);
+            this.txtQrCode.Size = new System.Drawing.Size(303, 23);
             this.txtQrCode.TabIndex = 413;
             // 
             // txtAtcud
@@ -1307,7 +1311,7 @@ namespace Sage50c.API.Sample {
             this.txtAtcud.MaxLength = 0;
             this.txtAtcud.Name = "txtAtcud";
             this.txtAtcud.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAtcud.Size = new System.Drawing.Size(59, 27);
+            this.txtAtcud.Size = new System.Drawing.Size(59, 23);
             this.txtAtcud.TabIndex = 412;
             // 
             // txtTransTime
@@ -1320,7 +1324,7 @@ namespace Sage50c.API.Sample {
             this.txtTransTime.MaxLength = 0;
             this.txtTransTime.Name = "txtTransTime";
             this.txtTransTime.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransTime.Size = new System.Drawing.Size(62, 27);
+            this.txtTransTime.Size = new System.Drawing.Size(62, 23);
             this.txtTransTime.TabIndex = 45;
             // 
             // label39
@@ -1352,7 +1356,7 @@ namespace Sage50c.API.Sample {
             this.rbTransStockDecompose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransStockDecompose.Location = new System.Drawing.Point(390, 25);
             this.rbTransStockDecompose.Name = "rbTransStockDecompose";
-            this.rbTransStockDecompose.Size = new System.Drawing.Size(135, 24);
+            this.rbTransStockDecompose.Size = new System.Drawing.Size(107, 19);
             this.rbTransStockDecompose.TabIndex = 407;
             this.rbTransStockDecompose.TabStop = true;
             this.rbTransStockDecompose.Text = "Transformação";
@@ -1365,7 +1369,7 @@ namespace Sage50c.API.Sample {
             this.rbTransStockCompose.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransStockCompose.Location = new System.Drawing.Point(288, 26);
             this.rbTransStockCompose.Name = "rbTransStockCompose";
-            this.rbTransStockCompose.Size = new System.Drawing.Size(104, 24);
+            this.rbTransStockCompose.Size = new System.Drawing.Size(83, 19);
             this.rbTransStockCompose.TabIndex = 406;
             this.rbTransStockCompose.TabStop = true;
             this.rbTransStockCompose.Text = "Fabricação";
@@ -1453,14 +1457,14 @@ namespace Sage50c.API.Sample {
             // 
             this.txtPaymentID.Location = new System.Drawing.Point(643, 124);
             this.txtPaymentID.Name = "txtPaymentID";
-            this.txtPaymentID.Size = new System.Drawing.Size(72, 27);
+            this.txtPaymentID.Size = new System.Drawing.Size(72, 23);
             this.txtPaymentID.TabIndex = 346;
             // 
             // txtTenderID
             // 
             this.txtTenderID.Location = new System.Drawing.Point(643, 80);
             this.txtTenderID.Name = "txtTenderID";
-            this.txtTenderID.Size = new System.Drawing.Size(72, 27);
+            this.txtTenderID.Size = new System.Drawing.Size(72, 23);
             this.txtTenderID.TabIndex = 85;
             // 
             // txtTransFactorL2
@@ -1473,7 +1477,7 @@ namespace Sage50c.API.Sample {
             this.txtTransFactorL2.MaxLength = 0;
             this.txtTransFactorL2.Name = "txtTransFactorL2";
             this.txtTransFactorL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransFactorL2.Size = new System.Drawing.Size(39, 27);
+            this.txtTransFactorL2.Size = new System.Drawing.Size(39, 23);
             this.txtTransFactorL2.TabIndex = 260;
             this.txtTransFactorL2.Visible = false;
             // 
@@ -1487,7 +1491,7 @@ namespace Sage50c.API.Sample {
             this.txtTransFactorL1.MaxLength = 0;
             this.txtTransFactorL1.Name = "txtTransFactorL1";
             this.txtTransFactorL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransFactorL1.Size = new System.Drawing.Size(39, 27);
+            this.txtTransFactorL1.Size = new System.Drawing.Size(39, 23);
             this.txtTransFactorL1.TabIndex = 160;
             this.txtTransFactorL1.Visible = false;
             // 
@@ -1501,7 +1505,7 @@ namespace Sage50c.API.Sample {
             this.txtTransUnL2.MaxLength = 0;
             this.txtTransUnL2.Name = "txtTransUnL2";
             this.txtTransUnL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransUnL2.Size = new System.Drawing.Size(39, 27);
+            this.txtTransUnL2.Size = new System.Drawing.Size(39, 23);
             this.txtTransUnL2.TabIndex = 250;
             // 
             // txtTransUnL1
@@ -1514,7 +1518,7 @@ namespace Sage50c.API.Sample {
             this.txtTransUnL1.MaxLength = 0;
             this.txtTransUnL1.Name = "txtTransUnL1";
             this.txtTransUnL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransUnL1.Size = new System.Drawing.Size(39, 27);
+            this.txtTransUnL1.Size = new System.Drawing.Size(39, 23);
             this.txtTransUnL1.TabIndex = 150;
             // 
             // txtTransTaxRateL1
@@ -1527,7 +1531,7 @@ namespace Sage50c.API.Sample {
             this.txtTransTaxRateL1.MaxLength = 0;
             this.txtTransTaxRateL1.Name = "txtTransTaxRateL1";
             this.txtTransTaxRateL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransTaxRateL1.Size = new System.Drawing.Size(39, 27);
+            this.txtTransTaxRateL1.Size = new System.Drawing.Size(39, 23);
             this.txtTransTaxRateL1.TabIndex = 140;
             // 
             // txtTransTaxRateL2
@@ -1540,7 +1544,7 @@ namespace Sage50c.API.Sample {
             this.txtTransTaxRateL2.MaxLength = 0;
             this.txtTransTaxRateL2.Name = "txtTransTaxRateL2";
             this.txtTransTaxRateL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransTaxRateL2.Size = new System.Drawing.Size(39, 27);
+            this.txtTransTaxRateL2.Size = new System.Drawing.Size(39, 23);
             this.txtTransTaxRateL2.TabIndex = 240;
             // 
             // txtTransItemL1
@@ -1553,7 +1557,7 @@ namespace Sage50c.API.Sample {
             this.txtTransItemL1.MaxLength = 0;
             this.txtTransItemL1.Name = "txtTransItemL1";
             this.txtTransItemL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransItemL1.Size = new System.Drawing.Size(77, 27);
+            this.txtTransItemL1.Size = new System.Drawing.Size(77, 23);
             this.txtTransItemL1.TabIndex = 110;
             // 
             // txtTransUnitPriceL1
@@ -1566,7 +1570,7 @@ namespace Sage50c.API.Sample {
             this.txtTransUnitPriceL1.MaxLength = 0;
             this.txtTransUnitPriceL1.Name = "txtTransUnitPriceL1";
             this.txtTransUnitPriceL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransUnitPriceL1.Size = new System.Drawing.Size(77, 27);
+            this.txtTransUnitPriceL1.Size = new System.Drawing.Size(77, 23);
             this.txtTransUnitPriceL1.TabIndex = 120;
             // 
             // txtTransQuantityL2
@@ -1579,7 +1583,7 @@ namespace Sage50c.API.Sample {
             this.txtTransQuantityL2.MaxLength = 0;
             this.txtTransQuantityL2.Name = "txtTransQuantityL2";
             this.txtTransQuantityL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransQuantityL2.Size = new System.Drawing.Size(77, 27);
+            this.txtTransQuantityL2.Size = new System.Drawing.Size(77, 23);
             this.txtTransQuantityL2.TabIndex = 230;
             // 
             // txtTransQuantityL1
@@ -1592,7 +1596,7 @@ namespace Sage50c.API.Sample {
             this.txtTransQuantityL1.MaxLength = 0;
             this.txtTransQuantityL1.Name = "txtTransQuantityL1";
             this.txtTransQuantityL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransQuantityL1.Size = new System.Drawing.Size(77, 27);
+            this.txtTransQuantityL1.Size = new System.Drawing.Size(77, 23);
             this.txtTransQuantityL1.TabIndex = 130;
             // 
             // txtTransItemL2
@@ -1605,7 +1609,7 @@ namespace Sage50c.API.Sample {
             this.txtTransItemL2.MaxLength = 0;
             this.txtTransItemL2.Name = "txtTransItemL2";
             this.txtTransItemL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransItemL2.Size = new System.Drawing.Size(77, 27);
+            this.txtTransItemL2.Size = new System.Drawing.Size(77, 23);
             this.txtTransItemL2.TabIndex = 210;
             // 
             // txtTransUnitPriceL2
@@ -1618,7 +1622,7 @@ namespace Sage50c.API.Sample {
             this.txtTransUnitPriceL2.MaxLength = 0;
             this.txtTransUnitPriceL2.Name = "txtTransUnitPriceL2";
             this.txtTransUnitPriceL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransUnitPriceL2.Size = new System.Drawing.Size(77, 27);
+            this.txtTransUnitPriceL2.Size = new System.Drawing.Size(77, 23);
             this.txtTransUnitPriceL2.TabIndex = 220;
             // 
             // txtTransWarehouseL2
@@ -1631,7 +1635,7 @@ namespace Sage50c.API.Sample {
             this.txtTransWarehouseL2.MaxLength = 0;
             this.txtTransWarehouseL2.Name = "txtTransWarehouseL2";
             this.txtTransWarehouseL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransWarehouseL2.Size = new System.Drawing.Size(77, 27);
+            this.txtTransWarehouseL2.Size = new System.Drawing.Size(77, 23);
             this.txtTransWarehouseL2.TabIndex = 200;
             // 
             // txtTransWarehouseL1
@@ -1644,7 +1648,7 @@ namespace Sage50c.API.Sample {
             this.txtTransWarehouseL1.MaxLength = 0;
             this.txtTransWarehouseL1.Name = "txtTransWarehouseL1";
             this.txtTransWarehouseL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransWarehouseL1.Size = new System.Drawing.Size(77, 27);
+            this.txtTransWarehouseL1.Size = new System.Drawing.Size(77, 23);
             this.txtTransWarehouseL1.TabIndex = 100;
             // 
             // txtTransGlobalDiscount
@@ -1657,7 +1661,7 @@ namespace Sage50c.API.Sample {
             this.txtTransGlobalDiscount.MaxLength = 0;
             this.txtTransGlobalDiscount.Name = "txtTransGlobalDiscount";
             this.txtTransGlobalDiscount.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransGlobalDiscount.Size = new System.Drawing.Size(58, 27);
+            this.txtTransGlobalDiscount.Size = new System.Drawing.Size(58, 23);
             this.txtTransGlobalDiscount.TabIndex = 80;
             // 
             // txtTransPartyId
@@ -1670,7 +1674,7 @@ namespace Sage50c.API.Sample {
             this.txtTransPartyId.MaxLength = 0;
             this.txtTransPartyId.Name = "txtTransPartyId";
             this.txtTransPartyId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransPartyId.Size = new System.Drawing.Size(68, 27);
+            this.txtTransPartyId.Size = new System.Drawing.Size(68, 23);
             this.txtTransPartyId.TabIndex = 70;
             // 
             // txtTransCurrency
@@ -1683,7 +1687,7 @@ namespace Sage50c.API.Sample {
             this.txtTransCurrency.MaxLength = 0;
             this.txtTransCurrency.Name = "txtTransCurrency";
             this.txtTransCurrency.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransCurrency.Size = new System.Drawing.Size(41, 27);
+            this.txtTransCurrency.Size = new System.Drawing.Size(41, 23);
             this.txtTransCurrency.TabIndex = 50;
             // 
             // txtTransDate
@@ -1696,7 +1700,7 @@ namespace Sage50c.API.Sample {
             this.txtTransDate.MaxLength = 0;
             this.txtTransDate.Name = "txtTransDate";
             this.txtTransDate.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransDate.Size = new System.Drawing.Size(76, 27);
+            this.txtTransDate.Size = new System.Drawing.Size(76, 23);
             this.txtTransDate.TabIndex = 40;
             // 
             // txtTransDocNumber
@@ -1709,7 +1713,7 @@ namespace Sage50c.API.Sample {
             this.txtTransDocNumber.MaxLength = 0;
             this.txtTransDocNumber.Name = "txtTransDocNumber";
             this.txtTransDocNumber.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransDocNumber.Size = new System.Drawing.Size(47, 27);
+            this.txtTransDocNumber.Size = new System.Drawing.Size(47, 23);
             this.txtTransDocNumber.TabIndex = 30;
             // 
             // txtTransSerial
@@ -1722,7 +1726,7 @@ namespace Sage50c.API.Sample {
             this.txtTransSerial.MaxLength = 0;
             this.txtTransSerial.Name = "txtTransSerial";
             this.txtTransSerial.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransSerial.Size = new System.Drawing.Size(39, 27);
+            this.txtTransSerial.Size = new System.Drawing.Size(39, 23);
             this.txtTransSerial.TabIndex = 20;
             // 
             // txtTransDoc
@@ -1735,7 +1739,7 @@ namespace Sage50c.API.Sample {
             this.txtTransDoc.MaxLength = 0;
             this.txtTransDoc.Name = "txtTransDoc";
             this.txtTransDoc.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransDoc.Size = new System.Drawing.Size(39, 27);
+            this.txtTransDoc.Size = new System.Drawing.Size(39, 23);
             this.txtTransDoc.TabIndex = 10;
             // 
             // lblPaymentID
@@ -1842,7 +1846,7 @@ namespace Sage50c.API.Sample {
             this.optPrintOptions1.AutoSize = true;
             this.optPrintOptions1.Location = new System.Drawing.Point(20, 51);
             this.optPrintOptions1.Name = "optPrintOptions1";
-            this.optPrintOptions1.Size = new System.Drawing.Size(150, 24);
+            this.optPrintOptions1.Size = new System.Drawing.Size(119, 19);
             this.optPrintOptions1.TabIndex = 344;
             this.optPrintOptions1.Text = "Exportar para PDF";
             this.optPrintOptions1.UseVisualStyleBackColor = true;
@@ -1853,7 +1857,7 @@ namespace Sage50c.API.Sample {
             this.optPrintOptions0.Checked = true;
             this.optPrintOptions0.Location = new System.Drawing.Point(20, 24);
             this.optPrintOptions0.Name = "optPrintOptions0";
-            this.optPrintOptions0.Size = new System.Drawing.Size(87, 24);
+            this.optPrintOptions0.Size = new System.Drawing.Size(71, 19);
             this.optPrintOptions0.TabIndex = 343;
             this.optPrintOptions0.TabStop = true;
             this.optPrintOptions0.Text = "Imprimir";
@@ -1865,7 +1869,7 @@ namespace Sage50c.API.Sample {
             this.chkPrintPreview.Enabled = false;
             this.chkPrintPreview.Location = new System.Drawing.Point(120, 24);
             this.chkPrintPreview.Name = "chkPrintPreview";
-            this.chkPrintPreview.Size = new System.Drawing.Size(113, 24);
+            this.chkPrintPreview.Size = new System.Drawing.Size(91, 19);
             this.chkPrintPreview.TabIndex = 342;
             this.chkPrintPreview.Text = "Prévisualizar";
             this.chkPrintPreview.UseVisualStyleBackColor = true;
@@ -1887,7 +1891,7 @@ namespace Sage50c.API.Sample {
             this.rbTransStock.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransStock.Location = new System.Drawing.Point(188, 25);
             this.rbTransStock.Name = "rbTransStock";
-            this.rbTransStock.Size = new System.Drawing.Size(68, 24);
+            this.rbTransStock.Size = new System.Drawing.Size(57, 19);
             this.rbTransStock.TabIndex = 335;
             this.rbTransStock.Text = "Stock";
             this.rbTransStock.UseVisualStyleBackColor = true;
@@ -1900,7 +1904,7 @@ namespace Sage50c.API.Sample {
             this.rbTransBuySell.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTransBuySell.Location = new System.Drawing.Point(37, 25);
             this.rbTransBuySell.Name = "rbTransBuySell";
-            this.rbTransBuySell.Size = new System.Drawing.Size(143, 24);
+            this.rbTransBuySell.Size = new System.Drawing.Size(113, 19);
             this.rbTransBuySell.TabIndex = 334;
             this.rbTransBuySell.TabStop = true;
             this.rbTransBuySell.Text = "Compra / Venda";
@@ -1922,9 +1926,9 @@ namespace Sage50c.API.Sample {
             // 
             this.tabTransModuleProps.Controls.Add(this.pnlTransModuleProp);
             this.tabTransModuleProps.Controls.Add(this.chkTransModuleProps);
-            this.tabTransModuleProps.Location = new System.Drawing.Point(4, 29);
+            this.tabTransModuleProps.Location = new System.Drawing.Point(4, 24);
             this.tabTransModuleProps.Name = "tabTransModuleProps";
-            this.tabTransModuleProps.Size = new System.Drawing.Size(555, 168);
+            this.tabTransModuleProps.Size = new System.Drawing.Size(555, 173);
             this.tabTransModuleProps.TabIndex = 0;
             this.tabTransModuleProps.Text = "Propriedades (NS)";
             this.tabTransModuleProps.UseVisualStyleBackColor = true;
@@ -1940,9 +1944,9 @@ namespace Sage50c.API.Sample {
             this.pnlTransModuleProp.Controls.Add(this.lblTransPropNameL2);
             this.pnlTransModuleProp.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTransModuleProp.Enabled = false;
-            this.pnlTransModuleProp.Location = new System.Drawing.Point(0, 36);
+            this.pnlTransModuleProp.Location = new System.Drawing.Point(0, 31);
             this.pnlTransModuleProp.Name = "pnlTransModuleProp";
-            this.pnlTransModuleProp.Size = new System.Drawing.Size(555, 132);
+            this.pnlTransModuleProp.Size = new System.Drawing.Size(555, 142);
             this.pnlTransModuleProp.TabIndex = 348;
             // 
             // txtTransPropValueL1
@@ -1955,7 +1959,7 @@ namespace Sage50c.API.Sample {
             this.txtTransPropValueL1.MaxLength = 0;
             this.txtTransPropValueL1.Name = "txtTransPropValueL1";
             this.txtTransPropValueL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransPropValueL1.Size = new System.Drawing.Size(194, 27);
+            this.txtTransPropValueL1.Size = new System.Drawing.Size(194, 23);
             this.txtTransPropValueL1.TabIndex = 320;
             // 
             // txtTransPropValueL2
@@ -1968,7 +1972,7 @@ namespace Sage50c.API.Sample {
             this.txtTransPropValueL2.MaxLength = 0;
             this.txtTransPropValueL2.Name = "txtTransPropValueL2";
             this.txtTransPropValueL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransPropValueL2.Size = new System.Drawing.Size(194, 27);
+            this.txtTransPropValueL2.Size = new System.Drawing.Size(194, 23);
             this.txtTransPropValueL2.TabIndex = 340;
             // 
             // btnTransClearNSL2
@@ -2022,7 +2026,7 @@ namespace Sage50c.API.Sample {
             this.lblTransPropNameL1.Location = new System.Drawing.Point(24, 43);
             this.lblTransPropNameL1.Name = "lblTransPropNameL1";
             this.lblTransPropNameL1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblTransPropNameL1.Size = new System.Drawing.Size(50, 20);
+            this.lblTransPropNameL1.Size = new System.Drawing.Size(39, 15);
             this.lblTransPropNameL1.TabIndex = 353;
             this.lblTransPropNameL1.Text = "NS L1";
             // 
@@ -2036,7 +2040,7 @@ namespace Sage50c.API.Sample {
             this.lblTransPropNameL2.Location = new System.Drawing.Point(24, 70);
             this.lblTransPropNameL2.Name = "lblTransPropNameL2";
             this.lblTransPropNameL2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblTransPropNameL2.Size = new System.Drawing.Size(50, 20);
+            this.lblTransPropNameL2.Size = new System.Drawing.Size(39, 15);
             this.lblTransPropNameL2.TabIndex = 352;
             this.lblTransPropNameL2.Text = "NS L2";
             // 
@@ -2048,7 +2052,7 @@ namespace Sage50c.API.Sample {
             this.chkTransModuleProps.Location = new System.Drawing.Point(0, 0);
             this.chkTransModuleProps.Name = "chkTransModuleProps";
             this.chkTransModuleProps.Padding = new System.Windows.Forms.Padding(12, 12, 0, 0);
-            this.chkTransModuleProps.Size = new System.Drawing.Size(555, 36);
+            this.chkTransModuleProps.Size = new System.Drawing.Size(555, 31);
             this.chkTransModuleProps.TabIndex = 310;
             this.chkTransModuleProps.Text = "Propriedades: Numeros Série, Lotes, etc...";
             this.chkTransModuleProps.UseVisualStyleBackColor = true;
@@ -2058,9 +2062,9 @@ namespace Sage50c.API.Sample {
             // 
             this.tabTransModuleSizeColor.Controls.Add(this.pnlTransModuleSizeColor);
             this.tabTransModuleSizeColor.Controls.Add(this.chkTransModuleSizeColor);
-            this.tabTransModuleSizeColor.Location = new System.Drawing.Point(4, 29);
+            this.tabTransModuleSizeColor.Location = new System.Drawing.Point(4, 24);
             this.tabTransModuleSizeColor.Name = "tabTransModuleSizeColor";
-            this.tabTransModuleSizeColor.Size = new System.Drawing.Size(555, 168);
+            this.tabTransModuleSizeColor.Size = new System.Drawing.Size(555, 173);
             this.tabTransModuleSizeColor.TabIndex = 2;
             this.tabTransModuleSizeColor.Text = "Tamanhos e cores";
             this.tabTransModuleSizeColor.UseVisualStyleBackColor = true;
@@ -2076,9 +2080,9 @@ namespace Sage50c.API.Sample {
             this.pnlTransModuleSizeColor.Controls.Add(this.Label94);
             this.pnlTransModuleSizeColor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTransModuleSizeColor.Enabled = false;
-            this.pnlTransModuleSizeColor.Location = new System.Drawing.Point(0, 36);
+            this.pnlTransModuleSizeColor.Location = new System.Drawing.Point(0, 31);
             this.pnlTransModuleSizeColor.Name = "pnlTransModuleSizeColor";
-            this.pnlTransModuleSizeColor.Size = new System.Drawing.Size(555, 132);
+            this.pnlTransModuleSizeColor.Size = new System.Drawing.Size(555, 142);
             this.pnlTransModuleSizeColor.TabIndex = 360;
             // 
             // btnTransClearSize1
@@ -2119,7 +2123,7 @@ namespace Sage50c.API.Sample {
             this.txtTransColor1.MaxLength = 0;
             this.txtTransColor1.Name = "txtTransColor1";
             this.txtTransColor1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransColor1.Size = new System.Drawing.Size(194, 27);
+            this.txtTransColor1.Size = new System.Drawing.Size(194, 23);
             this.txtTransColor1.TabIndex = 530;
             // 
             // txtTransSize1
@@ -2132,7 +2136,7 @@ namespace Sage50c.API.Sample {
             this.txtTransSize1.MaxLength = 0;
             this.txtTransSize1.Name = "txtTransSize1";
             this.txtTransSize1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtTransSize1.Size = new System.Drawing.Size(194, 27);
+            this.txtTransSize1.Size = new System.Drawing.Size(194, 23);
             this.txtTransSize1.TabIndex = 510;
             // 
             // Label96
@@ -2182,7 +2186,7 @@ namespace Sage50c.API.Sample {
             this.chkTransModuleSizeColor.Location = new System.Drawing.Point(0, 0);
             this.chkTransModuleSizeColor.Name = "chkTransModuleSizeColor";
             this.chkTransModuleSizeColor.Padding = new System.Windows.Forms.Padding(12, 12, 0, 0);
-            this.chkTransModuleSizeColor.Size = new System.Drawing.Size(555, 36);
+            this.chkTransModuleSizeColor.Size = new System.Drawing.Size(555, 31);
             this.chkTransModuleSizeColor.TabIndex = 500;
             this.chkTransModuleSizeColor.Text = "Tam. e Cores (apenas linha 1 do documento)";
             this.chkTransModuleSizeColor.UseVisualStyleBackColor = true;
@@ -2193,10 +2197,10 @@ namespace Sage50c.API.Sample {
             this.tbBuyShareOtherCosts.Controls.Add(this.btnClearRep1);
             this.tbBuyShareOtherCosts.Controls.Add(this.gbShareCost_2);
             this.tbBuyShareOtherCosts.Controls.Add(this.gbShareCost_1);
-            this.tbBuyShareOtherCosts.Location = new System.Drawing.Point(4, 29);
+            this.tbBuyShareOtherCosts.Location = new System.Drawing.Point(4, 24);
             this.tbBuyShareOtherCosts.Name = "tbBuyShareOtherCosts";
             this.tbBuyShareOtherCosts.Padding = new System.Windows.Forms.Padding(3);
-            this.tbBuyShareOtherCosts.Size = new System.Drawing.Size(555, 168);
+            this.tbBuyShareOtherCosts.Size = new System.Drawing.Size(555, 173);
             this.tbBuyShareOtherCosts.TabIndex = 3;
             this.tbBuyShareOtherCosts.Text = "Repartição de Custos";
             this.tbBuyShareOtherCosts.UseVisualStyleBackColor = true;
@@ -2237,28 +2241,28 @@ namespace Sage50c.API.Sample {
             // 
             this.txtShareTransDocument_R2.Location = new System.Drawing.Point(7, 42);
             this.txtShareTransDocument_R2.Name = "txtShareTransDocument_R2";
-            this.txtShareTransDocument_R2.Size = new System.Drawing.Size(42, 27);
+            this.txtShareTransDocument_R2.Size = new System.Drawing.Size(42, 23);
             this.txtShareTransDocument_R2.TabIndex = 3;
             // 
             // txtShareTransSerial_R2
             // 
             this.txtShareTransSerial_R2.Location = new System.Drawing.Point(59, 42);
             this.txtShareTransSerial_R2.Name = "txtShareTransSerial_R2";
-            this.txtShareTransSerial_R2.Size = new System.Drawing.Size(44, 27);
+            this.txtShareTransSerial_R2.Size = new System.Drawing.Size(44, 23);
             this.txtShareTransSerial_R2.TabIndex = 4;
             // 
             // txtShareTransDocNumber_R2
             // 
             this.txtShareTransDocNumber_R2.Location = new System.Drawing.Point(114, 42);
             this.txtShareTransDocNumber_R2.Name = "txtShareTransDocNumber_R2";
-            this.txtShareTransDocNumber_R2.Size = new System.Drawing.Size(56, 27);
+            this.txtShareTransDocNumber_R2.Size = new System.Drawing.Size(56, 23);
             this.txtShareTransDocNumber_R2.TabIndex = 5;
             // 
             // txtShareAmount_R2
             // 
             this.txtShareAmount_R2.Location = new System.Drawing.Point(180, 42);
             this.txtShareAmount_R2.Name = "txtShareAmount_R2";
-            this.txtShareAmount_R2.Size = new System.Drawing.Size(63, 27);
+            this.txtShareAmount_R2.Size = new System.Drawing.Size(63, 23);
             this.txtShareAmount_R2.TabIndex = 6;
             // 
             // label41
@@ -2310,7 +2314,7 @@ namespace Sage50c.API.Sample {
             this.label52.Location = new System.Drawing.Point(196, 19);
             this.label52.Name = "label52";
             this.label52.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label52.Size = new System.Drawing.Size(45, 20);
+            this.label52.Size = new System.Drawing.Size(35, 15);
             this.label52.TabIndex = 311;
             this.label52.Text = "Valor";
             // 
@@ -2366,7 +2370,7 @@ namespace Sage50c.API.Sample {
             // 
             this.txtShareTransDocument_R1.Location = new System.Drawing.Point(9, 42);
             this.txtShareTransDocument_R1.Name = "txtShareTransDocument_R1";
-            this.txtShareTransDocument_R1.Size = new System.Drawing.Size(42, 27);
+            this.txtShareTransDocument_R1.Size = new System.Drawing.Size(42, 23);
             this.txtShareTransDocument_R1.TabIndex = 3;
             this.txtShareTransDocument_R1.LostFocus += new System.EventHandler(this.txtShareTransDocument_R1_LostFocus);
             // 
@@ -2374,7 +2378,7 @@ namespace Sage50c.API.Sample {
             // 
             this.txtShareTransSerial_R1.Location = new System.Drawing.Point(62, 42);
             this.txtShareTransSerial_R1.Name = "txtShareTransSerial_R1";
-            this.txtShareTransSerial_R1.Size = new System.Drawing.Size(44, 27);
+            this.txtShareTransSerial_R1.Size = new System.Drawing.Size(44, 23);
             this.txtShareTransSerial_R1.TabIndex = 4;
             this.txtShareTransSerial_R1.LostFocus += new System.EventHandler(this.txtShareTransSerial_R1_LostFocus);
             // 
@@ -2382,7 +2386,7 @@ namespace Sage50c.API.Sample {
             // 
             this.txtShareTransDocNumber_R1.Location = new System.Drawing.Point(116, 42);
             this.txtShareTransDocNumber_R1.Name = "txtShareTransDocNumber_R1";
-            this.txtShareTransDocNumber_R1.Size = new System.Drawing.Size(56, 27);
+            this.txtShareTransDocNumber_R1.Size = new System.Drawing.Size(56, 23);
             this.txtShareTransDocNumber_R1.TabIndex = 5;
             this.txtShareTransDocNumber_R1.LostFocus += new System.EventHandler(this.txtShareTransDocNumber_R1_LostFocus);
             // 
@@ -2396,14 +2400,14 @@ namespace Sage50c.API.Sample {
             this.txtAmout_R1_L1.MaxLength = 0;
             this.txtAmout_R1_L1.Name = "txtAmout_R1_L1";
             this.txtAmout_R1_L1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAmout_R1_L1.Size = new System.Drawing.Size(63, 27);
+            this.txtAmout_R1_L1.Size = new System.Drawing.Size(63, 23);
             this.txtAmout_R1_L1.TabIndex = 327;
             // 
             // txtShareAmount_R1
             // 
             this.txtShareAmount_R1.Location = new System.Drawing.Point(183, 42);
             this.txtShareAmount_R1.Name = "txtShareAmount_R1";
-            this.txtShareAmount_R1.Size = new System.Drawing.Size(63, 27);
+            this.txtShareAmount_R1.Size = new System.Drawing.Size(63, 23);
             this.txtShareAmount_R1.TabIndex = 6;
             // 
             // label46
@@ -2429,7 +2433,7 @@ namespace Sage50c.API.Sample {
             this.txtAmout_R1_L2.MaxLength = 0;
             this.txtAmout_R1_L2.Name = "txtAmout_R1_L2";
             this.txtAmout_R1_L2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtAmout_R1_L2.Size = new System.Drawing.Size(63, 27);
+            this.txtAmout_R1_L2.Size = new System.Drawing.Size(63, 23);
             this.txtAmout_R1_L2.TabIndex = 329;
             // 
             // label44
@@ -2494,7 +2498,7 @@ namespace Sage50c.API.Sample {
             this.label3.Location = new System.Drawing.Point(199, 19);
             this.label3.Name = "label3";
             this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label3.Size = new System.Drawing.Size(45, 20);
+            this.label3.Size = new System.Drawing.Size(35, 15);
             this.label3.TabIndex = 311;
             this.label3.Text = "Valor";
             // 
@@ -2508,7 +2512,7 @@ namespace Sage50c.API.Sample {
             this.label38.Location = new System.Drawing.Point(194, 70);
             this.label38.Name = "label38";
             this.label38.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label38.Size = new System.Drawing.Size(48, 20);
+            this.label38.Size = new System.Drawing.Size(39, 15);
             this.label38.TabIndex = 331;
             this.label38.Text = "Preço";
             // 
@@ -2522,7 +2526,7 @@ namespace Sage50c.API.Sample {
             this.lblTransModules.Location = new System.Drawing.Point(33, 211);
             this.lblTransModules.Name = "lblTransModules";
             this.lblTransModules.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblTransModules.Size = new System.Drawing.Size(74, 20);
+            this.lblTransModules.Size = new System.Drawing.Size(57, 15);
             this.lblTransModules.TabIndex = 333;
             this.lblTransModules.Text = "Módulos:";
             // 
@@ -2566,7 +2570,7 @@ namespace Sage50c.API.Sample {
             this.lblFactor.Location = new System.Drawing.Point(500, 119);
             this.lblFactor.Name = "lblFactor";
             this.lblFactor.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblFactor.Size = new System.Drawing.Size(46, 20);
+            this.lblFactor.Size = new System.Drawing.Size(36, 15);
             this.lblFactor.TabIndex = 330;
             this.lblFactor.Text = "Fator";
             this.lblFactor.Visible = false;
@@ -2594,7 +2598,7 @@ namespace Sage50c.API.Sample {
             this.Label53.Location = new System.Drawing.Point(418, 119);
             this.Label53.Name = "Label53";
             this.Label53.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label53.Size = new System.Drawing.Size(50, 20);
+            this.Label53.Size = new System.Drawing.Size(40, 15);
             this.Label53.TabIndex = 321;
             this.Label53.Text = "Tx Iva";
             // 
@@ -2634,7 +2638,7 @@ namespace Sage50c.API.Sample {
             this.Label29.Location = new System.Drawing.Point(262, 119);
             this.Label29.Name = "Label29";
             this.Label29.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label29.Size = new System.Drawing.Size(48, 20);
+            this.Label29.Size = new System.Drawing.Size(39, 15);
             this.Label29.TabIndex = 310;
             this.Label29.Text = "Preço";
             // 
@@ -2648,7 +2652,7 @@ namespace Sage50c.API.Sample {
             this.Label28.Location = new System.Drawing.Point(337, 119);
             this.Label28.Name = "Label28";
             this.Label28.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label28.Size = new System.Drawing.Size(90, 20);
+            this.Label28.Size = new System.Drawing.Size(71, 15);
             this.Label28.TabIndex = 309;
             this.Label28.Text = "Quantidade";
             // 
@@ -2662,7 +2666,7 @@ namespace Sage50c.API.Sample {
             this._Label15_3.Location = new System.Drawing.Point(197, 119);
             this._Label15_3.Name = "_Label15_3";
             this._Label15_3.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._Label15_3.Size = new System.Drawing.Size(54, 20);
+            this._Label15_3.Size = new System.Drawing.Size(42, 15);
             this._Label15_3.TabIndex = 308;
             this._Label15_3.Text = "Artigo";
             // 
@@ -2692,7 +2696,7 @@ namespace Sage50c.API.Sample {
             this.cmbTransPartyType.Location = new System.Drawing.Point(388, 81);
             this.cmbTransPartyType.Name = "cmbTransPartyType";
             this.cmbTransPartyType.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmbTransPartyType.Size = new System.Drawing.Size(101, 28);
+            this.cmbTransPartyType.Size = new System.Drawing.Size(101, 23);
             this.cmbTransPartyType.TabIndex = 60;
             this.cmbTransPartyType.SelectedIndexChanged += new System.EventHandler(this.cmbTransPartyType_SelectedIndexChanged);
             // 
@@ -2832,9 +2836,9 @@ namespace Sage50c.API.Sample {
             this.tabSupplier.Controls.Add(this._Label15_2);
             this.tabSupplier.Controls.Add(this.Label16);
             this.tabSupplier.Controls.Add(this.Label13);
-            this.tabSupplier.Location = new System.Drawing.Point(4, 29);
+            this.tabSupplier.Location = new System.Drawing.Point(4, 24);
             this.tabSupplier.Name = "tabSupplier";
-            this.tabSupplier.Size = new System.Drawing.Size(943, 476);
+            this.tabSupplier.Size = new System.Drawing.Size(943, 481);
             this.tabSupplier.TabIndex = 2;
             this.tabSupplier.Text = "Fornecedor";
             this.tabSupplier.UseVisualStyleBackColor = true;
@@ -2859,7 +2863,7 @@ namespace Sage50c.API.Sample {
             this.cmbSupplierCountry.FormattingEnabled = true;
             this.cmbSupplierCountry.Location = new System.Drawing.Point(150, 200);
             this.cmbSupplierCountry.Name = "cmbSupplierCountry";
-            this.cmbSupplierCountry.Size = new System.Drawing.Size(346, 28);
+            this.cmbSupplierCountry.Size = new System.Drawing.Size(346, 23);
             this.cmbSupplierCountry.TabIndex = 77;
             // 
             // cmbSupplierTax
@@ -2868,7 +2872,7 @@ namespace Sage50c.API.Sample {
             this.cmbSupplierTax.FormattingEnabled = true;
             this.cmbSupplierTax.Location = new System.Drawing.Point(150, 104);
             this.cmbSupplierTax.Name = "cmbSupplierTax";
-            this.cmbSupplierTax.Size = new System.Drawing.Size(346, 28);
+            this.cmbSupplierTax.Size = new System.Drawing.Size(346, 23);
             this.cmbSupplierTax.TabIndex = 76;
             this.cmbSupplierTax.ValueMember = "EntityFiscalStatusID";
             // 
@@ -2892,7 +2896,7 @@ namespace Sage50c.API.Sample {
             this.txtSupplierId.MaxLength = 0;
             this.txtSupplierId.Name = "txtSupplierId";
             this.txtSupplierId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierId.Size = new System.Drawing.Size(305, 27);
+            this.txtSupplierId.Size = new System.Drawing.Size(305, 23);
             this.txtSupplierId.TabIndex = 2;
             // 
             // txtSupplierName
@@ -2905,7 +2909,7 @@ namespace Sage50c.API.Sample {
             this.txtSupplierName.MaxLength = 0;
             this.txtSupplierName.Name = "txtSupplierName";
             this.txtSupplierName.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierName.Size = new System.Drawing.Size(346, 27);
+            this.txtSupplierName.Size = new System.Drawing.Size(346, 23);
             this.txtSupplierName.TabIndex = 4;
             // 
             // txtSupplierTaxId
@@ -2918,7 +2922,7 @@ namespace Sage50c.API.Sample {
             this.txtSupplierTaxId.MaxLength = 0;
             this.txtSupplierTaxId.Name = "txtSupplierTaxId";
             this.txtSupplierTaxId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierTaxId.Size = new System.Drawing.Size(346, 27);
+            this.txtSupplierTaxId.Size = new System.Drawing.Size(346, 23);
             this.txtSupplierTaxId.TabIndex = 8;
             // 
             // txtSupplierZone
@@ -2931,7 +2935,7 @@ namespace Sage50c.API.Sample {
             this.txtSupplierZone.MaxLength = 0;
             this.txtSupplierZone.Name = "txtSupplierZone";
             this.txtSupplierZone.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierZone.Size = new System.Drawing.Size(315, 27);
+            this.txtSupplierZone.Size = new System.Drawing.Size(315, 23);
             this.txtSupplierZone.TabIndex = 12;
             // 
             // txtSupplierComments
@@ -2944,7 +2948,7 @@ namespace Sage50c.API.Sample {
             this.txtSupplierComments.MaxLength = 0;
             this.txtSupplierComments.Name = "txtSupplierComments";
             this.txtSupplierComments.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSupplierComments.Size = new System.Drawing.Size(346, 27);
+            this.txtSupplierComments.Size = new System.Drawing.Size(346, 23);
             this.txtSupplierComments.TabIndex = 16;
             // 
             // Label22
@@ -2957,7 +2961,7 @@ namespace Sage50c.API.Sample {
             this.Label22.Location = new System.Drawing.Point(43, 43);
             this.Label22.Name = "Label22";
             this.Label22.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label22.Size = new System.Drawing.Size(93, 20);
+            this.Label22.Size = new System.Drawing.Size(74, 15);
             this.Label22.TabIndex = 74;
             this.Label22.Text = "Fornecedor:";
             // 
@@ -2971,7 +2975,7 @@ namespace Sage50c.API.Sample {
             this.Label21.Location = new System.Drawing.Point(43, 75);
             this.Label21.Name = "Label21";
             this.Label21.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label21.Size = new System.Drawing.Size(56, 20);
+            this.Label21.Size = new System.Drawing.Size(44, 15);
             this.Label21.TabIndex = 73;
             this.Label21.Text = "Nome:";
             // 
@@ -2985,7 +2989,7 @@ namespace Sage50c.API.Sample {
             this.Label19.Location = new System.Drawing.Point(43, 107);
             this.Label19.Name = "Label19";
             this.Label19.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label19.Size = new System.Drawing.Size(72, 20);
+            this.Label19.Size = new System.Drawing.Size(56, 15);
             this.Label19.TabIndex = 72;
             this.Label19.Text = "Imposto:";
             // 
@@ -2999,7 +3003,7 @@ namespace Sage50c.API.Sample {
             this.Label18.Location = new System.Drawing.Point(43, 140);
             this.Label18.Name = "Label18";
             this.Label18.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label18.Size = new System.Drawing.Size(38, 20);
+            this.Label18.Size = new System.Drawing.Size(29, 15);
             this.Label18.TabIndex = 71;
             this.Label18.Text = "NIF:";
             // 
@@ -3013,7 +3017,7 @@ namespace Sage50c.API.Sample {
             this._Label15_2.Location = new System.Drawing.Point(43, 172);
             this._Label15_2.Name = "_Label15_2";
             this._Label15_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._Label15_2.Size = new System.Drawing.Size(48, 20);
+            this._Label15_2.Size = new System.Drawing.Size(37, 15);
             this._Label15_2.TabIndex = 69;
             this._Label15_2.Text = "Zona:";
             // 
@@ -3027,7 +3031,7 @@ namespace Sage50c.API.Sample {
             this.Label16.Location = new System.Drawing.Point(43, 237);
             this.Label16.Name = "Label16";
             this.Label16.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label16.Size = new System.Drawing.Size(102, 20);
+            this.Label16.Size = new System.Drawing.Size(81, 15);
             this.Label16.TabIndex = 68;
             this.Label16.Text = "Observações:";
             // 
@@ -3041,7 +3045,7 @@ namespace Sage50c.API.Sample {
             this.Label13.Location = new System.Drawing.Point(43, 205);
             this.Label13.Name = "Label13";
             this.Label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label13.Size = new System.Drawing.Size(41, 20);
+            this.Label13.Size = new System.Drawing.Size(31, 15);
             this.Label13.TabIndex = 67;
             this.Label13.Text = "País:";
             // 
@@ -3066,10 +3070,10 @@ namespace Sage50c.API.Sample {
             this.tabCustomer.Controls.Add(this.Label7);
             this.tabCustomer.Controls.Add(this.Label6);
             this.tabCustomer.Controls.Add(this.Label4);
-            this.tabCustomer.Location = new System.Drawing.Point(4, 29);
+            this.tabCustomer.Location = new System.Drawing.Point(4, 24);
             this.tabCustomer.Name = "tabCustomer";
             this.tabCustomer.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCustomer.Size = new System.Drawing.Size(943, 476);
+            this.tabCustomer.Size = new System.Drawing.Size(943, 481);
             this.tabCustomer.TabIndex = 1;
             this.tabCustomer.Text = "Cliente";
             this.tabCustomer.UseVisualStyleBackColor = true;
@@ -3120,7 +3124,7 @@ namespace Sage50c.API.Sample {
             this.cmbCustomerCountry.FormattingEnabled = true;
             this.cmbCustomerCountry.Location = new System.Drawing.Point(149, 229);
             this.cmbCustomerCountry.Name = "cmbCustomerCountry";
-            this.cmbCustomerCountry.Size = new System.Drawing.Size(346, 28);
+            this.cmbCustomerCountry.Size = new System.Drawing.Size(346, 23);
             this.cmbCustomerCountry.TabIndex = 16;
             this.cmbCustomerCountry.ValueMember = "CountryID";
             // 
@@ -3134,7 +3138,7 @@ namespace Sage50c.API.Sample {
             this.txtCustomerTaxId.MaxLength = 0;
             this.txtCustomerTaxId.Name = "txtCustomerTaxId";
             this.txtCustomerTaxId.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtCustomerTaxId.Size = new System.Drawing.Size(346, 27);
+            this.txtCustomerTaxId.Size = new System.Drawing.Size(346, 23);
             this.txtCustomerTaxId.TabIndex = 6;
             // 
             // txtCustomerComments
@@ -3147,7 +3151,7 @@ namespace Sage50c.API.Sample {
             this.txtCustomerComments.MaxLength = 0;
             this.txtCustomerComments.Name = "txtCustomerComments";
             this.txtCustomerComments.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtCustomerComments.Size = new System.Drawing.Size(346, 27);
+            this.txtCustomerComments.Size = new System.Drawing.Size(346, 23);
             this.txtCustomerComments.TabIndex = 18;
             // 
             // txtCustomerName
@@ -3160,7 +3164,7 @@ namespace Sage50c.API.Sample {
             this.txtCustomerName.MaxLength = 0;
             this.txtCustomerName.Name = "txtCustomerName";
             this.txtCustomerName.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtCustomerName.Size = new System.Drawing.Size(346, 27);
+            this.txtCustomerName.Size = new System.Drawing.Size(346, 23);
             this.txtCustomerName.TabIndex = 4;
             // 
             // label2
@@ -3173,7 +3177,7 @@ namespace Sage50c.API.Sample {
             this.label2.Location = new System.Drawing.Point(42, 102);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label2.Size = new System.Drawing.Size(38, 20);
+            this.label2.Size = new System.Drawing.Size(29, 15);
             this.label2.TabIndex = 64;
             this.label2.Text = "NIF:";
             // 
@@ -3183,7 +3187,7 @@ namespace Sage50c.API.Sample {
             this.cmbCustomerTax.FormattingEnabled = true;
             this.cmbCustomerTax.Location = new System.Drawing.Point(149, 130);
             this.cmbCustomerTax.Name = "cmbCustomerTax";
-            this.cmbCustomerTax.Size = new System.Drawing.Size(346, 28);
+            this.cmbCustomerTax.Size = new System.Drawing.Size(346, 23);
             this.cmbCustomerTax.TabIndex = 8;
             this.cmbCustomerTax.ValueMember = "EntityFiscalStatusID";
             // 
@@ -3196,7 +3200,7 @@ namespace Sage50c.API.Sample {
             0,
             0});
             this.numCustomerSalesmanId.Name = "numCustomerSalesmanId";
-            this.numCustomerSalesmanId.Size = new System.Drawing.Size(98, 27);
+            this.numCustomerSalesmanId.Size = new System.Drawing.Size(98, 23);
             this.numCustomerSalesmanId.TabIndex = 10;
             this.numCustomerSalesmanId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numCustomerSalesmanId.ThousandsSeparator = true;
@@ -3210,7 +3214,7 @@ namespace Sage50c.API.Sample {
             0,
             0});
             this.numCustomerZoneId.Name = "numCustomerZoneId";
-            this.numCustomerZoneId.Size = new System.Drawing.Size(98, 27);
+            this.numCustomerZoneId.Size = new System.Drawing.Size(98, 23);
             this.numCustomerZoneId.TabIndex = 14;
             this.numCustomerZoneId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numCustomerZoneId.ThousandsSeparator = true;
@@ -3224,7 +3228,7 @@ namespace Sage50c.API.Sample {
             0,
             0});
             this.numCustomerId.Name = "numCustomerId";
-            this.numCustomerId.Size = new System.Drawing.Size(98, 27);
+            this.numCustomerId.Size = new System.Drawing.Size(98, 23);
             this.numCustomerId.TabIndex = 2;
             this.numCustomerId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numCustomerId.ThousandsSeparator = true;
@@ -3239,7 +3243,7 @@ namespace Sage50c.API.Sample {
             this.Label12.Location = new System.Drawing.Point(42, 232);
             this.Label12.Name = "Label12";
             this.Label12.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label12.Size = new System.Drawing.Size(41, 20);
+            this.Label12.Size = new System.Drawing.Size(31, 15);
             this.Label12.TabIndex = 57;
             this.Label12.Text = "País:";
             // 
@@ -3253,7 +3257,7 @@ namespace Sage50c.API.Sample {
             this.Label11.Location = new System.Drawing.Point(42, 264);
             this.Label11.Name = "Label11";
             this.Label11.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label11.Size = new System.Drawing.Size(102, 20);
+            this.Label11.Size = new System.Drawing.Size(81, 15);
             this.Label11.TabIndex = 56;
             this.Label11.Text = "Observações:";
             // 
@@ -3267,7 +3271,7 @@ namespace Sage50c.API.Sample {
             this._Label15_1.Location = new System.Drawing.Point(42, 199);
             this._Label15_1.Name = "_Label15_1";
             this._Label15_1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._Label15_1.Size = new System.Drawing.Size(48, 20);
+            this._Label15_1.Size = new System.Drawing.Size(37, 15);
             this._Label15_1.TabIndex = 55;
             this._Label15_1.Text = "Zona:";
             // 
@@ -3281,7 +3285,7 @@ namespace Sage50c.API.Sample {
             this.Label8.Location = new System.Drawing.Point(42, 165);
             this.Label8.Name = "Label8";
             this.Label8.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label8.Size = new System.Drawing.Size(81, 20);
+            this.Label8.Size = new System.Drawing.Size(64, 15);
             this.Label8.TabIndex = 53;
             this.Label8.Text = "Vendedor:";
             // 
@@ -3295,7 +3299,7 @@ namespace Sage50c.API.Sample {
             this.Label7.Location = new System.Drawing.Point(42, 134);
             this.Label7.Name = "Label7";
             this.Label7.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label7.Size = new System.Drawing.Size(72, 20);
+            this.Label7.Size = new System.Drawing.Size(56, 15);
             this.Label7.TabIndex = 52;
             this.Label7.Text = "Imposto:";
             // 
@@ -3309,7 +3313,7 @@ namespace Sage50c.API.Sample {
             this.Label6.Location = new System.Drawing.Point(42, 69);
             this.Label6.Name = "Label6";
             this.Label6.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label6.Size = new System.Drawing.Size(56, 20);
+            this.Label6.Size = new System.Drawing.Size(44, 15);
             this.Label6.TabIndex = 51;
             this.Label6.Text = "Nome:";
             // 
@@ -3323,7 +3327,7 @@ namespace Sage50c.API.Sample {
             this.Label4.Location = new System.Drawing.Point(42, 36);
             this.Label4.Name = "Label4";
             this.Label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Label4.Size = new System.Drawing.Size(61, 20);
+            this.Label4.Size = new System.Drawing.Size(49, 15);
             this.Label4.TabIndex = 50;
             this.Label4.Text = "Cliente:";
             // 
@@ -3343,10 +3347,10 @@ namespace Sage50c.API.Sample {
             this.tabItem.Controls.Add(this.lblItemObs);
             this.tabItem.Controls.Add(this.lblItemDescription);
             this.tabItem.Controls.Add(this.label1);
-            this.tabItem.Location = new System.Drawing.Point(4, 29);
+            this.tabItem.Location = new System.Drawing.Point(4, 24);
             this.tabItem.Name = "tabItem";
             this.tabItem.Padding = new System.Windows.Forms.Padding(3);
-            this.tabItem.Size = new System.Drawing.Size(943, 476);
+            this.tabItem.Size = new System.Drawing.Size(943, 481);
             this.tabItem.TabIndex = 0;
             this.tabItem.Text = "Artigo";
             // 
@@ -3500,7 +3504,7 @@ namespace Sage50c.API.Sample {
             0,
             0});
             this.numItemPriceTaxIncluded.Name = "numItemPriceTaxIncluded";
-            this.numItemPriceTaxIncluded.Size = new System.Drawing.Size(140, 27);
+            this.numItemPriceTaxIncluded.Size = new System.Drawing.Size(140, 23);
             this.numItemPriceTaxIncluded.TabIndex = 10;
             this.numItemPriceTaxIncluded.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numItemPriceTaxIncluded.ThousandsSeparator = true;
@@ -3511,7 +3515,7 @@ namespace Sage50c.API.Sample {
             this.txtItemPriceTaxIncluded.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtItemPriceTaxIncluded.Location = new System.Drawing.Point(28, 126);
             this.txtItemPriceTaxIncluded.Name = "txtItemPriceTaxIncluded";
-            this.txtItemPriceTaxIncluded.Size = new System.Drawing.Size(95, 20);
+            this.txtItemPriceTaxIncluded.Size = new System.Drawing.Size(75, 15);
             this.txtItemPriceTaxIncluded.TabIndex = 12;
             this.txtItemPriceTaxIncluded.Text = "Preço c/ IVA";
             // 
@@ -3521,7 +3525,7 @@ namespace Sage50c.API.Sample {
             this.lblitemShortDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblitemShortDescription.Location = new System.Drawing.Point(28, 97);
             this.lblitemShortDescription.Name = "lblitemShortDescription";
-            this.lblitemShortDescription.Size = new System.Drawing.Size(99, 20);
+            this.lblitemShortDescription.Size = new System.Drawing.Size(79, 15);
             this.lblitemShortDescription.TabIndex = 11;
             this.lblitemShortDescription.Text = "Desc. Abrev.:";
             // 
@@ -3537,21 +3541,21 @@ namespace Sage50c.API.Sample {
             // 
             this.txtItemShortDescription.Location = new System.Drawing.Point(154, 97);
             this.txtItemShortDescription.Name = "txtItemShortDescription";
-            this.txtItemShortDescription.Size = new System.Drawing.Size(292, 27);
+            this.txtItemShortDescription.Size = new System.Drawing.Size(292, 23);
             this.txtItemShortDescription.TabIndex = 8;
             // 
             // txtItemDescription
             // 
             this.txtItemDescription.Location = new System.Drawing.Point(154, 67);
             this.txtItemDescription.Name = "txtItemDescription";
-            this.txtItemDescription.Size = new System.Drawing.Size(292, 27);
+            this.txtItemDescription.Size = new System.Drawing.Size(292, 23);
             this.txtItemDescription.TabIndex = 6;
             // 
             // txtItemID
             // 
             this.txtItemID.Location = new System.Drawing.Point(154, 39);
             this.txtItemID.Name = "txtItemID";
-            this.txtItemID.Size = new System.Drawing.Size(255, 27);
+            this.txtItemID.Size = new System.Drawing.Size(255, 23);
             this.txtItemID.TabIndex = 4;
             this.txtItemID.Click += new System.EventHandler(this.txtItemId_Click);
             // 
@@ -3561,7 +3565,7 @@ namespace Sage50c.API.Sample {
             this.lblItemObs.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblItemObs.Location = new System.Drawing.Point(28, 156);
             this.lblItemObs.Name = "lblItemObs";
-            this.lblItemObs.Size = new System.Drawing.Size(44, 20);
+            this.lblItemObs.Size = new System.Drawing.Size(34, 15);
             this.lblItemObs.TabIndex = 9;
             this.lblItemObs.Text = "Obs.:";
             // 
@@ -3571,7 +3575,7 @@ namespace Sage50c.API.Sample {
             this.lblItemDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblItemDescription.Location = new System.Drawing.Point(28, 67);
             this.lblItemDescription.Name = "lblItemDescription";
-            this.lblItemDescription.Size = new System.Drawing.Size(80, 20);
+            this.lblItemDescription.Size = new System.Drawing.Size(64, 15);
             this.lblItemDescription.TabIndex = 7;
             this.lblItemDescription.Text = "Descrição:";
             // 
@@ -3581,7 +3585,7 @@ namespace Sage50c.API.Sample {
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(28, 39);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 20);
+            this.label1.Size = new System.Drawing.Size(48, 15);
             this.label1.TabIndex = 5;
             this.label1.Text = "Código:";
             // 
@@ -3607,9 +3611,9 @@ namespace Sage50c.API.Sample {
             // 
             this.tabSAFT.Controls.Add(this.gbSimplified);
             this.tabSAFT.Controls.Add(this.gbGlobal);
-            this.tabSAFT.Location = new System.Drawing.Point(4, 29);
+            this.tabSAFT.Location = new System.Drawing.Point(4, 24);
             this.tabSAFT.Name = "tabSAFT";
-            this.tabSAFT.Size = new System.Drawing.Size(943, 476);
+            this.tabSAFT.Size = new System.Drawing.Size(943, 481);
             this.tabSAFT.TabIndex = 6;
             this.tabSAFT.Text = "SAF-T";
             this.tabSAFT.UseVisualStyleBackColor = true;
@@ -3652,7 +3656,7 @@ namespace Sage50c.API.Sample {
             0,
             0});
             this.nudSAFTYear.Name = "nudSAFTYear";
-            this.nudSAFTYear.Size = new System.Drawing.Size(80, 27);
+            this.nudSAFTYear.Size = new System.Drawing.Size(80, 23);
             this.nudSAFTYear.TabIndex = 17;
             this.nudSAFTYear.Value = new decimal(new int[] {
             2000,
@@ -3672,7 +3676,7 @@ namespace Sage50c.API.Sample {
             this.txtSAFTPath1.Name = "txtSAFTPath1";
             this.txtSAFTPath1.ReadOnly = true;
             this.txtSAFTPath1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSAFTPath1.Size = new System.Drawing.Size(304, 27);
+            this.txtSAFTPath1.Size = new System.Drawing.Size(304, 23);
             this.txtSAFTPath1.TabIndex = 14;
             // 
             // lblExportTo1
@@ -3681,7 +3685,7 @@ namespace Sage50c.API.Sample {
             this.lblExportTo1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblExportTo1.Location = new System.Drawing.Point(18, 95);
             this.lblExportTo1.Name = "lblExportTo1";
-            this.lblExportTo1.Size = new System.Drawing.Size(108, 20);
+            this.lblExportTo1.Size = new System.Drawing.Size(85, 15);
             this.lblExportTo1.TabIndex = 13;
             this.lblExportTo1.Text = "Exportar para:";
             // 
@@ -3694,7 +3698,7 @@ namespace Sage50c.API.Sample {
             0,
             0});
             this.nudSAFTEndDay.Name = "nudSAFTEndDay";
-            this.nudSAFTEndDay.Size = new System.Drawing.Size(46, 27);
+            this.nudSAFTEndDay.Size = new System.Drawing.Size(46, 23);
             this.nudSAFTEndDay.TabIndex = 13;
             this.nudSAFTEndDay.Value = new decimal(new int[] {
             31,
@@ -3712,7 +3716,7 @@ namespace Sage50c.API.Sample {
             0,
             0});
             this.nudSAFTStartDay.Name = "nudSAFTStartDay";
-            this.nudSAFTStartDay.Size = new System.Drawing.Size(46, 27);
+            this.nudSAFTStartDay.Size = new System.Drawing.Size(46, 23);
             this.nudSAFTStartDay.TabIndex = 12;
             this.nudSAFTStartDay.Value = new decimal(new int[] {
             1,
@@ -3726,7 +3730,7 @@ namespace Sage50c.API.Sample {
             this.cmbSAFTMonth.FormattingEnabled = true;
             this.cmbSAFTMonth.Location = new System.Drawing.Point(99, 26);
             this.cmbSAFTMonth.Name = "cmbSAFTMonth";
-            this.cmbSAFTMonth.Size = new System.Drawing.Size(121, 28);
+            this.cmbSAFTMonth.Size = new System.Drawing.Size(121, 23);
             this.cmbSAFTMonth.TabIndex = 11;
             this.cmbSAFTMonth.SelectedIndexChanged += new System.EventHandler(this.cmbSAFTMonth_SelectedIndexChanged);
             // 
@@ -3736,7 +3740,7 @@ namespace Sage50c.API.Sample {
             this.lblSAFTMonthYear.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSAFTMonthYear.Location = new System.Drawing.Point(18, 29);
             this.lblSAFTMonthYear.Name = "lblSAFTMonthYear";
-            this.lblSAFTMonthYear.Size = new System.Drawing.Size(82, 20);
+            this.lblSAFTMonthYear.Size = new System.Drawing.Size(63, 15);
             this.lblSAFTMonthYear.TabIndex = 6;
             this.lblSAFTMonthYear.Text = "Mês / Ano";
             // 
@@ -3746,7 +3750,7 @@ namespace Sage50c.API.Sample {
             this.lblSAFTDays.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSAFTDays.Location = new System.Drawing.Point(18, 62);
             this.lblSAFTDays.Name = "lblSAFTDays";
-            this.lblSAFTDays.Size = new System.Drawing.Size(39, 20);
+            this.lblSAFTDays.Size = new System.Drawing.Size(30, 15);
             this.lblSAFTDays.TabIndex = 8;
             this.lblSAFTDays.Text = "Dias";
             // 
@@ -3783,7 +3787,7 @@ namespace Sage50c.API.Sample {
             this.lblInitialDate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblInitialDate.Location = new System.Drawing.Point(18, 29);
             this.lblInitialDate.Name = "lblInitialDate";
-            this.lblInitialDate.Size = new System.Drawing.Size(90, 20);
+            this.lblInitialDate.Size = new System.Drawing.Size(70, 15);
             this.lblInitialDate.TabIndex = 6;
             this.lblInitialDate.Text = "Data inicial:";
             // 
@@ -3792,7 +3796,7 @@ namespace Sage50c.API.Sample {
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpStart.Location = new System.Drawing.Point(116, 26);
             this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Size = new System.Drawing.Size(110, 27);
+            this.dtpStart.Size = new System.Drawing.Size(110, 23);
             this.dtpStart.TabIndex = 7;
             this.dtpStart.Value = new System.DateTime(1945, 7, 16, 0, 0, 0, 0);
             // 
@@ -3807,7 +3811,7 @@ namespace Sage50c.API.Sample {
             this.txtSAFTPath0.Name = "txtSAFTPath0";
             this.txtSAFTPath0.ReadOnly = true;
             this.txtSAFTPath0.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.txtSAFTPath0.Size = new System.Drawing.Size(304, 27);
+            this.txtSAFTPath0.Size = new System.Drawing.Size(304, 23);
             this.txtSAFTPath0.TabIndex = 11;
             // 
             // lblEndDate
@@ -3816,7 +3820,7 @@ namespace Sage50c.API.Sample {
             this.lblEndDate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEndDate.Location = new System.Drawing.Point(18, 62);
             this.lblEndDate.Name = "lblEndDate";
-            this.lblEndDate.Size = new System.Drawing.Size(81, 20);
+            this.lblEndDate.Size = new System.Drawing.Size(63, 15);
             this.lblEndDate.TabIndex = 8;
             this.lblEndDate.Text = "Data final:";
             // 
@@ -3826,7 +3830,7 @@ namespace Sage50c.API.Sample {
             this.lblExportTo0.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblExportTo0.Location = new System.Drawing.Point(18, 95);
             this.lblExportTo0.Name = "lblExportTo0";
-            this.lblExportTo0.Size = new System.Drawing.Size(108, 20);
+            this.lblExportTo0.Size = new System.Drawing.Size(85, 15);
             this.lblExportTo0.TabIndex = 10;
             this.lblExportTo0.Text = "Exportar para:";
             // 
@@ -3835,13 +3839,41 @@ namespace Sage50c.API.Sample {
             this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpEnd.Location = new System.Drawing.Point(116, 59);
             this.dtpEnd.Name = "dtpEnd";
-            this.dtpEnd.Size = new System.Drawing.Size(110, 27);
+            this.dtpEnd.Size = new System.Drawing.Size(110, 23);
             this.dtpEnd.TabIndex = 9;
             this.dtpEnd.Value = new System.DateTime(1945, 7, 16, 0, 0, 0, 0);
             // 
+            // txtMachineId
+            // 
+            this.txtMachineId.AcceptsReturn = true;
+            this.txtMachineId.BackColor = System.Drawing.SystemColors.Window;
+            this.txtMachineId.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtMachineId.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMachineId.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtMachineId.Location = new System.Drawing.Point(439, 67);
+            this.txtMachineId.MaxLength = 0;
+            this.txtMachineId.Name = "txtMachineId";
+            this.txtMachineId.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.txtMachineId.Size = new System.Drawing.Size(272, 23);
+            this.txtMachineId.TabIndex = 311;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.BackColor = System.Drawing.Color.Transparent;
+            this.label17.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.Color.White;
+            this.label17.Location = new System.Drawing.Point(319, 70);
+            this.label17.Name = "label17";
+            this.label17.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label17.Size = new System.Drawing.Size(114, 15);
+            this.label17.TabIndex = 312;
+            this.label17.Text = "Máquina (opcional):";
+            // 
             // fApi
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1091, 700);
@@ -4189,6 +4221,8 @@ namespace Sage50c.API.Sample {
         private ToolTip LerPreparacao;
         private ToolTip FinalizarPreparacao;
         private ToolTip GuardarPreparacao;
+        public Label label17;
+        public TextBox txtMachineId;
     }
 }
 

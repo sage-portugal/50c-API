@@ -24,7 +24,7 @@ namespace Sage50c.API {
         /// Inicializa a API da 50c. Lança uma exceção se falhar
         /// </summary>
         /// <param name="companyId">Identificador da empresa a Abrir</param>
-        public static void Initialize(string ProductCode, string CompanyId, bool DebugMode) {
+        public static void Initialize(string ProductCode, string CompanyId, bool DebugMode, string machineID = "") {
             apiInitialized = false;
 
             //
@@ -34,7 +34,11 @@ namespace Sage50c.API {
             var systemStarter = new S50cAPI22.SystemStarter();
             systemStarter.DebugMode = DebugMode;
 
-            if (systemStarter.Initialize(ProductCode, CompanyId) != 0) {
+            int resInitialize = string.IsNullOrEmpty(machineID) ?
+                systemStarter.Initialize(ProductCode, CompanyId) :
+                systemStarter.Initialize3(ProductCode, CompanyId, machineID);
+
+            if (resInitialize != 0) {
                 string initError = systemStarter.InitializationError;
                 systemStarter = null;
                 throw new Exception(initError);
