@@ -1,32 +1,57 @@
-# Sage50c-API
-## Sage 50c API e eXtensibilidade
+# Sage50c-API (Forked)
 
-## Utilizar o exemplo da API com Visual Studio 2019<br/>
+## Overview
+This repository is a fork of the [Sage Portugal 50c-API](https://github.com/sage-portugal/50c-API), providing tools and extensibility for Sage 50c. The project aims to enhance the API by resolving outstanding issues and introducing new features to better serve the community.
 
-### 1. Requisitos<br/>
-É necessário ter a aplicação Sage 50c instalada no computador<br/>
+## Motivation for the Fork
+The original repository was unresponsive to issues and pull requests. To address the needs of developers relying on this API, I decided to create this fork, actively maintain it, and implement improvements based on user feedback and requirements.
 
-### 2. Abrir e utilizar o exemplo<br/>
-#### 2.1. Clonar o o código exemplo <br/>
-![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/clone.png)
+## Features
+- Seamless integration with Sage 50c.
+- Enhanced API examples for easier onboarding.
+- Bug fixes and improvements over the original project.
+- Modular structure for better extensibility.
+- Support for .NET Core and modern development practices.
 
-#### 2.2. Abrir a solução com o visual studio 2019<br/>
-#### 2.3. Na primeira vez que se abre o projeto, é possivel que as referências à API não estejam a apontar para o lugar correto.<br/>
-Se for o caso, é necessário removê-las para as voltar a adicionar. Exemplo com os Interops da versão 2021 ou anteriores (necessário substituir pelas da versão 2022):<br/>
-![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/refsRemove.png)
+## Getting Started
 
-#### 2.4. A localização tipica dos INTEROPS é:<br/>
-C:\Program Files (x86)\Common Files\sage\2070\50c2022\Interops<br/>
-Devem ser adicionadas todas as DLLs presentes nesta pasta.<br/>
+### Prerequisites
+- **Sage 50c** installed on your computer.
+- **Visual Studio 2019** or later.
 
-#### 2.5. Depois de adicionados os INTEROPS como referências o VS2019 deve ficar assim:<br/>
-![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/refs.png)
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/joao-a-costa/50c-API.git
+   ```
+2. Open the solution file (`.sln`) in Visual Studio.
+3. Restore NuGet packages and dependencies.
+4. Build the solution to ensure all dependencies are correctly configured.
 
-#### 2.5. Com todas as referências selecionadas, aceder a propriedades e definir o seguinte:<br/>
-Embed Interop Types = FALSE<br/>
-![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/embedInterops.png)
+### Usage
+Refer to the provided examples in the `Sage50c.API.Sample` directory to understand how to implement and extend the API functionalities.
 
-#### 2.6. Por último, indicar que pretendemos uma compilação x86:<br/>
-![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/x86.png)
+## Documentation
+Detailed documentation is available in the `doc` directory. You can also refer to:
+- The original Sage 50c documentation for general usage.
+- Comments within the source code for detailed explanations of specific functions.
 
-E é tudo. É só compilar e disfrutar<br/>
+## Contributing
+Contributions are welcome! Here's how you can help:
+- Report bugs and suggest features via [Issues](https://github.com/joao-a-costa/50c-API/issues).
+- Submit pull requests to fix issues or add new features.
+- Review existing pull requests to improve the quality of contributions.
+
+## License
+This project follows the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+- Original authors of the [Sage Portugal 50c-API](https://github.com/sage-portugal/50c-API).
+- All contributors who helped improve the original project.
+
+## Contact
+For questions, feedback, or collaboration, feel free to reach out via the repository's [Discussions](https://github.com/joao-a-costa/50c-API/discussions).
+
+---
+
+Thank you for using and contributing to this project!
