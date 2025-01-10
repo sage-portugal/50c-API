@@ -159,9 +159,9 @@ namespace Sage50c.API.Sample.Controllers {
                 DocumentsSeries serie = null;
                 if (systemSettings.DocumentSeries.IsInCollection(_bsoStockTransaction.Transaction.TransSerial)) {
                     serie = systemSettings.DocumentSeries[_bsoStockTransaction.Transaction.TransSerial];
-                    if (serie.SeriesType != SeriesTypeEnum.SeriesExternal) {
-                        error.Append("Apenas são permitidas séries externas.");
-                    }
+                    //if (serie.SeriesType != SeriesTypeEnum.SeriesExternal) {
+                    //    error.Append("Apenas são permitidas séries externas.");
+                    //}
                 }
                 if (serie == null) {
                     error.Append("A série indicada não existe");
