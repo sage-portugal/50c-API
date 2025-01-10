@@ -3,3 +3,4 @@ obj
 .vs
 packages
 *.csproj.user
+/Sage50c.API.Sample/.vs
