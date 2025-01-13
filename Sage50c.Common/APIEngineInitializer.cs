@@ -24,7 +24,7 @@ namespace Sage50c.API {
         /// Inicializa a API da 50c. Lança uma exceção se falhar
         /// </summary>
         /// <param name="companyId">Identificador da empresa a Abrir</param>
-        public static void Initialize(string ProductCode, string CompanyId, bool DebugMode) {
+        public static void Initialize(string ProductCode, string CompanyId, bool DebugMode, int TerminalID = -1, string MachineID = null) {
             apiInitialized = false;
 
             //
@@ -34,11 +34,14 @@ namespace Sage50c.API {
             var systemStarter = new S50cAPI22.SystemStarter();
             systemStarter.DebugMode = DebugMode;
 
-            if (systemStarter.Initialize(ProductCode, CompanyId) != 0) {
+            if ((!string.IsNullOrEmpty(MachineID) && systemStarter.Initialize3(ProductCode, CompanyId, MachineID) != 0)
+                || (TerminalID != -1 && systemStarter.Initialize2(ProductCode, CompanyId, TerminalID) != 0)
+                || systemStarter.Initialize(ProductCode, CompanyId) != 0) {
                 string initError = systemStarter.InitializationError;
                 systemStarter = null;
                 throw new Exception(initError);
             }
+
             // Eventos de erros e avisos vindos da API
             dataManagerEvents = (S50cData22.DataManagerEventsClass)s50cDataGlobals.DataManager.Events;
             dataManagerEvents.__DataManagerEvents_Event_WarningMessage += dataManagerEvents___DataManagerEvents_Event_WarningMessage;
