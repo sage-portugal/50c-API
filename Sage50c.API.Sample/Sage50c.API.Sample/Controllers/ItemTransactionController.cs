@@ -373,6 +373,8 @@ namespace Sage50c.API.Sample.Controllers {
                 }
             }
 
+            Detail.WeightUnitOfMeasure = item.WeightUnitOfMeasure;
+            Detail.WeightMeasure = item.WeightMeasure;
             Detail.Graduation = item.Graduation;
             Detail.ItemTax = item.ItemTax;
             Detail.ItemTax2 = item.ItemTax2;
