@@ -12,7 +12,7 @@ namespace Sage50c.API.Sample {
 
         // These directores are the default directories where the Sage50c dlls are located.
         private const string _sageDirInterops = "Program Files (x86)\\Common Files\\sage\\2070\\50c2022\\Interops\\";
-        private const string _sageDirExtraOnline = "Program Files (x86)\\Common Files\\sage\\2070\\50c2022\\Extra Online\\ Files (x86)\\Common Files\\sage\\2070\\50c2022\\Interops\\";
+        private const string _sageDirExtraOnline = "Program Files (x86)\\Common Files\\sage\\2070\\50c2022\\Extra Online\\";
 
         #endregion
 

@@ -126,6 +126,10 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="S50cAPI22">
       <HintPath>C:\Program Files (x86)\Common Files\sage\2070\50c2022\Interops\S50cAPI22.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -211,13 +215,11 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Sage50c.ShopConnection.JsonCOMSerialization">
+      <HintPath>C:\Program Files (x86)\Common Files\sage\2070\50c2022\Extra Online\Sage50c.ShopConnection.JsonCOMSerialization.dll</HintPath>
+    </Reference>
     <Reference Include="SageCEMV15">
       <HintPath>C:\Program Files (x86)\Common Files\sage\2070\50c2022\Interops\SageCEMV15.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SageCoreComm10">
-      <HintPath>C:\Program Files (x86)\Common Files\sage\2070\50c2022\Interops\SageCoreComm10.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>False</Private>
     </Reference>
@@ -336,6 +338,12 @@
     </Compile>
     <Compile Include="GenericTransaction.cs" />
     <Compile Include="Helpers\SAFTHelper.cs" />
+    <Compile Include="JSONForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="JSONForm.Designer.cs">
+      <DependentUpon>JSONForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Month.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -363,12 +371,16 @@
     <EmbeddedResource Include="FormTenderCheck.resx">
       <DependentUpon>FormTenderCheck.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="JSONForm.resx">
+      <DependentUpon>JSONForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
