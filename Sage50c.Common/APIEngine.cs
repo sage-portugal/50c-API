@@ -1,7 +1,9 @@
-﻿using S50cData22;
+﻿using Newtonsoft.Json;
+using S50cData22;
 using S50cDL22;
 using S50cPrint22;
 using System;
+using Sage50c.ShopConnection.JsonCOMSerialization;
 
 namespace Sage50c.API {
     public static partial class APIEngine {
@@ -172,6 +174,14 @@ namespace Sage50c.API {
         public static S50cBL22.BSODiscountManager DiscountManager {
             get {
                 return s50cBLGlobals.DiscountManager;
+            }
+        }
+
+        public static JsonSerializer Serializer
+        {
+            get
+            {
+                return JsonCOMSerializer.GetDefaultSerializer();
             }
         }
     }

@@ -4,13 +4,15 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using S50cBL22;
 using S50cBO22;
 using S50cDL22;
 using S50cPrint22;
 using S50cSys22;
 using S50cUtil22;
+using SageCoreUtil10;
 
 namespace Sage50c.API.Sample.Controllers {
     internal class ItemTransactionController : ControllerBase {
@@ -36,6 +38,38 @@ namespace Sage50c.API.Sample.Controllers {
             editState = EditState.New;
 
             return _bsoItemTransaction.Transaction;
+        }
+
+        /// <summary>
+        /// Create a new buy/sale transaction via JSON
+        /// </summary>
+        public ItemTransaction CreateViaJSON(string json)
+        {
+            var transaction = JToken.Parse(json).ToObject<ItemTransaction>(APIEngine.Serializer);
+
+            Initialize(transaction.TransDocument, transaction.TransSerial);
+
+            transaction.TransDocNumber = 0;
+
+            FillDefaultValues();
+            editState = EditState.New;
+
+            _bsoItemTransaction.Transaction = transaction;
+
+            return _bsoItemTransaction.Transaction;
+        }
+
+        public string ReadCurrentTransactionJSON()
+        {
+            var transaction = _bsoItemTransaction.Transaction;
+            if (transaction != null)
+            {
+                return JToken.FromObject(transaction, APIEngine.Serializer).ToString();
+            }
+            else
+            {
+                throw new Exception("Não existe transação carregada");
+            }
         }
 
         /// <summary>

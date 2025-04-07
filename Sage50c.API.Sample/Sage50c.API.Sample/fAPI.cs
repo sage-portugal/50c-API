@@ -82,6 +82,8 @@ namespace Sage50c.API.Sample {
             btnStartAPI.Enabled = true;
 
             btnInsert.Enabled = false;
+            BInsertViaJSON.Enabled = false;
+            BReadCurrentDocumentJSON.Enabled = false;
             btnUpdate.Enabled = false;
             btnRemove.Enabled = false;
             btnGet.Enabled = false;
@@ -107,6 +109,8 @@ namespace Sage50c.API.Sample {
             cmbAPI.Enabled = false;
 
             btnInsert.Enabled = true;
+            BInsertViaJSON.Enabled = true;
+            BReadCurrentDocumentJSON.Enabled = true;
             btnUpdate.Enabled = true;
             btnRemove.Enabled = true;
             btnGet.Enabled = true;
@@ -963,6 +967,30 @@ namespace Sage50c.API.Sample {
             return transactionID;
         }
 
+        private TransactionID TransactionInsertViaJSON(bool suspendTransaction, string json)
+        {
+
+            TransactionID transactionID;
+
+            if (rbTransBuySell.Checked)
+            {
+                _itemTransactionController.CreateViaJSON(json);
+                transactionID = ItemTransactionUpdate(suspendTransaction, false);
+            }
+            else
+            {
+                _stockTransactionController.Create(txtTransDoc.Text, txtTransSerial.Text);
+                transactionID = TransactionStockUpdate();
+            }
+
+            return transactionID;
+        }
+
+        private string ReadCurrentTransactionJSON()
+        {
+            return _itemTransactionController.ReadCurrentTransactionJSON();
+        }
+
         private TransactionID TransactionRemove() {
 
             TransactionID transactionID;
@@ -1246,14 +1274,15 @@ namespace Sage50c.API.Sample {
 
         #region BUY/SALE TRANSACTION
 
-        private void TransactionFill() {
+        private void TransactionFill(bool fillTransDocNumber = true) {
             if (_itemTransactionController.Transaction == null) {
                 throw new Exception("Carregue uma transação antes de fazer alterações.");
             }
             else {
                 _itemTransactionController.SetPartyID(txtTransPartyId.Text.ToShort());
                 _itemTransactionController.Transaction.TransDocument = txtTransDoc.Text.ToUpper();
-                _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToDouble();
+                if (fillTransDocNumber)
+                    _itemTransactionController.Transaction.TransDocNumber = txtTransDocNumber.Text.ToDouble();
                 _itemTransactionController.Transaction.BaseCurrency.CurrencyID = txtTransCurrency.Text;
                 _itemTransactionController.Transaction.CreateDate = txtTransDate.Text.ToDateTime().Date;
                 _itemTransactionController.Transaction.CreateTime = txtTransTime.Text.ToTime();
@@ -1407,9 +1436,9 @@ namespace Sage50c.API.Sample {
             return simpleDocumentList;
         }
 
-        private TransactionID ItemTransactionUpdate(bool suspended) {
+        private TransactionID ItemTransactionUpdate(bool suspended, bool fillTransDocNumber = true) {
             transactionError = false;
-            TransactionFill();
+            TransactionFill(fillTransDocNumber);
 
             //Clear lines
             int i = 1;
@@ -2811,6 +2840,8 @@ namespace Sage50c.API.Sample {
             switch (tabIndex) {
                 case 6: // SAF-T tab
                     btnInsert.Enabled = false;
+                    BInsertViaJSON.Enabled = false;
+                    BReadCurrentDocumentJSON.Enabled = false;
                     btnUpdate.Enabled = false;
                     btnRemove.Enabled = false;
                     btnClear.Enabled = false;
@@ -2818,6 +2849,8 @@ namespace Sage50c.API.Sample {
                     break;
                 default:
                     btnInsert.Enabled = true;
+                    BInsertViaJSON.Enabled = true;
+                    BReadCurrentDocumentJSON.Enabled = true;
                     btnUpdate.Enabled = true;
                     btnRemove.Enabled = true;
                     btnClear.Enabled = true;
@@ -2851,6 +2884,68 @@ namespace Sage50c.API.Sample {
 
             }
             catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        private void BInsertViaJSON_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var jSONFormResult = DialogResult.None;
+                var jSONFormResultString = string.Empty;
+
+                using (var jSONForm = new JSONForm())
+                {
+                    jSONFormResult = jSONForm.ShowDialog();
+                    jSONFormResultString = jSONForm.JSON;
+                }
+
+                if (jSONFormResult != DialogResult.OK)
+                    return;
+
+                transactionError = false;
+                TransactionID transId = null;
+                
+                transId = TransactionInsertViaJSON(false, jSONFormResultString);
+
+                if (!transactionError)
+                {
+                    string msg = null;
+                    if (transId != null)
+                    {
+                        msg = $"Registo inserido: {transId.ToString()}";
+                    }
+                    else
+                    {
+                        msg = "Registo inserido.";
+                    }
+
+                    APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                }
+            }
+            catch (Exception ex)
+            {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
+        }
+
+        private void BReadCurrentDocumentJSON_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var readCurrentTransactionJSON = ReadCurrentTransactionJSON();
+
+                using (var jSONForm = new JSONForm
+                {
+                    JSON = readCurrentTransactionJSON
+                })
+                {
+                    jSONForm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
         }
