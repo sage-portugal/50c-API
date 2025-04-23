@@ -445,7 +445,10 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public void Calculate() {
+            _bsoItemTransaction.ReloadRetentionTax = false;
             _bsoItemTransaction.Calculate(true, true);
+            _bsoItemTransaction.ReloadRetentionTax = true;
+
         }
 
         public void RecalculateInstallments() {
