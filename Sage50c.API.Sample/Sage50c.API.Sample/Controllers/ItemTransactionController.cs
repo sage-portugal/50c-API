@@ -86,12 +86,19 @@ namespace Sage50c.API.Sample.Controllers {
                 SetUserPermissions();
 
                 _bsoItemTransaction.EnsureOpenTill(_bsoItemTransaction.Transaction.Till.TillID);
+                
+                //_bsoItemTransaction.SaveDocument(false, false);
+                result = _bsoItemTransaction.SaveItemTransaction(false, false);
+                if (!result) {
+                    int WarningId = (int) _bsoItemTransaction.TransactionWarning;
+                    if (WarningId != 0) {
+                        string sMsg = APIEngine.gLng.GS((int)WarningId);
+                        throw new Exception(sMsg);
+                    }
 
-                _bsoItemTransaction.SaveDocument(false, false);
-
+                }
                 editState = EditState.Editing;
                 _document = null;
-                result = true;
             }
             return result;
         }
