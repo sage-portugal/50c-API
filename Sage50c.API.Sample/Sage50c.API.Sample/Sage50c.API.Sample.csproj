@@ -354,6 +354,12 @@
     </Compile>
     <Compile Include="Helpers\QuickSearchHelper.cs" />
     <Compile Include="Helpers\StockHelper.cs" />
+    <Compile Include="SystemUsers.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SystemUsers.Designer.cs">
+      <DependentUpon>SystemUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIUtils.cs" />
     <EmbeddedResource Include="fAPI.resx">
       <DependentUpon>fAPI.cs</DependentUpon>
@@ -378,6 +384,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SystemUsers.resx">
+      <DependentUpon>SystemUsers.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />

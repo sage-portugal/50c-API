@@ -105,7 +105,7 @@ namespace Sage50c.API {
         /// <summary>
         /// System manager
         /// </summary>
-        private static S50cSys22.SystemManager SystemManager {
+        public static S50cSys22.SystemManager SystemManager {
             get {
                 if (_s50cSystemManager == null) {
                     _s50cSystemManager = new S50cSys22.SystemManager();

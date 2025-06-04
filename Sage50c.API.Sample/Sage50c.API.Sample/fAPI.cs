@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using S50cBL22;
 using S50cBO22;
 using S50cDL22;
@@ -2922,26 +2924,6 @@ namespace Sage50c.API.Sample {
                     }
 
                     APIEngine.CoreGlobals.MsgBoxFrontOffice(msg, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                }
-            }
-            catch (Exception ex)
-            {
-                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
-            }
-        }
-
-        private void BReadCurrentDocumentJSON_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var readCurrentTransactionJSON = ReadCurrentTransactionJSON();
-
-                using (var jSONForm = new JSONForm
-                {
-                    JSON = readCurrentTransactionJSON
-                })
-                {
-                    jSONForm.ShowDialog();
                 }
             }
             catch (Exception ex)
