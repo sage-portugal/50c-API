@@ -445,12 +445,8 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public void Calculate() {
-            _bsoItemTransaction.ReloadRetentionTax = false;
             _bsoItemTransaction.Calculate(true, true);
-            _bsoItemTransaction.ReloadRetentionTax = true;
-
         }
-
         public void RecalculateInstallments() {
             if (_bsoItemTransaction.Transaction.Payment != null) {
                 if (_bsoItemTransaction.Transaction.Payment.PaymentID > 0) {
@@ -468,6 +464,10 @@ namespace Sage50c.API.Sample.Controllers {
 
             _bsoItemTransaction.Transaction.TenderLineItem.Add(tenderLine);
         }
+        public void ReloadRetentionTax(bool pValue) {
+            _bsoItemTransaction.ReloadRetentionTax = pValue;
+        }
+
 
     }
 }

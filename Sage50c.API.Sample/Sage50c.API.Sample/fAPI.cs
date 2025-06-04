@@ -1435,6 +1435,8 @@ namespace Sage50c.API.Sample {
             }
 
             _itemTransactionController.SetPaymentDiscountPercent(txtTransGlobalDiscount.Text.ToDouble());
+            //When calculating document do not reload database retention fees
+            //_itemTransactionController.ReloadRetentionTax (false);
             _itemTransactionController.Calculate();
 
             var series = systemSettings.DocumentSeries[_itemTransactionController.Transaction.TransSerial];
@@ -2867,6 +2869,32 @@ namespace Sage50c.API.Sample {
             catch (Exception ex) {
                 APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            string originDocId = "FAC";
+            string DocId = "FAC1";
+            Operation oOperation = null;
+
+            if (!APIEngine.DSOCache.DocumentProvider.DocumentExists(DocId)) {
+
+                Document oDocument = APIEngine.DSOCache.DocumentProvider.GetDocumentEx(originDocId);
+                if (oDocument != null) {
+                    oDocument.DocumentID = DocId;
+                    oDocument.DocumentName = "Invoice 1";
+
+                    oOperation = oDocument.Operation;
+                    if (oOperation != null) {
+                        oOperation.OperationID = APIEngine.DSOCache.OperationProvider.GetNewOperationID(oDocument.TransDocType);
+                        oOperation.Description = oDocument.DocumentName + " (" + DocId + ")";
+                    }
+
+                    oDocument.SeriesNumbers = APIEngine.DSOCache.DocumentSeriesProvider.GetDocSeriesNumberList("");
+                    APIEngine.DSOCache.DocumentProvider.Save(oDocument, DocId, true);
+                }
+            }
+
+            //APIEngine.DSOCache.DocumentSeriesProvider 
         }
     }
 }
