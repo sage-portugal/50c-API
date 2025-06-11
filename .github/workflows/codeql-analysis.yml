@@ -9,7 +9,7 @@ on:
 jobs:
   analyze_net_40:
     name: Analyze .NET 4.0
-    runs-on: windows-2019
+    runs-on: windows-latest
     permissions:      
       actions: read
       contents: read
