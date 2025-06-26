@@ -3,6 +3,8 @@ using Sage50c.ExtenderSample22.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -22,6 +24,14 @@ namespace Sage50c.ExtenderSample22 {
         private CustomerHandler customerHandler = null;                     // Customer
         private SupplierHandler supplierHandler = null;                     // Supplier
         private SalesmanHandler salesmanHandler = null;                     //Salesman
+
+        public Extender()
+        {
+            ListOfDirectories.Add($@"{BaseDirectoryRoot}Program Files (x86)\Common Files\sage\2070\50c2022\Interops\");
+            ListOfDirectories.Add($@"{BaseDirectoryRoot}Program Files (x86)\Common Files\sage\2070\50c2022\Extra Online\");
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
 
         public string Initialize(string ApplicationKey) {
             //Do Nothing for now
@@ -172,5 +182,41 @@ namespace Sage50c.ExtenderSample22 {
             //    transactionHandler = null;
             //}
         }
+
+        #region "AssemblyResolve"
+
+        private string BaseDirectoryRoot { get; set; } = Path.GetPathRoot(AppDomain.CurrentDomain.BaseDirectory);
+        private List<string> ListOfDirectories = new List<string>();
+
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            try
+            {
+                // Get the name of the requested assembly.
+                const string extentionType = ".dll";
+                var assemblyName = new AssemblyName(args.Name).Name;
+
+                foreach (var directory in ListOfDirectories)
+                {
+                    // Combine the folder path with the assembly name and ".dll" extension.
+                    var assemblyPath = Path.Combine(directory, assemblyName + extentionType);
+
+                    if (File.Exists(assemblyPath))
+                    {
+                        // Load the assembly from the specified path.
+                        return Assembly.LoadFrom(assemblyPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            // Return null if the assembly is not found in the external DLLs folder.
+            return null;
+        }
+
+        #endregion
     }
 }
