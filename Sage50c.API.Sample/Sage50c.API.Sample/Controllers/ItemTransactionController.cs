@@ -167,6 +167,8 @@ namespace Sage50c.API.Sample.Controllers {
                 TransactionType = TransGetType(TransDoc),
             };
 
+            _bsoItemTransaction.RequestTransactionAtDocCode += _bsoItemTransaction_RequestTransactionAtDocCode;
+
             _bsoItemTransaction.BSOItemTransactionDetail = new BSOItemTransactionDetail() {
                 UserPermissions = systemSettings.User,
                 PermissionsType = FrontOfficePermissionEnum.foPermByUser,
@@ -176,6 +178,52 @@ namespace Sage50c.API.Sample.Controllers {
             _bsoItemTransaction.InitNewTransaction(TransDoc, TransSerial);
 
             _document = systemSettings.WorkstationInfo.Document[TransDoc];
+        }
+
+        private void _bsoItemTransaction_RequestTransactionAtDocCode(ItemTransaction Transaction, ref string DocCode, ref TransmissionStatusEnum TransmissionStatus)
+        {
+            AtSubmissionResponse response;
+            AtShipmentSubmission atShipmentSubmission = new AtShipmentSubmission();
+            atShipmentSubmission.SetAtWebServiceCredencials(_bsoItemTransaction.WebServiceShipmentConfig.WsATUserID, _bsoItemTransaction.WebServiceShipmentConfig.WsATUserCode, _bsoItemTransaction.WebServiceShipmentConfig.WsATPassword);
+            if (Transaction != null && atShipmentSubmission.CheckCredencials())
+            {
+                response = atShipmentSubmission.SubmitTransaction(Transaction);
+                if (response != null)
+                {
+                    DocCode = response.AtDocCodeID;
+                    if (response.Success)
+                    {
+                        if (response.ReturnCode == -1000)
+                        {
+                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusNone;
+                        }
+                        else if (response.ReturnCode == -100)
+                        {
+                            DocCode = "OMISSO";
+                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                        }
+                        else
+                        {
+                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                        }
+                    }
+                    else if (response.ReturnCode == -100)
+                    {
+                        DocCode = "OMISSO";
+                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                    }
+                    else if (response.Responded)
+                    {
+                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusNone;
+                    }
+                    else if (response.Uploaded)
+                    {
+                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToSage;
+                    }
+                    dsoCache.ItemTransactionProvider.UpdateTransactionATReport(Transaction.TransactionID, DateTime.Now, response.ReturnCode, TaxAuthorityReportTypes.ReportByWebService, response.ReturnMessage);
+                }
+            }
+
         }
 
         /// <summary>
