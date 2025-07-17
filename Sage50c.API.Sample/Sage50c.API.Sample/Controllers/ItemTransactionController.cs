@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
+﻿using S50cBL22;
+using S50cBO22;
+using S50cSys22;
+using System;
 using System.Text;
 using System.Windows.Forms;
-
-using S50cBL22;
-using S50cBO22;
-using S50cDL22;
-using S50cPrint22;
-using S50cSys22;
-using S50cUtil22;
 
 namespace Sage50c.API.Sample.Controllers {
     internal class ItemTransactionController : ControllerBase {
@@ -148,7 +141,50 @@ namespace Sage50c.API.Sample.Controllers {
 
             _bsoItemTransaction.InitNewTransaction(TransDoc, TransSerial);
 
+            _bsoItemTransaction.RequestTransactionAtDocCode += _bsoItemTransaction_RequestTransactionAtDocCode;
+
             _document = systemSettings.WorkstationInfo.Document[TransDoc];
+        }
+
+        private void _bsoItemTransaction_RequestTransactionAtDocCode(ItemTransaction Transaction, ref string DocCode, ref TransmissionStatusEnum TransmissionStatus) {
+            AtSubmissionResponse response;
+            AtShipmentSubmission atShipmentSubmission = new AtShipmentSubmission();
+
+            atShipmentSubmission.SetAtWebServiceCredencials(_bsoItemTransaction.WebServiceShipmentConfig.WsATUserID, _bsoItemTransaction.WebServiceShipmentConfig.WsATUserCode, _bsoItemTransaction.WebServiceShipmentConfig.WsATPassword);
+
+            if (Transaction != null) {
+                response = atShipmentSubmission.SubmitTransaction(Transaction);
+
+                if (response != null) {
+                    DocCode = response.AtDocCodeID;
+
+                    if (response.Success) {
+                        if (response.ReturnCode == -1000) {
+                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusNone;
+                        }
+                        else if (response.ReturnCode == -100) {
+                            DocCode = "OMISSO";
+                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                        }
+                        else {
+                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                        }
+                    }
+                    else if (response.ReturnCode == -100) {
+                        DocCode = "OMISSO";
+                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                    }
+                    else if (response.Responded) {
+                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusNone;
+                    }
+                    else if (response.Uploaded) {
+                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToSage;
+                    }
+
+                    dsoCache.ItemTransactionProvider.UpdateTransactionATReport(Transaction.TransactionID, DateTime.Now, response.ReturnCode, TaxAuthorityReportTypes.ReportByWebService, response.ReturnMessage);
+                }
+
+            }
         }
 
         /// <summary>
@@ -445,9 +481,11 @@ namespace Sage50c.API.Sample.Controllers {
         }
 
         public void Calculate() {
+            _bsoItemTransaction.ReloadRetentionTax = false;
             _bsoItemTransaction.Calculate(true, true);
-        }
+            _bsoItemTransaction.ReloadRetentionTax = true;
 
+        }
         public void RecalculateInstallments() {
             if (_bsoItemTransaction.Transaction.Payment != null) {
                 if (_bsoItemTransaction.Transaction.Payment.PaymentID > 0) {
@@ -465,6 +503,10 @@ namespace Sage50c.API.Sample.Controllers {
 
             _bsoItemTransaction.Transaction.TenderLineItem.Add(tenderLine);
         }
+        public void ReloadRetentionTax(bool pValue) {
+            _bsoItemTransaction.ReloadRetentionTax = pValue;
+        }
+
 
     }
 }
