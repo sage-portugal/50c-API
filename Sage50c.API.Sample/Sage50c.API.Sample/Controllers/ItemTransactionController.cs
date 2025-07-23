@@ -182,48 +182,100 @@ namespace Sage50c.API.Sample.Controllers {
 
         private void _bsoItemTransaction_RequestTransactionAtDocCode(ItemTransaction Transaction, ref string DocCode, ref TransmissionStatusEnum TransmissionStatus)
         {
-            AtSubmissionResponse response;
-            AtShipmentSubmission atShipmentSubmission = new AtShipmentSubmission();
-            atShipmentSubmission.SetAtWebServiceCredencials(_bsoItemTransaction.WebServiceShipmentConfig.WsATUserID, _bsoItemTransaction.WebServiceShipmentConfig.WsATUserCode, _bsoItemTransaction.WebServiceShipmentConfig.WsATPassword);
-            if (Transaction != null && atShipmentSubmission.CheckCredencials())
+            StringBuilder log = new StringBuilder();
+
+            try
             {
-                response = atShipmentSubmission.SubmitTransaction(Transaction);
-                if (response != null)
+                AtSubmissionResponse response;
+                AtShipmentSubmission atShipmentSubmission = new AtShipmentSubmission();
+
+                log.AppendLine($"Setting AT WebService credentials. WsATUserID: {_bsoItemTransaction.WebServiceShipmentConfig.WsATUserID}. " +
+                    $"WsATUserCode: {_bsoItemTransaction.WebServiceShipmentConfig.WsATUserCode}. " +
+                    $"WsATPassword: {_bsoItemTransaction.WebServiceShipmentConfig.WsATPassword}");
+                atShipmentSubmission.SetAtWebServiceCredencials(
+                    _bsoItemTransaction.WebServiceShipmentConfig.WsATUserID,
+                    _bsoItemTransaction.WebServiceShipmentConfig.WsATUserCode,
+                    _bsoItemTransaction.WebServiceShipmentConfig.WsATPassword);
+
+                if (Transaction != null)
                 {
-                    DocCode = response.AtDocCodeID;
-                    if (response.Success)
+                    log.AppendLine($"Transaction ID: {Transaction.TransactionID} detected.");
+                    if (atShipmentSubmission.CheckCredencials())
                     {
-                        if (response.ReturnCode == -1000)
+                        log.AppendLine("Credentials valid. Submitting transaction...");
+                        response = atShipmentSubmission.SubmitTransaction(Transaction);
+                        if (response != null)
                         {
-                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusNone;
-                        }
-                        else if (response.ReturnCode == -100)
-                        {
-                            DocCode = "OMISSO";
-                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                            log.AppendLine($"Response received. ReturnCode: {response.ReturnCode}, Message: {response.ReturnMessage}");
+                            DocCode = response.AtDocCodeID;
+                            log.AppendLine($"AT DocCode set to: {DocCode}");
+
+                            if (response.Success)
+                            {
+                                log.AppendLine("Submission successful.");
+                                if (response.ReturnCode == -1000)
+                                {
+                                    TransmissionStatus = TransmissionStatusEnum.TransmissionStatusNone;
+                                    log.AppendLine("ReturnCode -1000: No transmission.");
+                                }
+                                else if (response.ReturnCode == -100)
+                                {
+                                    DocCode = "OMISSO";
+                                    TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                                    log.AppendLine("ReturnCode -100: OMISSO applied, submitted to AT.");
+                                }
+                                else
+                                {
+                                    TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                                    log.AppendLine("Default success: Submitted to AT.");
+                                }
+                            }
+                            else if (response.ReturnCode == -100)
+                            {
+                                DocCode = "OMISSO";
+                                TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                                log.AppendLine("ReturnCode -100 (error path): OMISSO applied, submitted to AT.");
+                            }
+                            else if (response.Responded)
+                            {
+                                TransmissionStatus = TransmissionStatusEnum.TransmissionStatusNone;
+                                log.AppendLine("Response.Responded: No transmission.");
+                            }
+                            else if (response.Uploaded)
+                            {
+                                TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToSage;
+                                log.AppendLine("Response.Uploaded: Submitted to Sage.");
+                            }
+
+                            dsoCache.ItemTransactionProvider.UpdateTransactionATReport(
+                                Transaction.TransactionID,
+                                DateTime.Now,
+                                response.ReturnCode,
+                                TaxAuthorityReportTypes.ReportByWebService,
+                                response.ReturnMessage);
+                            log.AppendLine("Transaction report updated.");
                         }
                         else
                         {
-                            TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                            log.AppendLine("No response received from AT.");
                         }
                     }
-                    else if (response.ReturnCode == -100)
+                    else
                     {
-                        DocCode = "OMISSO";
-                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToAT;
+                        log.AppendLine("Invalid credentials.");
                     }
-                    else if (response.Responded)
-                    {
-                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusNone;
-                    }
-                    else if (response.Uploaded)
-                    {
-                        TransmissionStatus = TransmissionStatusEnum.TransmissionStatusWebserviceSubmitedToSage;
-                    }
-                    dsoCache.ItemTransactionProvider.UpdateTransactionATReport(Transaction.TransactionID, DateTime.Now, response.ReturnCode, TaxAuthorityReportTypes.ReportByWebService, response.ReturnMessage);
+                }
+                else
+                {
+                    log.AppendLine("No transaction provided.");
                 }
             }
+            catch(Exception ex)
+            {
+                log.AppendLine($"Error: {ex.Message}");
+            }
 
+            MessageBox.Show(log.ToString(), "Transaction Submission Log", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
