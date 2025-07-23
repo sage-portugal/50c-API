@@ -217,6 +217,7 @@
     </Reference>
     <Reference Include="Sage50c.ShopConnection.JsonCOMSerialization">
       <HintPath>C:\Program Files (x86)\Common Files\sage\2070\50c2022\Extra Online\Sage50c.ShopConnection.JsonCOMSerialization.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SageCEMV15">
       <HintPath>C:\Program Files (x86)\Common Files\sage\2070\50c2022\Interops\SageCEMV15.dll</HintPath>
