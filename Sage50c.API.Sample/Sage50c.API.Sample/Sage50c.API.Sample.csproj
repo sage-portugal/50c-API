@@ -355,6 +355,12 @@
     </Compile>
     <Compile Include="Helpers\QuickSearchHelper.cs" />
     <Compile Include="Helpers\StockHelper.cs" />
+    <Compile Include="SystemSettingsUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SystemSettingsUC.Designer.cs">
+      <DependentUpon>SystemSettingsUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="SystemUsers.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -385,6 +391,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SystemSettingsUC.resx">
+      <DependentUpon>SystemSettingsUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SystemUsers.resx">
       <DependentUpon>SystemUsers.cs</DependentUpon>
