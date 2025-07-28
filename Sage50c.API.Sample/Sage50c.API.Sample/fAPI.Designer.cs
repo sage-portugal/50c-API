@@ -298,10 +298,12 @@ namespace Sage50c.API.Sample {
             this.lblExportTo0 = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.tabSystemUsers = new System.Windows.Forms.TabPage();
+            this.systemUsers1 = new Sage50c.API.Sample.SystemUsers();
+            this.tabSystemSettings = new System.Windows.Forms.TabPage();
             this.LerPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.FinalizarPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.GuardarPreparacao = new System.Windows.Forms.ToolTip(this.components);
-            this.systemUsers1 = new Sage50c.API.Sample.SystemUsers();
+            this.systemSettingsUC1 = new Sage50c.API.Sample.SystemSettingsUC();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -344,6 +346,7 @@ namespace Sage50c.API.Sample {
             ((System.ComponentModel.ISupportInitialize)(this.nudSAFTStartDay)).BeginInit();
             this.gbGlobal.SuspendLayout();
             this.tabSystemUsers.SuspendLayout();
+            this.tabSystemSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -3655,6 +3658,7 @@ namespace Sage50c.API.Sample {
             this.tabEntities.Controls.Add(this.tabUnitOfMeasure);
             this.tabEntities.Controls.Add(this.tabSAFT);
             this.tabEntities.Controls.Add(this.tabSystemUsers);
+            this.tabEntities.Controls.Add(this.tabSystemSettings);
             this.tabEntities.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabEntities.Enabled = false;
             this.tabEntities.Location = new System.Drawing.Point(0, 106);
@@ -3919,6 +3923,25 @@ namespace Sage50c.API.Sample {
             this.systemUsers1.Size = new System.Drawing.Size(943, 481);
             this.systemUsers1.TabIndex = 0;
             // 
+            // tabSystemSettings
+            // 
+            this.tabSystemSettings.Controls.Add(this.systemSettingsUC1);
+            this.tabSystemSettings.Location = new System.Drawing.Point(4, 24);
+            this.tabSystemSettings.Name = "tabSystemSettings";
+            this.tabSystemSettings.Size = new System.Drawing.Size(943, 481);
+            this.tabSystemSettings.TabIndex = 8;
+            this.tabSystemSettings.Text = "System Settings";
+            this.tabSystemSettings.UseVisualStyleBackColor = true;
+            // 
+            // systemSettingsUC1
+            // 
+            this.systemSettingsUC1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.systemSettingsUC1.Location = new System.Drawing.Point(0, 0);
+            this.systemSettingsUC1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.systemSettingsUC1.Name = "systemSettingsUC1";
+            this.systemSettingsUC1.Size = new System.Drawing.Size(943, 481);
+            this.systemSettingsUC1.TabIndex = 0;
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -3996,6 +4019,7 @@ namespace Sage50c.API.Sample {
             this.gbGlobal.ResumeLayout(false);
             this.gbGlobal.PerformLayout();
             this.tabSystemUsers.ResumeLayout(false);
+            this.tabSystemSettings.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -4276,6 +4300,8 @@ namespace Sage50c.API.Sample {
         private Button BReadCurrentDocumentJSON;
         private TabPage tabSystemUsers;
         private SystemUsers systemUsers1;
+        private TabPage tabSystemSettings;
+        private SystemSettingsUC systemSettingsUC1;
     }
 }
 
