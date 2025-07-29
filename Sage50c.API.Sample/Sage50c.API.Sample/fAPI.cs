@@ -1493,7 +1493,9 @@ namespace Sage50c.API.Sample {
                 transactionID = _itemTransactionController.Transaction.TransactionID;
             }
             TransactionPrintWithConfig(_itemTransactionController.Transaction.TransSerial, _itemTransactionController.Transaction.TransDocument, _itemTransactionController.Transaction.TransDocNumber);
-            TransactionClearUI();
+
+            if (APIEngine.CoreGlobals.MsgBoxFrontOffice("Clean UI?", VBA.VbMsgBoxStyle.vbYesNo, Application.ProductName) == VBA.VbMsgBoxResult.vbYes)
+                TransactionClearUI();
             return transactionID;
         }
 
