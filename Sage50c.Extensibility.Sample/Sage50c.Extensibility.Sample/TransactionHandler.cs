@@ -132,7 +132,7 @@ namespace Sage50c.ExtenderSample22 {
                     foreach (ItemTransactionDetail detail in transaction.Details) {
                         if (detail.PromotionApplied) {
                             if (detail.FamilyID == 1) {
-                                e.result.ResultMessage = string.Format("HeaderEvents_OnValidating: Não pode aplicar 'Campanhas comerciais/MixAndMatch' a artigos da familia {0}", detail.FamilyName);
+                                e.result.ResultMessage = string.Format("HeaderEvents_OnAction: Não pode aplicar 'Campanhas comerciais/MixAndMatch' a artigos da familia {0}", detail.FamilyName);
                                 e.result.Success = false;
                                 break;
                             }
