@@ -63,6 +63,7 @@ namespace Sage50c.ExtenderSample22 {
             headerEvents.OnNew += HeaderEvents_OnNew;
             headerEvents.OnLoad += HeaderEvents_OnLoad;
             headerEvents.OnDispose += HeaderEvents_OnDispose;
+            headerEvents.OnAction += HeaderEvents_OnAction;
         }
 
         private void HeaderEvents_OnDispose() {
@@ -117,6 +118,30 @@ namespace Sage50c.ExtenderSample22 {
                 e.result.Success = true;
             }
         }
+        private void HeaderEvents_OnAction(object Sender, ExtenderEventArgs e) {
+            var propList = (ExtendedPropertyList)e.get_data();
+            var onAction = (ExtenderEventAction)propList.get_Value("OnAction");
+            var transaction = (ItemTransaction)propList.get_Value("Data");
+
+            ///... Code here
+
+            e.result.Success = true;
+
+            switch (onAction) {
+                case ExtenderEventAction.eeaHandleDiscounts://After apply Discounts and MixAndMatch
+                    foreach (ItemTransactionDetail detail in transaction.Details) {
+                        if (detail.PromotionApplied) {
+                            if (detail.FamilyID == 1) {
+                                e.result.ResultMessage = string.Format("HeaderEvents_OnAction: Não pode aplicar 'Campanhas comerciais/MixAndMatch' a artigos da familia {0}", detail.FamilyName);
+                                e.result.Success = false;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
 
         void OnPropertyChanged(string PropertyID, ref object value, ref bool Cancel) {
             // HANDLE BSOItemTransaction PROPERTY CHANGES HERE

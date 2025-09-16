@@ -50,7 +50,15 @@ namespace Sage50c.API.Sample.Controllers {
                     return _accountTransManager.Transaction.TransactionID;
                 }
                 else {
-                    throw new Exception("A gravação do recibo falhou!");
+                    //throw new Exception("A gravação do recibo falhou!");
+                    int WarningId = (int)_accountTransManager.TransactionWarning;
+                    if (WarningId != 0) {
+                        string sMsg = APIEngine.gLng.GS((int)WarningId);
+                        throw new Exception(sMsg);
+                    }
+                    else {
+                        throw new Exception("A gravação do recibo falhou!");
+                    }
                 }
             }
             else {
