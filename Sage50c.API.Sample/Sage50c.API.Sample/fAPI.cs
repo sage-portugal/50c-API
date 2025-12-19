@@ -54,6 +54,10 @@ namespace Sage50c.API.Sample {
         private UnitOfMeasureController _unitOfMeasureController = null;
         private AccountTransactionController _accountTransactionController = null;
 
+        /// Motor de pagamentos Multibanco (PinpadEthernet)
+        /// </summary>
+        private BSOEMVManager bsoEMVManager = null;
+
         public fApi() {
 
             InitializeComponent();
@@ -69,6 +73,10 @@ namespace Sage50c.API.Sample {
             APIEngine.APIStopped += S50cAPIEngine_APIStopped;
         }
 
+        private void POSNotificationManager_ShowDialogMessage(POSNotificationEnum POSNotificationType, clsCollectionAccessKey OptionList, ref VBA.VbMsgBoxResult ButtonSelected) {
+            ButtonSelected = APIEngine.CoreGlobals.MsgBoxDialog(OptionList, ButtonSelected);
+        }
+
         #region Eventos da RTLAPI
 
         void S50cAPIEngine_APIStopped(object sender, EventArgs e) {
@@ -76,6 +84,7 @@ namespace Sage50c.API.Sample {
             accountTransManager = null;
             bsoItemTransaction = null;
             bsoStockTransaction = null;
+            bsoEMVManager = null;
 
             tabEntities.Enabled = false;
             btnStopAPI.Enabled = false;
@@ -130,9 +139,10 @@ namespace Sage50c.API.Sample {
             bsoStockTransaction = new BSOStockTransaction();
             bsoStockTransaction.UserPermissions = systemSettings.User;
             //
-            // Inicilizar o motor dos recibos e pagamentos
+            // Inicializar o motor dos recibos e pagamentos
             accountTransManager = new AccountTransactionManager();
-
+            //
+                        
             // Initialize controllers
             _itemController = new ItemController();
             _customerController = new CustomerController();
@@ -141,6 +151,9 @@ namespace Sage50c.API.Sample {
             _stockTransactionController = new StockTransactionController();
             _unitOfMeasureController = new UnitOfMeasureController();
             _accountTransactionController = new AccountTransactionController();
+            
+            //Inicializar o motor pagamentos Multibanco (Pinpad Ethernet)
+            bsoEMVManager = new BSOEMVManager();
 
             // Load combos
             ItemClear(true);
@@ -228,6 +241,10 @@ namespace Sage50c.API.Sample {
             }
         }
 
+        private void BsoEMVManager_RequestRefundTransaction(string TransSerial, string TransDocument, double TransDocNumber) {
+
+
+        }
         /// <summary>
         /// Displays exclamation warning messages from the API
         /// </summary>
@@ -1643,7 +1660,7 @@ namespace Sage50c.API.Sample {
             docNumber = txtAccountTransDocNumberL2.Text.ToDouble();
             paymentValue = txtAccountTransDocValueL2.Text.ToDouble();
             if (paymentValue > 0) {
-                _accountTransactionController.AddDetail(docId, docSeries, docNumber, 0, paymentValue);
+                _accountTransactionController.AddDetail(docId, docSeries, docNumber,   0, paymentValue);
             }
 
             var transaction = _accountTransactionController.AccountTransaction;
@@ -2871,30 +2888,79 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void button1_Click(object sender, EventArgs e) {
-            string originDocId = "FAC";
-            string DocId = "FAC1";
-            Operation oOperation = null;
+        private void BtnTPA_Click(object sender, EventArgs e) {
+            string strMessage = string.Empty;
 
-            if (!APIEngine.DSOCache.DocumentProvider.DocumentExists(DocId)) {
+            TenderLineItemList tenderLineItemList = null;
+            DSOTender dsoTender = new DSOTender();
+            DSOCurrency dsoCurrency = new DSOCurrency();
+            TransactionID transactionID = null;
+            bool tpaOk = false;
+            TransactionWarningsEnum tpaWarning = 0;
 
-                Document oDocument = APIEngine.DSOCache.DocumentProvider.GetDocumentEx(originDocId);
-                if (oDocument != null) {
-                    oDocument.DocumentID = DocId;
-                    oDocument.DocumentName = "Invoice 1";
+            Tender tender = dsoTender.GetFirstTenderType(TenderTypeEnum.tndCreditDebitCard);
+            if (tender != null) {
+                ItemTransaction itemTransaction = new ItemTransaction {
+                    TransDocType = DocumentTypeEnum.dcTypeSale,
+                    TransBehavior = TransBehaviorEnum.BehAlwaysNewDocument,
+                    BaseCurrency = dsoCurrency.GetCurrency("EUR"),
+                    TransSerial = txtTransSerial.Text,
+                    TransDocument = txtTransDoc.Text,
+                    TransDocNumber = 1,
+                    PartyTypeCode = PartyTypeEnum.ptCustomer
+                };
+                tenderLineItemList = new TenderLineItemList();
+                TenderLineItem tenderLineItem = new TenderLineItem {
+                    Tender = tender,
+                    TenderCurrency = itemTransaction.BaseCurrency,
+                    Amount = 10
+                };
 
-                    oOperation = oDocument.Operation;
-                    if (oOperation != null) {
-                        oOperation.OperationID = APIEngine.DSOCache.OperationProvider.GetNewOperationID(oDocument.TransDocType);
-                        oOperation.Description = oDocument.DocumentName + " (" + DocId + ")";
+                tenderLineItemList.Add(tenderLineItem);
+                itemTransaction.TenderLineItem = tenderLineItemList;
+                transactionID = itemTransaction.TransactionID;
+
+                tpaOk = bsoEMVManager.InitializePinPad();
+                if (!tpaOk) {
+                    tpaWarning = bsoEMVManager.TransactionWarning;
+                }
+                else {
+
+                    var hWnd = this.Handle;
+
+                    bsoEMVManager.ParentHwnd = hWnd.ToInt32();
+
+                    APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
+
+                    tpaOk = bsoEMVManager.CreateEMVPayment(itemTransaction);
+                    if (!tpaOk) {
+                        tpaWarning = bsoEMVManager.TransactionWarning;
+                    }
+                    else {
+                        tpaOk = bsoEMVManager.FinishEMVPayment(transactionID, tenderLineItemList, false);
+                        if (!tpaOk) {
+                            tpaWarning = bsoEMVManager.TransactionWarning;
+                        }
                     }
 
-                    oDocument.SeriesNumbers = APIEngine.DSOCache.DocumentSeriesProvider.GetDocSeriesNumberList("");
-                    APIEngine.DSOCache.DocumentProvider.Save(oDocument, DocId, true);
+                    if (tpaOk) {
+                        if (itemTransaction.TenderLineItem.HasTenderCard()) {
+                            if (itemTransaction.TenderLineItem.TenderCard != null) {
+                                strMessage = "CustomerTicket:" + itemTransaction.TenderLineItem.TenderCard.CustomerTicket;
+                                APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                            }
+                        }
+                    }
+                    else {
+                        strMessage = APIEngine.gLng.GS((int)tpaWarning);
+
+                        if (!string.IsNullOrEmpty(strMessage)) {
+                            APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
+                        }
+                    }
                 }
             }
-
-            //APIEngine.DSOCache.DocumentSeriesProvider 
         }
     }
 }
+

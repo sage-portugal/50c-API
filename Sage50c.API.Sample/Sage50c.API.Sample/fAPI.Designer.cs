@@ -297,6 +297,7 @@ namespace Sage50c.API.Sample {
             this.FinalizarPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.GuardarPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.btnRecalculate = new System.Windows.Forms.Button();
+            this.btnTPA = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -1190,6 +1191,7 @@ namespace Sage50c.API.Sample {
             // tabBuySaleTransaction
             // 
             this.tabBuySaleTransaction.BackColor = System.Drawing.Color.White;
+            this.tabBuySaleTransaction.Controls.Add(this.btnTPA);
             this.tabBuySaleTransaction.Controls.Add(this.label49);
             this.tabBuySaleTransaction.Controls.Add(this.label51);
             this.tabBuySaleTransaction.Controls.Add(this.txtQrCode);
@@ -3851,6 +3853,16 @@ namespace Sage50c.API.Sample {
             this.btnRecalculate.UseVisualStyleBackColor = true;
             this.btnRecalculate.Click += new System.EventHandler(this.btnRecalculate_Click);
             // 
+            // btnTPA
+            // 
+            this.btnTPA.Location = new System.Drawing.Point(656, 444);
+            this.btnTPA.Name = "btnTPA";
+            this.btnTPA.Size = new System.Drawing.Size(69, 29);
+            this.btnTPA.TabIndex = 416;
+            this.btnTPA.Text = "TPA";
+            this.btnTPA.UseVisualStyleBackColor = true;
+            this.btnTPA.Click += new System.EventHandler(this.BtnTPA_Click);
+            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -4202,6 +4214,7 @@ namespace Sage50c.API.Sample {
         private ToolTip FinalizarPreparacao;
         private ToolTip GuardarPreparacao;
         private Button btnRecalculate;
+        private Button btnTPA;
     }
 }
 
