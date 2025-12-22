@@ -154,8 +154,10 @@ namespace Sage50c.API.Sample {
             
             //Inicializar o motor pagamentos Multibanco (Pinpad Ethernet)
             bsoEMVManager = new BSOEMVManager();
-            //APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
-
+            var hWnd = this.Handle;
+            bsoEMVManager.ParentHwnd = hWnd.ToInt32();
+            APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
+            
             // Load combos
             ItemClear(true);
             CustomerClearUI();
@@ -2921,14 +2923,14 @@ namespace Sage50c.API.Sample {
                 itemTransaction.TenderLineItem = tenderLineItemList;
                 transactionID = itemTransaction.TransactionID;
 
+                var hWnd = this.Handle;
+                bsoEMVManager.ParentHwnd = hWnd.ToInt32();
+                APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage -= POSNotificationManager_ShowDialogMessage;
+                APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
+
                 tpaOk = bsoEMVManager.Init();
                 if (tpaOk) {
-                    var hWnd = this.Handle;
-
-                    bsoEMVManager.ParentHwnd = hWnd.ToInt32();
-
-                    APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
-
+                    
                     tpaOk = bsoEMVManager.CreateEMVPayment(itemTransaction);
                     if (tpaOk) {
                         tpaOk = bsoEMVManager.FinishEMVPayment(transactionID, tenderLineItemList, false);
