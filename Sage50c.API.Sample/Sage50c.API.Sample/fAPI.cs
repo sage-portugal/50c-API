@@ -154,6 +154,7 @@ namespace Sage50c.API.Sample {
             
             //Inicializar o motor pagamentos Multibanco (Pinpad Ethernet)
             bsoEMVManager = new BSOEMVManager();
+            //APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
 
             // Load combos
             ItemClear(true);
@@ -2920,12 +2921,8 @@ namespace Sage50c.API.Sample {
                 itemTransaction.TenderLineItem = tenderLineItemList;
                 transactionID = itemTransaction.TransactionID;
 
-                tpaOk = bsoEMVManager.InitializePinPad();
-                if (!tpaOk) {
-                    tpaWarning = bsoEMVManager.TransactionWarning;
-                }
-                else {
-
+                tpaOk = bsoEMVManager.Init();
+                if (tpaOk) {
                     var hWnd = this.Handle;
 
                     bsoEMVManager.ParentHwnd = hWnd.ToInt32();
@@ -2933,14 +2930,8 @@ namespace Sage50c.API.Sample {
                     APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
 
                     tpaOk = bsoEMVManager.CreateEMVPayment(itemTransaction);
-                    if (!tpaOk) {
-                        tpaWarning = bsoEMVManager.TransactionWarning;
-                    }
-                    else {
+                    if (tpaOk) {
                         tpaOk = bsoEMVManager.FinishEMVPayment(transactionID, tenderLineItemList, false);
-                        if (!tpaOk) {
-                            tpaWarning = bsoEMVManager.TransactionWarning;
-                        }
                     }
 
                     if (tpaOk) {
@@ -2951,12 +2942,14 @@ namespace Sage50c.API.Sample {
                             }
                         }
                     }
-                    else {
-                        strMessage = APIEngine.gLng.GS((int)tpaWarning);
+                }
+                if (!tpaOk) {
+                    tpaWarning = bsoEMVManager.TransactionWarning;
 
-                        if (!string.IsNullOrEmpty(strMessage)) {
-                            APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                        }
+                    strMessage = APIEngine.gLng.GS((int)tpaWarning);
+
+                    if (!string.IsNullOrEmpty(strMessage)) {
+                        APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
                 }
             }
