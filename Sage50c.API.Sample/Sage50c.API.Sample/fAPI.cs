@@ -154,9 +154,9 @@ namespace Sage50c.API.Sample {
             
             //Inicializar o motor pagamentos Multibanco (Pinpad Ethernet)
             bsoEMVManager = new BSOEMVManager();
-            var hWnd = this.Handle;
-            bsoEMVManager.ParentHwnd = hWnd.ToInt32();
-            APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
+            //var hWnd = this.Handle;
+            //bsoEMVManager.ParentHwnd = hWnd.ToInt32();
+            //APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
             
             // Load combos
             ItemClear(true);
@@ -2925,7 +2925,6 @@ namespace Sage50c.API.Sample {
 
                 var hWnd = this.Handle;
                 bsoEMVManager.ParentHwnd = hWnd.ToInt32();
-                APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage -= POSNotificationManager_ShowDialogMessage;
                 APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
 
                 tpaOk = bsoEMVManager.Init();
@@ -2954,6 +2953,8 @@ namespace Sage50c.API.Sample {
                         APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                     }
                 }
+
+                APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage -= POSNotificationManager_ShowDialogMessage;
             }
         }
     }
