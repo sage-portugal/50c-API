@@ -54,10 +54,6 @@ namespace Sage50c.API.Sample {
         private UnitOfMeasureController _unitOfMeasureController = null;
         private AccountTransactionController _accountTransactionController = null;
 
-        /// Motor de pagamentos Multibanco (PinpadEthernet)
-        /// </summary>
-        private BSOEMVManager bsoEMVManager = null;
-
         public fApi() {
 
             InitializeComponent();
@@ -73,10 +69,6 @@ namespace Sage50c.API.Sample {
             APIEngine.APIStopped += S50cAPIEngine_APIStopped;
         }
 
-        private void POSNotificationManager_ShowDialogMessage(POSNotificationEnum POSNotificationType, clsCollectionAccessKey OptionList, ref VBA.VbMsgBoxResult ButtonSelected) {
-            ButtonSelected = APIEngine.CoreGlobals.MsgBoxDialog(OptionList, ButtonSelected);
-        }
-
         #region Eventos da RTLAPI
 
         void S50cAPIEngine_APIStopped(object sender, EventArgs e) {
@@ -84,8 +76,7 @@ namespace Sage50c.API.Sample {
             accountTransManager = null;
             bsoItemTransaction = null;
             bsoStockTransaction = null;
-            bsoEMVManager = null;
-
+            
             tabEntities.Enabled = false;
             btnStopAPI.Enabled = false;
             btnStartAPI.Enabled = true;
@@ -142,7 +133,7 @@ namespace Sage50c.API.Sample {
             // Inicializar o motor dos recibos e pagamentos
             accountTransManager = new AccountTransactionManager();
             //
-                        
+
             // Initialize controllers
             _itemController = new ItemController();
             _customerController = new CustomerController();
@@ -151,13 +142,7 @@ namespace Sage50c.API.Sample {
             _stockTransactionController = new StockTransactionController();
             _unitOfMeasureController = new UnitOfMeasureController();
             _accountTransactionController = new AccountTransactionController();
-            
-            //Inicializar o motor pagamentos Multibanco (Pinpad Ethernet)
-            bsoEMVManager = new BSOEMVManager();
-            //var hWnd = this.Handle;
-            //bsoEMVManager.ParentHwnd = hWnd.ToInt32();
-            //APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
-            
+
             // Load combos
             ItemClear(true);
             CustomerClearUI();
@@ -244,10 +229,6 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void BsoEMVManager_RequestRefundTransaction(string TransSerial, string TransDocument, double TransDocNumber) {
-
-
-        }
         /// <summary>
         /// Displays exclamation warning messages from the API
         /// </summary>
@@ -2892,70 +2873,11 @@ namespace Sage50c.API.Sample {
         }
 
         private void BtnTPA_Click(object sender, EventArgs e) {
-            string strMessage = string.Empty;
+            /// Motor de pagamentos Multibanco (PinpadEthernet)
+            /// </summary>
+            EMVTransactionController emvTransactionController = new EMVTransactionController();
 
-            TenderLineItemList tenderLineItemList = null;
-            DSOTender dsoTender = new DSOTender();
-            DSOCurrency dsoCurrency = new DSOCurrency();
-            TransactionID transactionID = null;
-            bool tpaOk = false;
-            TransactionWarningsEnum tpaWarning = 0;
-
-            Tender tender = dsoTender.GetFirstTenderType(TenderTypeEnum.tndCreditDebitCard);
-            if (tender != null) {
-                ItemTransaction itemTransaction = new ItemTransaction {
-                    TransDocType = DocumentTypeEnum.dcTypeSale,
-                    TransBehavior = TransBehaviorEnum.BehAlwaysNewDocument,
-                    BaseCurrency = dsoCurrency.GetCurrency("EUR"),
-                    TransSerial = txtTransSerial.Text,
-                    TransDocument = txtTransDoc.Text,
-                    TransDocNumber = 1,
-                    PartyTypeCode = PartyTypeEnum.ptCustomer
-                };
-                tenderLineItemList = new TenderLineItemList();
-                TenderLineItem tenderLineItem = new TenderLineItem {
-                    Tender = tender,
-                    TenderCurrency = itemTransaction.BaseCurrency,
-                    Amount = 10
-                };
-
-                tenderLineItemList.Add(tenderLineItem);
-                itemTransaction.TenderLineItem = tenderLineItemList;
-                transactionID = itemTransaction.TransactionID;
-
-                var hWnd = this.Handle;
-                bsoEMVManager.ParentHwnd = hWnd.ToInt32();
-                APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
-
-                tpaOk = bsoEMVManager.Init();
-                if (tpaOk) {
-                    
-                    tpaOk = bsoEMVManager.CreateEMVPayment(itemTransaction);
-                    if (tpaOk) {
-                        tpaOk = bsoEMVManager.FinishEMVPayment(transactionID, tenderLineItemList, false);
-                    }
-
-                    if (tpaOk) {
-                        if (itemTransaction.TenderLineItem.HasTenderCard()) {
-                            if (itemTransaction.TenderLineItem.TenderCard != null) {
-                                strMessage = "CustomerTicket:" + itemTransaction.TenderLineItem.TenderCard.CustomerTicket;
-                                APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                            }
-                        }
-                    }
-                }
-                if (!tpaOk) {
-                    tpaWarning = bsoEMVManager.TransactionWarning;
-
-                    strMessage = APIEngine.gLng.GS((int)tpaWarning);
-
-                    if (!string.IsNullOrEmpty(strMessage)) {
-                        APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
-                    }
-                }
-
-                APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage -= POSNotificationManager_ShowDialogMessage;
-            }
+            emvTransactionController.HandleEMV(txtTransSerial.Text, txtTransDoc.Text, 10, this.Handle.ToInt32());
         }
     }
 }

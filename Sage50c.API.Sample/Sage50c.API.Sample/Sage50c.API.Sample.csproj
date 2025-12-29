@@ -256,6 +256,7 @@
       <Link>50cAPI\APIQuickSearch.cs</Link>
     </Compile>
     <Compile Include="Controllers\AccountTransactionController.cs" />
+    <Compile Include="Controllers\EMVTransactionController.cs" />
     <Compile Include="Controllers\ItemTransactionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
