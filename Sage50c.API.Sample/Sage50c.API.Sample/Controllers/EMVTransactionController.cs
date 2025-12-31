@@ -12,8 +12,22 @@ using System.Threading.Tasks;
 using VBA;
 using SageCEMV15;
 
-namespace Sage50c.API.Sample.Controllers {
+//private void BtnTest_Click(object sender, EventArgs e) {
+//    /// Motor de pagamentos Multibanco (PinpadEthernet)
+//    /// </summary>
+//    EMVTransactionController emvTransactionController = new EMVTransactionController();
+//    try {
+//        btnTest.Enabled = false;
+//        double payValue = txtTransDocNumber.Text.ToDouble();
+//        emvTransactionController.HandleEMV(txtTransSerial.Text, txtTransDoc.Text, payValue);
+//        btnTest.Enabled = true;
+//    }
+//    catch (Exception ex) {
+//        APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+//    }
+//}
 
+namespace Sage50c.API.Sample.Controllers {
     class EMVTransactionController : ControllerBase {
         /// Motor de pagamentos Multibanco (PinpadEthernet)
         /// </summary>
