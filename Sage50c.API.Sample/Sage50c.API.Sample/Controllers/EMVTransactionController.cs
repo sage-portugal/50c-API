@@ -19,17 +19,13 @@ namespace Sage50c.API.Sample.Controllers {
         /// </summary>
         private BSOEMVManager _bsoEMVManager = null;
         
-        internal bool HandleEMV(string Serial, string DocumentId, double AmountValue, int hWnd) {
+        internal bool HandleEMV(string Serial, string DocumentId, double AmountValue) {
             bool bOk = false;
 
             _bsoEMVManager = new BSOEMVManager();
 
-            //            var hWnd = fApi.ActiveForm.Handle;
-            //_bsoEMVManager.ParentHwnd = hWnd;//.ToInt32();
-
             if (HandleEMVPayment(Serial, DocumentId, AmountValue)) {
-                //if Refund
-
+               
                 bOk = true;
             }
 
@@ -38,87 +34,32 @@ namespace Sage50c.API.Sample.Controllers {
             return bOk;
         }
 
-        private void BsoEMVManager_RequestRefundTransaction(string TransSerial, string TransDocument, double TransDocNumber) {
+        private void BsoEMVManager_RequestRefundTransaction(ref string TransSerial, ref string TransDocument, ref double TransDocNumber) {
+            //Document and CardTenderLineItem must exist in the database
+            //Ex:
+            //TransSerial = "EXT";
+            //TransDocument = "FS";
+            //TransDocNumber = 1;
+                                
+            ////TransactionID refundTransactionID = new TransactionID();
+            ////refundTransactionID.FromString ("FS EXT/1");
 
-
+            ////if (refundTransactionID == null) {
+            ////    if ((refundTransactionID.TransSerial.Length > 0) && (refundTransactionID.TransDocument.Length > 0) || (refundTransactionID.TransDocNumber > 0)) {
+            ////        TransSerial = refundTransactionID.TransSerial;
+            ////        TransDocument = refundTransactionID.TransDocument;
+            ////        TransDocNumber = refundTransactionID.TransDocNumber;
+            ////    }
+            ////}
         }
+
         private static void POSNotificationManager_WarningFailure(POSNotificationEnum POSNotificationType, EMVResult result) {
             //Fail to commit transaccao
-
             APIEngine.CoreGlobals.MsgBoxFrontOffice("Detalhes:" + result.ToString(), VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
         }
 
-        //private static void POSNotificationManager_DCCQuery(POSNotificationEnum POSNotificationType, EMVDCCEventArgs args) {
-
-        //}
-        //private static void POSNotificationManager_CheckTerminalStatus(POSNotificationEnum POSNotificationType, POSPinpad sender, int SIBSFlags, ref bool Retry, ref bool Ignore, ref bool Cancel) {
-        //}
-
         private static void POSNotificationManager_ShowDialogMessage(POSNotificationEnum POSNotificationType, clsCollectionAccessKey OptionList, ref VbMsgBoxResult ButtonSelected) {
-            //string msg = null;
-            //short i;
-            //short vbButtons;
-            
-            //clsArrayString oKeys = OptionList.listKeys();
-            //int iCount = oKeys.getCount() - 1;
-
-            //if (oKeys.itemExists("MainInstructionText")) {
-            //    msg = (string)OptionList.item("MainInstructionText");
-            //}
-
-            ////if (oKeys.itemExists("ContentText")) {
-            ////    if (msg.Length != 0) {
-            ////        msg += Environment.NewLine;
-            ////    }
-            ////    msg += (string)OptionList.item("ContentText");
-            ////}
-
-            //if (msg.Length != 0) {
-            //    msg += Environment.NewLine;
-            //}
-
-            //string sKey;
-            //for (i = 0; i< iCount; i++) {
-            //    sKey = oKeys.item[i];
-            //    switch (sKey) {
-            //        case "MainInstructionText":
-            //            break;
-            //        case "ContentText":
-            //            break;
-            //        case "MainIcon":
-            //            break;
-
-            //        case "1": //vbOK
-            //            msg += "(Ok) - " + OptionList.item(oKeys.item[i]);
-            //            msg += Environment.NewLine;
-            //            vbButtons += VBA.VbMsgBoxResult.vbOK;
-            //            break;
-
-            //        //case "2"://vbCancel
-            //        //    vbButtons += VBA.VbMsgBoxResult.vbCancel;
-            //        //    break;
-
-            //        //case "3"://vbAbort
-            //        //    vbButtons += VBA.VbMsgBoxResult.vbAbort;
-            //        //    break;
-            //        //case "4"://vbRetry
-            //        //    vbButtons += VBA.VbMsgBoxResult.vbRetry;
-            //        //    break;
-            //        //case "5"://vbIgnore
-            //        //    vbButtons += VBA.VbMsgBoxResult.vbIgnore;
-            //        //    break;
-            //        //case "6"://vbYes
-            //        //    vbButtons += VBA.VbMsgBoxResult.vbYes;
-            //        //    break;
-            //        //case "7"://vbNo
-            //        //    vbButtons += VBA.VbMsgBoxResult.vbNo;
-            //        //    break;
-
-            //    }
-            //}
-
             ButtonSelected = APIEngine.CoreGlobals.MsgBoxDialog(OptionList, ButtonSelected);
-
         }
 
         private bool HandleEMVPayment(string DocumentSerial, string DocumentId, double AmountValue) {
@@ -155,10 +96,9 @@ namespace Sage50c.API.Sample.Controllers {
 
                 APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage += POSNotificationManager_ShowDialogMessage;
                 APIEngine.BLGlobals.POSNotificationManager.WarningFailure += POSNotificationManager_WarningFailure;
-                //APIEngine.BLGlobals.POSNotificationManager.DCCQuery += POSNotificationManager_DCCQuery;
-                //APIEngine.BLGlobals.POSNotificationManager.CheckTerminalStatus  += POSNotificationManager_CheckTerminalStatus; 
 
                 tpaOk = _bsoEMVManager.Init();
+                _bsoEMVManager.RequestRefundTransaction += BsoEMVManager_RequestRefundTransaction;
                 if (tpaOk) {
 
                     tpaOk = _bsoEMVManager.CreateEMVPayment(itemTransaction);
@@ -171,7 +111,7 @@ namespace Sage50c.API.Sample.Controllers {
                         if (itemTransaction.TenderLineItem.HasTenderCard()) {
                             if (itemTransaction.TenderLineItem.TenderCard != null) {
                                 tpaOk = true;
-                                strMessage = "CustomerTicket:" + itemTransaction.TenderLineItem.TenderCard.CustomerTicket;
+                                strMessage = "CustomerTicket:" + Environment.NewLine + itemTransaction.TenderLineItem.TenderCard.CustomerTicket;
                                 APIEngine.CoreGlobals.MsgBoxFrontOffice(strMessage, VBA.VbMsgBoxStyle.vbInformation, Application.ProductName);
                             }
                         }
@@ -189,10 +129,9 @@ namespace Sage50c.API.Sample.Controllers {
 
                 APIEngine.BLGlobals.POSNotificationManager.ShowDialogMessage -= POSNotificationManager_ShowDialogMessage;
                 APIEngine.BLGlobals.POSNotificationManager.WarningFailure -= POSNotificationManager_WarningFailure;
-                //APIEngine.BLGlobals.POSNotificationManager.DCCQuery -= POSNotificationManager_DCCQuery;
-                //APIEngine.BLGlobals.POSNotificationManager.CheckTerminalStatus -= POSNotificationManager_CheckTerminalStatus;
             }
             return tpaOk;
         }
+
     }
 }

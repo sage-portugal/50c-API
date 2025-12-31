@@ -2872,12 +2872,18 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void BtnTPA_Click(object sender, EventArgs e) {
+        private void BtnTest_Click(object sender, EventArgs e) {
             /// Motor de pagamentos Multibanco (PinpadEthernet)
             /// </summary>
             EMVTransactionController emvTransactionController = new EMVTransactionController();
-
-            emvTransactionController.HandleEMV(txtTransSerial.Text, txtTransDoc.Text, 10, this.Handle.ToInt32());
+            try {
+                btnTest.Enabled = false;
+                emvTransactionController.HandleEMV(txtTransSerial.Text, txtTransDoc.Text,(Int) txtTransDocNumber.Text.Todouble(), this.Handle.ToInt32());
+                btnTest.Enabled = true;
+            }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
+            }
         }
     }
 }
