@@ -2878,7 +2878,8 @@ namespace Sage50c.API.Sample {
             EMVTransactionController emvTransactionController = new EMVTransactionController();
             try {
                 btnTest.Enabled = false;
-                emvTransactionController.HandleEMV(txtTransSerial.Text, txtTransDoc.Text,(Int) txtTransDocNumber.Text.Todouble(), this.Handle.ToInt32());
+                double payValue = txtTransDocNumber.Text.ToDouble();
+                emvTransactionController.HandleEMV(txtTransSerial.Text, txtTransDoc.Text, payValue);
                 btnTest.Enabled = true;
             }
             catch (Exception ex) {
