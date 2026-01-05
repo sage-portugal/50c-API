@@ -130,8 +130,9 @@ namespace Sage50c.API.Sample {
             bsoStockTransaction = new BSOStockTransaction();
             bsoStockTransaction.UserPermissions = systemSettings.User;
             //
-            // Inicilizar o motor dos recibos e pagamentos
+            // Inicializar o motor dos recibos e pagamentos
             accountTransManager = new AccountTransactionManager();
+            //
 
             // Initialize controllers
             _itemController = new ItemController();
@@ -2871,30 +2872,20 @@ namespace Sage50c.API.Sample {
             }
         }
 
-        private void button1_Click(object sender, EventArgs e) {
-            string originDocId = "FAC";
-            string DocId = "FAC1";
-            Operation oOperation = null;
-
-            if (!APIEngine.DSOCache.DocumentProvider.DocumentExists(DocId)) {
-
-                Document oDocument = APIEngine.DSOCache.DocumentProvider.GetDocumentEx(originDocId);
-                if (oDocument != null) {
-                    oDocument.DocumentID = DocId;
-                    oDocument.DocumentName = "Invoice 1";
-
-                    oOperation = oDocument.Operation;
-                    if (oOperation != null) {
-                        oOperation.OperationID = APIEngine.DSOCache.OperationProvider.GetNewOperationID(oDocument.TransDocType);
-                        oOperation.Description = oDocument.DocumentName + " (" + DocId + ")";
-                    }
-
-                    oDocument.SeriesNumbers = APIEngine.DSOCache.DocumentSeriesProvider.GetDocSeriesNumberList("");
-                    APIEngine.DSOCache.DocumentProvider.Save(oDocument, DocId, true);
+        private void BtnTest_Click(object sender, EventArgs e) {
+            /// Motor de pagamentos Multibanco (PinpadEthernet)
+            /// </summary>
+            EMVTransactionController emvTransactionController = new EMVTransactionController();
+            try {
+                btnTest.Enabled = false;
+                double payValue = txtTransDocNumber.Text.ToDouble();
+                emvTransactionController.HandleEMV(txtTransSerial.Text, txtTransDoc.Text, payValue);
+                btnTest.Enabled = true;
                 }
+            catch (Exception ex) {
+                APIEngine.CoreGlobals.MsgBoxFrontOffice(ex.Message, VBA.VbMsgBoxStyle.vbExclamation, Application.ProductName);
             }
-
-            //APIEngine.DSOCache.DocumentSeriesProvider 
         }
     }
 }
+

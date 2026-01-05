@@ -91,6 +91,7 @@ namespace Sage50c.API.Sample {
             this.Label30 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabBuySaleTransaction = new System.Windows.Forms.TabPage();
+            this.btnTest = new System.Windows.Forms.Button();
             this.label49 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
             this.txtQrCode = new System.Windows.Forms.TextBox();
@@ -252,6 +253,7 @@ namespace Sage50c.API.Sample {
             this.Label6 = new System.Windows.Forms.Label();
             this.Label4 = new System.Windows.Forms.Label();
             this.tabItem = new System.Windows.Forms.TabPage();
+            this.btnRecalculate = new System.Windows.Forms.Button();
             this.gbSize = new System.Windows.Forms.GroupBox();
             this.dgvSize = new System.Windows.Forms.DataGridView();
             this.btnAddSize = new System.Windows.Forms.Button();
@@ -296,7 +298,6 @@ namespace Sage50c.API.Sample {
             this.LerPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.FinalizarPreparacao = new System.Windows.Forms.ToolTip(this.components);
             this.GuardarPreparacao = new System.Windows.Forms.ToolTip(this.components);
-            this.btnRecalculate = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCSharp)).BeginInit();
             this.panel5.SuspendLayout();
@@ -1190,6 +1191,7 @@ namespace Sage50c.API.Sample {
             // tabBuySaleTransaction
             // 
             this.tabBuySaleTransaction.BackColor = System.Drawing.Color.White;
+            this.tabBuySaleTransaction.Controls.Add(this.btnTest);
             this.tabBuySaleTransaction.Controls.Add(this.label49);
             this.tabBuySaleTransaction.Controls.Add(this.label51);
             this.tabBuySaleTransaction.Controls.Add(this.txtQrCode);
@@ -1258,6 +1260,16 @@ namespace Sage50c.API.Sample {
             this.tabBuySaleTransaction.Size = new System.Drawing.Size(943, 481);
             this.tabBuySaleTransaction.TabIndex = 3;
             this.tabBuySaleTransaction.Text = "Compra/Venda/Stock";
+            // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(656, 444);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(69, 29);
+            this.btnTest.TabIndex = 416;
+            this.btnTest.Text = "TPA";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.BtnTest_Click);
             // 
             // label49
             // 
@@ -3352,6 +3364,16 @@ namespace Sage50c.API.Sample {
             this.tabItem.TabIndex = 0;
             this.tabItem.Text = "Artigo";
             // 
+            // btnRecalculate
+            // 
+            this.btnRecalculate.Location = new System.Drawing.Point(368, 251);
+            this.btnRecalculate.Name = "btnRecalculate";
+            this.btnRecalculate.Size = new System.Drawing.Size(78, 29);
+            this.btnRecalculate.TabIndex = 33;
+            this.btnRecalculate.Text = "Recalcular";
+            this.btnRecalculate.UseVisualStyleBackColor = true;
+            this.btnRecalculate.Click += new System.EventHandler(this.btnRecalculate_Click);
+            // 
             // gbSize
             // 
             this.gbSize.Controls.Add(this.dgvSize);
@@ -3841,16 +3863,6 @@ namespace Sage50c.API.Sample {
             this.dtpEnd.TabIndex = 9;
             this.dtpEnd.Value = new System.DateTime(1945, 7, 16, 0, 0, 0, 0);
             // 
-            // btnRecalculate
-            // 
-            this.btnRecalculate.Location = new System.Drawing.Point(368, 251);
-            this.btnRecalculate.Name = "btnRecalculate";
-            this.btnRecalculate.Size = new System.Drawing.Size(78, 29);
-            this.btnRecalculate.TabIndex = 33;
-            this.btnRecalculate.Text = "Recalcular";
-            this.btnRecalculate.UseVisualStyleBackColor = true;
-            this.btnRecalculate.Click += new System.EventHandler(this.btnRecalculate_Click);
-            // 
             // fApi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -4202,6 +4214,7 @@ namespace Sage50c.API.Sample {
         private ToolTip FinalizarPreparacao;
         private ToolTip GuardarPreparacao;
         private Button btnRecalculate;
+        private Button btnTest;
     }
 }
 
