@@ -32,9 +32,10 @@ namespace Sage50c.API.Sample.Controllers {
         /// Motor de pagamentos Multibanco (PinpadEthernet)
         /// </summary>
         private BSOEMVManager _bsoEMVManager = null;
-        
-        internal bool HandleEMV(string Serial, string DocumentId, double AmountValue) {
+        string pRefundId;
+        internal bool HandleEMV(string Serial, string DocumentId, double AmountValue, string RefundId) {
             bool bOk = false;
+            pRefundId = RefundId;
 
             _bsoEMVManager = new BSOEMVManager();
 
@@ -55,16 +56,16 @@ namespace Sage50c.API.Sample.Controllers {
             //TransDocument = "FS";
             //TransDocNumber = 1;
                                 
-            ////TransactionID refundTransactionID = new TransactionID();
-            ////refundTransactionID.FromString ("FS EXT/1");
+            TransactionID refundTransactionID = new TransactionID();
+            refundTransactionID.FromString (pRefundId);
 
-            ////if (refundTransactionID == null) {
-            ////    if ((refundTransactionID.TransSerial.Length > 0) && (refundTransactionID.TransDocument.Length > 0) || (refundTransactionID.TransDocNumber > 0)) {
-            ////        TransSerial = refundTransactionID.TransSerial;
-            ////        TransDocument = refundTransactionID.TransDocument;
-            ////        TransDocNumber = refundTransactionID.TransDocNumber;
-            ////    }
-            ////}
+            if (refundTransactionID != null) {
+                if ((refundTransactionID.TransSerial.Length > 0) && (refundTransactionID.TransDocument.Length > 0) || (refundTransactionID.TransDocNumber > 0)) {
+                    TransSerial = refundTransactionID.TransSerial;
+                    TransDocument = refundTransactionID.TransDocument;
+                    TransDocNumber = refundTransactionID.TransDocNumber;
+                }
+            }
         }
 
         private static void POSNotificationManager_WarningFailure(POSNotificationEnum POSNotificationType, EMVResult result) {
