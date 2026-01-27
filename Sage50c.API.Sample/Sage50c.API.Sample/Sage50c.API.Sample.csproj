@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\POS\SystemPOS\50c-2022\build-2022\PPOS\COMMONFILES\SAGE\2070\50c2022\</OutputPath>
     <DefineConstants>TRACE;DEBUG;API</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -256,6 +256,7 @@
       <Link>50cAPI\APIQuickSearch.cs</Link>
     </Compile>
     <Compile Include="Controllers\AccountTransactionController.cs" />
+    <Compile Include="Controllers\EMVTransactionController.cs" />
     <Compile Include="Controllers\ItemTransactionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\CustomerController.cs" />

@@ -150,6 +150,7 @@ namespace Sage50c.API {
         public static S50cLocalize22._ILocalizer gLng { get { return s50cSystemGlobals.gLng; } }
 
         public static S50cCore22.GlobalSettings CoreGlobals { get { return s50cCoreGlobals; } }
+        public static S50cBL22.GlobalSettings BLGlobals { get { return s50cBLGlobals; } }
 
         public static S50cSys22.QuickSearch CreateQuickSearch(S50cSys22.QuickSearchViews QuickSearchId, bool CacheIt) {
             return s50cSystemGlobals.CreateQuickSearch(QuickSearchId, CacheIt);
