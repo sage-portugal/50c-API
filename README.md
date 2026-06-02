@@ -9,6 +9,7 @@
 ### 2. Abrir e utilizar o exemplo<br/>
 #### 2.1. Clonar o o código exemplo <br/>
 ![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/clone.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsage-portugal%2F50c-API.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsage-portugal%2F50c-API?ref=badge_shield)
 
 #### 2.2. Abrir a solução com o visual studio 2019<br/>
 #### 2.3. Na primeira vez que se abre o projeto, é possivel que as referências à API não estejam a apontar para o lugar correto.<br/>
@@ -30,3 +31,7 @@ Embed Interop Types = FALSE<br/>
 ![alt text](https://github.com/sage-portugal/50c-API/blob/master/doc/images/x86.png)
 
 E é tudo. É só compilar e disfrutar<br/>
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsage-portugal%2F50c-API.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsage-portugal%2F50c-API?ref=badge_large)
